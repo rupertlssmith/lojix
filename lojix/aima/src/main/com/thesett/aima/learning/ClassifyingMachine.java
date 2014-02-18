@@ -1,0 +1,48 @@
+/*
+ * Copyright The Sett Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.thesett.aima.learning;
+
+import java.util.Map;
+
+import com.thesett.aima.state.OrdinalAttribute;
+import com.thesett.aima.state.State;
+
+/**
+ * A classifying machine takes a state and classifies it by returning its belief about the value of some of the states
+ * properties.
+ *
+ * <pre><p/><table id="crc"><caption>CRC Card</caption>
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Perform a classification on a state.
+ * </table></pre>
+ *
+ * @author Rupert Smith
+ */
+public interface ClassifyingMachine
+{
+    /**
+     * Perform a classification of a {@link State}. The belief about the value of some properties of the state is
+     * expressed as a set of property, value pairs.
+     *
+     * @param  state The state to classify.
+     *
+     * @return A map of properties that classify the state.
+     *
+     * @throws ClassifyingFailureException If the classification algorithm fails for any reason (for example missing
+     *                                     data in the state to classify).
+     */
+    public Map<String, OrdinalAttribute> classify(State state) throws ClassifyingFailureException;
+}

@@ -1,0 +1,20 @@
+<html>
+<body>
+Provides 'uninformed' search algorithms. These do not make use of heuristics to guide the search. The following
+algorithms can be found in this package:
+
+<p/><ul>
+<li>Depth first search.
+<li>Depth bounded search. Searches up to a depth limit.
+<li>Iterative deepening search. Searches depth first to an interatively increasing depth limit. This is a complete
+    search like breadth first search and only marginally slower than breadth first. It has the advantage over breadth 
+    first that it does not need to keep a huge list of unexpanded nodes in memory so is much more space efficient
+    than breadth first.
+<li>Uniform cost search. Follows the search node that has the lowest path cost. The boundary of the search will have a
+    roughly uniform cost.
+<li>Cost bounded search. Searches up to a cost limit.
+<li>Iterative cost increasing search. Searches using cost limits that increase in steps or to the next available level.
+</ul>
+
+</body>
+</html>

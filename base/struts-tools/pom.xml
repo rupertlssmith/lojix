@@ -1,0 +1,147 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.thesett</groupId>
+    <artifactId>struts-tools</artifactId>
+    <name>struts-tools</name>
+    <version>0.3-SNAPSHOT</version>
+
+    <description>Utilities for creating struts based webapps.</description>
+    <url>https://www.thesett.com/build_reports/struts-tools</url>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <topdir>${basedir}/..</topdir>
+        <jstl.jar.version>1.1.2</jstl.jar.version>
+    </properties>
+
+    <parent>
+        <groupId>com.thesett</groupId>
+        <artifactId>basebuild</artifactId>
+        <version>0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.thesett</groupId>
+            <artifactId>common</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>struts</groupId>
+            <artifactId>struts</artifactId>
+            <version>1.2.7</version>
+        </dependency>
+
+        <!-- Container provided dependencies. -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Run XDoclet to generate taglibs and EJB interfaces. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>xdoclet-maven-plugin</artifactId>
+                <version>1.0</version>
+
+                <dependencies>
+                  <!-- This dependency is required so that xdoclet can trace the inheritence of some of the tags back to root classes
+                       in the servlets jar. -->
+                  <dependency>
+                    <groupId>jstl</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>${jstl.jar.version}</version>
+                  </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <id>generate-xdoclet</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>xdoclet</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- Generate the taglib descriptor using WebDoclet -->
+                                <webdoclet destdir="${project.build.directory}/generated-sources/xdoclet"
+                                           excludedtags="@version,@author" verbose="true">
+
+                                    <fileset dir="src/main">
+                                        <include name="**/webapp/**/*Action.java"/>
+                                        <include name="**/webapp/**/*Tag.java"/>
+                                        <include name="**/webapp/**/*Form.java"/>
+                                    </fileset>
+
+                                    <jsptaglib destdir="${project.build.directory}" shortName="debug" filename="debug.tld"/>
+
+                                    <strutsconfigxml version="1.0"/>
+                                </webdoclet>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Create a jar for the tests. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Upload the jsp tag libraries as secondary artifacts to the repository. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/debug.tld</file>
+                                    <type>tld</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,261 @@
+/*
+ * This is an implementation of a parser for the first order logic based language, L1. This language consists of terms in fol, posed
+ * either as programs (to be added to a term store), or queries (to be matched against the store). The syntax is similar to that used 
+ * in prolog, that is, functors are lower case, variables are upper case, arguments are grouped in brackets and seperated by commas.
+ *
+ * The lanaguage consists of the following possible sentences:
+ *
+ * Program terms are functors (or constants) defined on their own, terminated with a '.'.
+ * Queries are terms on a line begining with a ?- followed by the querying functor, terminated by a '.'.
+ *
+ * Variables are scoped within the current sentence only, fresh ones are generated within the scope for each new variable name
+ * encountered, variables never span multiple sentence scopes.
+ *
+ * Interactive interpretation of the language proceeds as follows. The user enters a program. This is compiled and held in
+ * memory as the most recent program, replacing any previous most recent program. The user enters a query, this is unified
+ * against the most recent program, and the unification found is returned, or fail is returned to the user if no unification
+ * can be found. Unification will fail with an error, if no program has been entered to unify against.
+ */
+
+//options { STATIC = false; }
+
+PARSER_BEGIN(L1Parser)
+
+package com.thesett.aima.logic.fol.l1;
+
+import java.util.*;
+
+import org.apache.log4j.Logger;
+
+import com.thesett.aima.logic.fol.*;
+import com.thesett.aima.logic.fol.l1.*;
+import com.thesett.aima.attribute.impl.IdAttribute;
+import com.thesett.common.error.*;
+
+public class L1Parser
+{
+    /** Used for logging to the console. */
+    private final static Logger console = Logger.getLogger("CONSOLE." + L1Parser.class.getName());
+
+    /** Holds the variable scoping context for the current sentence. */
+    static Map nameContext = new HashMap();
+
+    /** Holds the byte code machine to compile into. */
+    static L1UnifyingMachine machine;
+
+    /* Use the native machine if is available, otherwise use the Java machine. */
+    static
+    {   
+        try
+        {
+            machine = L1UnifyingNativeMachine.getInstance();
+            console.info("Using native byte code machine.");
+        }
+        catch (ImplementationUnavailableException e)
+        {
+            machine = new L1UnifyingJavaMachine();
+            console.info("Using Java byte code machine.");
+        }
+    }
+
+    /** Holds the byte code compiler. */
+    static L1Compiler compiler = new L1Compiler(machine);
+
+    /** Holds the singleton instance of the parser. */
+    static L1Parser parser = null;// new L1Parser(System.in);
+
+    public static L1Parser getResetParser()
+    {
+    if (parser == null)
+    {
+        parser = new L1Parser(System.in);
+    }
+
+    nameContext.clear();
+
+    return parser;
+    }
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            L1Parser parser = getResetParser();
+            //L1Parser parser = new L1Parser(System.in);
+ 
+            while(true)
+            {
+                // Parse the next sentence.
+                L1Sentence sentence = parser.sentence();
+                console.info(sentence);
+
+                // Compile the sentence.
+                L1CompiledFunctor compiledTerm = compiler.compile(sentence);
+
+                compiledTerm.decompile();
+                console.info(compiledTerm);
+
+                // Evaluate the most recent query, if a program has also already been entered.
+                if (compiledTerm instanceof L1CompiledQueryFunctor)
+                {
+                    List vars = machine.unify(compiledTerm);
+                    
+                    if (vars != null)
+                    {
+                        System.out.println("Yes.");
+                        for (Iterator i = vars.iterator(); i.hasNext(); )
+                        {
+                            Variable nextVar = (Variable)i.next();
+                            String varName = (String)machine.getVariableInterner().getAttributeFromInt(nextVar.getName()).getValue();
+
+                            System.out.println(varName + " = " + nextVar.getValue());
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("No.");
+                    }
+                }
+            }
+        }
+        catch (ParseException e)
+        {
+            console.info(e);
+            System.exit(1);
+        }
+    }
+}
+
+PARSER_END(L1Parser)
+
+/* White space. */
+
+SKIP :
+{
+    " "
+  | "\t"
+  | "\n"
+  | "\r"
+  | "\f"
+}
+
+/* Symbolic syntax. */
+
+TOKEN :
+{
+    < QUERY:       "?-" >
+  | < ENDSENTENCE: "." >
+  | < LPAREN:      "(" >
+  | < RPAREN:      ")" >
+  | < COMMA:       "," >
+}
+
+/* Numeric constants. */
+TOKEN :
+{
+    < NUMBER:  (<DIGIT>)+ >
+  | < #DIGIT: ["0" - "9"] >
+}
+
+/* User defined names (functors and variables) */
+
+TOKEN :
+{
+    < VAR:      ( (<HICASE> |  "_" )  ( <ANYCHAR> )* ) >
+  | < ATOM:     ( <LOCASE>) ( <ANYCHAR> )*  >
+  | < #ANYCHAR: ( <LOCASE> | <HICASE> | <DIGIT> | "_" ) > 
+  | < #LOCASE:  ["a"-"z"] > 
+  | < #HICASE:  ["A"-"Z"] > 
+} 
+
+/* Language grammar. */
+
+L1Sentence sentence() :
+{
+    L1Sentence sentence;
+
+    // Each new sentence provides a new scope in which to make variables unique.
+    nameContext.clear();
+}
+{
+    (sentence = query() | sentence = program()) <ENDSENTENCE>
+    { return sentence; }
+}
+
+L1Sentence query() :
+{
+    Functor functor;
+}
+{
+    <QUERY> functor = functor()
+    { return L1Sentence.createQuery(functor); }
+}
+
+L1Sentence program() :
+{
+    Functor functor;
+}
+{
+    functor = functor()
+    { return L1Sentence.createProgram(functor); }
+}
+
+Term term() : 
+{
+    Term term;
+}
+{
+    (term = functor() | term = variable())
+    { return term; }
+}
+
+Functor functor() :
+{
+    Token name;
+    IdAttribute nameId;
+    Term[] args = null;
+}
+{
+    name = <ATOM> [ <LPAREN> args = arglist() <RPAREN> ]
+    {
+        Functor.FunctorName functorName = new Functor.FunctorName(name.image, args == null ? 0 : args.length);
+        nameId = machine.getFunctorInterner().createIdAttribute(functorName);
+        return new Functor(nameId.ordinal(), args);
+    }
+}
+
+Variable variable() :
+{
+    Token name;
+    IdAttribute nameId;
+}
+{
+    name = <VAR>
+    { 
+    nameId = machine.getVariableInterner().createIdAttribute(name.image);
+
+    // Check if the variable already exists in this scope, or create a new one if it does not.
+    Variable var = (Variable)nameContext.get(nameId);
+
+    if (var != null)
+    {
+        return var;
+    }
+    else
+    {
+        var = new Variable(nameId.ordinal(), null, false);
+        nameContext.put(nameId, var);
+        return var;
+    }
+    }
+}
+
+Term[] arglist() :
+{
+    List terms = new LinkedList();
+    Term term;
+}
+{
+    term = term() { terms.add(term); } (<COMMA> term = term() { terms.add(term); } )*
+    { return (Term[])terms.toArray(new Term[terms.size()]); }
+}

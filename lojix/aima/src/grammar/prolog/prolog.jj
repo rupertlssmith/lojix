@@ -1,0 +1,154 @@
+/*
+ * This is an implementation of a parser for the first order logic based language, Prolog. In its purest form, this language consists
+ * of terms in first order logic, posed either as programs (to be added to a store), or queries (to be matched against the store).
+ *
+ * The lanaguage consists of the following possible sentences:
+ *
+ * Program terms are clauses (or constants), terminated with a '.'.
+ * Programs can be facts or rules of the form: a0 :- a1, ..., an. Facts consist only of the head a0 with no following ':-'. Rules have
+ * a body consisting of: a1,...,an. The 'a1' to 'an' are additional queries that must be satisfied and unified, with variables
+ * scoped over the entire rule, including its head.
+ * Queries are of the form ?- a0,...,an. Variable are scoped over the entire query and each part of it must be consecutively
+ * unified against matching programs, building up a unification over all of the variables in the queries scope, the same as for
+ * program bodies. Queries and program bodies are essentially the same thing, the only difference being that entering a query 
+ * indicates that it should be run immediately, whereas a program body is only run when its head is matched.
+ *
+ * Variables are scoped within the current sentence only; fresh ones are generated within the scope for each new variable name
+ * encountered. Variables never span multiple sentence scopes.
+ *
+ * Interactive interpretation of the language proceeds as follows. The user enters a program. This is compiled and held in
+ * memory. The user enters a query, this is unified against the most recent matching program head, the unification is found between
+ * the query and the head, and the variables bound in this unification are used as a background to unifying all of the queries
+ * in the body of the program, which may add to the variables in the unification too, so that subsequent queries are more unified
+ * against a growing list of bound variables. If any query should fail to unify, the entire query will fail. The language L2 does
+ * not support backtracking in the event of failure.
+ *
+ * There are also some commands that may be passed to the interpreter, that are system directives outside of the usual interpreter loop.
+ * These are:
+ *
+ * [info]  To turn info logging on/off.
+ * [trace] To turn execution tracing on/off.
+ */
+
+options { DEBUG_PARSER = true; STATIC = false; BUILD_PARSER = false; }
+
+PARSER_BEGIN(PrologParser)
+
+package com.thesett.aima.logic.fol.isoprologparser;
+
+public class PrologParser
+{
+}
+
+PARSER_END(PrologParser)
+
+/* White space. */
+SKIP :
+{
+    " "
+  | "\t"
+  | "\n"
+  | "\r"
+  | "\f"
+}
+
+/* Comments. */
+SKIP :
+{
+  "/*" : WITHIN_COMMENT
+}
+
+<WITHIN_COMMENT> SKIP :
+{
+  "*/" : DEFAULT
+}
+
+<WITHIN_COMMENT> MORE :
+{
+  <~[]>
+}
+
+/* Symbolic syntax. */
+TOKEN :
+{
+    < PERIOD:      "." >
+  | < LPAREN:      "(" >
+  | < RPAREN:      ")" >
+  | < LSQPAREN:    "[" >
+  | < RSQPAREN:    "]" >
+  | < DQUOTE:      "\"" >
+  | < QUOTE:       "\'" >        
+  | < CONS:        "|" >
+}
+
+/* Constants and literals. */
+TOKEN :
+{
+    < INTEGER_LITERAL: <DECIMAL_LITERAL> | <HEX_LITERAL> >
+  | < #DECIMAL_LITERAL: ["0"-"9"] (["0"-"9"])* >
+  | < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+  | < FLOATING_POINT_LITERAL: <DECIMAL_FLOATING_POINT_LITERAL> >
+  | < #DECIMAL_FLOATING_POINT_LITERAL:
+        (["0"-"9"])+ "." (["0"-"9"])+ (<DECIMAL_EXPONENT>)?
+      | (["0"-"9"])+ (<DECIMAL_EXPONENT>)?
+    >
+  | < #DECIMAL_EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+  | < CHARACTER_LITERAL:
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+        | ("\\u"
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+          )
+      )
+      "'"
+    >
+  | < STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+        | ("\\u"
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+            ["0"-"9","A"-"F","a"-"f"]
+          )
+      )*
+      "\""
+    >
+}
+
+/* User defined names (functors and variables) */
+TOKEN :
+{
+    < VAR:      ( (<HICASE> |  "_" )  ( <ANYCHAR> )* ) >
+  | < FUNCTOR:  ( <NAME> <LPAREN> | <SYMBOLIC_NAME> <LPAREN> ) >
+  | < ATOM:     ( <NAME> | <SYMBOLIC_NAME> | "," ) >
+  | < #NAME:    ( <LOCASE> ) ( <ANYCHAR> )*  >
+  | < #SYMBOLIC_NAME: ( <SYMBOL> )+ >
+  | < #DIGIT:   ["0" - "9"] >
+  | < #ANYCHAR: ( <LOCASE> | <HICASE> | <DIGIT> | "_" ) > 
+  | < #LOCASE:  ["a"-"z"] > 
+  | < #HICASE:  ["A"-"Z"] > 
+  | < #SYMBOL:  ["!", ":", "-", ">", "?", ";", "\\", "+", "=", "@", "<", ".", "/", "*", "^"] >
+} 
+
+/* Recognized system directives. */
+TOKEN :
+{
+    < INFO:  ( <LSQPAREN> "info" <RSQPAREN> ) >
+  | < TRACE: ( <LSQPAREN> "trace" <RSQPAREN> ) >
+}

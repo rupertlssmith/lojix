@@ -1,0 +1,23 @@
+<html>
+<body>
+This package defines what a search node is and some basic queue based algorithms for searching over them. 
+
+<p/>The basic algorithm is the queue search algorithm that uses a queue to order its search nodes and simply selects the 
+next node from that queue until the goal state is found. 
+
+<p/>The max steps algorithm refines this by limiting the search to complete within a maximum number of steps.
+
+<p/>The bound algorithm allows some property of the states being searched over to be bounded and to only search up
+to that bound.
+
+<p/>The iterative bound algorithm allows repeated searching up to a bound that increases iteratively on succesive calls
+to the algorithm.
+
+<p/>A search is created from these basic algorithms by adding a queue and a search node type to it to produce a search.
+For example, a last in first out queue will result in a bradth first search and a last in last out queue will result in
+depth first. Simple search nodes do not guide the search but heuristic nodes can be used with ordered queues to produce
+more sophisticated searches. For exmaple a greedy search uses heuristic nodes and a queue order on the heuristic values 
+such that the node with the best heuristic value is always on top of the queue and explored first.
+
+</body>
+</html>

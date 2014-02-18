@@ -1,0 +1,413 @@
+/*
+ * This is an implementation of a parser for the first order logic based language, L2. This language consists of terms in fol, posed
+ * either as programs (to be added to a store), or queries (to be matched against the store). The syntax is the same as that used 
+ * in prolog, that is, functors are lower case, variables are upper case, arguments are grouped in brackets and seperated by commas.
+ *
+ * The lanaguage consists of the following possible sentences:
+ *
+ * Program terms are clauses (or constants), terminated with a '.'.
+ * Programs can be facts or rules of the form: a0 :- a1, ..., an. Facts consist only of the head a0 with no following ':-'. Rules have
+ * a body consisting of: a1,...,an. The 'a1' to 'an' are additional queries that must be satisfied and unified, with variables
+ * scoped over the entire rule, including its head.
+ * Queries are of the form ?- a0,...,an. Variable are scoped over the entire query and each part of it must be consecutively
+ * unified against matching programs, building up a unification over all of the variables in the queries scope, the same as for
+ * program bodies. Queries and program bodies are essentially the same thing, the only difference being that entering a query 
+ * indicates that it should be run immediately, whereas a program body is only run when its head is matched.
+ *
+ * Variables are scoped within the current sentence only; fresh ones are generated within the scope for each new variable name
+ * encountered. Variables never span multiple sentence scopes.
+ *
+ * Interactive interpretation of the language proceeds as follows. The user enters a program. This is compiled and held in
+ * memory. The user enters a query, this is unified against the most recent matching program head, the unification is found between
+ * the query and the head, and the variables bound in this unification are used as a background to unifying all of the queries
+ * in the body of the program, which may add to the variables in the unification too, so that subsequent queries are more unified
+ * against a growing list of bound variables. If any query should fail to unify, the entire query will fail. The language L2 does
+ * not support backtracking in the event of failure.
+ *
+ * There are also some commands that may be passed to the interpreter, that are system directives outside of the usual interpreter loop.
+ * These are:
+ *
+ * [info]  To turn info logging on/off.
+ * [trace] To turn execution tracing on/off.
+ */
+
+//options { STATIC = false; }
+
+PARSER_BEGIN(L2Parser)
+
+package com.thesett.aima.logic.fol.l2;
+
+import java.util.*;
+
+import org.apache.log4j.*;
+
+import com.thesett.aima.logic.fol.*;
+import com.thesett.aima.logic.fol.prolog.*;
+import com.thesett.aima.logic.fol.l2.*;
+import com.thesett.aima.attribute.impl.IdAttribute;
+import com.thesett.common.error.*;
+import com.thesett.common.log4j.*;
+import com.thesett.common.parsing.*;
+
+public class L2Parser
+{
+    /** Used for logging to the console. */
+    private final static Logger console = Logger.getLogger("CONSOLE." + L2Parser.class.getName());
+
+    /** Holds the variable scoping context for the current sentence. */
+    static Map nameContext = new HashMap();
+
+    /** Holds the byte code machine to compile into, if using compiled mode. */
+    static L2ResolvingMachine machine;
+
+    /** Holds the prolog resolver, if using interpretation directly against functors, without compilation to byte code. */
+    static Resolver resolver;
+
+    /** Holds a flag to indicate whether interpretedor compiled mode is to be used. */
+    static boolean useCompiled = "interpreted".equals(System.getProperty("mode", "compiled")) ? false : true;
+
+    /* Use the native machine if it is available, otherwise use the Java machine. */
+    static
+    {   
+        // Set up the prolog interpreter if not using compiled mode.
+        if (!useCompiled)
+        {
+            console.info("Using interpreted mode.");
+
+            resolver = new PrologResolver();
+
+            // Byte code machine used for its interner...
+            machine = new L2ResolvingJavaMachine();
+        }
+        // Set up a byte code machine, if using compiled mode.
+        else
+        {
+            console.info("Using compiled mode.");
+
+            try
+            {
+                machine = L2ResolvingNativeMachine.getInstance();
+                resolver = machine;
+                console.info("Using native byte code machine.");
+            }
+            catch (ImplementationUnavailableException e)
+            {
+                machine = new L2ResolvingJavaMachine();
+                resolver = machine;
+                console.info("Using Java byte code machine.");
+            }
+        }
+    }
+
+    /** Holds the byte code compiler. */
+    static L2Compiler compiler = new L2Compiler(machine);
+
+    /** Holds the singleton instance of the parser. */
+    static L2Parser parser = null;// new L2Parser(System.in);
+
+    public static L2Parser getResetParser()
+    {
+        if (parser == null)
+        {
+            parser = new L2Parser(System.in);
+        }
+
+        nameContext.clear();
+
+        return parser;
+    }
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            L2Parser parser = getResetParser();
+            //L2Parser parser = new L2Parser(System.in);
+ 
+            while(true)
+            {
+                // Parse the next sentence or directive.
+                Object nextParsing = parser.sentenceOrDirective();
+
+                if (nextParsing instanceof String)
+                {
+                    if ("[info]".equals(nextParsing))
+                    {
+                        LogHelper.flipConsole();
+                    }
+                    else if ("[trace]".equals(nextParsing))
+                    {
+                        LogHelper.flipTrace();
+                    }
+                }
+                else if (nextParsing instanceof L2Sentence)
+                {
+                    L2Sentence sentence = (L2Sentence)nextParsing;
+                    console.info(sentence);
+
+                    if (useCompiled)
+                    {
+                        evaluateInL2(sentence);
+                    }
+                    else
+                    {
+                        evaluateInProlog(sentence);
+                    }
+                }
+            }
+        }
+        catch (SourceCodeException e)
+        {
+            console.error(e.getUserMessage());
+            System.exit(1);
+        }
+        catch (ParseException e)
+        {
+            console.error(e);
+            System.exit(1);
+        }
+    }
+
+    private static void evaluateInL2(L2Sentence sentence) throws SourceCodeException
+    {
+        // Compile the sentence.
+        L2CompiledClause compiledClause = compiler.compile(sentence);
+
+        compiledClause.decompile();
+        console.info(compiledClause);
+
+        // Evaluate the most recent query.
+        if (compiledClause.isQuery())
+        {
+            console.info("Query");
+            resolver.setQuery(compiledClause);
+        
+            List bindings = resolver.resolve();
+                
+            if (bindings != null)
+            {
+                System.out.println("Yes.");
+                for (Iterator i = bindings.iterator(); i.hasNext(); )
+                {
+                    Variable nextVar = (Variable)i.next();
+                    String varName = (String)machine.getVariableInterner().getAttributeFromInt(nextVar.getName()).getValue();
+                    
+                    System.out.println(varName + " = " + nextVar.getValue());
+                }
+            }
+            else
+            {
+                System.out.println("No.");
+            }
+        }
+        else
+        {
+            resolver.addClauseToDomain(compiledClause);
+            console.info("Program");
+        }
+    }
+    
+    private static void evaluateInProlog(L2Sentence sentence) throws SourceCodeException
+    {
+        Clause clause = (Clause)sentence.getT();
+        
+        if (clause.isQuery())
+        {
+            resolver.setQuery(clause);
+        
+            List bindings = resolver.resolve();
+                
+            if (bindings != null)
+            {
+                System.out.println("Yes.");
+                for (Iterator i = bindings.iterator(); i.hasNext(); )
+                {
+                    Variable nextVar = (Variable)i.next();
+                    String varName = (String)machine.getVariableInterner().getAttributeFromInt(nextVar.getName()).getValue();
+                        
+                    System.out.println(varName + " = " + nextVar.getValue());
+                }
+            }
+            else
+            {
+                System.out.println("No.");
+            }
+        }
+        else
+        {
+            resolver.addClauseToDomain(clause);
+        }
+    }
+}
+
+PARSER_END(L2Parser)
+
+/* White space. */
+
+SKIP :
+{
+    " "
+  | "\t"
+  | "\n"
+  | "\r"
+  | "\f"
+}
+
+/* Symbolic syntax. */
+TOKEN :
+{
+    < QUERY:       "?-" >
+  | < IMPLIES:     ":-" >
+  | < ENDSENTENCE: "." >
+  | < LPAREN:      "(" >
+  | < RPAREN:      ")" >
+  | < COMMA:       "," >
+  | < LSQPAREN:    "[" >
+  | < RSQPAREN:    "]" >
+}
+
+/* Numeric constants. */
+TOKEN :
+{
+    < NUMBER:  (<DIGIT>)+ >
+  | < #DIGIT: ["0" - "9"] >
+}
+
+/* User defined names (functors and variables) */
+TOKEN :
+{
+    < VAR:      ( (<HICASE> |  "_" )  ( <ANYCHAR> )* ) >
+  | < ATOM:     ( <LOCASE>) ( <ANYCHAR> )*  >
+  | < #ANYCHAR: ( <LOCASE> | <HICASE> | <DIGIT> | "_" ) > 
+  | < #LOCASE:  ["a"-"z"] > 
+  | < #HICASE:  ["A"-"Z"] > 
+} 
+
+/* Recognized system directives. */
+TOKEN :
+{
+    < INFO:  ( <LSQPAREN> "info" <RSQPAREN> ) >
+  | < TRACE: ( <LSQPAREN> "trace" <RSQPAREN> ) >
+}
+
+/* Top-level directive or sentence parser. */
+Object sentenceOrDirective() :
+{
+    Object result;
+}
+{
+    (result = directive() | result = sentence())
+    { return result; }
+}
+
+/* System directives. */
+String directive() :
+{
+    String command;
+}
+{
+    (command = <INFO>.image | command = <TRACE>.image )
+    { return command; }
+}
+
+/* Language grammar. */
+L2Sentence sentence() :
+{
+    L2Sentence sentence;
+
+    // Each new sentence provides a new scope in which to make variables unique.
+    nameContext.clear();
+}
+{
+    (sentence = query() | sentence = program()) <ENDSENTENCE>
+    { return sentence; }
+}
+
+L2Sentence query() :
+{
+    Functor[] functors;
+}
+{
+    <QUERY> functors = querylist()
+    { return new L2Sentence(new Clause(null, functors)); }
+}
+
+L2Sentence program() :
+{
+    Functor functor;
+    Functor[] body = null;
+}
+{
+    functor = functor() [ <IMPLIES> body = querylist() ]
+    { return new L2Sentence(new Clause(functor, body)); }
+}
+
+Functor[] querylist() :
+{
+    List functors = new LinkedList();
+    Functor functor;
+}
+{
+    functor = functor() { functors.add(functor); } (<COMMA> functor = functor() { functors.add(functor); } )*
+    { return (Functor[])functors.toArray(new Functor[functors.size()]); }
+}
+
+Term term() : 
+{
+    Term term;
+}
+{
+    (term = functor() | term = variable())
+    { return term; }
+}
+
+Functor functor() :
+{
+    Token name;
+    IdAttribute nameId;
+    Term[] args = null;
+}
+{
+    name = <ATOM> [ <LPAREN> args = arglist() <RPAREN> ]
+    {
+        Functor.FunctorName functorName = new Functor.FunctorName(name.image, args == null ? 0 : args.length);
+        nameId = machine.getFunctorInterner().createIdAttribute(functorName);
+        return new Functor(nameId.ordinal(), args);
+    }
+}
+
+Variable variable() :
+{
+    Token name;
+    IdAttribute nameId;
+}
+{
+    name = <VAR>
+    { 
+    nameId = machine.getVariableInterner().createIdAttribute(name.image);
+
+    // Check if the variable already exists in this scope, or create a new one if it does not.
+    Variable var = (Variable)nameContext.get(nameId);
+
+    if (var != null)
+    {
+        return var;
+    }
+    else
+    {
+        var = new Variable(nameId.ordinal(), null, false);
+        nameContext.put(nameId, var);
+        return var;
+    }
+    }
+}
+
+Term[] arglist() :
+{
+    List terms = new LinkedList();
+    Term term;
+}
+{
+    term = term() { terms.add(term); } (<COMMA> term = term() { terms.add(term); } )*
+    { return (Term[])terms.toArray(new Term[terms.size()]); }
+}

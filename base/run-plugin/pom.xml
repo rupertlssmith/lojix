@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.thesett</groupId>
+    <artifactId>maven-run-plugin</artifactId>
+    <name>maven-run-plugin</name>
+    <version>0.1</version>
+
+    <description>
+	Maven plugin for running main methods of projects from the command line. This plugin generates the
+	necessary classpath for the project from its runtime classpath in the pom, and creates a script to
+	invoke the projects main methods with.
+	</description>
+
+    <packaging>maven-plugin</packaging>
+
+    <properties>
+        <topdir>${basedir}/..</topdir>
+    </properties>
+
+    <parent>
+        <groupId>com.thesett</groupId>
+        <artifactId>basebuild</artifactId>
+        <version>0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
+    </dependencies>
+
+	<build>
+        <pluginManagement>
+            <plugins>
+
+                <!-- JALOPY_COMMENT_OUT_START
+                <plugin>
+                    <groupId>triemax</groupId>
+                    <artifactId>jalopy-maven</artifactId>
+                    <configuration>
+                        <profile>open_source</profile>
+                    </configuration>
+                </plugin>
+                     JALOPY_COMMENT_OUT_END -->
+
+            </plugins>
+        </pluginManagement>
+	</build>
+
+</project>

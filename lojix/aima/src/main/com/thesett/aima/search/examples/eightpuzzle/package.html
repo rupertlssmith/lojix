@@ -1,0 +1,31 @@
+<html>
+<body>
+The eight puzzle is often used as a bench mark or first test for search algorithms because its search space is small 
+enough to be exhaustively explored but large enough to provide a reaasonably complex test space to test out different
+search algorithms on. The puzzle consists of numbered tiles, 1 to 8, arranged in a 3 by 3 grid with one square empty.
+Tiles may only move by sliding into the empty square. The aim is to arrange the tiles like this:
+
+<p/><table>
+<tr><td>1<td>2<td>3
+<tr><td>4<td>5<td>6
+<tr><td>7<td>8<td>E
+</table>
+
+<p/>Another popular variation of the goal state is:
+
+<p/><table>
+<tr><td>1<td>2<td>3
+<tr><td>8<td>E<td>4
+<tr><td>7<td>6<td>5
+</table>
+
+Two heuristics used to guide the search are the number of tiles out of place and the total manhattan distance of the out
+of place tiles to their goal locations. The manhattan distance is the total number of horizontal and vertical moves a tile
+must make to arrive in its place. A manhattan distnace heuristic is supplied in this package. It can compute the total
+distance from scratch or incrementally from a previous board position with a move applied to it. This technique of
+incremental heuristics is possible because search node to calculate a hearustic for is always passed along with the 
+actual state to calculate it for. The search node can be used to obtain its parent state and the operation applied
+to get to it, making incremental calculation possible. This can often be a very significant time saver.
+
+</body>
+</html>

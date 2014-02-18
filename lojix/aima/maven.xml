@@ -1,0 +1,11 @@
+<project default="dist" xmlns:m="jelly:maven">
+
+    <goal name="dist">
+        <attainGoal name="jar:install"/>
+    </goal>
+
+    <preGoal name="java:compile">
+        <attainGoal name="javacc"/>
+    </preGoal>
+
+</project>

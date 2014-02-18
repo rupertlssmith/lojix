@@ -1,0 +1,16 @@
+<deploymentContexts>
+
+ <deploymentContext name="localjboss" type="local">
+  <resourceMapping name="com.thesett.sequence.generator.interfaces.SequenceGeneratorLocalHome"
+                   jndiname="ejb/usermanager/UserManagerLocal</jndiName>"/>
+ </deploymentContext>
+
+ <deploymentContext name="remotejboss" type="remote">
+  <initialContextProperty name="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+  <initialContextProperty name="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+  <initialContextProperty name="java.naming.provider.url" value="localhost"/>
+  <resourceMapping name="com.thesett.sequence.generator.interfaces.SequenceGeneratorHome"
+                   jndiname="ejb/usermanager/UserManagerLocal"/>
+ </deploymentContext>
+ 
+</deploymentContexts>

@@ -1,0 +1,23 @@
+<html>
+<body>
+Provides a base implementation to perform bi-directional searches with. The actual algorithm used depends on the 
+particular queue types and search nodes used. These are passed to the basic bi-directional implementation to use
+to control the flow of the search.
+
+The basic algorithm proceeds by alternately taking the next node from each of the queues and testing to see if it can 
+be found in the search fringe of nodes derived from the other queue and start node. When a match is found the two paths
+are joined together using a path joining algorithm.
+
+Sometimes a specialized path joining algorithm is needed that knows how to reverse the steps along one path because one
+path will be in a forward direction and the other in the reverse direction. A basic algorithm is provided that does not
+attempt to reverse any of the path steps. An interface for the path join algorithm has been factored out of the base
+bi-directional algorithm so that implementations other than the default can be written and then passed in to the base
+algorithm as a parameter.
+
+Bi-directional searches can reduce a search space by a large degree but are not always useful. The goal state needs to
+be known in advance and it is not always known for many problems. One of the search directions needs to proceed breadth
+first or at least provide good breadth coverage, such as an iterative deepening search otherwise the two search paths may
+miss each other. For example two depth first searches heading towards each other are extremely unlikely to meet up in
+anything but search spaces with trivially small branching factors.
+</body>
+</html>

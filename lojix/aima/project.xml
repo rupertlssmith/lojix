@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../mavenbuild/project.xml</extend>
+  <name>aima</name>
+  <id>aima</id>
+  <currentVersion>0.3</currentVersion>
+  <shortDescription>Artificial Intelligence Library</shortDescription>
+  <description>Library of code developed from 'Artificial Intelligence a Modern Approach', Prentice Hall.</description>
+  <repository>
+    <connection>scm:${scm.setup}/projects/aima</connection>
+  </repository>
+
+  <versions>
+    <version>
+      <id>0.1</id>
+      <name>0.1</name>
+      <tag>RELEASE_0_1</tag>
+    </version>
+    <version>
+      <id>0.2</id>
+      <name>0.2</name>
+      <tag>RELEASE_0_2</tag>
+    </version>
+  </versions>
+
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>thebadgerset</groupId>
+      <artifactId>common</artifactId>
+      <version>0.3</version>
+    </dependency>
+  </dependencies>
+</project>
