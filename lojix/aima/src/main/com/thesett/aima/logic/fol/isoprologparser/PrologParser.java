@@ -680,27 +680,7 @@ public class PrologParser implements PrologParserConstants
      */
     public boolean peekAndConsumeEof()
     {
-        Token nextToken = tokenSource.peek();
-
-        if (nextToken.kind == EOF)
-        {
-            try
-            {
-                consumeToken(EOF);
-            }
-            catch (SourceCodeException e)
-            {
-                // If the peek ahead kind can not be consumed then something strange has gone wrong so report this
-                // as a bug rather than try to recover from it.
-                throw new RuntimeException(e);
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return peekAndConsume(EOF);
     }
 
     /**
@@ -710,7 +690,7 @@ public class PrologParser implements PrologParserConstants
      */
     public boolean peekAndConsumeTrace()
     {
-        return false;
+        return peekAndConsume(TRACE) && peekAndConsume(PERIOD);
     }
 
     /**
@@ -720,7 +700,7 @@ public class PrologParser implements PrologParserConstants
      */
     public boolean peekAndConsumeInfo()
     {
-        return false;
+        return peekAndConsume(INFO) && peekAndConsume(PERIOD);
     }
 
     /**
@@ -730,7 +710,7 @@ public class PrologParser implements PrologParserConstants
      */
     public boolean peekAndConsumeUser()
     {
-        return false;
+        return peekAndConsume(USER) && peekAndConsume(PERIOD);
     }
 
     /**
@@ -874,6 +854,38 @@ public class PrologParser implements PrologParserConstants
             nextToken = tokenSource.poll();
 
             return nextToken;
+        }
+    }
+
+    /**
+     * Peeks ahead for the given token type, and if one is foudn with that type, it is consumed.
+     *
+     * @param  kind The token kind to look for.
+     *
+     * @return <tt>true</tt> iff the token was found and consumed.
+     */
+    private boolean peekAndConsume(int kind)
+    {
+        Token nextToken = tokenSource.peek();
+
+        if (nextToken.kind == kind)
+        {
+            try
+            {
+                consumeToken(kind);
+            }
+            catch (SourceCodeException e)
+            {
+                // If the peek ahead kind can not be consumed then something strange has gone wrong so report this
+                // as a bug rather than try to recover from it.
+                throw new RuntimeException(e);
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

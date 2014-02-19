@@ -20,6 +20,7 @@ import java.io.PrintStream;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
+import com.thesett.aima.logic.fol.interpreter.InteractiveParser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 import com.thesett.aima.logic.fol.isoprologparser.SentenceParser;
@@ -62,10 +63,11 @@ public class WAMJavaInterpreter
 
             final WAMResolvingMachine machine = new WAMResolvingJavaMachine(symbolTable);
 
-            Parser<Clause, Token> parser = new SentenceParser(machine);
+            Parser<Clause, Token> parser = new InteractiveParser(machine);
             parser.setTokenSource(TokenSource.getTokenSourceForInputStream(System.in));
 
-            LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler = new WAMCompiler(symbolTable, machine);
+            LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler =
+                new WAMCompiler(symbolTable, machine);
 
             ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =
                 new ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>(parser, machine, compiler, machine)

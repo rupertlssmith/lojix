@@ -39,8 +39,8 @@ import com.thesett.common.parsing.SourceCodeException;
  *     <td> {@link com.thesett.aima.logic.fol.VariableAndFunctorInterner}.
  * </table></pre>
  *
- * @param  <S> The source clause type that the parser produces.
  * @param  <T> The compiled clause type that the compiler produces.
+ * @param  <Q> The compiled query type that the compiler produces.
  *
  * @author Rupert Smith
  */
@@ -53,8 +53,14 @@ public class ResolutionInterpreter<T, Q>
     /** Holds the resolution engine that the interpreter loop runs on. */
     ResolutionEngine<Clause, T, Q> engine;
 
-    /** Holds the interacive parser that the interpreter loop runs on. */
+    /** Holds the interactive parser that the interpreter loop runs on. */
     private final InteractiveParser parser;
+
+    /** Holds the name of the predicate currently being parsed, clause by clause. */
+    private Integer currentPredicateName;
+
+    /** Holds the current interaction mode. */
+    private InteractiveParser.Mode mode = InteractiveParser.Mode.Query;
 
     /**
      * Builds an interactive logical resolution interpreter from a parser, interner, compiler and resolver, encapsulated
@@ -88,22 +94,54 @@ public class ResolutionInterpreter<T, Q>
         {
             // Parse the next clause.
             Sentence<Clause> nextParsing = parser.parse();
-            log.fine(nextParsing.toString());
 
             if (nextParsing == null)
             {
-                break;
-            }
+                InteractiveParser.Directive directive = parser.nextDirective();
 
-            // Evaluate it in Prolog.
-            evaluate(nextParsing);
+                switch (directive)
+                {
+                case Eof:
+                    if (mode == InteractiveParser.Mode.Query)
+                    {
+                        log.info("EOF in query mode, exiting application.");
+
+                        return;
+                    }
+                    else
+                    {
+                        log.info("EOF in program mode, leaving program mode.");
+                        mode = InteractiveParser.Mode.Query;
+
+                        break;
+                    }
+
+                case Trace:
+                    log.info("Got trace directive.");
+                    break;
+
+                case Info:
+                    log.info("Got info directive.");
+                    break;
+
+                case User:
+                    log.info("Got user directive, entering program mode.");
+                    mode = InteractiveParser.Mode.Program;
+                    break;
+                }
+            }
+            else
+            {
+                log.fine(nextParsing.toString());
+
+                // Evaluate it in Prolog.
+                evaluate(nextParsing);
+            }
         }
     }
 
     /**
-     * Evaluates a query against the resolver or adds a clause to the resolvers domain. In the case of queries, the
-     * specified interner is used to recover textual names for the resulting variable bindings. The user is queried
-     * through the parser to if more than one solution is required.
+     * Evaluates a query against the resolver or adds a clause to the resolvers domain.
      *
      * @param  sentence The clausal sentence to run as a query or as a clause to add to the domain.
      *
@@ -111,41 +149,83 @@ public class ResolutionInterpreter<T, Q>
      */
     private void evaluate(Sentence<Clause> sentence) throws SourceCodeException
     {
-        engine.compile(sentence);
+        Clause clause = sentence.getT();
 
-        if (sentence.getT().isQuery())
+        if (clause.isQuery())
         {
-            boolean foundAtLeastOneSolution = false;
+            engine.endScope();
+            engine.compile(sentence);
+            evaluateQuery();
+        }
+        else
+        {
+            // Check if the program clause is new, or a continuation of the current predicate.
+            int name = clause.getHead().getName();
 
-            // Create an iterator to generate all solutions on demand with. Iteration will stop if the request to
-            // the parser for the more ';' token fails.
-            for (Set<Variable> solution : engine)
+            if ((currentPredicateName == null) || (currentPredicateName != name))
             {
-                foundAtLeastOneSolution = true;
-
-                for (Variable nextVar : solution)
-                {
-                    String varName = engine.getVariableName(nextVar.getName());
-
-                    System.out.println(varName + " = " + nextVar.getValue().toString(engine, true, false));
-                }
-
-                // Check if the user wants more solutions.
-                if (!engine.peekAndConsumeMore())
-                {
-                    break;
-                }
+                engine.endScope();
+                currentPredicateName = name;
             }
 
-            // Print yes or no depending on whether or not there were some solutions.
-            if (foundAtLeastOneSolution)
+            addProgramClause(sentence);
+        }
+    }
+
+    /**
+     * Evaluates a query. In the case of queries, the interner is used to recover textual names for the resulting
+     * variable bindings. The user is queried through the parser to if more than one solution is required.
+     */
+    private void evaluateQuery()
+    {
+        log.fine("Read query from input.");
+
+        boolean foundAtLeastOneSolution = false;
+
+        // Create an iterator to generate all solutions on demand with. Iteration will stop if the request to
+        // the parser for the more ';' token fails.
+        for (Set<Variable> solution : engine)
+        {
+            foundAtLeastOneSolution = true;
+
+            for (Variable nextVar : solution)
             {
-                System.out.println("Yes.");
+                String varName = engine.getVariableName(nextVar.getName());
+
+                System.out.println(varName + " = " + nextVar.getValue().toString(engine, true, false));
             }
-            else
+
+            // Check if the user wants more solutions.
+            if (!engine.peekAndConsumeMore())
             {
-                System.out.println("No.");
+                break;
             }
         }
+
+        // Print yes or no depending on whether or not there were some solutions.
+        if (foundAtLeastOneSolution)
+        {
+            System.out.println("Yes.");
+        }
+        else
+        {
+            System.out.println("No.");
+        }
+    }
+
+    /**
+     * Adds a program clause to the domain. Multiple program clauses making up a predicate are compiled as a unit, and
+     * not individually. For this reason, Prolog expects clauses for the same predicate to appear together in source
+     * code. When a clause with a name and arity not seen before is encountered, a new compiler scope is entered into,
+     * and this compiler scope is closed at the EOF of the current input stream, or when another clause with a different
+     * name and arity is seen.
+     *
+     * @param sentence
+     */
+    private void addProgramClause(Sentence<Clause> sentence) throws SourceCodeException
+    {
+        log.fine("Read program clause from input.");
+
+        engine.compile(sentence);
     }
 }
