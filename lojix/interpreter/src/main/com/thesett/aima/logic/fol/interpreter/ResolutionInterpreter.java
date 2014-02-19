@@ -220,7 +220,7 @@ public class ResolutionInterpreter<T, Q>
      * and this compiler scope is closed at the EOF of the current input stream, or when another clause with a different
      * name and arity is seen.
      *
-     * @param sentence
+     * @param sentence The clause to add to the domain.
      */
     private void addProgramClause(Sentence<Clause> sentence) throws SourceCodeException
     {
