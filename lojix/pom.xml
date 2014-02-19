@@ -131,6 +131,7 @@
 
     <modules>
       <module>aima</module>
+      <module>interpreter</module>
       <module>prolog</module>
       <module>l0</module>
       <module>l1</module>
