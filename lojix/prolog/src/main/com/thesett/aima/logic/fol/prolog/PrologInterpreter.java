@@ -17,7 +17,6 @@ package com.thesett.aima.logic.fol.prolog;
 
 import java.io.PrintStream;
 
-import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 
 /**
@@ -48,8 +47,8 @@ public class PrologInterpreter
             PrologEngine engine = new PrologEngine();
             engine.reset();
 
-            ResolutionInterpreter<Clause, PrologCompiledClause, PrologCompiledClause> interpreter =
-                new ResolutionInterpreter<Clause, PrologCompiledClause, PrologCompiledClause>(engine);
+            ResolutionInterpreter<PrologCompiledClause, PrologCompiledClause> interpreter =
+                new ResolutionInterpreter<PrologCompiledClause, PrologCompiledClause>(engine);
 
             interpreter.interpreterLoop();
         }

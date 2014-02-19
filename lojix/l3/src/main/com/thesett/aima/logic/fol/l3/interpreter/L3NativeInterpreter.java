@@ -76,8 +76,8 @@ public class L3NativeInterpreter
                     }
                 };
 
-            ResolutionInterpreter<Clause, L3CompiledPredicate, L3CompiledQuery> interpreter =
-                new ResolutionInterpreter<Clause, L3CompiledPredicate, L3CompiledQuery>(engine);
+            ResolutionInterpreter<L3CompiledPredicate, L3CompiledQuery> interpreter =
+                new ResolutionInterpreter<L3CompiledPredicate, L3CompiledQuery>(engine);
 
             interpreter.interpreterLoop();
         }

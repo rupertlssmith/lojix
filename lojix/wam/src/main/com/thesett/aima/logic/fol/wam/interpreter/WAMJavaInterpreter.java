@@ -76,8 +76,8 @@ public class WAMJavaInterpreter
                     }
                 };
 
-            ResolutionInterpreter<Clause, WAMCompiledPredicate, WAMCompiledQuery> interpreter =
-                new ResolutionInterpreter<Clause, WAMCompiledPredicate, WAMCompiledQuery>(engine);
+            ResolutionInterpreter<WAMCompiledPredicate, WAMCompiledQuery> interpreter =
+                new ResolutionInterpreter<WAMCompiledPredicate, WAMCompiledQuery>(engine);
 
             interpreter.interpreterLoop();
         }

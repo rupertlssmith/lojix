@@ -18,8 +18,10 @@ package com.thesett.aima.logic.fol.interpreter;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Clause;
+import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.common.parsing.SourceCodeException;
 
 /**
@@ -42,23 +44,36 @@ import com.thesett.common.parsing.SourceCodeException;
  *
  * @author Rupert Smith
  */
-public class ResolutionInterpreter<S extends Clause, T, Q>
+public class ResolutionInterpreter<T, Q>
 {
     /** Used for debugging purposes. */
-    /* private static final Logger log = Logger.getLogger(ResolutionInterpreter.class.getName()); */
+    private static final java.util.logging.Logger log =
+        java.util.logging.Logger.getLogger(ResolutionInterpreter.class.getName());
 
     /** Holds the resolution engine that the interpreter loop runs on. */
-    ResolutionEngine<S, T, Q> engine;
+    ResolutionEngine<Clause, T, Q> engine;
+
+    /** Holds the interacive parser that the interpreter loop runs on. */
+    private final InteractiveParser parser;
 
     /**
      * Builds an interactive logical resolution interpreter from a parser, interner, compiler and resolver, encapsulated
      * as a resolution engine.
      *
-     * @param engine The resolution engine.
+     * @param engine The resolution engine. This must be using an {@link InteractiveParser}.
      */
-    public ResolutionInterpreter(ResolutionEngine<S, T, Q> engine)
+    public ResolutionInterpreter(ResolutionEngine<Clause, T, Q> engine)
     {
         this.engine = engine;
+
+        Parser<Clause, Token> parser = engine.getParser();
+
+        if (!(parser instanceof InteractiveParser))
+        {
+            throw new IllegalArgumentException("'engine' must be built on an InteractiveParser.");
+        }
+
+        this.parser = (InteractiveParser) parser;
     }
 
     /**
@@ -72,8 +87,8 @@ public class ResolutionInterpreter<S extends Clause, T, Q>
         while (true)
         {
             // Parse the next clause.
-            Sentence<S> nextParsing = engine.parse();
-            /*log.fine(nextParsing.toString());*/
+            Sentence<Clause> nextParsing = parser.parse();
+            log.fine(nextParsing.toString());
 
             if (nextParsing == null)
             {
@@ -94,7 +109,7 @@ public class ResolutionInterpreter<S extends Clause, T, Q>
      *
      * @throws SourceCodeException If the query or domain clause fails to compile or link into the resolver.
      */
-    private void evaluate(Sentence<S> sentence) throws SourceCodeException
+    private void evaluate(Sentence<Clause> sentence) throws SourceCodeException
     {
         engine.compile(sentence);
 

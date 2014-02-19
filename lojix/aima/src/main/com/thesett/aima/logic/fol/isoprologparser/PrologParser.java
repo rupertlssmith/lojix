@@ -672,8 +672,8 @@ public class PrologParser implements PrologParserConstants
     }
 
     /**
-     * Peeks at the next token to see if it is {@link #EOF} and if it is conumes it. If the symbol is consumed then the
-     * return value indicates that this has happened. This method is intended to be usefull for interactive interpreters
+     * Peeks at the next token to see if it is {@link #EOF} and if it is consumes it. If the symbol is consumed then the
+     * return value indicates that this has happened. This method is intended to be useful for interactive interpreters
      * to detect when to exit at the end of input.
      *
      * @return <tt>true</tt> if the next token is EOF and it is consumed.
@@ -701,6 +701,36 @@ public class PrologParser implements PrologParserConstants
         {
             return false;
         }
+    }
+
+    /**
+     * Peeks at the next token to see if it is the system trace directive, and consumes it if it is.
+     *
+     * @return <tt>true</tt> iff the next token is the trace directive.
+     */
+    public boolean peekAndConsumeTrace()
+    {
+        return false;
+    }
+
+    /**
+     * Peeks at the next token to see if it is the system info directive, and consumes it if it is.
+     *
+     * @return <tt>true</tt> iff the next token is the info directive.
+     */
+    public boolean peekAndConsumeInfo()
+    {
+        return false;
+    }
+
+    /**
+     * Peeks at the next token to see if it is the system user directive, and consumes it if it is.
+     *
+     * @return <tt>true</tt> iff the next token is the user directive.
+     */
+    public boolean peekAndConsumeUser()
+    {
+        return false;
     }
 
     /**

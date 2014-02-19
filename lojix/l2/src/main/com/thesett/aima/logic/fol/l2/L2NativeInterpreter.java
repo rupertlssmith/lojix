@@ -70,8 +70,8 @@ public class L2NativeInterpreter
                     }
                 };
 
-            ResolutionInterpreter<Clause, L2CompiledClause, L2CompiledClause> interpreter =
-                new ResolutionInterpreter<Clause, L2CompiledClause, L2CompiledClause>(engine);
+            ResolutionInterpreter<L2CompiledClause, L2CompiledClause> interpreter =
+                new ResolutionInterpreter<L2CompiledClause, L2CompiledClause>(engine);
 
             interpreter.interpreterLoop();
         }

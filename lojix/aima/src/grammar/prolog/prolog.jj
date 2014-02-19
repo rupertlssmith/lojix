@@ -151,4 +151,5 @@ TOKEN :
 {
     < INFO:  ( <LSQPAREN> "info" <RSQPAREN> ) >
   | < TRACE: ( <LSQPAREN> "trace" <RSQPAREN> ) >
+  | < USER:  ( <LSQPAREN> "user" <RSQPAREN> ) >
 }

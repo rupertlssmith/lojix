@@ -17,7 +17,6 @@ package com.thesett.aima.logic.fol.vam;
 
 import java.io.PrintStream;
 
-import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 import com.thesett.aima.logic.fol.vam.vam2p.VAM2PCompiledClause;
 
@@ -49,8 +48,8 @@ public class VAMInterpreter
             VAMEngine engine = new VAMEngine();
             engine.reset();
 
-            ResolutionInterpreter<Clause, VAM2PCompiledClause, VAM2PCompiledClause> interpreter =
-                new ResolutionInterpreter<Clause, VAM2PCompiledClause, VAM2PCompiledClause>(engine);
+            ResolutionInterpreter<VAM2PCompiledClause, VAM2PCompiledClause> interpreter =
+                new ResolutionInterpreter<VAM2PCompiledClause, VAM2PCompiledClause>(engine);
 
             interpreter.interpreterLoop();
         }
