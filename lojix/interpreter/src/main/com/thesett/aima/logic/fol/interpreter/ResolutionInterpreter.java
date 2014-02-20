@@ -18,7 +18,6 @@ package com.thesett.aima.logic.fol.interpreter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Clause;
@@ -33,10 +32,7 @@ import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.util.Sink;
 import com.thesett.common.util.Source;
 
-import jline.ArgumentCompletor;
-import jline.Completor;
 import jline.ConsoleReader;
-import jline.SimpleCompletor;
 
 /**
  * ResolutionInterpreter implements an interactive Prolog like interpreter, built on top of a {@link ResolutionEngine}.
@@ -64,10 +60,20 @@ public class ResolutionInterpreter<T, Q>
     private static final java.util.logging.Logger log =
         java.util.logging.Logger.getLogger(ResolutionInterpreter.class.getName());
 
+    /** The prompt to use in query mode. */
     public static final String QUERY_PROMPT = "?- ";
+
+    /** The line continuation prompt for query mode. */
     public static final String MULTI_LINE_QUERY_PROMPT = "   ";
+
+    /** The prompt to use in program mode. */
     public static final String PROGRAM_PROMPT = "";
+
+    /** The line continuation prompt for program mode. */
     public static final String MULTI_LINE_PROGRAM_PROMPT = "   ";
+
+    /** ASCII for a semicolon. */
+    public static final int SEMICOLON = 59;
 
     /** Describes the possible parsing modes. */
     public enum Mode
@@ -76,11 +82,6 @@ public class ResolutionInterpreter<T, Q>
         QueryMultiLine(MULTI_LINE_QUERY_PROMPT);
 
         private final String prompt;
-
-        Mode()
-        {
-            prompt = "";
-        }
 
         Mode(String prompt)
         {
@@ -125,21 +126,20 @@ public class ResolutionInterpreter<T, Q>
 
     /**
      * Implements the top-level interpreter loop. This will parse and evaluate sentences until it encounters an CTRL-D
-     * at which point the interpreter will terminate.
+     * in query mode, at which point the interpreter will terminate.
      *
      * @throws SourceCodeException If malformed code is encountered.
      * @throws IOException         If an IO error is encountered whilst reading the source code.
      */
     public void interpreterLoop() throws SourceCodeException, IOException
     {
-        System.out.println("| LoJiX Prolog.");
-        System.out.println("| Copyright The Sett Ltd.");
-        System.out.println("| Licensed under the Apache License, Version 2.0.");
-        System.out.println("| //www.apache.org/licenses/LICENSE-2.0");
-        System.out.println();
+        // Display the welcome message.
+        printIntroduction();
 
+        // Initialize the JLine console.
         consoleReader = initializeCommandLineReader();
 
+        // Used to buffer input, and only feed it to the parser when a PERIOD is encountered.
         TokenBuffer tokenBuffer = new TokenBuffer();
 
         while (true)
@@ -199,7 +199,7 @@ public class ResolutionInterpreter<T, Q>
                     continue;
                 }
 
-                line = "?- " + line;
+                line = QUERY_PROMPT + line;
                 tokenSource = TokenSource.getTokenSourceForString(line);
             }
 
@@ -248,15 +248,27 @@ public class ResolutionInterpreter<T, Q>
         }
     }
 
+    /** Prints a welcome message. */
+    private void printIntroduction()
+    {
+        System.out.println("| LoJiX Prolog.");
+        System.out.println("| Copyright The Sett Ltd.");
+        System.out.println("| Licensed under the Apache License, Version 2.0.");
+        System.out.println("| //www.apache.org/licenses/LICENSE-2.0");
+        System.out.println();
+    }
+
+    /**
+     * Sets up the JLine console reader.
+     *
+     * @return A JLine console reader.
+     *
+     * @throws IOException If an IO error is encountered while reading the input.
+     */
     private ConsoleReader initializeCommandLineReader() throws IOException
     {
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
-
-        List<Completor> completors = new LinkedList<Completor>();
-
-        completors.add(new SimpleCompletor(new String[] { "one", "two", "three " }));
-        reader.addCompletor(new ArgumentCompletor(completors));
 
         return reader;
     }
@@ -331,7 +343,7 @@ public class ResolutionInterpreter<T, Q>
             {
                 int key = consoleReader.readVirtualKey();
 
-                if (key == 59)
+                if (key == SEMICOLON)
                 {
                     System.out.println(";");
                 }
@@ -365,6 +377,9 @@ public class ResolutionInterpreter<T, Q>
         engine.compile(sentence);
     }
 
+    /**
+     * Used to buffer tokens.
+     */
     private class TokenBuffer implements Source<Token>, Sink<Token>
     {
         LinkedList<Token> tokens = new LinkedList<Token>();
