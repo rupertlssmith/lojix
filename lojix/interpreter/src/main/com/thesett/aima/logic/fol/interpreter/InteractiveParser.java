@@ -20,6 +20,7 @@ import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.SentenceImpl;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.isoprologparser.BasePrologParser;
+import com.thesett.aima.logic.fol.isoprologparser.PrologParser;
 import com.thesett.common.parsing.SourceCodeException;
 
 /**
@@ -38,19 +39,6 @@ import com.thesett.common.parsing.SourceCodeException;
  */
 public class InteractiveParser extends BasePrologParser<Clause>
 {
-    public enum Mode
-    {
-        Program, Query
-    }
-
-    public enum Directive
-    {
-        Trace, Info, User, Eof, File
-    }
-
-    /** Holds the most recently parsed system directive. */
-    private Directive directive;
-
     /**
      * Creates a clause parser over an interner.
      *
@@ -71,48 +59,18 @@ public class InteractiveParser extends BasePrologParser<Clause>
      */
     public Sentence<Clause> parse() throws SourceCodeException
     {
-        if (parser.peekAndConsumeEof())
-        {
-            directive = Directive.Eof;
-
-            return null;
-        }
-        else if (parser.peekAndConsumeTrace())
-        {
-            directive = Directive.Trace;
-
-            return null;
-        }
-        else if (parser.peekAndConsumeInfo())
-        {
-            directive = Directive.Info;
-
-            return null;
-        }
-        else if (parser.peekAndConsumeUser())
-        {
-            directive = Directive.User;
-
-            return null;
-        }
-        else
-        {
-            return new SentenceImpl<Clause>(parser.sentence());
-        }
+        return new SentenceImpl<Clause>(parser.sentence());
     }
 
     /**
-     * If the parser fails to parse a Horn clause sentence, using the {@link #parse()} method, it may have detected a
-     * system directive as input instead. This supplies the most recently parsed system directive. When invoked, this
-     * also consumes the directive as a side effect, setting it to <tt>null</tt>.
+     * Peeks and consumes the next interactive system directive.
      *
-     * @return The most recently parsed system directive.
+     * @return The directive, or <tt>null</tt> if none is found.
+     *
+     * @throws SourceCodeException If the source being parsed does not match the grammar.
      */
-    public Directive nextDirective()
+    public PrologParser.Directive peekAndConsumeDirective() throws SourceCodeException
     {
-        Directive result = directive;
-        directive = null;
-
-        return result;
+        return parser.peekAndConsumeDirective();
     }
 }

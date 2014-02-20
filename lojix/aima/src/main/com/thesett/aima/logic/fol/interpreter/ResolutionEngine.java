@@ -350,12 +350,6 @@ public abstract class ResolutionEngine<S extends Clause, T, Q> implements Variab
     }
 
     /** {@inheritDoc} */
-    public boolean peekAndConsumeMore()
-    {
-        return parser.peekAndConsumeMore();
-    }
-
-    /** {@inheritDoc} */
     public void compile(Sentence<S> sentence) throws SourceCodeException
     {
         compiler.compile(sentence);

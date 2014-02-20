@@ -58,13 +58,4 @@ public interface Parser<S extends Term, T>
      * @param associativity The operators associativity.
      */
     public void setOperator(String operatorName, int priority, OpSymbol.Associativity associativity);
-
-    /**
-     * Peeks at the next token to see if it is an atom which is equal to ";" and if it is consumes it. If the symbol is
-     * consumed then the return value indicates that this has happened. This is intended to be usefull for interactive
-     * interpreters when querying the user to see if they want more solutions to be found.
-     *
-     * @return <tt>true</tt> if the next token is ";" and it is consumed.
-     */
-    public boolean peekAndConsumeMore();
 }

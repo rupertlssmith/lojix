@@ -49,9 +49,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.lanterna</groupId>
-            <artifactId>lanterna</artifactId>
-            <version>2.1.7</version>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!-- Test only dependencies. -->

@@ -15,14 +15,28 @@
  */
 package com.thesett.aima.logic.fol.interpreter;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.isoprologparser.PrologParser;
+import com.thesett.aima.logic.fol.isoprologparser.PrologParserConstants;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
 import com.thesett.common.parsing.SourceCodeException;
+import com.thesett.common.util.Sink;
+import com.thesett.common.util.Source;
+
+import jline.ArgumentCompletor;
+import jline.Completor;
+import jline.ConsoleReader;
+import jline.SimpleCompletor;
 
 /**
  * ResolutionInterpreter implements an interactive Prolog like interpreter, built on top of a {@link ResolutionEngine}.
@@ -50,6 +64,33 @@ public class ResolutionInterpreter<T, Q>
     private static final java.util.logging.Logger log =
         java.util.logging.Logger.getLogger(ResolutionInterpreter.class.getName());
 
+    public static final String QUERY_PROMPT = "?- ";
+    public static final String MULTI_LINE_QUERY_PROMPT = "   ";
+    public static final String PROGRAM_PROMPT = "";
+    public static final String MULTI_LINE_PROGRAM_PROMPT = "   ";
+
+    /** Describes the possible parsing modes. */
+    public enum Mode
+    {
+        Program(PROGRAM_PROMPT), ProgramMultiLine(MULTI_LINE_PROGRAM_PROMPT), Query(QUERY_PROMPT),
+        QueryMultiLine(MULTI_LINE_QUERY_PROMPT);
+
+        private final String prompt;
+
+        Mode()
+        {
+            prompt = "";
+        }
+
+        Mode(String prompt)
+        {
+            this.prompt = prompt;
+        }
+    }
+
+    /** Holds the JLine console reader. */
+    private ConsoleReader consoleReader;
+
     /** Holds the resolution engine that the interpreter loop runs on. */
     ResolutionEngine<Clause, T, Q> engine;
 
@@ -60,7 +101,7 @@ public class ResolutionInterpreter<T, Q>
     private Integer currentPredicateName;
 
     /** Holds the current interaction mode. */
-    private InteractiveParser.Mode mode = InteractiveParser.Mode.Query;
+    private Mode mode = Mode.Query;
 
     /**
      * Builds an interactive logical resolution interpreter from a parser, interner, compiler and resolver, encapsulated
@@ -83,61 +124,141 @@ public class ResolutionInterpreter<T, Q>
     }
 
     /**
-     * Implements the top-level interpreter loop. This will parse and evaluate sentences until it encounters an EOF at
-     * which point the interpreter will terminate.
+     * Implements the top-level interpreter loop. This will parse and evaluate sentences until it encounters an CTRL-D
+     * at which point the interpreter will terminate.
      *
      * @throws SourceCodeException If malformed code is encountered.
+     * @throws IOException         If an IO error is encountered whilst reading the source code.
      */
-    public void interpreterLoop() throws SourceCodeException
+    public void interpreterLoop() throws SourceCodeException, IOException
     {
+        System.out.println("| LoJiX Prolog.");
+        System.out.println("| Copyright The Sett Ltd.");
+        System.out.println("| Licensed under the Apache License, Version 2.0.");
+        System.out.println("| //www.apache.org/licenses/LICENSE-2.0");
+        System.out.println();
+
+        consoleReader = initializeCommandLineReader();
+
+        TokenBuffer tokenBuffer = new TokenBuffer();
+
         while (true)
         {
-            // Parse the next clause.
-            Sentence<Clause> nextParsing = parser.parse();
+            String line = consoleReader.readLine(mode.prompt);
 
-            if (nextParsing == null)
+            // JLine returns null if CTRL-D is pressed. Exit program mode back to query mode, or exit the interpreter
+            // completely from query mode.
+            if ((line == null) && ((mode == Mode.Query) || (mode == Mode.QueryMultiLine)))
             {
-                InteractiveParser.Directive directive = parser.nextDirective();
+                log.info("CTRL-D in query mode, exiting.");
 
-                switch (directive)
+                System.out.println();
+
+                break;
+            }
+            else if ((line == null) && (mode == Mode.Program))
+            {
+                log.info("CTRL-D in program mode, returning to query mode.");
+
+                System.out.println();
+                mode = Mode.Query;
+
+                continue;
+            }
+
+            TokenSource tokenSource = TokenSource.getTokenSourceForString(line);
+
+            // Check the input to see if a system directive was input. This is only allowed in query mode, and is
+            // handled differently to normal queries.
+            // For normal queries, the query functor '?-' begins every statement, this is not passed back from JLine
+            // even though it is used as the command prompt.
+            if (mode == Mode.Query)
+            {
+                parser.setTokenSource(tokenSource);
+
+                PrologParser.Directive directive = parser.peekAndConsumeDirective();
+
+                if (directive != null)
                 {
-                case Eof:
-                    if (mode == InteractiveParser.Mode.Query)
+                    switch (directive)
                     {
-                        log.info("EOF in query mode, exiting application.");
+                    case Trace:
+                        log.info("Got trace directive.");
+                        break;
 
-                        return;
-                    }
-                    else
-                    {
-                        log.info("EOF in program mode, leaving program mode.");
-                        mode = InteractiveParser.Mode.Query;
+                    case Info:
+                        log.info("Got info directive.");
+                        break;
 
+                    case User:
+                        log.info("Got user directive, entering program mode.");
+                        mode = Mode.Program;
                         break;
                     }
 
-                case Trace:
-                    log.info("Got trace directive.");
-                    break;
+                    continue;
+                }
 
-                case Info:
-                    log.info("Got info directive.");
-                    break;
+                line = "?- " + line;
+                tokenSource = TokenSource.getTokenSourceForString(line);
+            }
 
-                case User:
-                    log.info("Got user directive, entering program mode.");
-                    mode = InteractiveParser.Mode.Program;
+            Token nextToken = null;
+
+            while (true)
+            {
+                nextToken = tokenSource.poll();
+
+                if (nextToken == null)
+                {
                     break;
                 }
-            }
-            else
-            {
-                log.fine(nextParsing.toString());
 
-                // Evaluate it in Prolog.
+                if (nextToken.kind == PrologParserConstants.PERIOD)
+                {
+                    log.info("Token was PERIOD.");
+                    mode = (mode == Mode.QueryMultiLine) ? Mode.Query : mode;
+                    mode = (mode == Mode.ProgramMultiLine) ? Mode.Program : mode;
+
+                    tokenBuffer.offer(nextToken);
+
+                    break;
+                }
+                else if (nextToken.kind == PrologParserConstants.EOF)
+                {
+                    log.info("Token was EOF.");
+                    mode = (mode == Mode.Query) ? Mode.QueryMultiLine : mode;
+                    mode = (mode == Mode.Program) ? Mode.ProgramMultiLine : mode;
+
+                    break;
+                }
+
+                tokenBuffer.offer(nextToken);
+            }
+
+            if ((nextToken != null) && (nextToken.kind == PrologParserConstants.PERIOD))
+            {
+                parser.setTokenSource(tokenBuffer);
+
+                // Parse the next clause.
+                Sentence<Clause> nextParsing = parser.parse();
+                log.fine(nextParsing.toString());
                 evaluate(nextParsing);
             }
         }
+    }
+
+    private ConsoleReader initializeCommandLineReader() throws IOException
+    {
+        ConsoleReader reader = new ConsoleReader();
+        reader.setBellEnabled(false);
+
+        List<Completor> completors = new LinkedList<Completor>();
+
+        completors.add(new SimpleCompletor(new String[] { "one", "two", "three " }));
+        reader.addCompletor(new ArgumentCompletor(completors));
+
+        return reader;
     }
 
     /**
@@ -180,36 +301,51 @@ public class ResolutionInterpreter<T, Q>
     {
         log.fine("Read query from input.");
 
-        boolean foundAtLeastOneSolution = false;
-
         // Create an iterator to generate all solutions on demand with. Iteration will stop if the request to
         // the parser for the more ';' token fails.
         for (Set<Variable> solution : engine)
         {
-            foundAtLeastOneSolution = true;
-
-            for (Variable nextVar : solution)
+            if (solution.isEmpty())
             {
-                String varName = engine.getVariableName(nextVar.getName());
+                System.out.print("true");
+            }
+            else
+            {
+                for (Iterator<Variable> i = solution.iterator(); i.hasNext();)
+                {
+                    Variable nextVar = i.next();
 
-                System.out.println(varName + " = " + nextVar.getValue().toString(engine, true, false));
+                    String varName = engine.getVariableName(nextVar.getName());
+
+                    System.out.print(varName + " = " + nextVar.getValue().toString(engine, true, false) + " ");
+
+                    if (i.hasNext())
+                    {
+                        System.out.println();
+                    }
+                }
             }
 
             // Check if the user wants more solutions.
-            if (!engine.peekAndConsumeMore())
+            try
             {
-                break;
-            }
-        }
+                int key = consoleReader.readVirtualKey();
 
-        // Print yes or no depending on whether or not there were some solutions.
-        if (foundAtLeastOneSolution)
-        {
-            System.out.println("Yes.");
-        }
-        else
-        {
-            System.out.println("No.");
+                if (key == 59)
+                {
+                    System.out.println(";");
+                }
+                else
+                {
+                    System.out.println();
+
+                    break;
+                }
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -227,5 +363,25 @@ public class ResolutionInterpreter<T, Q>
         log.fine("Read program clause from input.");
 
         engine.compile(sentence);
+    }
+
+    private class TokenBuffer implements Source<Token>, Sink<Token>
+    {
+        LinkedList<Token> tokens = new LinkedList<Token>();
+
+        public boolean offer(Token o)
+        {
+            return tokens.offer(o);
+        }
+
+        public Token poll()
+        {
+            return tokens.poll();
+        }
+
+        public Token peek()
+        {
+            return tokens.peek();
+        }
     }
 }

@@ -64,7 +64,6 @@ public class WAMJavaInterpreter
             final WAMResolvingMachine machine = new WAMResolvingJavaMachine(symbolTable);
 
             Parser<Clause, Token> parser = new InteractiveParser(machine);
-            parser.setTokenSource(TokenSource.getTokenSourceForInputStream(System.in));
 
             LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler =
                 new WAMCompiler(symbolTable, machine);

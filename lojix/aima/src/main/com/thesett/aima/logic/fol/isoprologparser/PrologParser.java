@@ -88,6 +88,12 @@ public class PrologParser implements PrologParserConstants
                 tokenImage[FLOATING_POINT_LITERAL], tokenImage[STRING_LITERAL], tokenImage[ATOM], tokenImage[LPAREN]
             });
 
+    /** Describes the possible system directives in interactive mode. */
+    public enum Directive
+    {
+        Trace, Info, User, File
+    }
+
     /** Holds the variable scoping context for the current sentence. */
     protected Map<Integer, Variable> variableContext = new HashMap<Integer, Variable>();
 
@@ -743,6 +749,33 @@ public class PrologParser implements PrologParserConstants
         {
             return false;
         }
+    }
+
+    /**
+     * Peeks and consumes the next interactive system directive.
+     *
+     * @return The directive, or <tt>null</tt> if none is found.
+     *
+     * @throws SourceCodeException If the source being parsed does not match the grammar.
+     */
+    public Directive peekAndConsumeDirective() throws SourceCodeException
+    {
+        if (peekAndConsumeTrace())
+        {
+            return Directive.Trace;
+        }
+
+        if (peekAndConsumeInfo())
+        {
+            return Directive.Info;
+        }
+
+        if (peekAndConsumeUser())
+        {
+            return Directive.User;
+        }
+
+        return null;
     }
 
     /**
