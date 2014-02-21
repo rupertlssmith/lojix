@@ -63,14 +63,4 @@ public class SourceCodeException extends UserReadableException
     {
         return sourceCodePosition;
     }
-
-    /**
-     * Returns the detail message string of this throwable.
-     *
-     * @return The detail message string of this <tt>Throwable</tt> instance.
-     */
-    public String getMessage()
-    {
-        return super.getMessage() + ((sourceCodePosition != null) ? (" " + sourceCodePosition) : "");
-    }
 }
