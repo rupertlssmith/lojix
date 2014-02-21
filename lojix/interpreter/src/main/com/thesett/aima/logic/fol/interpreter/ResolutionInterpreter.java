@@ -289,7 +289,6 @@ public class ResolutionInterpreter<T, Q>
                     System.out.println(errorLine);
 
                     // Check if the line has the error somewhere in it, and mark the part of it that contains the error.
-
                     int pos = 0;
 
                     if (i == startLine)
@@ -326,6 +325,7 @@ public class ResolutionInterpreter<T, Q>
                 System.out.println();
 
                 inputLines.clear();
+                tokenBuffer.clear();
             }
         }
     }
@@ -401,7 +401,7 @@ public class ResolutionInterpreter<T, Q>
         {
             if (solution.isEmpty())
             {
-                System.out.print("true");
+                System.out.print("true ");
             }
             else
             {
@@ -479,6 +479,11 @@ public class ResolutionInterpreter<T, Q>
         public Token peek()
         {
             return tokens.peek();
+        }
+
+        public void clear()
+        {
+            tokens.clear();
         }
     }
 
