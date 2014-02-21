@@ -96,6 +96,12 @@ public class SourceCodePositionImpl implements SourceCodePosition
         return endColumn;
     }
 
+    /** {@inheritDoc} */
+    public SourceCodePosition asZeroOffsetPosition()
+    {
+        return new SourceCodePositionImpl(startLine - 1, startColumn - 1, endLine - 1, endColumn - 1);
+    }
+
     /**
      * Prints the position as a string, mainly for debugging purposes.
      *

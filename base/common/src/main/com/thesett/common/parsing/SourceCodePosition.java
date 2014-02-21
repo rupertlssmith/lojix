@@ -57,4 +57,13 @@ public interface SourceCodePosition
      * @return The column on which the error ends.
      */
     public int getEndColumn();
+
+    /**
+     * By default source code positions are reported offset from line 1, column 1, as this convention is how positions
+     * are identified to users in text editors. This returns a zero offset version of the position, which is more
+     * useful from a coding stand point.
+     *
+     * @return The zero offset source code position.
+     */
+    public SourceCodePosition asZeroOffsetPosition();
 }
