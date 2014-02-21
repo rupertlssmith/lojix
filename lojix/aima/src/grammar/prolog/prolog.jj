@@ -1,33 +1,31 @@
 /*
- * This is an implementation of a parser for the first order logic based language, Prolog. In its purest form, this language consists
- * of terms in first order logic, posed either as programs (to be added to a store), or queries (to be matched against the store).
+ * This is an implementation of a parser for the first order logic based language, Prolog. In its
+ * purest form, this language consists of terms in first order logic, posed either as programs (to
+ * be added to a store), or queries (to be matched against the store).
  *
  * The lanaguage consists of the following possible sentences:
  *
  * Program terms are clauses (or constants), terminated with a '.'.
- * Programs can be facts or rules of the form: a0 :- a1, ..., an. Facts consist only of the head a0 with no following ':-'. Rules have
- * a body consisting of: a1,...,an. The 'a1' to 'an' are additional queries that must be satisfied and unified, with variables
- * scoped over the entire rule, including its head.
- * Queries are of the form ?- a0,...,an. Variable are scoped over the entire query and each part of it must be consecutively
- * unified against matching programs, building up a unification over all of the variables in the queries scope, the same as for
- * program bodies. Queries and program bodies are essentially the same thing, the only difference being that entering a query 
- * indicates that it should be run immediately, whereas a program body is only run when its head is matched.
+ * Programs can be facts or rules of the form: a0 :- a1, ..., an. Facts consist only of the head a0
+ * with no following ':-'. Rules have a body consisting of: a1,...,an. The 'a1' to 'an' are additional
+ * queries that must be satisfied and unified, with variables scoped over the entire rule, including
+ * its head.
+ * Queries are of the form ?- a0,...,an. Variable are scoped over the entire query and each part of
+ * it must be consecutively unified against matching programs, building up a unification over all of
+ * the variables in the queries scope, the same as for program bodies. Queries and program bodies are
+ * essentially the same thing, the only difference being that entering a query indicates that it
+ * should be run immediately, whereas a program body is only run when its head is matched.
  *
- * Variables are scoped within the current sentence only; fresh ones are generated within the scope for each new variable name
- * encountered. Variables never span multiple sentence scopes.
+ * Variables are scoped within the current sentence only; fresh ones are generated within the scope
+ * for each new variable name encountered. Variables never span multiple sentence scopes.
  *
- * Interactive interpretation of the language proceeds as follows. The user enters a program. This is compiled and held in
- * memory. The user enters a query, this is unified against the most recent matching program head, the unification is found between
- * the query and the head, and the variables bound in this unification are used as a background to unifying all of the queries
- * in the body of the program, which may add to the variables in the unification too, so that subsequent queries are more unified
- * against a growing list of bound variables. If any query should fail to unify, the entire query will fail. The language L2 does
- * not support backtracking in the event of failure.
- *
- * There are also some commands that may be passed to the interpreter, that are system directives outside of the usual interpreter loop.
+ * There are some commands that may be passed to the interpreter, that are system directives outside
+ * of the usual interpreter loop.
  * These are:
  *
  * [info]  To turn info logging on/off.
  * [trace] To turn execution tracing on/off.
+ * [user]  To enter 'user' mode, where programs can be entered.
  */
 
 options { DEBUG_PARSER = true; STATIC = false; BUILD_PARSER = false; }
