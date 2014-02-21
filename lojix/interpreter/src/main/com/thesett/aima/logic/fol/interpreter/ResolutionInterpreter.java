@@ -397,27 +397,46 @@ public class ResolutionInterpreter<T, Q>
 
         // Create an iterator to generate all solutions on demand with. Iteration will stop if the request to
         // the parser for the more ';' token fails.
-        for (Set<Variable> solution : engine)
+        Iterator<Set<Variable>> i = engine.iterator();
+
+        if (!i.hasNext())
         {
+            System.out.println("false. ");
+
+            return;
+        }
+
+        for (; i.hasNext();)
+        {
+            Set<Variable> solution = i.next();
+
             if (solution.isEmpty())
             {
-                System.out.print("true ");
+                System.out.print("true");
             }
             else
             {
-                for (Iterator<Variable> i = solution.iterator(); i.hasNext();)
+                for (Iterator<Variable> j = solution.iterator(); j.hasNext();)
                 {
-                    Variable nextVar = i.next();
+                    Variable nextVar = j.next();
 
                     String varName = engine.getVariableName(nextVar.getName());
 
-                    System.out.print(varName + " = " + nextVar.getValue().toString(engine, true, false) + " ");
+                    System.out.print(varName + " = " + nextVar.getValue().toString(engine, true, false));
 
-                    if (i.hasNext())
+                    if (j.hasNext())
                     {
                         System.out.println();
                     }
                 }
+            }
+
+            // Finish automatically if there are no more solutions.
+            if (!i.hasNext())
+            {
+                System.out.println(".");
+
+                break;
             }
 
             // Check if the user wants more solutions.
@@ -427,7 +446,7 @@ public class ResolutionInterpreter<T, Q>
 
                 if (key == SEMICOLON)
                 {
-                    System.out.println(";");
+                    System.out.println(" ;");
                 }
                 else
                 {
