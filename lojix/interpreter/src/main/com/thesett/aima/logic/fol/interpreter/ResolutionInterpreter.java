@@ -148,6 +148,9 @@ public class ResolutionInterpreter<T, Q>
         // in the event of a syntax or other error in the input.
         ArrayList<String> inputLines = new ArrayList<String>();
 
+        // Used to count the number of lines entered.
+        int lineNo = 0;
+
         while (true)
         {
             String line = null;
@@ -181,7 +184,8 @@ public class ResolutionInterpreter<T, Q>
                 // handled differently to normal queries.
                 if (mode == Mode.Query)
                 {
-                    TokenSource tokenSource = TokenSource.getTokenSourceForString(line);
+                    Source<Token> tokenSource =
+                        new OffsettingTokenSource(TokenSource.getTokenSourceForString(line), lineNo);
                     parser.setTokenSource(tokenSource);
 
                     PrologParser.Directive directive = parser.peekAndConsumeDirective();
@@ -219,7 +223,8 @@ public class ResolutionInterpreter<T, Q>
                 }
 
                 // Buffer input tokens until EOL is reached, of the input is terminated with a PERIOD.
-                TokenSource tokenSource = TokenSource.getTokenSourceForString(line);
+                Source<Token> tokenSource =
+                    new OffsettingTokenSource(TokenSource.getTokenSourceForString(line), lineNo);
                 Token nextToken;
 
                 while (true)
@@ -246,6 +251,8 @@ public class ResolutionInterpreter<T, Q>
                         log.info("Token was EOF.");
                         mode = (mode == Mode.Query) ? Mode.QueryMultiLine : mode;
                         mode = (mode == Mode.Program) ? Mode.ProgramMultiLine : mode;
+
+                        lineNo++;
 
                         break;
                     }
@@ -472,6 +479,66 @@ public class ResolutionInterpreter<T, Q>
         public Token peek()
         {
             return tokens.peek();
+        }
+    }
+
+    /**
+     * OffsettingTokenSource is a token source that automatically adds in line offsets to all tokens, to assist the
+     * parser when operating interactively line-at-a-time.
+     */
+    private class OffsettingTokenSource implements Source<Token>
+    {
+        /** Holds the underlying token source. */
+        private final Source<Token> source;
+
+        /** Holds the current line offset to add to all tokens. */
+        private final int lineOffset;
+
+        /**
+         * Wraps another token source.
+         *
+         * @param source The token source to wrap.
+         */
+        private OffsettingTokenSource(Source<Token> source, int lineOffset)
+        {
+            this.source = source;
+            this.lineOffset = lineOffset;
+        }
+
+        /** {@inheritDoc} */
+        public Token poll()
+        {
+            return addOffset(copyToken(source.poll()));
+        }
+
+        /** {@inheritDoc} */
+        public Token peek()
+        {
+            return addOffset(copyToken(source.peek()));
+        }
+
+        private Token addOffset(Token token)
+        {
+            token.beginLine += lineOffset;
+            token.endLine += lineOffset;
+
+            return token;
+        }
+
+        private Token copyToken(Token token)
+        {
+            Token newToken = new Token();
+
+            newToken.kind = token.kind;
+            newToken.beginLine = token.beginLine;
+            newToken.beginColumn = token.beginColumn;
+            newToken.endLine = token.endLine;
+            newToken.endColumn = token.endColumn;
+            newToken.image = token.image;
+            newToken.next = token.next;
+            newToken.specialToken = token.specialToken;
+
+            return newToken;
         }
     }
 }
