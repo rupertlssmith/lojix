@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -197,7 +198,8 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
         return instructions.sizeof();
     }
 
-    /** Provides the compiled byte code instructions as an unmodifiable list.
+    /**
+     * Provides the compiled byte code instructions as an unmodifiable list.
      *
      * @return A list of the byte code instructions for this query.
      */
@@ -210,15 +212,13 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
      * Emmits the binary byte code for the clause into a machine, writing into the specified byte array. The state of
      * this clause is changed to 'Linked' to indicate that it has been linked into a binary machine.
      *
-     * @param  offset    The offset within the code buffer to write to.
      * @param  buffer    The code buffer to write to.
      * @param  machine   The binary machine to resolve call-points against, and to record as being linked into.
      * @param  callPoint The call point within the machine, at which the code is to be stored.
      *
      * @throws LinkageException If required symbols to link to cannot be found in the binary machine.
      */
-    public void emmitCode(int offset, byte[] buffer, WAMMachine machine, WAMCallPoint callPoint)
-        throws LinkageException
+    public void emmitCode(ByteBuffer buffer, WAMMachine machine, WAMCallPoint callPoint) throws LinkageException
     {
         // Ensure that the size of the instruction listing does not exceed max int (highly unlikely).
         if (sizeof() > Integer.MAX_VALUE)
@@ -232,7 +232,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
         // Insert the compiled code into the byte code machine's code area.
         for (WAMInstruction instruction : instructions)
         {
-            instruction.emmitCode(offset + length, buffer, machine);
+            instruction.emmitCode(buffer, machine);
             length += instruction.sizeof();
         }
 

@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -56,7 +57,13 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
     protected static AtomicInteger varNameId = new AtomicInteger();
 
     /** Holds the most recently set query, to run when the resolution search is invoked. */
-    WAMCompiledQuery currentQuery;
+    protected WAMCompiledQuery currentQuery;
+
+    /**
+     * Holds the buffer of executable code in a direct byte buffer so that no copying out to the native machine needs to
+     * be done.
+     */
+    protected ByteBuffer codeBuffer;
 
     /**
      * Creates a resolving machine with the specified symbol table.
@@ -66,6 +73,70 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
     protected WAMResolvingMachine(SymbolTable<Integer, String, Object> symbolTable)
     {
         super(symbolTable);
+    }
+
+    /** {@inheritDoc} */
+    public void emmitCode(WAMCompiledPredicate predicate) throws LinkageException
+    {
+        // Keep track of the offset into which the code was loaded.
+        int entryPoint = codeBuffer.position();
+        int length = (int) predicate.sizeof();
+
+        // If the code is for a program clause, store the programs entry point in the call table.
+        WAMCallPoint callPoint = setCodeAddress(predicate.getName(), entryPoint, length);
+
+        // Emmit code for the clause into this machine.
+        predicate.emmitCode(codeBuffer, this, callPoint);
+
+        // Notify the native machine of the addition of new code.
+        codeAdded(codeBuffer, entryPoint, length);
+    }
+
+    /** {@inheritDoc} */
+    public void emmitCode(WAMCompiledQuery query) throws LinkageException
+    {
+        // Keep track of the offset into which the code was loaded.
+        int entryPoint = codeBuffer.position();
+        int length = (int) query.sizeof();
+
+        // If the code is for a program clause, store the programs entry point in the call table.
+        WAMCallPoint callPoint = new WAMCallPoint(entryPoint, length, -1);
+
+        // Emmit code for the clause into this machine.
+        query.emmitCode(codeBuffer, this, callPoint);
+
+        // Notify the native machine of the addition of new code.
+        codeAdded(codeBuffer, entryPoint, length);
+    }
+
+    /**
+     * Extracts the raw byte code from the machine for a given call table entry.
+     *
+     * @param callPoint The call table entry giving the location and length of the code.
+     * @return The byte code at the specified location.
+     */
+    public byte[] retrieveCode(WAMCallPoint callPoint)
+    {
+        byte[] result = new byte[callPoint.length];
+
+        codeBuffer.get(result, callPoint.entryPoint, callPoint.length);
+
+        return result;
+    }
+
+    /**
+     * Notified whenever code is added to the machine.
+     *
+     * @param codeBuffer The code buffer.
+     * @param codeOffset The start offset of the new code.
+     * @param length     The length of the new code.
+     */
+    protected abstract void codeAdded(ByteBuffer codeBuffer, int codeOffset, int length);
+
+    /** {@inheritDoc} */
+    public void emmitCode(int offset, int address)
+    {
+        codeBuffer.putInt(offset, address);
     }
 
     /** {@inheritDoc} */
@@ -252,7 +323,7 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
         {
             // Decode f/n from the STR data.
             int fn = getHeap(val);
-            int f = (fn & 0xFFFFFF00) >> 8;
+            int f = fn & 0x00ffffff;
 
             /*log.fine("fn = " + fn);*/
             /*log.fine("f = " + f);*/

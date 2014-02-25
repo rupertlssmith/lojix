@@ -19,11 +19,8 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.wam.WAMCallPoint;
-import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
-import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.WAMResolvingMachine;
 import com.thesett.common.error.ImplementationUnavailableException;
 import com.thesett.common.error.NotImplementedException;
@@ -32,8 +29,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 /**
- * WAMResolvingNativeMachine is a byte code interpreter for WAM implemented externally as native code. The code here is a
- * wrapper for the native library. It provides a method to get an instance of this l3 machine that can throw a checked
+ * WAMResolvingNativeMachine is a byte code interpreter for WAM implemented externally as native code. The code here is
+ * a wrapper for the native library. It provides a method to get an instance of this l3 machine that can throw a checked
  * exception when the native library is not available.
  *
  * <p/>The other interesting feature of this machine, is that the byte code is passed to the native library in a direct
@@ -62,12 +59,6 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
 
     /** Used to record whether an attempt to load the native library has been made. */
     private static boolean libraryLoadAttempted = false;
-
-    /**
-     * Holds the buffer of executable code in a direct byte buffer so that no copying out to the native machine needs to
-     * be done.
-     */
-    ByteBuffer codeBuffer;
 
     /**
      * Creates a unifying virtual machine for WAM with default heap sizes.
@@ -123,65 +114,7 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
         }
     }
 
-    /** {@inheritDoc} */
-    public void emmitCode(WAMCompiledPredicate predicate) throws LinkageException
-    {
-        // Keep track of the offset into which the code was loaded.
-        int entryPoint = codeBuffer.position();
-        int length = (int) predicate.sizeof();
-        byte[] code = new byte[length];
 
-        // If the code is for a program clause, store the programs entry point in the call table.
-        WAMCallPoint callPoint = setCodeAddress(predicate.getName(), entryPoint, length);
-
-        // Emmit code for the clause into this machine.
-        predicate.emmitCode(0, code, this, callPoint);
-
-        // Notify the native machine of the addition of new code.
-        codeBuffer.put(code, 0, length);
-        codeAdded(codeBuffer, entryPoint, length);
-    }
-
-    /** {@inheritDoc} */
-    public void emmitCode(WAMCompiledQuery query) throws LinkageException
-    {
-        // Keep track of the offset into which the code was loaded.
-        int entryPoint = codeBuffer.position();
-        int length = (int) query.sizeof();
-        byte[] code = new byte[length];
-
-        // If the code is for a program clause, store the programs entry point in the call table.
-        WAMCallPoint callPoint = new WAMCallPoint(entryPoint, length, -1);
-
-        // Emmit code for the clause into this machine.
-        query.emmitCode(0, code, this, callPoint);
-
-        // Notify the native machine of the addition of new code.
-        codeBuffer.put(code, 0, length);
-        codeAdded(codeBuffer, entryPoint, length);
-    }
-
-    /** {@inheritDoc} */
-    public void emmitCode(int offset, int address)
-    {
-        codeBuffer.putInt(offset, address);
-    }
-
-    /**
-     * Extracts the raw byte code from the machine for a given call table entry.
-     *
-     * @param  callPoint The call table entry giving the location and length of the code.
-     *
-     * @return The byte code at the specified location.
-     */
-    public byte[] retrieveCode(WAMCallPoint callPoint)
-    {
-        byte[] result = new byte[callPoint.length];
-
-        codeBuffer.get(result, callPoint.entryPoint, callPoint.length);
-
-        return result;
-    }
 
     /**
      * Resets the machine, to its initial state. This clears any programs from the machine, and clears all of its stacks
@@ -242,12 +175,10 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
     }
 
     /**
-     * Notified whenever code is added to the machine. This provides a hook in point at which the machine may, if
-     * required, compile the code down below the byte code level.
+     * {@inheritDoc}
      *
-     * @param codeBuffer The code buffer.
-     * @param codeOffset The start offset of the new code.
-     * @param length     The length of the new code.
+     * <p/>This provides a hook in point at which the machine may, if required, compile the code down below the byte
+     * code level.
      */
     protected native void codeAdded(ByteBuffer codeBuffer, int codeOffset, int length);
 

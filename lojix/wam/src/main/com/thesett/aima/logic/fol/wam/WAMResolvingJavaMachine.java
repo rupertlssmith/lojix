@@ -15,10 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Variable;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
@@ -41,7 +42,6 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRUST_ME;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRY_ME_ELSE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAR;
-import com.thesett.common.util.ByteBufferUtils;
 import com.thesett.common.util.SequenceIterator;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
@@ -129,12 +129,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     /** Defines the initial code area size for the virtual machine. */
     private static final int CODE_SIZE = 10000;
 
-    /** Holds the byte code. */
-    private byte[] code;
-
-    /** Holds the current load offset within the code area. */
-    private int loadPoint;
-
     /** Holds the current instruction pointer into the code. */
     private int ip;
 
@@ -187,58 +181,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         reset();
     }
 
-    /** {@inheritDoc} */
-    public void emmitCode(WAMCompiledPredicate predicate) throws LinkageException
-    {
-        // Keep track of the offset into which the code was loaded.
-        int entryPoint = loadPoint;
-        int length = (int) predicate.sizeof();
-
-        // Store the predicates entry point in the call table.
-        WAMCallPoint callPoint = setCodeAddress(predicate.getName(), entryPoint, loadPoint - entryPoint);
-
-        // Emmit code for the clause into this machine.
-        predicate.emmitCode(loadPoint, code, this, callPoint);
-        loadPoint += length;
-    }
-
-    /** {@inheritDoc} */
-    public void emmitCode(WAMCompiledQuery query) throws LinkageException
-    {
-        // Keep track of the offset into which the code was loaded.
-        int entryPoint = loadPoint;
-        int length = (int) query.sizeof();
-
-        // If the code is for a program clause, store the programs entry point in the call table.
-        WAMCallPoint callPoint = new WAMCallPoint(loadPoint, length, -1);
-
-        // Emmit code for the clause into this machine.
-        query.emmitCode(loadPoint, code, this, callPoint);
-        loadPoint += length;
-    }
-
-    /** {@inheritDoc} */
-    public void emmitCode(int offset, int address)
-    {
-        ByteBufferUtils.writeIntToByteArray(code, offset, address);
-    }
-
-    /**
-     * Extracts the raw byte code from the machine for a given call table entry.
-     *
-     * @param  callPoint The call table entry giving the location and length of the code.
-     *
-     * @return The byte code at the specified location.
-     */
-    public byte[] retrieveCode(WAMCallPoint callPoint)
-    {
-        byte[] result = new byte[callPoint.length];
-
-        System.arraycopy(code, callPoint.entryPoint, result, 0, callPoint.length);
-
-        return result;
-    }
-
     /**
      * Resets the machine, to its initial state. This clears any programs from the machine, and clears all of its stacks
      * and heaps.
@@ -247,7 +189,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     {
         // Create fresh heaps, code areas and stacks.
         data = new int[TOP];
-        code = new byte[CODE_SIZE];
+        codeBuffer = ByteBuffer.allocateDirect(CODE_SIZE);
+        codeBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
         // Registers are on the top of the data area, the heap comes next.
         hp = HEAP_BASE;
@@ -269,7 +212,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
         // Reset the instruction pointer to that start of the code area, ready for fresh code to be loaded there.
         ip = 0;
-        loadPoint = 0;
 
         // Could probably not bother resetting these, but will do it anyway just to be sure.
         derefTag = 0;
@@ -312,6 +254,15 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         throw new UnsupportedOperationException("WAMResolvingJavaMachine does not support max steps limit on search.");
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Does nothing.
+     */
+    protected void codeAdded(ByteBuffer codeBuffer, int codeOffset, int length)
+    {
+    }
+
     /** {@inheritDoc} */
     protected int derefStack(int a)
     {
@@ -344,7 +295,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         int numOfArgs = 0;
 
         // Holds the current continuation point.
-        int cp = loadPoint;
+        int cp = codeBuffer.position();
 
         //while (!failed && (ip < code.length))
         while (true)
@@ -361,7 +312,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             }
 
             // Grab next instruction and switch on it.
-            byte instruction = code[ip];
+            byte instruction = codeBuffer.get(ip);
 
             switch (instruction)
             {
@@ -369,9 +320,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case PUT_STRUC:
             {
                 // grab addr, f/n
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                int fn = ByteBufferUtils.getIntFromBytes(code, ip + 3);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int fn = codeBuffer.getInt(ip + 3);
 
                 trace.fine(ip + ": PUT_STRUC " + printSlot(xi, mode) + ", " + fn);
 
@@ -397,8 +348,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case SET_VAR:
             {
                 // grab addr
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
 
                 trace.fine(ip + ": SET_VAR " + printSlot(xi, mode));
 
@@ -421,8 +372,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case SET_VAL:
             {
                 // grab addr
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
 
                 trace.fine(ip + ": SET_VAL " + printSlot(xi, mode));
 
@@ -442,9 +393,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case GET_STRUC:
             {
                 // grab addr, f/n
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                int fn = ByteBufferUtils.getIntFromBytes(code, ip + 3);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int fn = codeBuffer.getInt(ip + 3);
 
                 trace.fine(ip + ": GET_STRUC " + printSlot(xi, mode) + ", " + fn);
 
@@ -510,8 +461,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case UNIFY_VAR:
             {
                 // grab addr
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
 
                 trace.fine(ip + ": UNIFY_VAR " + printSlot(xi, mode));
 
@@ -549,8 +500,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case UNIFY_VAL:
             {
                 // grab addr
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
 
                 trace.fine(ip + ": UNIFY_VAL " + printSlot(xi, mode));
 
@@ -584,9 +535,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case PUT_VAR:
             {
                 // grab addr, Ai
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                byte ai = code[ip + 3];
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
@@ -612,9 +563,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case PUT_VAL:
             {
                 // grab addr, Ai
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                byte ai = code[ip + 3];
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": PUT_VAL " + printSlot(xi, mode) + ", A" + ai);
 
@@ -631,9 +582,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case GET_VAR:
             {
                 // grab addr, Ai
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                byte ai = code[ip + 3];
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": GET_VAR " + printSlot(xi, mode) + ", A" + ai);
 
@@ -650,9 +601,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case GET_VAL:
             {
                 // grab addr, Ai
-                byte mode = code[ip + 1];
-                int xi = (int) code[ip + 2] + ((mode == STACK_ADDR) ? (ep + 3) : 0);
-                byte ai = code[ip + 3];
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": GET_VAL " + printSlot(xi, mode) + ", A" + ai);
 
@@ -669,8 +620,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case CALL:
             {
                 // grab @(p/n)
-                int pn = ByteBufferUtils.getIntFromBytes(code, ip + 1);
-                int n = code[ip + 5];
+                int pn = codeBuffer.getInt(ip + 1);
+                int n = codeBuffer.get(ip + 5);
 
                 // num_of_args <- n
                 numOfArgs = n;
@@ -709,7 +660,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case ALLOCATE:
             {
                 // grab N
-                int n = (int) code[ip + 1];
+                int n = (int) codeBuffer.get(ip + 1);
 
                 // if E > B
                 //  then newB <- E + STACK[E + 2] + 3
@@ -760,7 +711,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case TRY_ME_ELSE:
             {
                 // grab L
-                int l = (int) code[ip + 1];
+                int l = (int) codeBuffer.get(ip + 1);
 
                 // if E > B
                 //  then newB <- E + STACK[E + 2] + 3
@@ -815,7 +766,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case RETRY_ME_ELSE:
             {
                 // grab L
-                int l = (int) code[ip + 1];
+                int l = (int) codeBuffer.get(ip + 1);
 
                 // n <- STACK[B]
                 int n = data[bp];
@@ -1180,7 +1131,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     // f2/n2 <- STORE[v2]
                     int fn1 = data[v1];
                     int fn2 = data[v2];
-                    byte n1 = (byte) (fn1 & 0xFF);
+                    byte n1 = (byte) (fn1 >> 24);
 
                     // if f1 = f2 and n1 = n2
                     if (fn1 == fn2)
