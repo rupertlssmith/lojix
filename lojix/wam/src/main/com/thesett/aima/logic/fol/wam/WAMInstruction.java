@@ -108,10 +108,10 @@ public class WAMInstruction implements Sizeable
 
     // === Defines the heap cell marker types.
 
-    /** Indicates a register on the heap. */
+    /** Indicates a reference data type. */
     public static final byte REF = 0x01;
 
-    /** Indicates the beginning of a struc on the heap. */
+    /** Indicates a structure data type. */
     public static final byte STR = 0x02;
 
     /** Defines the L0 virtual machine instruction set as constants. */
