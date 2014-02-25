@@ -100,7 +100,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         java.util.logging.Logger.getLogger("TRACE.WAMResolvingJavaMachine");
 
     /** Defines the register capacity for the virtual machine. */
-    private static final int REG_SIZE = 10;
+    private static final int REG_SIZE = 256;
 
     /** Defines the heap size to use for the virtual machine. */
     private static final int HEAP_SIZE = 10000;
