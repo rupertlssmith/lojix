@@ -100,6 +100,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private static final java.util.logging.Logger trace =
         java.util.logging.Logger.getLogger("TRACE.WAMResolvingJavaMachine");
 
+    /** The mask to extract an address from a tagged heap cell. */
+    public static final int AMASK = 0x3FFFFFFF;
+
+    /** The shift to position the tag within a tagged heap cell. */
+    public static final int TSHIFT = 30;
+
     /** Defines the register capacity for the virtual machine. */
     private static final int REG_SIZE = 256;
 
@@ -328,7 +334,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_STRUC " + printSlot(xi, mode) + ", " + fn);
 
                 // heap[h] <- STR, h + 1
-                data.put(hp, (WAMInstruction.STR << 30) | ((hp + 1) & 0xFFFFFF));
+                data.put(hp, (WAMInstruction.STR << TSHIFT) | ((hp + 1) & AMASK));
 
                 // heap[h+1] <- f/n
                 data.put(hp + 1, fn);
@@ -355,7 +361,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": SET_VAR " + printSlot(xi, mode));
 
                 // heap[h] <- REF, h
-                data.put(hp, (WAMInstruction.REF << 30) | (hp & 0xFFFFFF));
+                data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
 
                 // Xi <- heap[h]
                 data.put(xi, data.get(hp));
@@ -412,7 +418,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 case REF:
                 {
                     // heap[h] <- STR, h + 1
-                    data.put(hp, (WAMInstruction.STR << 30) | ((hp + 1) & 0xFFFFFF));
+                    data.put(hp, (WAMInstruction.STR << TSHIFT) | ((hp + 1) & AMASK));
 
                     // heap[h+1] <- f/n
                     data.put(hp + 1, fn);
@@ -478,7 +484,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 {
                     // case write:
                     // heap[h] <- REF, h
-                    data.put(hp, (WAMInstruction.REF << 30) | (hp & 0xFFFFFF));
+                    data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
 
                     // Xi <- heap[h]
                     data.put(xi, data.get(hp));
@@ -542,7 +548,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
                 // heap[h] <- REF, H
-                data.put(hp, (WAMInstruction.REF << 30) | (hp & 0xFFFFFF));
+                data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
 
                 // Xn <- heap[h]
                 data.put(xi, data.get(hp));
@@ -899,8 +905,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         // tag, value <- STORE[a]
         int addr = a;
         int tmp = data.get(a);
-        derefTag = (byte) (tmp >>> 30);
-        derefVal = tmp & 0x00FFFFFF;
+        derefTag = (byte) (tmp >>> TSHIFT);
+        derefVal = tmp & AMASK;
 
         // while tag = REF and value != a
         while ((derefTag == WAMInstruction.REF))
@@ -908,8 +914,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             // tag, value <- STORE[a]
             addr = derefVal;
             tmp = data.get(derefVal);
-            derefTag = (byte) (tmp >>> 30);
-            tmp = tmp & 0x00FFFFFF;
+            derefTag = (byte) (tmp >>> TSHIFT);
+            tmp = tmp & AMASK;
 
             // Break on free var.
             if (derefVal == tmp)
@@ -1015,16 +1021,16 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private void bind(int a1, int a2)
     {
         // <t1, _> <- STORE[a1]
-        int t1 = (byte) (data.get(a1) >>> 30);
+        int t1 = (byte) (data.get(a1) >>> TSHIFT);
 
         // <t2, _> <- STORE[a2]
-        int t2 = (byte) (data.get(a2) >>> 30);
+        int t2 = (byte) (data.get(a2) >>> TSHIFT);
 
         // if (t1 = REF) /\ ((t2 != REF) \/ (a2 < a1))
         if ((t1 == WAMInstruction.REF) && ((t2 != WAMInstruction.REF) || (a2 < a1)))
         {
             //  STORE[a1] <- STORE[a2]
-            data.put(a1, (WAMInstruction.REF << 30) | (a2 & 0xFFFFFF));
+            data.put(a1, (WAMInstruction.REF << TSHIFT) | (a2 & AMASK));
 
             //  trail(a1)
             trail(a1);
@@ -1032,7 +1038,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         else if (t2 == WAMInstruction.REF)
         {
             //  STORE[a2] <- STORE[a1]
-            data.put(a2, (WAMInstruction.REF << 30) | (a1 & 0xFFFFFF));
+            data.put(a2, (WAMInstruction.REF << TSHIFT) | (a1 & AMASK));
 
             //  tail(a2)
             trail(a2);
@@ -1072,7 +1078,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         {
             //  STORE[TRAIL[i]] <- <REF, TRAIL[i]>
             int tmp = data.get(addr);
-            data.put(tmp, (WAMInstruction.REF << 30) | (tmp & 0xFFFFFF));
+            data.put(tmp, (WAMInstruction.REF << TSHIFT) | (tmp & AMASK));
         }
     }
 
