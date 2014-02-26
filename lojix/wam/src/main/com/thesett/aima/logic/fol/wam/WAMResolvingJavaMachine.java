@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -133,7 +134,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private int ip;
 
     /** Holds the entire data segment of the machine. All registers, heaps and stacks are held in here. */
-    private int[] data;
+    private IntBuffer data;
 
     /** Holds the heap pointer. */
     private int hp;
@@ -188,7 +189,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     public void reset()
     {
         // Create fresh heaps, code areas and stacks.
-        data = new int[TOP];
+        data = ByteBuffer.allocateDirect(TOP << 2).order(ByteOrder.LITTLE_ENDIAN).asIntBuffer();
         codeBuffer = ByteBuffer.allocateDirect(CODE_SIZE);
         codeBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -327,13 +328,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_STRUC " + printSlot(xi, mode) + ", " + fn);
 
                 // heap[h] <- STR, h + 1
-                data[hp] = (WAMInstruction.STR << 24) | ((hp + 1) & 0xFFFFFF);
+                data.put(hp, (WAMInstruction.STR << 24) | ((hp + 1) & 0xFFFFFF));
 
                 // heap[h+1] <- f/n
-                data[hp + 1] = fn;
+                data.put(hp + 1, fn);
 
                 // Xi <- heap[h]
-                data[xi] = data[hp];
+                data.put(xi, data.get(hp));
 
                 // h <- h + 2
                 hp += 2;
@@ -354,10 +355,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": SET_VAR " + printSlot(xi, mode));
 
                 // heap[h] <- REF, h
-                data[hp] = (WAMInstruction.REF << 24) | (hp & 0xFFFFFF);
+                data.put(hp, (WAMInstruction.REF << 24) | (hp & 0xFFFFFF));
 
                 // Xi <- heap[h]
-                data[xi] = data[hp];
+                data.put(xi, data.get(hp));
 
                 // h <- h + 1
                 hp++;
@@ -378,7 +379,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": SET_VAL " + printSlot(xi, mode));
 
                 // heap[h] <- Xi
-                data[hp] = data[xi];
+                data.put(hp, data.get(xi));
 
                 // h <- h + 1
                 hp++;
@@ -411,13 +412,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 case REF:
                 {
                     // heap[h] <- STR, h + 1
-                    data[hp] = (WAMInstruction.STR << 24) | ((hp + 1) & 0xFFFFFF);
+                    data.put(hp, (WAMInstruction.STR << 24) | ((hp + 1) & 0xFFFFFF));
 
                     // heap[h+1] <- f/n
-                    data[hp + 1] = fn;
+                    data.put(hp + 1, fn);
 
                     // bind(addr, h)
-                    //data[addr] = (WAMInstruction.REF << 24) | (hp & 0xFFFFFF);
+                    //data.put(addr, (WAMInstruction.REF << 24) | (hp & 0xFFFFFF));
                     bind(addr, hp);
 
                     // h <- h + 2
@@ -433,7 +434,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 case STR:
                 {
                     // if heap[a] = f/n
-                    if (data[a] == fn)
+                    if (data.get(a) == fn)
                     {
                         // s <- a + 1
                         sp = a + 1;
@@ -471,17 +472,17 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 {
                     // case read:
                     // Xi <- heap[s]
-                    data[xi] = data[sp];
+                    data.put(xi, data.get(sp));
 
                 }
                 else
                 {
                     // case write:
                     // heap[h] <- REF, h
-                    data[hp] = (WAMInstruction.REF << 24) | (hp & 0xFFFFFF);
+                    data.put(hp, (WAMInstruction.REF << 24) | (hp & 0xFFFFFF));
 
                     // Xi <- heap[h]
-                    data[xi] = data[hp];
+                    data.put(xi, data.get(hp));
 
                     // h <- h + 1
                     hp++;
@@ -516,7 +517,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 {
                     // case write:
                     // heap[h] <- Xi
-                    data[hp] = data[xi];
+                    data.put(hp, data.get(xi));
 
                     // h <- h + 1
                     hp++;
@@ -542,13 +543,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
                 // heap[h] <- REF, H
-                data[hp] = (WAMInstruction.REF << 24) | (hp & 0xFFFFFF);
+                data.put(hp, (WAMInstruction.REF << 24) | (hp & 0xFFFFFF));
 
                 // Xn <- heap[h]
-                data[xi] = data[hp];
+                data.put(xi, data.get(hp));
 
                 // Ai <- heap[h]
-                data[ai] = data[hp];
+                data.put(ai, data.get(hp));
 
                 // h <- h + 1
                 hp++;
@@ -570,7 +571,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_VAL " + printSlot(xi, mode) + ", A" + ai);
 
                 // Ai <- Xn
-                data[ai] = data[xi];
+                data.put(ai, data.get(xi));
 
                 // P <- P + instruction_size(P)
                 ip += 4;
@@ -589,7 +590,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": GET_VAR " + printSlot(xi, mode) + ", A" + ai);
 
                 // Xn <- Ai
-                data[xi] = data[ai];
+                data.put(xi, data.get(ai));
 
                 // P <- P + instruction_size(P)
                 ip += 4;
@@ -668,13 +669,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int esp = nextStackFrame();
 
                 // STACK[newE] <- E
-                data[esp] = ep;
+                data.put(esp, ep);
 
                 // STACK[E + 1] <- CP
-                data[esp + 1] = cp;
+                data.put(esp + 1, cp);
 
                 // STACK[E + 2] <- N
-                data[esp + 2] = n;
+                data.put(esp + 2, n);
 
                 // E <- newE
                 // newE <- E + n + 3
@@ -693,10 +694,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             // deallocate:
             case DEALLOCATE:
             {
-                int newip = data[ep + 1];
+                int newip = data.get(ep + 1);
 
                 // E <- STACK[E]
-                ep = data[ep];
+                ep = data.get(ep);
 
                 trace.fine(ip + ": DEALLOCATE");
                 trace.fine("<- env @ " + ep + " " + traceEnvFrame());
@@ -721,31 +722,31 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // STACK[newB] <- num_of_args
                 // n <- STACK[newB]
                 int n = numOfArgs;
-                data[esp] = n;
+                data.put(esp, n);
 
                 // for i <- 1 to n do STACK[newB + i] <- Ai
                 for (int i = 0; i < n; i++)
                 {
-                    data[esp + i + 1] = data[i];
+                    data.put(esp + i + 1, data.get(i));
                 }
 
                 // STACK[newB + n + 1] <- E
-                data[esp + n + 1] = ep;
+                data.put(esp + n + 1, ep);
 
                 // STACK[newB + n + 2] <- CP
-                data[esp + n + 2] = cp;
+                data.put(esp + n + 2, cp);
 
                 // STACK[newB + n + 3] <- B
-                data[esp + n + 3] = bp;
+                data.put(esp + n + 3, bp);
 
                 // STACK[newB + n + 4] <- L
-                data[esp + n + 4] = l;
+                data.put(esp + n + 4, l);
 
                 // STACK[newB + n + 5] <- TR
-                data[esp + n + 5] = trp;
+                data.put(esp + n + 5, trp);
 
                 // STACK[newB + n + 6] <- H
-                data[esp + n + 6] = hp;
+                data.put(esp + n + 6, hp);
 
                 // B <- new B
                 bp = esp;
@@ -769,31 +770,31 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int l = (int) codeBuffer.get(ip + 1);
 
                 // n <- STACK[B]
-                int n = data[bp];
+                int n = data.get(bp);
 
                 // for i <- 1 to n do Ai <- STACK[B + i]
                 for (int i = 0; i < n; i++)
                 {
-                    data[i] = data[bp + i + 1];
+                    data.put(i, data.get(bp + i + 1));
                 }
 
                 // E <- STACK[B + n + 1]
-                ep = data[bp + n + 1];
+                ep = data.get(bp + n + 1);
 
                 // CP <- STACK[B + n + 2]
-                cp = data[bp + n + 2];
+                cp = data.get(bp + n + 2);
 
                 // STACK[B + n + 4] <- L
-                data[bp + n + 4] = l;
+                data.put(bp + n + 4, l);
 
                 // unwind_trail(STACK[B + n + 5], TR)
-                unwindTrail(data[bp + n + 5], trp);
+                unwindTrail(data.get(bp + n + 5), trp);
 
                 // TR <- STACK[B + n + 5]
-                trp = data[bp + n + 5];
+                trp = data.get(bp + n + 5);
 
                 // H <- STACK[B + n + 6]
-                hp = data[bp + n + 6];
+                hp = data.get(bp + n + 6);
 
                 // HB <- H
                 hbp = hp;
@@ -811,34 +812,34 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case TRUST_ME:
             {
                 // n <- STACK[B]
-                int n = data[bp];
+                int n = data.get(bp);
 
                 // for i <- 1 to n do Ai <- STACK[B + i]
                 for (int i = 0; i < n; i++)
                 {
-                    data[i] = data[bp + i + 1];
+                    data.put(i, data.get(bp + i + 1));
                 }
 
                 // E <- STACK[B + n + 1]
-                ep = data[bp + n + 1];
+                ep = data.get(bp + n + 1);
 
                 // CP <- STACK[B + n + 2]
-                cp = data[bp + n + 2];
+                cp = data.get(bp + n + 2);
 
                 // unwind_trail(STACK[B + n + 5], TR)
-                unwindTrail(data[bp + n + 5], trp);
+                unwindTrail(data.get(bp + n + 5), trp);
 
                 // TR <- STACK[B + n + 5]
-                trp = data[bp + n + 5];
+                trp = data.get(bp + n + 5);
 
                 // H <- STACK[B + n + 6]
-                hp = data[bp + n + 6];
+                hp = data.get(bp + n + 6);
 
                 // HB <- STACK[B + n + 6]
                 hbp = hp;
 
                 // B <- STACK[B + n + 3]
-                bp = data[bp + n + 3];
+                bp = data.get(bp + n + 3);
 
                 trace.fine(ip + ": TRUST_ME");
                 trace.fine("<- chp @ " + bp + " " + traceChoiceFrame());
@@ -871,7 +872,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     protected String traceEnvFrame()
     {
-        return "env: [ ep = " + data[ep] + ", cp = " + data[ep + 1] + ", n = " + data[ep + 2] + "]";
+        return "env: [ ep = " + data.get(ep) + ", cp = " + data.get(ep + 1) + ", n = " + data.get(ep + 2) + "]";
     }
 
     /**
@@ -886,11 +887,11 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             return "";
         }
 
-        int n = data[bp];
+        int n = data.get(bp);
 
-        return "choice: [ n = " + data[bp] + ", ep = " + data[bp + n + 1] + ", cp = " + data[bp + n + 2] + ", bp = " +
-            data[bp + n + 3] + ", l = " + data[bp + n + 4] + ", trp = " + data[bp + n + 5] + ", hp = " +
-            data[bp + n + 6];
+        return "choice: [ n = " + data.get(bp) + ", ep = " + data.get(bp + n + 1) + ", cp = " + data.get(bp + n + 2) +
+            ", bp = " + data.get(bp + n + 3) + ", l = " + data.get(bp + n + 4) + ", trp = " + data.get(bp + n + 5) +
+            ", hp = " + data.get(bp + n + 6);
     }
 
     /** {@inheritDoc} */
@@ -898,7 +899,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     {
         // tag, value <- STORE[a]
         int addr = a;
-        int tmp = data[a];
+        int tmp = data.get(a);
         derefTag = (byte) ((tmp & 0xFF000000) >> 24);
         derefVal = tmp & 0x00FFFFFF;
 
@@ -907,7 +908,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         {
             // tag, value <- STORE[a]
             addr = derefVal;
-            tmp = data[derefVal];
+            tmp = data.get(derefVal);
             derefTag = (byte) ((tmp & 0xFF000000) >> 24);
             tmp = tmp & 0x00FFFFFF;
 
@@ -952,7 +953,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     protected int getHeap(int addr)
     {
-        return data[addr];
+        return data.get(addr);
     }
 
     /**
@@ -974,11 +975,11 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         }
         else if (ep > bp)
         {
-            return ep + data[ep + 2] + 3;
+            return ep + data.get(ep + 2) + 3;
         }
         else
         {
-            return bp + data[bp] + 7;
+            return bp + data.get(bp) + 7;
         }
     }
 
@@ -999,7 +1000,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         else
         {
             //   P <- STACK[B + STACK[B] + 4]
-            ip = data[bp + data[bp] + 4];
+            ip = data.get(bp + data.get(bp) + 4);
 
             return false;
         }
@@ -1015,16 +1016,16 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private void bind(int a1, int a2)
     {
         // <t1, _> <- STORE[a1]
-        int t1 = (byte) ((data[a1] & 0xFF000000) >> 24);
+        int t1 = (byte) ((data.get(a1) & 0xFF000000) >> 24);
 
         // <t2, _> <- STORE[a2]
-        int t2 = (byte) ((data[a2] & 0xFF000000) >> 24);
+        int t2 = (byte) ((data.get(a2) & 0xFF000000) >> 24);
 
         // if (t1 = REF) /\ ((t2 != REF) \/ (a2 < a1))
         if ((t1 == WAMInstruction.REF) && ((t2 != WAMInstruction.REF) || (a2 < a1)))
         {
             //  STORE[a1] <- STORE[a2]
-            data[a1] = (WAMInstruction.REF << 24) | (a2 & 0xFFFFFF);
+            data.put(a1, (WAMInstruction.REF << 24) | (a2 & 0xFFFFFF));
 
             //  trail(a1)
             trail(a1);
@@ -1032,7 +1033,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         else if (t2 == WAMInstruction.REF)
         {
             //  STORE[a2] <- STORE[a1]
-            data[a2] = (WAMInstruction.REF << 24) | (a1 & 0xFFFFFF);
+            data.put(a2, (WAMInstruction.REF << 24) | (a1 & 0xFFFFFF));
 
             //  tail(a2)
             trail(a2);
@@ -1051,7 +1052,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         if ((addr < hbp) || ((hp < addr) && (addr < bp)))
         {
             //  TRAIL[TR] <- a
-            data[trp] = addr;
+            data.put(trp, addr);
 
             //  TR <- TR + 1
             trp++;
@@ -1071,8 +1072,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         for (int addr = a1; addr < a2; addr++)
         {
             //  STORE[TRAIL[i]] <- <REF, TRAIL[i]>
-            int tmp = data[addr];
-            data[tmp] = (WAMInstruction.REF << 24) | (tmp & 0xFFFFFF);
+            int tmp = data.get(addr);
+            data.put(tmp, (WAMInstruction.REF << 24) | (tmp & 0xFFFFFF));
         }
     }
 
@@ -1117,20 +1118,20 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // bind(d1, d2)
                 if ((t1 == WAMInstruction.REF))
                 {
-                    //data[d1] = (WAMInstruction.REF << 24) | (d2 & 0xFFFFFF);
+                    //data.put(d1, (WAMInstruction.REF << 24) | (d2 & 0xFFFFFF));
                     bind(d1, d2);
                 }
                 else if (t2 == WAMInstruction.REF)
                 {
-                    //data[d2] = (WAMInstruction.REF << 24) | (d1 & 0xFFFFFF);
+                    //data.put(d2, (WAMInstruction.REF << 24) | (d1 & 0xFFFFFF));
                     bind(d1, d2);
                 }
                 else
                 {
                     // f1/n1 <- STORE[v1]
                     // f2/n2 <- STORE[v2]
-                    int fn1 = data[v1];
-                    int fn2 = data[v2];
+                    int fn1 = data.get(v1);
+                    int fn2 = data.get(v2);
                     byte n1 = (byte) (fn1 >> 24);
 
                     // if f1 = f2 and n1 = n2
@@ -1164,7 +1165,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     private void uPush(int val)
     {
-        data[--up] = val;
+        data.put(--up, val);
     }
 
     /**
@@ -1174,7 +1175,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     private int uPop()
     {
-        return data[up++];
+        return data.get(up++);
     }
 
     /** Clears the unification stack. */
