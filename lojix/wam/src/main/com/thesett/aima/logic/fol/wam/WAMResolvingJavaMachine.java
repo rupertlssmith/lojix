@@ -334,16 +334,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": PUT_STRUC " + printSlot(xi, mode) + ", " + fn);
 
                 // heap[h] <- STR, h + 1
-                data.put(hp, (WAMInstruction.STR << TSHIFT) | ((hp + 1) & AMASK));
-
-                // heap[h+1] <- f/n
-                data.put(hp + 1, fn);
+                data.put(hp, fn);
 
                 // Xi <- heap[h]
-                data.put(xi, data.get(hp));
+                data.put(xi, (WAMInstruction.STR << TSHIFT) | ((hp) & AMASK));
 
                 // h <- h + 2
-                hp += 2;
+                hp += 1;
 
                 // P <- instruction_size(P)
                 ip += 7;
