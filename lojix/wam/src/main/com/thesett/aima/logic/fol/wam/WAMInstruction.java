@@ -22,7 +22,6 @@ import java.util.Map;
 
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
-import com.thesett.common.util.ByteBufferUtils;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
@@ -74,6 +73,18 @@ public class WAMInstruction implements Sizeable
     /** The instruction to unify a register with a location on the heap. */
     public static final byte GET_VAL = 0x0a;
 
+    /** The instruction to copy a constant into an argument register. */
+    public static final byte PUT_CONST = 0x12;
+
+    /** The instruction to compare or bind a reference from a register to a constant. */
+    public static final byte GET_CONST = 0x13;
+
+    /** The instruction to write a constant onto the heap. */
+    public static final byte SET_CONST = 0x14;
+
+    /** The instruction to unify the heap with a constant. */
+    public static final byte UNIFY_CONST = 0x15;
+
     /** The instruction to call a predicate. */
     public static final byte CALL = 0x0b;
 
@@ -113,6 +124,12 @@ public class WAMInstruction implements Sizeable
 
     /** Indicates a structure data type. */
     public static final byte STR = 0x01;
+
+    /** Indicates a constant atom data type. */
+    public static final byte CON = 0x02;
+
+    /** Indicates a list data type. */
+    public static final byte LIS = 0x03;
 
     /** Defines the L0 virtual machine instruction set as constants. */
     public enum WAMInstructionSet
@@ -258,6 +275,94 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return toStringReg1Reg2(pretty, instruction);
+            }
+        },
+
+        PutConstant(PUT_CONST, "put_const", 6)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                disassembleReg1Fn(code, ip, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                emmitCodeReg1Fn(codeBuf, code, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return toStringReg1Fn(pretty, instruction);
+            }
+        },
+
+        GetConstant(GET_CONST, "get_const", 6)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                disassembleReg1Fn(code, ip, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                emmitCodeReg1Fn(codeBuf, code, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return toStringReg1Fn(pretty, instruction);
+            }
+        },
+
+        SetConstant(SET_CONST, "set_const", 5)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                disassembleFn(code, ip, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                emmitCodeFn(codeBuf, code, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return toStringFn(pretty, instruction);
+            }
+        },
+
+        UnifyConstant(UNIFY_CONST, "unify_const", 5)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                disassembleFn(code, ip, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                emmitCodeFn(codeBuf, code, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return toStringFn(pretty, instruction);
             }
         },
 
@@ -651,6 +756,25 @@ public class WAMInstruction implements Sizeable
             codeBuf.put(code);
             codeBuf.put(instruction.mode1);
             codeBuf.put(instruction.reg1);
+
+            int arity = instruction.fn.getArity() << 24;
+            int name = machine.internFunctorName(instruction.fn) & 0x00ffffff;
+            codeBuf.putInt(arity | name);
+        }
+
+        /**
+         * Writes out the instruction plus arguments in the byte code format to the specified location within a code
+         * buffer.
+         *
+         * @param codeBuf     The code buffer to write to.
+         * @param code        The instruction mnemonic.
+         * @param instruction The instruction, including its arguments.
+         * @param machine     The binary machine to write the code into.
+         */
+        private static void emmitCodeFn(ByteBuffer codeBuf, byte code, WAMInstruction instruction, WAMMachine machine)
+        {
+            codeBuf.put(code);
+
             int arity = instruction.fn.getArity() << 24;
             int name = machine.internFunctorName(instruction.fn) & 0x00ffffff;
             codeBuf.putInt(arity | name);
@@ -697,6 +821,20 @@ public class WAMInstruction implements Sizeable
         }
 
         /**
+         * Helper print function that prints an instruction with one functor reference.
+         *
+         * @param  pretty      The pretty printed instruction mnenomic.
+         * @param  instruction The instruction data.
+         *
+         * @return A pretty printed instruction.
+         */
+        private static String toStringFn(String pretty, WAMInstruction instruction)
+        {
+            return pretty + " " +
+                ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
+        }
+
+        /**
          * Disassembles the arguments to an instruction that takes one register and one functor reference.
          *
          * @param code        The code buffer to disassemble from.
@@ -728,7 +866,7 @@ public class WAMInstruction implements Sizeable
         }
 
         /**
-         * Disassembles the arguments to an instruction that takes one register argument.
+         * Disassembles the arguments to an instruction that takes two register arguments.
          *
          * @param code        The code buffer to disassemble from.
          * @param ip          The instruction pointer within the code buffer.
@@ -739,6 +877,20 @@ public class WAMInstruction implements Sizeable
             instruction.mode1 = code.get(ip + 1);
             instruction.reg1 = code.get(ip + 2);
             instruction.reg2 = code.get(ip + 3);
+        }
+
+        /**
+         * Disassembles the arguments to an instruction that takes one functor argument.
+         *
+         * @param code        The code buffer to disassemble from.
+         * @param ip          The instruction pointer within the code buffer.
+         * @param instruction The instruction to store the disassembles arguments in.
+         */
+        private static void disassembleFn(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
+        {
+            int fn = code.getInt(ip + 1);
+            int f = fn >> 8;
+            instruction.fn = machine.getFunctorFunctorName(f);
         }
     }
 

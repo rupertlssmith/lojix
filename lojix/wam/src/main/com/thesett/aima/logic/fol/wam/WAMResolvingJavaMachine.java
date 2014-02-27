@@ -25,15 +25,18 @@ import com.thesett.aima.logic.fol.Variable;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.DEALLOCATE;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_STRUC;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PROCEED;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_STRUC;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.REF;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.RETRY_ME_ELSE;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.STACK_ADDR;
@@ -41,6 +44,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.STR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SUSPEND;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRUST_ME;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRY_ME_ELSE;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAR;
 import com.thesett.common.util.SequenceIterator;
@@ -328,7 +332,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, f/n
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 int fn = codeBuffer.getInt(ip + 3);
 
                 trace.fine(ip + ": PUT_STRUC " + printSlot(xi, mode) + ", " + fn);
@@ -337,7 +341,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 data.put(hp, fn);
 
                 // Xi <- heap[h]
-                data.put(xi, (WAMInstruction.STR << TSHIFT) | ((hp) & AMASK));
+                data.put(xi, structureAt(hp));
 
                 // h <- h + 2
                 hp += 1;
@@ -353,12 +357,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
 
                 trace.fine(ip + ": SET_VAR " + printSlot(xi, mode));
 
                 // heap[h] <- REF, h
-                data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
+                data.put(hp, refTo(hp));
 
                 // Xi <- heap[h]
                 data.put(xi, data.get(hp));
@@ -377,7 +381,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
 
                 trace.fine(ip + ": SET_VAL " + printSlot(xi, mode));
 
@@ -398,7 +402,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, f/n
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 int fn = codeBuffer.getInt(ip + 3);
 
                 trace.fine(ip + ": GET_STRUC " + printSlot(xi, mode) + ", " + fn);
@@ -415,7 +419,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 case REF:
                 {
                     // heap[h] <- STR, h + 1
-                    data.put(hp, (WAMInstruction.STR << TSHIFT) | ((hp + 1) & AMASK));
+                    data.put(hp, structureAt(hp + 1));
 
                     // heap[h+1] <- f/n
                     data.put(hp + 1, fn);
@@ -465,7 +469,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
 
                 trace.fine(ip + ": UNIFY_VAR " + printSlot(xi, mode));
 
@@ -481,7 +485,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 {
                     // case write:
                     // heap[h] <- REF, h
-                    data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
+                    data.put(hp, refTo(hp));
 
                     // Xi <- heap[h]
                     data.put(xi, data.get(hp));
@@ -504,7 +508,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
 
                 trace.fine(ip + ": UNIFY_VAL " + printSlot(xi, mode));
 
@@ -539,13 +543,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
                 // heap[h] <- REF, H
-                data.put(hp, (WAMInstruction.REF << TSHIFT) | (hp & AMASK));
+                data.put(hp, refTo(hp));
 
                 // Xn <- heap[h]
                 data.put(xi, data.get(hp));
@@ -567,7 +571,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": PUT_VAL " + printSlot(xi, mode) + ", A" + ai);
@@ -586,7 +590,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": GET_VAR " + printSlot(xi, mode) + ", A" + ai);
@@ -605,7 +609,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int xi = (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+                int xi = getRegisterOrStackSlot(mode);
                 byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": GET_VAL " + printSlot(xi, mode) + ", A" + ai);
@@ -617,6 +621,26 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 ip += 4;
 
                 break;
+            }
+
+            case PUT_CONST:
+            {
+                throw new IllegalStateException("Not implemented.");
+            }
+
+            case GET_CONST:
+            {
+                throw new IllegalStateException("Not implemented.");
+            }
+
+            case SET_CONST:
+            {
+                throw new IllegalStateException("Not implemented.");
+            }
+
+            case UNIFY_CONST:
+            {
+                throw new IllegalStateException("Not implemented.");
             }
 
             // call @(p/n):
@@ -959,6 +983,47 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     }
 
     /**
+     * Creates a heap cell contents containing a structure tag, and the address of the structure.
+     *
+     * <p/>Note: This only creates the contents of the cell, it does not write it to the heap.
+     *
+     * @param  addr The address of the structure.
+     *
+     * @return The heap cell contents referencing the structure.
+     */
+    private int structureAt(int addr)
+    {
+        return (WAMInstruction.STR << TSHIFT) | (addr & AMASK);
+    }
+
+    /**
+     * Creates a heap cell contents containing a reference.
+     *
+     * <p/>Note: This only creates the contents of the cell, it does not write it to the heap.
+     *
+     * @param  addr The references address.
+     *
+     * @return The heap cell contents containing the reference.
+     */
+    private int refTo(int addr)
+    {
+        return (WAMInstruction.REF << TSHIFT) | (addr & AMASK);
+    }
+
+    /**
+     * Loads the contents of a register, or a stack slot, depending on the mode.
+     *
+     * @param  mode The mode, {@link WAMInstruction#REG_ADDR} for register addressing, {@link WAMInstruction#STACK_ADDR}
+     *              for stack addressing.
+     *
+     * @return The contents of the register or stack slot.
+     */
+    private int getRegisterOrStackSlot(byte mode)
+    {
+        return (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + 3) : 0);
+    }
+
+    /**
      * Computes the start of the next stack frame. This depends on whether the most recent stack frame is an environment
      * frame or a choice point frame, as these have different sizes. The size of the most recent type of frame is
      * computed and added to the current frame pointer to give the start of the next frame.
@@ -1027,7 +1092,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         if ((t1 == WAMInstruction.REF) && ((t2 != WAMInstruction.REF) || (a2 < a1)))
         {
             //  STORE[a1] <- STORE[a2]
-            data.put(a1, (WAMInstruction.REF << TSHIFT) | (a2 & AMASK));
+            data.put(a1, refTo(a2));
 
             //  trail(a1)
             trail(a1);
@@ -1035,7 +1100,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         else if (t2 == WAMInstruction.REF)
         {
             //  STORE[a2] <- STORE[a1]
-            data.put(a2, (WAMInstruction.REF << TSHIFT) | (a1 & AMASK));
+            data.put(a2, refTo(a1));
 
             //  tail(a2)
             trail(a2);
@@ -1075,7 +1140,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         {
             //  STORE[TRAIL[i]] <- <REF, TRAIL[i]>
             int tmp = data.get(addr);
-            data.put(tmp, (WAMInstruction.REF << TSHIFT) | (tmp & AMASK));
+            data.put(tmp, refTo(tmp));
         }
     }
 
