@@ -24,6 +24,7 @@ import java.util.Set;
 import com.thesett.aima.logic.fol.Variable;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.CON;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.DEALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_STRUC;
@@ -649,7 +650,51 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case GET_CONST:
             {
-                throw new IllegalStateException("Not implemented.");
+                // grab addr, Ai
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+                int fn = codeBuffer.getInt(ip + 3);
+
+                trace.fine(ip + ": GET_CONST " + printSlot(xi, mode) + ", " + fn);
+
+                // addr <- deref(Xi)
+                int addr = deref(xi);
+                int tag = derefTag;
+                int val = derefVal;
+
+                // case STORE[addr] of
+                switch (tag)
+                {
+                case REF:
+                {
+                    // <REF, _> :
+                    // STORE[addr] <- <CON, c>
+                    data.put(addr, constantCell(fn));
+
+                    // trail(addr)
+                    trail(addr);
+                }
+
+                case CON:
+                {
+                    // <CON, c'> :
+                    // fail <- (c != c');
+                    failed = val != fn;
+
+                    break;
+                }
+
+                default:
+                {
+                    // other: fail <- true;
+                    failed = true;
+                }
+                }
+
+                // P <- P + instruction_size(P)
+                ip += 7;
+
+                break;
             }
 
             case SET_CONST:
@@ -1055,7 +1100,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     private int constantCell(int fn)
     {
-        return (WAMInstruction.CON << TSHIFT) | (fn & CMASK);
+        return (CON << TSHIFT) | (fn & CMASK);
     }
 
     /**

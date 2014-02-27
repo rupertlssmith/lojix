@@ -278,7 +278,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        PutConstant(PUT_CONST, "put_const", 6)
+        PutConstant(PUT_CONST, "put_const", 7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
@@ -300,7 +300,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        GetConstant(GET_CONST, "get_const", 6)
+        GetConstant(GET_CONST, "get_const", 7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
