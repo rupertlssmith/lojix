@@ -107,6 +107,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     /** The mask to extract an address from a tagged heap cell. */
     public static final int AMASK = 0x3FFFFFFF;
 
+    /**
+     * The mask to extract a constant from a tagged heap cell. Arity of atomic constants is always zero, so just the
+     * functor name needs to be stored and loaded to the heap cell.
+     */
+    public static final int CMASK = 0xFFFFFFF;
+
     /** The shift to position the tag within a tagged heap cell. */
     public static final int TSHIFT = 30;
 
@@ -625,7 +631,20 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case PUT_CONST:
             {
-                throw new IllegalStateException("Not implemented.");
+                // grab addr, f/n
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+                int fn = codeBuffer.getInt(ip + 3);
+
+                trace.fine(ip + ": PUT_CONST " + printSlot(xi, mode) + ", " + fn);
+
+                // Xi <- heap[h]
+                data.put(xi, constantCell(fn));
+
+                // P <- instruction_size(P)
+                ip += 7;
+
+                break;
             }
 
             case GET_CONST:
@@ -635,7 +654,20 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case SET_CONST:
             {
-                throw new IllegalStateException("Not implemented.");
+                int fn = codeBuffer.getInt(ip + 1);
+
+                trace.fine(ip + ": SET_CONST " + fn);
+
+                // heap[h] <- <CON, c>
+                data.put(hp, constantCell(fn));
+
+                // h <- h + 1
+                hp++;
+
+                // P <- instruction_size(P)
+                ip += 5;
+
+                break;
             }
 
             case UNIFY_CONST:
@@ -1008,6 +1040,22 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private int refTo(int addr)
     {
         return (WAMInstruction.REF << TSHIFT) | (addr & AMASK);
+    }
+
+    /**
+     * Creates a heap cell contents containing a constant.
+     *
+     * <p/>Note: This only creates the contents of the cell, it does not write it to the heap.
+     *
+     * <p/>See the comment on {@link #CMASK} about the arity always being zero on a constant.
+     *
+     * @param  fn The functor name and arity of the constant. Arity should always be zero.
+     *
+     * @return The heap cell contents containing the constant.
+     */
+    private int constantCell(int fn)
+    {
+        return (WAMInstruction.CON << TSHIFT) | (fn & CMASK);
     }
 
     /**
