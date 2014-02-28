@@ -150,6 +150,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testFunctorsSameArityDifferentArgsFailToUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFunctorsDifferentNameSameArgsDoNotUnify", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testWamBook2_9", engine));
 
         // Add all tests defined in the BasicResolverUnitTestBase class
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
