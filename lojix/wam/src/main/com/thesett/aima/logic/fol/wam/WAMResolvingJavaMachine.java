@@ -27,11 +27,14 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CON;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.DEALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_CONST;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_LIST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_STRUC;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_VAR;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.LIS;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PROCEED;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_CONST;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_LIST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_STRUC;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAR;
@@ -662,34 +665,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int tag = derefTag;
                 int val = derefVal;
 
-                // case STORE[addr] of
-                switch (tag)
-                {
-                case REF:
-                {
-                    // <REF, _> :
-                    // STORE[addr] <- <CON, c>
-                    data.put(addr, constantCell(fn));
-
-                    // trail(addr)
-                    trail(addr);
-                }
-
-                case CON:
-                {
-                    // <CON, c'> :
-                    // fail <- (c != c');
-                    failed = val != fn;
-
-                    break;
-                }
-
-                default:
-                {
-                    // other: fail <- true;
-                    failed = true;
-                }
-                }
+                failed = !unifyConst(fn, xi);
 
                 // P <- P + instruction_size(P)
                 ip += 7;
@@ -717,7 +693,100 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case UNIFY_CONST:
             {
-                throw new IllegalStateException("Not implemented.");
+                int fn = codeBuffer.getInt(ip + 1);
+
+                trace.fine(ip + ": UNIFY_CONST " + fn);
+
+                // switch mode
+                if (!writeMode)
+                {
+                    // case read:
+                    // addr <- deref(S)
+
+                    // unifyConst(fn, addr)
+                    failed = !unifyConst(fn, sp);
+                }
+                else
+                {
+                    // case write:
+                    // heap[h] <- <CON, c>
+                    data.put(hp, constantCell(fn));
+
+                    // h <- h + 1
+                    hp++;
+                }
+
+                // P <- P + instruction_size(P)
+                ip += 5;
+
+                break;
+            }
+
+            case PUT_LIST:
+            {
+                // grab addr
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+
+                // Xi <- <LIS, H>
+                data.put(xi, listCell(hp));
+
+                // P <- P + instruction_size(P)
+                ip += 3;
+            }
+
+            case GET_LIST:
+            {
+                // grab addr
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+
+                int deref = deref(xi);
+                int tag = derefTag;
+                int val = derefVal;
+
+                // case STORE[addr] of
+                switch (tag)
+                {
+                case REF:
+                {
+                    // <REF, _> :
+                    // HEAP[H] <- <LIS, H+1>
+                    data.put(hp, listCell(hp + 1));
+
+                    // bind(addr, H)
+                    bind(deref, hp);
+
+                    // H <- H + 1
+                    hp += 1;
+
+                    // mode <- write
+                    writeMode = true;
+
+                    break;
+                }
+
+                case LIS:
+                {
+                    // <LIS, a> :
+                    // S <- a
+                    sp = val;
+
+                    // mode <- read
+                    writeMode = false;
+
+                    break;
+                }
+
+                default:
+                {
+                    // other: fail <- true;
+                    failed = false;
+                }
+                }
+
+                // P <- P + instruction_size(P)
+                ip += 3;
             }
 
             // call @(p/n):
@@ -1104,6 +1173,20 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     }
 
     /**
+     * Creates a heap cell contents containing a list pointer.
+     *
+     * <p/>Note: This only creates the contents of the cell, it does not write it to the heap.
+     *
+     * @param  addr The address of the list contents.
+     *
+     * @return The heap cell contents containing the list pointer.
+     */
+    private int listCell(int addr)
+    {
+        return (WAMInstruction.LIS << TSHIFT) | (addr & AMASK);
+    }
+
+    /**
      * Loads the contents of a register, or a stack slot, depending on the mode.
      *
      * @param  mode The mode, {@link WAMInstruction#REG_ADDR} for register addressing, {@link WAMInstruction#STACK_ADDR}
@@ -1314,6 +1397,62 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         }
 
         return !fail;
+    }
+
+    /**
+     * A simplified unification algorithm, for unifying against a constant.
+     *
+     * <p/>Attempts to unify a constant or references on the heap, with a constant. If the address leads to a free
+     * variable on dereferencing, the variable is bound to the constant. If the address leads to a constant it is
+     * compared with the passed in constant for equality, and unification succeeds when they are equal.
+     *
+     * @param  fn   The constant to unify with.
+     * @param  addr The address of the first constant or reference.
+     *
+     * @return <tt>true</tt> if the two constant unify, <tt>false</tt> otherwise.
+     */
+    private boolean unifyConst(int fn, int addr)
+    {
+        boolean success;
+
+        int deref = deref(addr);
+        int tag = derefTag;
+        int val = derefVal;
+
+        // case STORE[addr] of
+        switch (tag)
+        {
+        case REF:
+        {
+            // <REF, _> :
+            // STORE[addr] <- <CON, c>
+            data.put(deref, constantCell(fn));
+
+            // trail(addr)
+            trail(deref);
+
+            success = true;
+
+            break;
+        }
+
+        case CON:
+        {
+            // <CON, c'> :
+            // fail <- (c != c');
+            success = val == fn;
+
+            break;
+        }
+
+        default:
+        {
+            // other: fail <- true;
+            success = false;
+        }
+        }
+
+        return success;
     }
 
     /**

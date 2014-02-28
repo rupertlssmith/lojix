@@ -85,6 +85,12 @@ public class WAMInstruction implements Sizeable
     /** The instruction to unify the heap with a constant. */
     public static final byte UNIFY_CONST = 0x15;
 
+    /** The instruction to copy a list pointer into an argument register. */
+    public static final byte PUT_LIST = 0x16;
+
+    /** The instruction to compare or bind a reference from a register to a list pointer. */
+    public static final byte GET_LIST = 0x17;
+
     /** The instruction to call a predicate. */
     public static final byte CALL = 0x0b;
 
@@ -365,6 +371,10 @@ public class WAMInstruction implements Sizeable
                 return toStringFn(pretty, instruction);
             }
         },
+
+        PutList(PUT_LIST, "put_list", 3),
+
+        GetList(GET_LIST, "get_list", 3),
 
         /** The instruction to call a predicate. */
         Call(CALL, "call", 6)
@@ -704,7 +714,7 @@ public class WAMInstruction implements Sizeable
          */
         protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
         {
-            disassembleReg1(code, ip, instruction);
+            disassembleReg1(code, ip, instruction, machine);
         }
 
         /**
@@ -858,8 +868,9 @@ public class WAMInstruction implements Sizeable
          * @param code        The code buffer to disassemble from.
          * @param ip          The instruction pointer within the code buffer.
          * @param instruction The instruction to store the disassembles arguments in.
+         * @param machine     The binary machine to disassemble from.
          */
-        private static void disassembleReg1(ByteBuffer code, int ip, WAMInstruction instruction)
+        private static void disassembleReg1(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
         {
             instruction.mode1 = code.get(ip + 1);
             instruction.reg1 = code.get(ip + 2);
