@@ -15,10 +15,9 @@
  */
 package com.thesett.aima.logic.fol;
 
-import com.thesett.common.parsing.SourceCodeException;
-
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.common.parsing.SourceCodeException;
 
 /**
  * Applies basic resolution problems to a resolver implementation, in order to verify that it functions correctly. All
@@ -33,8 +32,7 @@ import com.thesett.aima.logic.fol.isoprologparser.Token;
  *
  * @author Rupert Smith
  */
-public class BasicUnificationUnitTestBase<S extends Clause, T, Q>
-    extends BasicResolverUnitTestBase<S, T, Q>
+public class BasicUnificationUnitTestBase<S extends Clause, T, Q> extends BasicResolverUnitTestBase<S, T, Q>
 {
     /** Used for debugging purposes. */
     public static final java.util.logging.Logger log =
@@ -280,5 +278,11 @@ public class BasicUnificationUnitTestBase<S extends Clause, T, Q>
     public void testWamBook2_9() throws Exception
     {
         unifyAndAssertNumBindings("p(f(X),h(Y,f(a)),Y)", "p(Z,h(Z,W),f(W))", 2);
+    }
+
+    /** A unification example from the WAM book, but with the statement and query swapped around. */
+    public void testWamBook2_9OtherWay() throws Exception
+    {
+        unifyAndAssertNumBindings("p(Z,h(Z,W),f(W))", "p(f(X),h(Y,f(a)),Y)", 2);
     }
 }
