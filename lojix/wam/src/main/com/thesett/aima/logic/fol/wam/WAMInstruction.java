@@ -91,6 +91,12 @@ public class WAMInstruction implements Sizeable
     /** The instruction to compare or bind a reference from a register to a list pointer. */
     public static final byte GET_LIST = 0x17;
 
+    /** The instruction to write an anonymous variable onto the heap. */
+    public static final byte SET_VOID = 0x18;
+
+    /** The instruction to unfiy with anonymous variables on the heap. */
+    public static final byte UNIFY_VOID = 0x19;
+
     /** The instruction to call a predicate. */
     public static final byte CALL = 0x0b;
 
@@ -375,6 +381,50 @@ public class WAMInstruction implements Sizeable
         PutList(PUT_LIST, "put_list", 3),
 
         GetList(GET_LIST, "get_list", 3),
+
+        SetVoid(SET_VOID, "set_void", 2)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                // Do nothing as this instruction takes no arguments.
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+                codeBuf.put(instruction.reg1);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + instruction.reg1;
+            }
+        },
+
+        UnifyVoid(UNIFY_VOID, "unify_void", 2)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                // Do nothing as this instruction takes no arguments.
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+                codeBuf.put(instruction.reg1);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + instruction.reg1;
+            }
+        },
 
         /** The instruction to call a predicate. */
         Call(CALL, "call", 6)

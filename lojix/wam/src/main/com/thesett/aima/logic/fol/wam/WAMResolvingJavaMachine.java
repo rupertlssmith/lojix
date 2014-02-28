@@ -43,6 +43,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.RETRY_ME_ELSE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAR;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VOID;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.STACK_ADDR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.STR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SUSPEND;
@@ -51,6 +52,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRY_ME_ELSE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAR;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VOID;
 import com.thesett.common.util.SequenceIterator;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
@@ -787,6 +789,54 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 3;
+            }
+
+            case SET_VOID:
+            {
+                // grab N
+                int n = (int) codeBuffer.get(ip + 1);
+
+                // for i <- H to H + n - 1 do
+                //  HEAP[i] <- <REF, i>
+                for (int addr = hp; addr < (hp + n); addr++)
+                {
+                    data.put(addr, refTo(addr));
+                }
+
+                // H <- H + n
+                hp += n;
+
+                // P <- P + instruction_size(P)
+                ip += 2;
+            }
+
+            case UNIFY_VOID:
+            {
+                // grab N
+                int n = (int) codeBuffer.get(ip + 1);
+
+                // case mode of
+                if (!writeMode)
+                {
+                    //  read: S <- S + n
+                    sp += n;
+                }
+                else
+                {
+                    //  write:
+                    //   for i <- H to H + n -1 do
+                    //    HEAP[i] <- <REF, i>
+                    for (int addr = hp; addr < (hp + n); addr++)
+                    {
+                        data.put(addr, refTo(addr));
+                    }
+
+                    //   H <- H + n
+                    hp += n;
+                }
+
+                // P <- P + instruction_size(P)
+                ip += 2;
             }
 
             // call @(p/n):
