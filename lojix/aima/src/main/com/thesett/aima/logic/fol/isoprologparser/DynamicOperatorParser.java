@@ -39,7 +39,7 @@ import com.thesett.common.util.StackQueue;
  * simultaneosly defined, priority must be between 0 and 1200 inclusive, setting a priority of 0 on an operator removes
  * it from the table. It is the responsibility of the caller to ensure that operators have valid names.
  *
- * <p/>The grammer to parse looks like:
+ * <p/>The grammar to parse looks like:
  *
  * <pre>
  * T := t
@@ -54,7 +54,7 @@ import com.thesett.common.util.StackQueue;
  * <p/>This grammar can be parsed using a simple Shift-Reduce, or LR parser. The translation of the grammar into a
  * parsing table looks like:
  *
- * <p/>Augment the grammer with a start state and number the rules:
+ * <p/>Augment the grammar with a start state and number the rules:
  *
  * <pre>
  * 0. S := T
@@ -782,7 +782,7 @@ public class DynamicOperatorParser implements OperatorTable
     }
 
     /**
-     * Implements a reduction by rule 2 of the grammer. This consumes two states from the state stack, and expects the
+     * Implements a reduction by rule 2 of the grammar. This consumes two states from the state stack, and expects the
      * top two symbols on the output stack to be a terminal follow by an operator candidate that resolves to a prefix
      * operator.
      */
@@ -823,7 +823,7 @@ public class DynamicOperatorParser implements OperatorTable
     }
 
     /**
-     * Implements a reduction by rule 3 of the grammer. This consumes two states from the state stack, and expects the
+     * Implements a reduction by rule 3 of the grammar. This consumes two states from the state stack, and expects the
      * top two symbols on the output stack to be an operator candidate that resolves to a postfix operator followed by a
      * terminal.
      */
@@ -863,7 +863,7 @@ public class DynamicOperatorParser implements OperatorTable
     }
 
     /**
-     * Implements a reduction by rule 3 of the grammer. This consumes three states from the state stack, and expects the
+     * Implements a reduction by rule 3 of the grammar. This consumes three states from the state stack, and expects the
      * top three symbols on the output stack to be a terminal followed by ann operator candidate that resolves to a
      * infix operator followed by a terminal.
      */
