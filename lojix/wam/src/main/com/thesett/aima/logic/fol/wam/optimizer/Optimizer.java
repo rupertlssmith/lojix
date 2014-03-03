@@ -23,12 +23,20 @@ import com.thesett.aima.logic.fol.wam.WAMOptimizeableListing;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Apply optimizations to an instruction listing.
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public interface Optimizer
 {
+    /**
+     * Applies optimizations to an instruction listing.
+     *
+     * @param  listing The instruction listing.
+     * @param  <T>     The type of the instruction listing.
+     *
+     * @return An optimized instruction listing.
+     */
     public <T extends WAMOptimizeableListing> T apply(WAMOptimizeableListing listing);
 }

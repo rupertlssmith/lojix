@@ -15,13 +15,12 @@
  */
 package com.thesett.aima.logic.fol.wam.optimizer;
 
-import com.thesett.aima.logic.fol.wam.WAMInstruction;
-
 /**
  * StateMachine is used to implement a FSMD, that is driven by a {@link Matcher}.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Accept the matcher that drives this state machine. </td></tr>
  * <tr><td> Accept input from the matcher. </td></tr>
  * <tr><td> Accept end of input from the matcher. </td></tr>
  * </table></pre>
@@ -30,6 +29,11 @@ import com.thesett.aima.logic.fol.wam.WAMInstruction;
  */
 public interface StateMachine<S, T>
 {
+    /**
+     * Sets up the matcher that drives this state machine.
+     *
+     * @param matcher The matcher that drives this state machine.
+     */
     public void setMatcher(Matcher<S, T> matcher);
 
     /**

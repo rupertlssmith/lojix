@@ -49,7 +49,7 @@ public class WAMOptimizer implements Optimizer
     }
 
     /**
-     * Performs an optimization pass for constants on instructions in the head of a clause.
+     * Performs an optimization pass for specialized instructions.
      *
      * <p/>The following instruction sequences can be optimized:
      *
@@ -59,6 +59,10 @@ public class WAMOptimizer implements Optimizer
      * put_struc a/0, Xi, set_var Xi -> set_const a/0
      * put_struc a/0, Xi -> put_const a/0
      * </pre>
+     *
+     * @param  instructions The instructions to optimize.
+     *
+     * @return An list of optimized instructions.
      */
     private SizeableList<WAMInstruction> optimize(List<WAMInstruction> instructions)
     {

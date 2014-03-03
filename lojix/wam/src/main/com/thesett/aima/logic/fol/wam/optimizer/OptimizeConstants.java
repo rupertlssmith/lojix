@@ -28,20 +28,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.Un
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.UnifyVar;
 
 /**
- * Performs an optimization pass for constants on instructions in the head of a clause.
- *
- * <p/>The following instruction sequences can be optimized:
- *
- * <pre>
- * unify_var Xi
- * get_struc a/0, Xi
- * -> unify_const a/0
- * </pre>
- *
- * <pre>
- * get_struc a/0, Xi
- * -> get_const a/0
- * </pre>
+ * Performs an optimization pass for specialized constant instructions.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -52,18 +39,30 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.Un
  */
 public class OptimizeConstants implements StateMachine<WAMInstruction, WAMInstruction>
 {
+    /** Defines the possible states that this state machine can be in. */
     private enum State
     {
-        NM, UV, PS;
+        /** No Match. */
+        NM,
+
+        /** UnifyVar instruction seen. */
+        UV,
+
+        /** PutStruc instruction seen. */
+        PS;
     }
 
+    /** Holds the matcher that is driving this state machine. */
     private Matcher<WAMInstruction, WAMInstruction> matcher;
 
+    /** Holds the current state machine state. */
     private State state = State.NM;
 
+    /** Holds the last instruction seen. */
     private WAMInstruction last;
 
-    private LinkedList<WAMInstruction> shifts = new LinkedList<WAMInstruction>();
+    /** Holds a buffer of pending instructions to output. */
+    private LinkedList<WAMInstruction> buffer = new LinkedList<WAMInstruction>();
 
     /** {@inheritDoc} */
     public void apply(WAMInstruction next)
@@ -132,31 +131,38 @@ public class OptimizeConstants implements StateMachine<WAMInstruction, WAMInstru
         flush();
     }
 
+    /** {@inheritDoc} */
     public void setMatcher(Matcher<WAMInstruction, WAMInstruction> matcher)
     {
         this.matcher = matcher;
     }
 
+    /**
+     * Discards the specified number of most recent instructions from the output buffer.
+     *
+     * @param n The number of instructions to discard.
+     */
     private void discard(int n)
     {
         for (int i = 0; i < n; i++)
         {
-            shifts.pollLast();
+            buffer.pollLast();
         }
     }
 
-    private void discard()
+    /**
+     * Adds an instruction to the output buffer.
+     *
+     * @param instruction The instruction to add.
+     */
+    private void shift(WAMInstruction instruction)
     {
-        shifts.clear();
+        buffer.offer(instruction);
     }
 
-    private void shift(WAMInstruction next)
-    {
-        shifts.offer(next);
-    }
-
+    /** Flushes the output buffer. */
     private void flush()
     {
-        matcher.buffer(shifts);
+        matcher.sinkAll(buffer);
     }
 }

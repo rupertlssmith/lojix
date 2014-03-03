@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import com.thesett.common.util.SequenceIterator;
-import com.thesett.common.util.Source;
 
 /**
  * Matcher is a sequence that is used to drive a {@link StateMachine}. An input sequence is fed into an FSMD and the
@@ -33,6 +32,9 @@ import com.thesett.common.util.Source;
  * <tr><td> Sink output from the state machine. </td></tr>
  * <tr><td> Accept flush commands from the state machine, indicating that a sequence of outputs is complete. </td></tr>
  * </table></pre>
+ *
+ * @param  <S> The input data element type.
+ * @param  <T> The output data element type.
  *
  * @author Rupert Smith
  */
@@ -113,7 +115,12 @@ public class Matcher<S, T> extends SequenceIterator<T> implements Iterable<T>
         return result;
     }
 
-    public void buffer(Queue<T> source)
+    /**
+     * Accepts an output source to be polled until empty and presented as the output, before consuming more inputs.
+     *
+     * @param source The output source to flush.
+     */
+    public void sinkAll(Queue<T> source)
     {
         flushMode = true;
         buffer = source;

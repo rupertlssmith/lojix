@@ -94,7 +94,7 @@ public class WAMInstruction implements Sizeable
     /** The instruction to write an anonymous variable onto the heap. */
     public static final byte SET_VOID = 0x18;
 
-    /** The instruction to unfiy with anonymous variables on the heap. */
+    /** The instruction to unify with anonymous variables on the heap. */
     public static final byte UNIFY_VOID = 0x19;
 
     /** The instruction to call a predicate. */
@@ -290,6 +290,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to copy a constant into an argument register. */
         PutConstant(PUT_CONST, "put_const", 7)
         {
             /** {@inheritDoc} */
@@ -312,6 +313,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to compare or bind a reference from a register to a constant. */
         GetConstant(GET_CONST, "get_const", 7)
         {
             /** {@inheritDoc} */
@@ -334,6 +336,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to write a constant onto the heap. */
         SetConstant(SET_CONST, "set_const", 5)
         {
             /** {@inheritDoc} */
@@ -356,6 +359,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to unify the heap with a constant. */
         UnifyConstant(UNIFY_CONST, "unify_const", 5)
         {
             /** {@inheritDoc} */
@@ -378,10 +382,13 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to copy a list pointer into an argument register. */
         PutList(PUT_LIST, "put_list", 3),
 
+        /** The instruction to compare or bind a reference from a register to a list pointer. */
         GetList(GET_LIST, "get_list", 3),
 
+        /** The instruction to write an anonymous variable onto the heap. */
         SetVoid(SET_VOID, "set_void", 2)
         {
             /** {@inheritDoc} */
@@ -404,6 +411,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The instruction to unify with anonymous variables on the heap. */
         UnifyVoid(UNIFY_VOID, "unify_void", 2)
         {
             /** {@inheritDoc} */
@@ -946,6 +954,7 @@ public class WAMInstruction implements Sizeable
          * @param code        The code buffer to disassemble from.
          * @param ip          The instruction pointer within the code buffer.
          * @param instruction The instruction to store the disassembles arguments in.
+         * @param machine     The binary machine to disassemble from.
          */
         private static void disassembleFn(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
         {

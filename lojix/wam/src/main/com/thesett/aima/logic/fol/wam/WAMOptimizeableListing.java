@@ -41,7 +41,11 @@ public interface WAMOptimizeableListing
      */
     List<WAMInstruction> getInstructions();
 
-    /** Replaces the instruction listing with a more optimized listing. */
+    /**
+     * Replaces the instruction listing with a more optimized listing.
+     *
+     * @param instructions An optimized instruction listing.
+     */
     void setOptimizedInstructions(SizeableList<WAMInstruction> instructions);
 
     /**
