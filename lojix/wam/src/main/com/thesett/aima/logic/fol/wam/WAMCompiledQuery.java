@@ -51,7 +51,8 @@ import com.thesett.common.util.SizeableList;
  * @todo   For each functor in the head and body, set this as the containing clause. A mapping from variables to
  *         registers is maintained in the clause, and the functors need to be able to access this mapping.
  */
-public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCompiledQuery>, Sizeable
+public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCompiledQuery>, Sizeable,
+    WAMOptimizeableListing
 {
     /** Used for debugging. */
     /* private static final Logger log = Logger.getLogger(WAMCompiledQuery.class.getName()); */
@@ -81,6 +82,9 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
     /** Holds the byte code instructions for the clause, when it is not linked or when it has been disassembled. */
     protected SizeableList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
 
+    /** Holds the original unoptimized instruction listing. */
+    protected SizeableList<WAMInstruction> unoptimizedInstructions;
+
     /** Holds the offset of the compiled code for the clause within the machine it is compiled to. */
     protected WAMCallPoint callPoint;
 
@@ -91,7 +95,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
     protected IdAttribute.IdAttributeFactory<FunctorName> functorInterner;
 
     /**
-     * Creates an empty (invalid) compiled program sentence in WAM. The variables of the program senetence are not
+     * Creates an empty (invalid) compiled program sentence in WAM. The variables of the program sentence are not
      * recorded, since they only need to be tracked in order to display the results of queries.
      */
     public WAMCompiledQuery()
@@ -198,14 +202,23 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
         return instructions.sizeof();
     }
 
-    /**
-     * Provides the compiled byte code instructions as an unmodifiable list.
-     *
-     * @return A list of the byte code instructions for this query.
-     */
+    /** {@inheritDoc} */
     public List<WAMInstruction> getInstructions()
     {
         return Collections.unmodifiableList(instructions);
+    }
+
+    /** {@inheritDoc} */
+    public void setOptimizedInstructions(SizeableList<WAMInstruction> instructions)
+    {
+        unoptimizedInstructions = this.instructions;
+        this.instructions = instructions;
+    }
+
+    /** {@inheritDoc} */
+    public List<WAMInstruction> getUnoptimizedInstructions()
+    {
+        return unoptimizedInstructions;
     }
 
     /**
@@ -226,7 +239,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
             throw new RuntimeException("The instruction listing size exceeds Integer.MAX_VALUE.");
         }
 
-        // Used to keep track of the size of the emmitted code, in bytes, as it is written.
+        // Used to keep track of the size of the emitted code, in bytes, as it is written.
         int length = 0;
 
         // Insert the compiled code into the byte code machine's code area.

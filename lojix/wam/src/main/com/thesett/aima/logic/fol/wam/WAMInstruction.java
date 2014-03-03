@@ -1122,6 +1122,16 @@ public class WAMInstruction implements Sizeable
     }
 
     /**
+     * Gets the addressing mode of the first register argument to the instruction.
+     *
+     * @return The addressing mode of the first register argument to the instruction.
+     */
+    public byte getMode1()
+    {
+        return mode1;
+    }
+
+    /**
      * Gets the first register to which the instruction applies.
      *
      * @return The first register to which the instruction applies.

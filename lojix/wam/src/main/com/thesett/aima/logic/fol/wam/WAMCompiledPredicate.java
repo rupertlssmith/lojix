@@ -51,7 +51,8 @@ import com.thesett.common.util.SizeableList;
  * @todo   For each functor in the head and body, set this as the containing clause. A mapping from variables to
  *         registers is maintained in the clause, and the functors need to be able to access this mapping.
  */
-public class WAMCompiledPredicate extends Predicate<Clause> implements Sentence<WAMCompiledPredicate>, Sizeable
+public class WAMCompiledPredicate extends Predicate<Clause> implements Sentence<WAMCompiledPredicate>, Sizeable,
+    WAMOptimizeableListing
 {
     /** Used for debugging. */
     /* private static final Logger log = Logger.getLogger(WAMCompiledClause.class.getName()); */
@@ -83,6 +84,9 @@ public class WAMCompiledPredicate extends Predicate<Clause> implements Sentence<
 
     /** Holds the byte code instructions for the clause, when it is not linked or when it has been disassembled. */
     protected SizeableList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
+
+    /** Holds the original unoptimized instruction listing. */
+    protected SizeableList<WAMInstruction> unoptimizedInstructions;
 
     /** Holds the offset of the compiled code for the clause within the machine it is compiled to. */
     protected WAMCallPoint callPoint;
@@ -187,14 +191,23 @@ public class WAMCompiledPredicate extends Predicate<Clause> implements Sentence<
         return instructions.sizeof();
     }
 
-    /**
-     * Provides the compiled byte code instructions as an unmodifiable list.
-     *
-     * @return A list of the byte code instructions for this predicate.
-     */
+    /** {@inheritDoc} */
     public List<WAMInstruction> getInstructions()
     {
         return Collections.unmodifiableList(instructions);
+    }
+
+    /** {@inheritDoc} */
+    public void setOptimizedInstructions(SizeableList<WAMInstruction> instructions)
+    {
+        unoptimizedInstructions = this.instructions;
+        this.instructions = instructions;
+    }
+
+    /** {@inheritDoc} */
+    public List<WAMInstruction> getUnoptimizedInstructions()
+    {
+        return unoptimizedInstructions;
     }
 
     /**

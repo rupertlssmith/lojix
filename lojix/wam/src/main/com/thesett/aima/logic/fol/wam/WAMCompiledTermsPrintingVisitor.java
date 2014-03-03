@@ -33,7 +33,8 @@ import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
- * WAMCompiledTermsPrintingVisitor assists with pretty printing queries and predicates compiled by the {@link WAMCompiler}.
+ * WAMCompiledTermsPrintingVisitor assists with pretty printing queries and predicates compiled by the
+ * {@link WAMCompiler}.
  *
  * <p/>This class is abstract because it implements a default behaviour for all terms, which is to apply a stack of
  * column printers to them. Depending on the entry point of this pretty printer, the top-level term being printed should
@@ -210,6 +211,7 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
         printers.add(new SourceClausePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new PositionPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new LabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
+        printers.add(new UnoptimizedByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new ByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
     }
 

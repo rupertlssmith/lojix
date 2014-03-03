@@ -29,6 +29,7 @@ import com.thesett.aima.logic.fol.Resolver;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.REF;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.STR;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -48,7 +49,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * @author Rupert Smith
  */
-public abstract class WAMResolvingMachine extends WAMBaseMachine implements Resolver<WAMCompiledPredicate, WAMCompiledQuery>
+public abstract class WAMResolvingMachine extends WAMBaseMachine
+    implements Resolver<WAMCompiledPredicate, WAMCompiledQuery>
 {
     /** Used for debugging. */
     /* private static final Logger log = Logger.getLogger(WAMResolvingMachine.class.getName()); */
@@ -112,7 +114,8 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
     /**
      * Extracts the raw byte code from the machine for a given call table entry.
      *
-     * @param callPoint The call table entry giving the location and length of the code.
+     * @param  callPoint The call table entry giving the location and length of the code.
+     *
      * @return The byte code at the specified location.
      */
     public byte[] retrieveCode(WAMCallPoint callPoint)
@@ -123,15 +126,6 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
 
         return result;
     }
-
-    /**
-     * Notified whenever code is added to the machine.
-     *
-     * @param codeBuffer The code buffer.
-     * @param codeOffset The start offset of the new code.
-     * @param length     The length of the new code.
-     */
-    protected abstract void codeAdded(ByteBuffer codeBuffer, int codeOffset, int length);
 
     /** {@inheritDoc} */
     public void emmitCode(int offset, int address)
@@ -172,6 +166,15 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
         // Execute the byte code, starting from the first functor of the query.
         return executeAndExtractBindings(currentQuery);
     }
+
+    /**
+     * Notified whenever code is added to the machine.
+     *
+     * @param codeBuffer The code buffer.
+     * @param codeOffset The start offset of the new code.
+     * @param length     The length of the new code.
+     */
+    protected abstract void codeAdded(ByteBuffer codeBuffer, int codeOffset, int length);
 
     /**
      * Dereferences an offset from the current environment frame on the stack. Storage slots in the current environment
@@ -291,7 +294,7 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
             variableContext + "): called");*/
 
         // Used to hold the decoded argument in.
-        Term result;
+        Term result = null;
 
         // Dereference the initial heap pointer.
         int addr = deref(start);
@@ -302,8 +305,9 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
         /*log.fine("tag = " + tag);*/
         /*log.fine("val = " + val);*/
 
-        // If a variable is encountered dereference it.
-        if (tag == REF)
+        switch (tag)
+        {
+        case REF:
         {
             // Check if a variable for the address has already been created in this context, and use it if so.
             Variable var = variableContext.get(val);
@@ -316,10 +320,11 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
             }
 
             result = var;
+
+            break;
         }
 
-        // If the next or dereferenced cell is a functor create a new functor.
-        else // if (deref_tag == STR)
+        case STR:
         {
             // Decode f/n from the STR data.
             int fn = getHeap(val);
@@ -343,6 +348,34 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine implements Reso
 
             // Create a new functor to hold the decoded data.
             result = new Functor(f, arguments);
+
+            break;
+        }
+
+        case WAMInstruction.CON:
+        {
+            //Decode f/n from the CON data.
+            int f = val & 0x3fffffff;
+
+            /*log.fine("fn = " + fn);*/
+            /*log.fine("f = " + f);*/
+
+            // Look up and initialize this functor name from the symbol table.
+            FunctorName functorName = getFunctorFunctorName(f);
+
+            // Create a new functor to hold the decoded data.
+            result = new Functor(f, null);
+
+            break;
+        }
+
+        case WAMInstruction.LIS:
+        {
+            break;
+        }
+
+        default:
+            throw new IllegalStateException("Encountered unknown tag type on the heap.");
         }
 
         return result;

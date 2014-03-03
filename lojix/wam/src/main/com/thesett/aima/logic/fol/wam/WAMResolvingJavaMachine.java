@@ -1417,7 +1417,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 {
                     bind(d1, d2);
                 }
-                else
+                else if (t2 == WAMInstruction.STR)
                 {
                     // f1/n1 <- STORE[v1]
                     // f2/n2 <- STORE[v2]
@@ -1441,6 +1441,27 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     {
                         // fail <- true
                         fail = true;
+                    }
+                }
+                else if (t2 == WAMInstruction.CON)
+                {
+                    if ((t1 != WAMInstruction.CON) || (v1 != v2))
+                    {
+                        fail = true;
+                    }
+                }
+                else if (t2 == WAMInstruction.LIS)
+                {
+                    if (t1 != WAMInstruction.LIS)
+                    {
+                        fail = true;
+                    }
+                    else
+                    {
+                        uPush(v1);
+                        uPush(v2);
+                        uPush(v1 + 1);
+                        uPush(v2 + 1);
                     }
                 }
             }

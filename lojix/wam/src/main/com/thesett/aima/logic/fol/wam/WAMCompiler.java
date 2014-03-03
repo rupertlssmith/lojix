@@ -42,9 +42,11 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
-import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.REG_ADDR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.STACK_ADDR;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet;
+import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
+import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;
 import com.thesett.aima.search.QueueBasedSearchMethod;
 import com.thesett.aima.search.util.Searches;
 import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;
@@ -57,8 +59,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
  * WAMCompiled implements a compiler for the logical language, WAM, into a form suitable for passing to an
- * {@link WAMMachine}. The WAMMachine accepts sentences in the language that are compiled into a byte code form. The byte
- * instructions used in the compiled language are enumerated as constants in the {@link WAMInstruction} class.
+ * {@link WAMMachine}. The WAMMachine accepts sentences in the language that are compiled into a byte code form. The
+ * byte instructions used in the compiled language are enumerated as constants in the {@link WAMInstruction} class.
  *
  * <p/>The compilation process is described in "Warren's Abstract Machine, A Tutorial Reconstruction, by Hassan
  * Ait-Kaci" and is followed as closely as possible to the WAM compiler given there. The description of the L0
@@ -193,6 +195,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** Holds the current nested compilation scope symbol table. */
     private SymbolTable<Integer, String, Object> scopeTable;
 
+    /** Holds the instruction optimizer. */
+    private Optimizer optimizer = new WAMOptimizer();
+
     /**
      * Creates a new WAMCompiler.
      *
@@ -240,6 +245,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 compileClause(clause, result, current == 0, current >= (size - 1), multipleClauses, current);
                 current++;
             }
+
+            // Run the optimizer on the output.
+            result = optimizer.apply(result);
 
             displayCompiledPredicate(result);
             observer.onCompilation(result);
@@ -501,6 +509,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         postFixInstructions.add(new WAMInstruction(WAMInstructionSet.Deallocate));
 
         result.addInstructions(postFixInstructions);
+
+        // Run the optimizer on the output.
+        result = optimizer.apply(result);
 
         displayCompiledQuery(result);
 
