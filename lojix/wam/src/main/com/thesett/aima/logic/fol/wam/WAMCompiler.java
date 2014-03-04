@@ -795,7 +795,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * For a predicate of arity n, the first n registers are used to recieve its arguments in. Terms appearing directly
+     * For a predicate of arity n, the first n registers are used to receive its arguments in. Terms appearing directly
      * in the head of the predicate clause are allocated directly to argument registers, so that when the argument is
      * read it can be compared directly with the term for a match. Variables appearing in the head of the clause are not
      * allocated in this way, but are kept in registers with positions higher than the number of arguments (see the
