@@ -61,7 +61,13 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         UV,
 
         /** PutStruc instruction seen. */
-        PS;
+        PS,
+
+        /** UnifyVar to UnifyVoid elimination. */
+        UVE,
+
+        /** SetVar to SetVoid elimination. */
+        SVE;
     }
 
     /** Holds the matcher that is driving this state machine. */
@@ -78,6 +84,9 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
     /** The symbol table. */
     protected final SymbolTable<Integer, String, Object> symbolTable;
+
+    /** Counts the number of void variables seen in a row. */
+    private int voidCount = 0;
 
     /**
      * Builds an instruction optimizer.
@@ -97,18 +106,30 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         // Anonymous or singleton variable optimizations.
         if ((UnifyVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
         {
-            discard(1);
+            if (state != State.UVE)
+            {
+                state = State.UVE;
+                voidCount = 0;
+            }
 
-            WAMInstruction unifyVoid = new WAMInstruction(UnifyVoid, WAMInstruction.REG_ADDR, (byte) 1);
+            discard((voidCount == 0) ? 1 : 2);
+
+            WAMInstruction unifyVoid = new WAMInstruction(UnifyVoid, WAMInstruction.REG_ADDR, (byte) ++voidCount);
             shift(unifyVoid);
 
             log.fine(next + " -> " + unifyVoid);
         }
         else if ((SetVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
         {
-            discard(1);
+            if (state != State.SVE)
+            {
+                state = State.SVE;
+                voidCount = 0;
+            }
 
-            WAMInstruction setVoid = new WAMInstruction(SetVoid, WAMInstruction.REG_ADDR, (byte) 1);
+            discard((voidCount == 0) ? 1 : 2);
+
+            WAMInstruction setVoid = new WAMInstruction(SetVoid, WAMInstruction.REG_ADDR, (byte) ++voidCount);
             shift(setVoid);
 
             log.fine(next + " -> " + setVoid);
