@@ -361,6 +361,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
+        // Gather information about the counts and positions of occurrence of variables within the clause.
+        gatherVariableOccurrenceInfo(clause);
+
         // Allocate permanent variables for a program clause. Program clauses only use permanent variables when really
         // needed to preserver variables across calls.
         allocatePermanentProgramRegisters(clause);
@@ -482,6 +485,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             freeVarNames.add(var.getName());
         }
+
+        // Gather information about the counts and positions of occurrence of variables within the clause.
+        gatherVariableOccurrenceInfo(clause);
 
         // Allocate permanent variables for a query. In queries all variables are permanent so that they are preserved
         // on the stack upon completion of the query.
@@ -955,6 +961,25 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
+     * Gather information about variable counts and positions of occurrence within a clause.
+     *
+     * @param clause The clause to check the variable occurrence within.
+     */
+    private void gatherVariableOccurrenceInfo(Clause clause)
+    {
+        PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
+        VariableOccurrenceVisitor variableOccurrenceVisitor =
+            new VariableOccurrenceVisitor(interner, symbolTable, positionalTraverser);
+        positionalTraverser.setContextChangeVisitor(variableOccurrenceVisitor);
+
+        TermWalker walker =
+            new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser,
+                variableOccurrenceVisitor);
+
+        walker.walk(clause);
+    }
+
+    /**
      * Pretty prints a compiled predicate.
      *
      * @param predicate The compiled predicate to pretty print.
@@ -1058,10 +1083,42 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
      */
     public class VariableOccurrenceVisitor extends BasePositionalVisitor
     {
+        /**
+         * Creates a positional visitor.
+         *
+         * @param interner    The name interner.
+         * @param symbolTable The compiler symbol table.
+         * @param traverser   The ppositional context traverser.
+         */
         public VariableOccurrenceVisitor(VariableAndFunctorInterner interner,
             SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
         {
             super(interner, symbolTable, traverser);
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * <p/>Counts variable occurrences and detects if the variable ever appears in an argument position.
+         */
+        protected void enterVariable(Variable variable)
+        {
+            // Initialize the count to one or add one to an existing count.
+            Integer count = (Integer) symbolTable.get(variable.getSymbolKey(), SYMKEY_VAR_OCCURRENCE_COUNT);
+            count = (count == null) ? 1 : (count + 1);
+            symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_OCCURRENCE_COUNT, count);
+
+            log.fine("Variable " + variable + " has count " + count + ".");
+
+            // Get the nonArgPosition flag, or initialize it to true.
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG);
+            nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
+
+            // Clear the nonArgPosition flag is the variable occurs in an argument position.
+            nonArgPositionOnly = traverser.isTopLevel() ? false : nonArgPositionOnly;
+            symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
+
+            log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");
         }
     }
 }

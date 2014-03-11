@@ -55,7 +55,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
     protected PositionalTermTraverser traverser;
 
     /**
-     * Creates a printer.
+     * Creates a positional visitor.
      *
      * @param interner    The name interner.
      * @param symbolTable The compiler symbol table.
@@ -79,6 +79,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveTerm(term);
+            term.setTermTraverser(null);
         }
     }
 
@@ -92,6 +93,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveFunctor(functor);
+            functor.setTermTraverser(null);
         }
     }
 
@@ -105,6 +107,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveVariable(variable);
+            variable.setTermTraverser(null);
         }
     }
 
@@ -118,6 +121,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leavePredicate(predicate);
+            predicate.setTermTraverser(null);
         }
     }
 
@@ -131,6 +135,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveClause(clause);
+            clause.setTermTraverser(null);
         }
     }
 
@@ -144,6 +149,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveIntLiteral(literal);
+            literal.setTermTraverser(null);
         }
     }
 
@@ -157,6 +163,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
         else if (traverser.isLeavingContext())
         {
             leaveLiteral(literal);
+            literal.setTermTraverser(null);
         }
     }
 
