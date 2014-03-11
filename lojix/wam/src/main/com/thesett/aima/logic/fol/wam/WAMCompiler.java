@@ -647,14 +647,15 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             }
             else if (j < numOutermostArgs)
             {
-                Variable nextFunctor = (Variable) nextTerm;
-                int allocation = (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SYMKEY_ALLOCATION);
+                Variable nextVar = (Variable) nextTerm;
+                int allocation = (Integer) symbolTable.get(nextVar.getSymbolKey(), SYMKEY_ALLOCATION);
                 byte addrMode = (byte) ((allocation & 0xff00) >> 8);
                 byte address = (byte) (allocation & 0xff);
 
                 WAMInstruction instruction;
 
                 // If it is register not seen before: get_var.
+                // If it is register seen before: get_val.
                 if (!seenRegisters.contains(allocation))
                 {
                     /*log.fine("GET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
@@ -663,8 +664,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                     instruction = new WAMInstruction(WAMInstructionSet.GetVar, addrMode, address, (byte) (j & 0xff));
                 }
-
-                // If it is register seen before: get_val.
                 else
                 {
                     /*log.fine("GET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
