@@ -77,8 +77,7 @@ import org.apache.log4j.NDC;
  *
  * @author Rupert Smith
  */
-public class BasicResolverUnitTestBase<S extends Clause, T, Q>
-    extends TestCase
+public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
 {
     /** Used for debugging purposes. */
     public static final java.util.logging.Logger log =
@@ -243,6 +242,18 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q>
     public void testMultipleVariablesAreBoundOk() throws Exception
     {
         resolveAndAssertSolutions("[[f(x, y)], (?- f(X, Y)), [[X <-- x, Y <-- y]]]");
+    }
+
+    /** Check anonymous variables work ok. */
+    public void testAnonymousProgramAndQuery() throws Exception
+    {
+        resolveAndAssertSolutions("[[f(_, _, _)], (?- f(_, _, _)), [[]]]");
+    }
+
+    /** Check anonymous variables nested within functors work ok. */
+    public void testAnonymousNestedProgramAndQuery() throws Exception
+    {
+        resolveAndAssertSolutions("[[f(g(_, _, _))], (?- f(g(_, _, _))), [[]]]");
     }
 
     /** Check that bound variables are unbound when backtracking, this error case was found. */

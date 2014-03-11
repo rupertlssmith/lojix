@@ -92,8 +92,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
             };
 
         // Add all tests defined in the BasicUnificationTestBase class
-        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>("testAtomsUnifyOk",
-                engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAtomsUnifyOk", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testNonMatchingAtomsFailUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -150,8 +150,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testFunctorsSameArityDifferentArgsFailToUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFunctorsDifferentNameSameArgsDoNotUnify", engine));
-        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testWamBook2_9", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>("testWamBook2_9",
+                engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testWamBook2_9OtherWay", engine));
 
@@ -196,6 +196,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testAnonymousVariableBindingNotPropagatedAccrossCall", engine));
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testMultipleVariablesAreBoundOk", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAnonymousProgramAndQuery", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAnonymousNestedProgramAndQuery", engine));
         // Uses the 'member' built-in predicate, which is not defined.
         /*suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariablesUnboundOnBacktrackingMemberOk", engine));*/
