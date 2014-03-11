@@ -170,10 +170,10 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     protected static final String SYMKEY_ALLOCATION = "allocation";
 
     /** The symbol table key for variable occurrence counts. */
-    protected static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
+    public static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
 
     /** The symbol table key for variable position of occurrence. */
-    protected static final String SYMKEY_VAR_NON_ARG = "var_non_arg";
+    public static final String SYMKEY_VAR_NON_ARG = "var_non_arg";
 
     /** The symbol table key for predicate sources. */
     protected static final String SYMKEY_PREDICATES = "source_predicates";
@@ -202,7 +202,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     private SymbolTable<Integer, String, Object> scopeTable;
 
     /** Holds the instruction optimizer. */
-    private Optimizer optimizer = new WAMOptimizer();
+    private Optimizer optimizer;
 
     /**
      * Creates a new WAMCompiler.
@@ -213,6 +213,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     public WAMCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         super(symbolTable, interner);
+        optimizer = new WAMOptimizer(symbolTable);
     }
 
     /** {@inheritDoc} */
@@ -638,6 +639,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                         instruction = new WAMInstruction(WAMInstructionSet.UnifyVal, addrMode, address);
                     }
 
+                    // Record the symbol key of the term that resulted in the creation of the instruction.
+                    instruction.setSymbolKeyReg1(nextArg.getSymbolKey());
+
                     instructions.add(instruction);
                 }
             }
@@ -791,6 +795,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                             /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
                             instruction = new WAMInstruction(WAMInstructionSet.SetVal, addrMode, address);
                         }
+
+                        // Record the symbol key of the term that resulted in the creation of the instruction.
+                        instruction.setSymbolKeyReg1(nextArg.getSymbolKey());
 
                         instructions.add(instruction);
                     }
@@ -1083,6 +1090,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
      */
     public class VariableOccurrenceVisitor extends BasePositionalVisitor
     {
+        /** Set when directly within a top-level functor. */
+        private boolean inTopLevelFunctor;
+
         /**
          * Creates a positional visitor.
          *
@@ -1108,17 +1118,28 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             count = (count == null) ? 1 : (count + 1);
             symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_OCCURRENCE_COUNT, count);
 
-            log.fine("Variable " + variable + " has count " + count + ".");
+            /*log.fine("Variable " + variable + " has count " + count + ".");*/
 
             // Get the nonArgPosition flag, or initialize it to true.
             Boolean nonArgPositionOnly = (Boolean) symbolTable.get(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG);
             nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
             // Clear the nonArgPosition flag is the variable occurs in an argument position.
-            nonArgPositionOnly = traverser.isTopLevel() ? false : nonArgPositionOnly;
+            nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
             symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
 
-            log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");
+            /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * <p/>Sets the 'inTopLevelFunctor' flag, whenever the traversal is directly within a top-level functors
+         * arguments.
+         */
+        protected void enterFunctor(Functor functor)
+        {
+            inTopLevelFunctor = traverser.isTopLevel();
         }
     }
 }

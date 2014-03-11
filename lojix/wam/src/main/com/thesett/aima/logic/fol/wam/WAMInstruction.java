@@ -25,6 +25,7 @@ import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
+import com.thesett.common.util.doublemaps.SymbolKey;
 
 /**
  * WAMInstruction provides a structured in-memory representation of the WAM instruction set, as well as utilities to
@@ -982,6 +983,9 @@ public class WAMInstruction implements Sizeable
     /** Holds the functor (or label) argument to the instruction. */
     protected FunctorName fn;
 
+    /** Holds the symbol key of the argument that is held in the first register of this instruction. */
+    private SymbolKey symbolKeyReg1;
+
     /**
      * Creates an instruction for the specified mnemonic.
      *
@@ -1178,6 +1182,21 @@ public class WAMInstruction implements Sizeable
     public void setReg2(byte reg2)
     {
         this.reg2 = reg2;
+    }
+
+    /**
+     * Records the symbol key of the argument that is assigned to the first register of this instruction.
+     *
+     * @param symbolKey The symbol key.
+     */
+    public void setSymbolKeyReg1(SymbolKey symbolKey)
+    {
+        this.symbolKeyReg1 = symbolKey;
+    }
+
+    public SymbolKey getSymbolKeyReg1()
+    {
+        return symbolKeyReg1;
     }
 
     /**

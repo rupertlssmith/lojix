@@ -21,6 +21,7 @@ import com.thesett.aima.logic.fol.wam.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.WAMOptimizeableListing;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
+import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
  * WAMOptimizer performs peephole optimization on a list of WAM instructions.
@@ -34,6 +35,19 @@ import com.thesett.common.util.SizeableList;
  */
 public class WAMOptimizer implements Optimizer
 {
+    /** The symbol table. */
+    protected final SymbolTable<Integer, String, Object> symbolTable;
+
+    /**
+     * Builds a WAM instruction optimizer.
+     *
+     * @param symbolTable The symbol table to get instruction analysis information from.
+     */
+    public WAMOptimizer(SymbolTable<Integer, String, Object> symbolTable)
+    {
+        this.symbolTable = symbolTable;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -66,7 +80,7 @@ public class WAMOptimizer implements Optimizer
      */
     private SizeableList<WAMInstruction> optimize(List<WAMInstruction> instructions)
     {
-        StateMachine optimizeConstants = new OptimizeInstructions();
+        StateMachine optimizeConstants = new OptimizeInstructions(symbolTable);
         Matcher<WAMInstruction, WAMInstruction> matcher =
             new Matcher<WAMInstruction, WAMInstruction>(instructions.iterator(), optimizeConstants);
 

@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.optimizer;
 
 import java.util.LinkedList;
 
+import com.thesett.aima.logic.fol.wam.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.GetConstant;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.GetList;
@@ -27,8 +28,12 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.Pu
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.PutStruc;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetConstant;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetVar;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetVoid;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.UnifyConstant;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.UnifyVar;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.UnifyVoid;
+import com.thesett.common.util.doublemaps.SymbolKey;
+import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
  * Performs an optimization pass for specialized constant instructions.
@@ -71,13 +76,53 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     /** Holds a buffer of pending instructions to output. */
     private LinkedList<WAMInstruction> buffer = new LinkedList<WAMInstruction>();
 
+    /** The symbol table. */
+    protected final SymbolTable<Integer, String, Object> symbolTable;
+
+    /**
+     * Builds an instruction optimizer.
+     *
+     * @param symbolTable The symbol table to get instruction analysis from.
+     */
+    public OptimizeInstructions(SymbolTable<Integer, String, Object> symbolTable)
+    {
+        this.symbolTable = symbolTable;
+    }
+
     /** {@inheritDoc} */
     public void apply(WAMInstruction next)
     {
         shift(next);
 
+        // Anonymous or singleton variable optimizations.
+        if ((UnifyVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
+        {
+            discard(1);
+
+            WAMInstruction unifyVoid = new WAMInstruction(UnifyVoid, WAMInstruction.REG_ADDR, (byte) 1);
+            shift(unifyVoid);
+
+            log.fine(next + " -> " + unifyVoid);
+        }
+        else if ((SetVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
+        {
+            discard(1);
+
+            WAMInstruction setVoid = new WAMInstruction(SetVoid, WAMInstruction.REG_ADDR, (byte) 1);
+            shift(setVoid);
+
+            log.fine(next + " -> " + setVoid);
+        }
+        else if ((GetVar == next.getMnemonic()) && (next.getMode1() == WAMInstruction.REG_ADDR) &&
+                (next.getReg1() == next.getReg2()))
+        {
+            discard(1);
+
+            log.fine(next + " -> eliminated");
+        }
+
         // Constant optimizations.
-        if (UnifyVar == next.getMnemonic())
+        else if (UnifyVar == next.getMnemonic())
         {
             state = State.UV;
             last = next;
@@ -164,15 +209,6 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
             log.fine(next + " -> " + putList);
         }
 
-        // Anonymous or singleton variable optimizations.
-        else if ((GetVar == next.getMnemonic()) && (next.getMode1() == WAMInstruction.REG_ADDR) &&
-                (next.getReg1() == next.getReg2()))
-        {
-            discard(1);
-
-            log.fine(next + " -> eliminated");
-        }
-
         // Default.
         else
         {
@@ -191,6 +227,31 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     public void setMatcher(Matcher<WAMInstruction, WAMInstruction> matcher)
     {
         this.matcher = matcher;
+    }
+
+    /**
+     * Checks if the term argument to an instruction was a singleton, non-argument position variable.
+     *
+     * @param  instruction The instruction to test.
+     *
+     * @return <tt>true</tt> iff the term argument to the instruction was a singleton, non-argument position variable.
+     */
+    private boolean isSingletonNonArgVariable(WAMInstruction instruction)
+    {
+        SymbolKey symbolKey = instruction.getSymbolKeyReg1();
+
+        if (symbolKey != null)
+        {
+            Integer count = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_NON_ARG);
+
+            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && nonArgPositionOnly.equals(true))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
