@@ -169,6 +169,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** The symbol table key for allocations. */
     protected static final String SYMKEY_ALLOCATION = "allocation";
 
+    /** The symbol table key for variable occurrence counts. */
+    protected static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
+
+    /** The symbol table key for variable position of occurrence. */
+    protected static final String SYMKEY_VAR_NON_ARG = "var_non_arg";
+
     /** The symbol table key for predicate sources. */
     protected static final String SYMKEY_PREDICATES = "source_predicates";
 
@@ -1043,6 +1049,19 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             }
 
             super.visit(variable);
+        }
+    }
+
+    /**
+     * VariableOccurrenceVisitor visits all variable appearing within a clause to count the number of times that they
+     * occur (singleton detection), and whether or not they only appear in non-argument positions.
+     */
+    public class VariableOccurrenceVisitor extends BasePositionalVisitor
+    {
+        public VariableOccurrenceVisitor(VariableAndFunctorInterner interner,
+            SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
+        {
+            super(interner, symbolTable, traverser);
         }
     }
 }

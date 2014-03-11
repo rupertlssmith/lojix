@@ -15,14 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam;
 
-import com.thesett.aima.logic.fol.AllTermsVisitor;
-import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.Functor;
-import com.thesett.aima.logic.fol.IntegerType;
-import com.thesett.aima.logic.fol.LiteralType;
-import com.thesett.aima.logic.fol.Predicate;
-import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.TraceIndenter;
@@ -45,7 +37,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * @author Rupert Smith
  */
-public class BasePrinter implements AllTermsVisitor
+public class BasePrinter extends BasePositionalVisitor
 {
     /** Defines the column that this printer outputs to. */
     private final int currentColumn;
@@ -58,15 +50,6 @@ public class BasePrinter implements AllTermsVisitor
 
     /** The current indent. */
     protected String indent = "";
-
-    /** The name interner. */
-    protected VariableAndFunctorInterner interner;
-
-    /** The symbol table. */
-    protected SymbolTable<Integer, String, Object> symbolTable;
-
-    /** The positional context. */
-    protected PositionalTermTraverser traverser;
 
     /** The grid of cells to output to. */
     private DoubleKeyedMap<Long, Long, String> grid;
@@ -87,229 +70,10 @@ public class BasePrinter implements AllTermsVisitor
     public BasePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
         PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
+        super(interner, symbolTable, traverser);
         this.currentColumn = column;
-        this.interner = interner;
-        this.symbolTable = symbolTable;
-        this.traverser = traverser;
         this.grid = grid;
         this.table = table;
-    }
-
-    /** {@inheritDoc} */
-    public void visit(Term term)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterTerm(term);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveTerm(term);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(Functor functor)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterFunctor(functor);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveFunctor(functor);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(Variable variable)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterVariable(variable);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveVariable(variable);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(Predicate predicate)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterPredicate(predicate);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leavePredicate(predicate);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(Clause clause)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterClause(clause);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveClause(clause);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(IntegerType literal)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterIntLiteral(literal);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveIntLiteral(literal);
-        }
-    }
-
-    /** {@inheritDoc} */
-    public void visit(LiteralType literal)
-    {
-        if (traverser.isEnteringContext())
-        {
-            enterLiteral(literal);
-        }
-        else if (traverser.isLeavingContext())
-        {
-            leaveLiteral(literal);
-        }
-    }
-
-    /**
-     * Called when a term is entered during the visitation.
-     *
-     * @param term The term being entered.
-     */
-    protected void enterTerm(Term term)
-    {
-    }
-
-    /**
-     * Called when a term is being left during the visitation.
-     *
-     * @param term The term being left.
-     */
-    protected void leaveTerm(Term term)
-    {
-    }
-
-    /**
-     * Called when a functor is entered during the visitation.
-     *
-     * @param functor The functor being entered.
-     */
-    protected void enterFunctor(Functor functor)
-    {
-    }
-
-    /**
-     * Called when a functor is being left during the visitation.
-     *
-     * @param functor The functor being left.
-     */
-    protected void leaveFunctor(Functor functor)
-    {
-    }
-
-    /**
-     * Called when a variable is entered during the visitation.
-     *
-     * @param variable The variable being entered.
-     */
-    protected void enterVariable(Variable variable)
-    {
-    }
-
-    /**
-     * Called when a variable is being left during the visitation.
-     *
-     * @param variable The variable being left.
-     */
-    protected void leaveVariable(Variable variable)
-    {
-    }
-
-    /**
-     * Called when a predicate is entered during the visitation.
-     *
-     * @param predicate The predicate being entered.
-     */
-    protected void enterPredicate(Predicate predicate)
-    {
-    }
-
-    /**
-     * Called when a predicate is being left during the visitation.
-     *
-     * @param predicate The predicate being left.
-     */
-    protected void leavePredicate(Predicate predicate)
-    {
-    }
-
-    /**
-     * Called when a clause is entered during the visitation.
-     *
-     * @param clause The clause being entered.
-     */
-    protected void enterClause(Clause clause)
-    {
-    }
-
-    /**
-     * Called when a clause is being left during the visitation.
-     *
-     * @param clause The clause being left.
-     */
-    protected void leaveClause(Clause clause)
-    {
-    }
-
-    /**
-     * Called when a integer literal is entered during the visitation.
-     *
-     * @param literal The integer literal being entered.
-     */
-    protected void enterIntLiteral(IntegerType literal)
-    {
-    }
-
-    /**
-     * Called when a integer literal is being left during the visitation.
-     *
-     * @param literal The integer literal being left.
-     */
-    protected void leaveIntLiteral(IntegerType literal)
-    {
-    }
-
-    /**
-     * Called when a literal is entered during the visitation.
-     *
-     * @param literal The literal being entered.
-     */
-    protected void enterLiteral(LiteralType literal)
-    {
-    }
-
-    /**
-     * Called when a literal is being left during the visitation.
-     *
-     * @param literal The literal being left.
-     */
-    protected void leaveLiteral(LiteralType literal)
-    {
     }
 
     /**
