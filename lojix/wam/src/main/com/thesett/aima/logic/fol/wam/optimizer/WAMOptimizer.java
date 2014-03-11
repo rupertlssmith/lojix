@@ -66,7 +66,7 @@ public class WAMOptimizer implements Optimizer
      */
     private SizeableList<WAMInstruction> optimize(List<WAMInstruction> instructions)
     {
-        StateMachine optimizeConstants = new OptimizeConstants();
+        StateMachine optimizeConstants = new OptimizeInstructions();
         Matcher<WAMInstruction, WAMInstruction> matcher =
             new Matcher<WAMInstruction, WAMInstruction>(instructions.iterator(), optimizeConstants);
 

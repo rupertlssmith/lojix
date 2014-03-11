@@ -360,9 +360,6 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
             /*log.fine("fn = " + fn);*/
             /*log.fine("f = " + f);*/
 
-            // Look up and initialize this functor name from the symbol table.
-            FunctorName functorName = getFunctorFunctorName(f);
-
             // Create a new functor to hold the decoded data.
             result = new Functor(f, null);
 
@@ -371,6 +368,22 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
 
         case WAMInstruction.LIS:
         {
+            FunctorName functorName = new FunctorName("cons", 2);
+            int f = internFunctorName(functorName);
+
+            // Fill in this functors name and arity and allocate storage space for its arguments.
+            int arity = functorName.getArity();
+            Term[] arguments = new Term[arity];
+
+            // Loop over all of the functors arguments, recursively decoding them.
+            for (int i = 0; i < arity; i++)
+            {
+                arguments[i] = decodeHeap(val + i, variableContext);
+            }
+
+            // Create a new functor to hold the decoded data.
+            result = new Functor(f, arguments);
+
             break;
         }
 

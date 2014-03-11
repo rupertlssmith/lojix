@@ -730,11 +730,15 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
 
+                trace.fine(ip + ": PUT_LIST " + printSlot(xi, mode));
+
                 // Xi <- <LIS, H>
                 data.put(xi, listCell(hp));
 
                 // P <- P + instruction_size(P)
                 ip += 3;
+
+                break;
             }
 
             case GET_LIST:
@@ -742,6 +746,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab addr
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
+
+                trace.fine(ip + ": GET_LIST " + printSlot(xi, mode));
 
                 int deref = deref(xi);
                 int tag = derefTag;
@@ -789,12 +795,16 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 3;
+
+                break;
             }
 
             case SET_VOID:
             {
                 // grab N
                 int n = (int) codeBuffer.get(ip + 1);
+
+                trace.fine(ip + ": SET_VOID " + n);
 
                 // for i <- H to H + n - 1 do
                 //  HEAP[i] <- <REF, i>
@@ -808,12 +818,16 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 2;
+
+                break;
             }
 
             case UNIFY_VOID:
             {
                 // grab N
                 int n = (int) codeBuffer.get(ip + 1);
+
+                trace.fine(ip + ": UNIFY_VOID " + n);
 
                 // case mode of
                 if (!writeMode)
@@ -837,6 +851,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 2;
+
+                break;
             }
 
             // call @(p/n):
