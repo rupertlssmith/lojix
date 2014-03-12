@@ -365,7 +365,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of terms within the clause.
+        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
         gatherPositionAndOccurrenceInfo(clause);
 
         // Allocate permanent variables for a program clause. Program clauses only use permanent variables when really
@@ -490,7 +490,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of terms within the clause.
+        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
         gatherPositionAndOccurrenceInfo(clause);
 
         // Allocate permanent variables for a query. In queries all variables are permanent so that they are preserved
@@ -970,7 +970,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * Gather information about variable counts and positions of occurrence of terms within a clause.
+     * Gather information about variable counts and positions of occurrence of constants and variable within a clause.
      *
      * @param clause The clause to check the variable occurrence and position of occurrence within.
      */
@@ -1088,8 +1088,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
     /**
      * PositionAndOccurrenceVisitor visits all variable appearing within a clause to count the number of times that they
-     * occur (singleton detection). All terms within the clause are also checked to see whether or not they only appear
-     * in non-argument positions.
+     * occur (singleton detection). All constants within the clause are also checked to see whether or not they only
+     * appear in non-argument positions.
      */
     public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
@@ -1137,7 +1137,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         /**
          * {@inheritDoc}
          *
-         * <p/>Checks if a functor ever appears in an argument position.
+         * <p/>Checks if a constant ever appears in an argument position.
          *
          * <p/>Sets the 'inTopLevelFunctor' flag, whenever the traversal is directly within a top-level functors
          * arguments. This set at the end, so that subsequent calls to this will pick up the state of this flag at the
@@ -1145,15 +1145,19 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          */
         protected void enterFunctor(Functor functor)
         {
-            // Get the nonArgPosition flag, or initialize it to true.
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functor.getName(), SYMKEY_FUNCTOR_NON_ARG);
-            nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
+            // Only check position of occurrence for constants.
+            if (functor.getArity() == 0)
+            {
+                // Get the nonArgPosition flag, or initialize it to true.
+                Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functor.getName(), SYMKEY_FUNCTOR_NON_ARG);
+                nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
-            // Clear the nonArgPosition flag is the variable occurs in an argument position.
-            nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
-            symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
+                // Clear the nonArgPosition flag is the variable occurs in an argument position.
+                nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
+                symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
 
-            /*log.fine("Functor " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
+                log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");
+            }
 
             // Set the in top level flag, so that any term immediately below this can detect that it is in an
             // argument position.
