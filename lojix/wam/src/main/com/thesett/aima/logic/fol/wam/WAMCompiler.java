@@ -609,7 +609,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                 WAMInstruction instruction =
                     new WAMInstruction(WAMInstructionSet.GetStruc, addrMode, address,
-                        interner.getFunctorFunctorName(nextFunctor));
+                        interner.getFunctorFunctorName(nextFunctor), nextFunctor);
                 instructions.add(instruction);
 
                 // For each argument of the functor.
@@ -631,7 +631,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                         seenRegisters.add(allocation);
 
-                        instruction = new WAMInstruction(WAMInstructionSet.UnifyVar, addrMode, address);
+                        instruction = new WAMInstruction(WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
                     }
 
                     // If it is register seen before: unify_val.
@@ -639,11 +639,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                     {
                         /*log.fine("UNIFY_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
 
-                        instruction = new WAMInstruction(WAMInstructionSet.UnifyVal, addrMode, address);
+                        instruction = new WAMInstruction(WAMInstructionSet.UnifyVal, addrMode, address, nextArg);
                     }
-
-                    // Record the symbol key of the term that resulted in the creation of the instruction.
-                    instruction.setSymbolKeyReg1(nextArg.getSymbolKey());
 
                     instructions.add(instruction);
                 }
@@ -770,7 +767,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                     WAMInstruction instruction =
                         new WAMInstruction(WAMInstructionSet.PutStruc, addrMode, address,
-                            interner.getDeinternedFunctorName(nextFunctor.getName()));
+                            interner.getDeinternedFunctorName(nextFunctor.getName()), nextFunctor);
                     instructions.add(instruction);
 
                     // For each argument of the functor.
@@ -790,16 +787,13 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                             seenRegisters.add(allocation);
 
                             /*log.fine("SET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                            instruction = new WAMInstruction(WAMInstructionSet.SetVar, addrMode, address);
+                            instruction = new WAMInstruction(WAMInstructionSet.SetVar, addrMode, address, nextArg);
                         }
                         else
                         {
                             /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                            instruction = new WAMInstruction(WAMInstructionSet.SetVal, addrMode, address);
+                            instruction = new WAMInstruction(WAMInstructionSet.SetVal, addrMode, address, nextArg);
                         }
-
-                        // Record the symbol key of the term that resulted in the creation of the instruction.
-                        instruction.setSymbolKeyReg1(nextArg.getSymbolKey());
 
                         instructions.add(instruction);
                     }

@@ -20,8 +20,10 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
+import com.thesett.aima.logic.fol.Term;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
@@ -986,6 +988,9 @@ public class WAMInstruction implements Sizeable
     /** Holds the symbol key of the argument that is held in the first register of this instruction. */
     private SymbolKey symbolKeyReg1;
 
+    /** Holds the functor name of the argument that is assigned to the first register of this instruction. */
+    private Integer functorNameReg1;
+
     /**
      * Creates an instruction for the specified mnemonic.
      *
@@ -1004,6 +1009,28 @@ public class WAMInstruction implements Sizeable
     public WAMInstruction(byte code)
     {
         this.mnemonic = WAMInstructionSet.fromCode(code);
+    }
+
+    /**
+     * Creates an instruction for the specified mnemonic that takes one register and one functor argument.
+     *
+     * @param mnemonic The instruction mnemonic.
+     * @param mode1    The addressing mode to use with the register argument.
+     * @param reg1     The register argument.
+     * @param fn       The functor argument.
+     * @param reg1Term The term that is assigned or associated with reg1.
+     */
+    public WAMInstruction(WAMInstructionSet mnemonic, byte mode1, byte reg1, FunctorName fn, Term reg1Term)
+    {
+        this.mnemonic = mnemonic;
+        this.mode1 = mode1;
+        this.reg1 = reg1;
+        this.fn = fn;
+
+        // Record the symbol keys of the term that resulted in the creation of the instruction, and are associated
+        // with reg1 of the instruction.
+        setSymbolKeyReg1(reg1Term.getSymbolKey());
+        setFunctorNameReg1(reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null);
     }
 
     /**
@@ -1036,6 +1063,26 @@ public class WAMInstruction implements Sizeable
         this.mode1 = mode1;
         this.reg1 = reg1;
         this.reg2 = reg2;
+    }
+
+    /**
+     * Creates an instruction for the specified mnemonic that takes a single register argument.
+     *
+     * @param mnemonic The instruction mnemonic.
+     * @param mode1    The addressing mode to use with the register argument.
+     * @param reg1     The single register argument.
+     * @param reg1Term The term that is assigned or associated with reg1.
+     */
+    public WAMInstruction(WAMInstructionSet mnemonic, byte mode1, byte reg1, Term reg1Term)
+    {
+        this.mnemonic = mnemonic;
+        this.mode1 = mode1;
+        this.reg1 = reg1;
+
+        // Record the symbol keys of the term that resulted in the creation of the instruction, and are associated
+        // with reg1 of the instruction.
+        setSymbolKeyReg1(reg1Term.getSymbolKey());
+        setFunctorNameReg1(reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null);
     }
 
     /**
@@ -1260,5 +1307,15 @@ public class WAMInstruction implements Sizeable
     public String toString()
     {
         return mnemonic.toString(this);
+    }
+
+    /**
+     * Records the functor name of the argument that is assigned to the first register of this instruction.
+     *
+     * @param name The functor name.
+     */
+    private void setFunctorNameReg1(Integer name)
+    {
+        this.functorNameReg1 = name;
     }
 }
