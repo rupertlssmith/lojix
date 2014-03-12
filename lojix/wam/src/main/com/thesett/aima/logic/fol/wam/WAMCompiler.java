@@ -365,8 +365,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of variables within the clause.
-        gatherVariableOccurrenceInfo(clause);
+        // Gather information about the counts and positions of occurrence of terms within the clause.
+        gatherPositionAndOccurrenceInfo(clause);
 
         // Allocate permanent variables for a program clause. Program clauses only use permanent variables when really
         // needed to preserver variables across calls.
@@ -490,8 +490,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of variables within the clause.
-        gatherVariableOccurrenceInfo(clause);
+        // Gather information about the counts and positions of occurrence of terms within the clause.
+        gatherPositionAndOccurrenceInfo(clause);
 
         // Allocate permanent variables for a query. In queries all variables are permanent so that they are preserved
         // on the stack upon completion of the query.
@@ -970,20 +970,20 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * Gather information about variable counts and positions of occurrence within a clause.
+     * Gather information about variable counts and positions of occurrence of terms within a clause.
      *
-     * @param clause The clause to check the variable occurrence within.
+     * @param clause The clause to check the variable occurrence and position of occurrence within.
      */
-    private void gatherVariableOccurrenceInfo(Clause clause)
+    private void gatherPositionAndOccurrenceInfo(Clause clause)
     {
         PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
-        VariableOccurrenceVisitor variableOccurrenceVisitor =
-            new VariableOccurrenceVisitor(interner, symbolTable, positionalTraverser);
-        positionalTraverser.setContextChangeVisitor(variableOccurrenceVisitor);
+        PositionAndOccurrenceVisitor positionAndOccurrenceVisitor =
+            new PositionAndOccurrenceVisitor(interner, symbolTable, positionalTraverser);
+        positionalTraverser.setContextChangeVisitor(positionAndOccurrenceVisitor);
 
         TermWalker walker =
             new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser,
-                variableOccurrenceVisitor);
+                positionAndOccurrenceVisitor);
 
         walker.walk(clause);
     }
@@ -1087,10 +1087,11 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * VariableOccurrenceVisitor visits all variable appearing within a clause to count the number of times that they
-     * occur (singleton detection), and whether or not they only appear in non-argument positions.
+     * PositionAndOccurrenceVisitor visits all variable appearing within a clause to count the number of times that they
+     * occur (singleton detection). All terms within the clause are also checked to see whether or not they only appear
+     * in non-argument positions.
      */
-    public class VariableOccurrenceVisitor extends BasePositionalVisitor
+    public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
         /** Set when directly within a top-level functor. */
         private boolean inTopLevelFunctor;
@@ -1102,7 +1103,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          * @param symbolTable The compiler symbol table.
          * @param traverser   The positional context traverser.
          */
-        public VariableOccurrenceVisitor(VariableAndFunctorInterner interner,
+        public PositionAndOccurrenceVisitor(VariableAndFunctorInterner interner,
             SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
         {
             super(interner, symbolTable, traverser);
