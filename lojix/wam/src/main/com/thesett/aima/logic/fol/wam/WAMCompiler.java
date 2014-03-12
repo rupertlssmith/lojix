@@ -175,6 +175,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** The symbol table key for variable position of occurrence. */
     public static final String SYMKEY_VAR_NON_ARG = "var_non_arg";
 
+    /** The symbol table key for functor position of occurrence. */
+    public static final String SYMKEY_FUNCTOR_NON_ARG = "functor_non_arg";
+
     /** The symbol table key for predicate sources. */
     protected static final String SYMKEY_PREDICATES = "source_predicates";
 
@@ -1133,11 +1136,26 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         /**
          * {@inheritDoc}
          *
+         * <p/>Checks if a functor ever appears in an argument position.
+         *
          * <p/>Sets the 'inTopLevelFunctor' flag, whenever the traversal is directly within a top-level functors
-         * arguments.
+         * arguments. This set at the end, so that subsequent calls to this will pick up the state of this flag at the
+         * point immediately below a top-level functor.
          */
         protected void enterFunctor(Functor functor)
         {
+            // Get the nonArgPosition flag, or initialize it to true.
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functor.getName(), SYMKEY_FUNCTOR_NON_ARG);
+            nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
+
+            // Clear the nonArgPosition flag is the variable occurs in an argument position.
+            nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
+            symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
+
+            /*log.fine("Functor " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
+
+            // Set the in top level flag, so that any term immediately below this can detect that it is in an
+            // argument position.
             inTopLevelFunctor = traverser.isTopLevel();
         }
     }
