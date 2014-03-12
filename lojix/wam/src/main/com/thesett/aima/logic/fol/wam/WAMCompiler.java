@@ -1100,7 +1100,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          *
          * @param interner    The name interner.
          * @param symbolTable The compiler symbol table.
-         * @param traverser   The ppositional context traverser.
+         * @param traverser   The positional context traverser.
          */
         public VariableOccurrenceVisitor(VariableAndFunctorInterner interner,
             SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
