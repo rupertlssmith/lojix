@@ -100,7 +100,7 @@ public interface VariableAndFunctorInterner
      *
      * @return The de-interned functor names and arity.
      */
-    FunctorName getFunctorFunctorName(int name);
+    FunctorName getDeinternedFunctorName(int name);
 
     /**
      * De-internes a functor name from its intered form, and provides just the functors name without its arity.

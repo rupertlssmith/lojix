@@ -741,7 +741,7 @@ public class L3Compiler extends BaseMachine implements LogicCompiler<Clause, L3C
 
                     L3Instruction instruction =
                         new L3Instruction(L3InstructionSet.PutStruc, addrMode, address,
-                            interner.getFunctorFunctorName(nextFunctor.getName()));
+                            interner.getDeinternedFunctorName(nextFunctor.getName()));
                     instructions.add(instruction);
 
                     // For each argument of the functor.

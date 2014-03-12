@@ -268,7 +268,7 @@ public class L3Instruction implements Sizeable
             {
                 int fn = ByteBufferUtils.getIntFromBytes(code, ip + 5);
                 int f = fn >> 8;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -377,7 +377,7 @@ public class L3Instruction implements Sizeable
             {
                 int fn = ByteBufferUtils.getIntFromBytes(code, ip + 5);
                 int f = fn >> 8;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -409,7 +409,7 @@ public class L3Instruction implements Sizeable
             {
                 int fn = ByteBufferUtils.getIntFromBytes(code, ip + 5);
                 int f = fn >> 8;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -708,7 +708,7 @@ public class L3Instruction implements Sizeable
 
             int fn = ByteBufferUtils.getIntFromBytes(code, ip + 2);
             int f = fn >> 8;
-            instruction.fn = machine.getFunctorFunctorName(f);
+            instruction.fn = machine.getDeinternedFunctorName(f);
         }
 
         /**

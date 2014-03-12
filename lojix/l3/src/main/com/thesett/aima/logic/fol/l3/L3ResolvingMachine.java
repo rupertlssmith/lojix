@@ -258,7 +258,7 @@ public abstract class L3ResolvingMachine extends L3BaseMachine implements Resolv
             /*log.fine("f = " + f);*/
 
             // Look up and initialize this functor name from the symbol table.
-            FunctorName functorName = getFunctorFunctorName(f);
+            FunctorName functorName = getDeinternedFunctorName(f);
 
             // Fill in this functors name and arity and allocate storage space for its arguments.
             int arity = functorName.getArity();

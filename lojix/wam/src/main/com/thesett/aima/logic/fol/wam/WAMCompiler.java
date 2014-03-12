@@ -770,7 +770,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                     WAMInstruction instruction =
                         new WAMInstruction(WAMInstructionSet.PutStruc, addrMode, address,
-                            interner.getFunctorFunctorName(nextFunctor.getName()));
+                            interner.getDeinternedFunctorName(nextFunctor.getName()));
                     instructions.add(instruction);
 
                     // For each argument of the functor.

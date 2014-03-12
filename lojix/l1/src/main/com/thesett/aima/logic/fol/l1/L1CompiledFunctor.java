@@ -300,7 +300,7 @@ public abstract class L1CompiledFunctor extends Functor implements L1CompiledTer
         }
 
         // Look up and initialize this functor name from the symbol table.
-        FunctorName name = machine.getFunctorFunctorName(f);
+        FunctorName name = machine.getDeinternedFunctorName(f);
 
         // Fill in this functors name and arity and arguments.
         this.name = f;
@@ -363,7 +363,7 @@ public abstract class L1CompiledFunctor extends Functor implements L1CompiledTer
                 // int f = ByteBufferUtils.get24BitIntFromBytes(code, next + 2);
 
                 // Look up and initialize this functor name from the symbol table.
-                FunctorName name = machine.getFunctorFunctorName(f);
+                FunctorName name = machine.getDeinternedFunctorName(f);
 
                 // Check if decompiling this, or creating a new functor.
                 Functor functor = null;

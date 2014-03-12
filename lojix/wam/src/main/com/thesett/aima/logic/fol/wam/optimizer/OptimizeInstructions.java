@@ -275,6 +275,24 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         return false;
     }
 
+    private boolean isNonArgConstant(WAMInstruction instruction)
+    {
+        SymbolKey symbolKey = instruction.getSymbolKeyReg1();
+
+        if (symbolKey != null)
+        {
+            Integer count = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_NON_ARG);
+
+            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && nonArgPositionOnly.equals(true))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Discards the specified number of most recent instructions from the output buffer.
      *

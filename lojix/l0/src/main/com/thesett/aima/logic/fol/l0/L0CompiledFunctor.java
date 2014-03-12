@@ -172,7 +172,7 @@ public abstract class L0CompiledFunctor extends Functor implements L0CompiledTer
     public String disassemble()
     {
         // Look up and initialize this functor name from the symbol table.
-        FunctorName name = machine.getFunctorFunctorName(getName());
+        FunctorName name = machine.getDeinternedFunctorName(getName());
 
         String result = "\n" + name.getName() + ":";
 
@@ -383,7 +383,7 @@ public abstract class L0CompiledFunctor extends Functor implements L0CompiledTer
                 // int f = ByteBufferUtils.get24BitIntFromBytes(code, next + 2);
 
                 // Look up and initialize this functor name from the symbol table.
-                FunctorName name = machine.getFunctorFunctorName(f);
+                FunctorName name = machine.getDeinternedFunctorName(f);
 
                 // Check if decompiling this, or creating a new functor.
                 Functor functor = null;

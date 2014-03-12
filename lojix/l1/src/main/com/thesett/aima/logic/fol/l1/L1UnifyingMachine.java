@@ -233,7 +233,7 @@ public abstract class L1UnifyingMachine extends L1BaseMachine implements Unifier
             /*log.fine("f = " + f);*/
 
             // Look up and initialize this functor name from the symbol table.
-            FunctorName functorName = getFunctorFunctorName(f);
+            FunctorName functorName = getDeinternedFunctorName(f);
 
             // Fill in this functors name and arity and allocate storage space for its arguments.
             int arity = functorName.getArity();

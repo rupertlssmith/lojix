@@ -586,7 +586,7 @@ public class L2Compiler extends BaseMachine implements LogicCompiler<Clause, L2C
 
                     L2Instruction instruction =
                         new L2Instruction(L2InstructionSet.PutStruc, addrMode, address,
-                            interner.getFunctorFunctorName(nextFunctor.getName()));
+                            interner.getDeinternedFunctorName(nextFunctor.getName()));
                     instructions.add(instruction);
 
                     // For each argument of the functor.

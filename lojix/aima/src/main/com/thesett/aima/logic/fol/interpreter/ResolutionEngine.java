@@ -296,9 +296,9 @@ public abstract class ResolutionEngine<S extends Clause, T, Q> implements Variab
     }
 
     /** {@inheritDoc} */
-    public FunctorName getFunctorFunctorName(int name)
+    public FunctorName getDeinternedFunctorName(int name)
     {
-        return interner.getFunctorFunctorName(name);
+        return interner.getDeinternedFunctorName(name);
     }
 
     /** {@inheritDoc} */

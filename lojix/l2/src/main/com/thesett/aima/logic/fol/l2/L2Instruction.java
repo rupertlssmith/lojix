@@ -390,7 +390,7 @@ public class L2Instruction implements Sizeable
                 // Do nothing as this instruction takes no arguments.
                 int fn = ByteBufferUtils.getIntFromBytes(code, ip + 5);
                 int f = fn >> 8;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /**
@@ -792,7 +792,7 @@ public class L2Instruction implements Sizeable
 
             int fn = ByteBufferUtils.getIntFromBytes(code, ip + 2);
             int f = fn >> 8;
-            instruction.fn = machine.getFunctorFunctorName(f);
+            instruction.fn = machine.getDeinternedFunctorName(f);
         }
 
         /**

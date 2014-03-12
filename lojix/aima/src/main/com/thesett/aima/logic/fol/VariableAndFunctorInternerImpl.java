@@ -93,7 +93,7 @@ public class VariableAndFunctorInternerImpl implements VariableAndFunctorInterne
     }
 
     /** {@inheritDoc} */
-    public FunctorName getFunctorFunctorName(int name)
+    public FunctorName getDeinternedFunctorName(int name)
     {
         return getFunctorInterner().getAttributeFromInt(name).getValue();
     }
@@ -113,7 +113,7 @@ public class VariableAndFunctorInternerImpl implements VariableAndFunctorInterne
     /** {@inheritDoc} */
     public FunctorName getFunctorFunctorName(Functor functor)
     {
-        return getFunctorFunctorName(functor.getName());
+        return getDeinternedFunctorName(functor.getName());
     }
 
     /** {@inheritDoc} */

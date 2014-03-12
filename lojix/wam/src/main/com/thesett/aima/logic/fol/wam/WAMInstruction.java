@@ -443,7 +443,7 @@ public class WAMInstruction implements Sizeable
             {
                 int fn = code.getInt(ip + 5);
                 int f = fn & 0x00ffffff;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -552,7 +552,7 @@ public class WAMInstruction implements Sizeable
             {
                 int fn = code.getInt(ip + 5);
                 int f = fn & 0x00ffffff;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -586,7 +586,7 @@ public class WAMInstruction implements Sizeable
             {
                 int fn = code.getInt(ip + 5);
                 int f = fn & 0x00ffffff;
-                instruction.fn = machine.getFunctorFunctorName(f);
+                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -918,7 +918,7 @@ public class WAMInstruction implements Sizeable
 
             int fn = code.getInt(ip + 2);
             int f = fn >> 8;
-            instruction.fn = machine.getFunctorFunctorName(f);
+            instruction.fn = machine.getDeinternedFunctorName(f);
         }
 
         /**
@@ -961,7 +961,7 @@ public class WAMInstruction implements Sizeable
         {
             int fn = code.getInt(ip + 1);
             int f = fn >> 8;
-            instruction.fn = machine.getFunctorFunctorName(f);
+            instruction.fn = machine.getDeinternedFunctorName(f);
         }
     }
 
