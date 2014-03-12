@@ -1029,8 +1029,8 @@ public class WAMInstruction implements Sizeable
 
         // Record the symbol keys of the term that resulted in the creation of the instruction, and are associated
         // with reg1 of the instruction.
-        setSymbolKeyReg1(reg1Term.getSymbolKey());
-        setFunctorNameReg1(reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null);
+        symbolKeyReg1 = reg1Term.getSymbolKey();
+        functorNameReg1 = reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null;
     }
 
     /**
@@ -1081,8 +1081,8 @@ public class WAMInstruction implements Sizeable
 
         // Record the symbol keys of the term that resulted in the creation of the instruction, and are associated
         // with reg1 of the instruction.
-        setSymbolKeyReg1(reg1Term.getSymbolKey());
-        setFunctorNameReg1(reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null);
+        symbolKeyReg1 = reg1Term.getSymbolKey();
+        functorNameReg1 = reg1Term.isFunctor() ? ((Functor) reg1Term).getName() : null;
     }
 
     /**
@@ -1232,18 +1232,23 @@ public class WAMInstruction implements Sizeable
     }
 
     /**
-     * Records the symbol key of the argument that is assigned to the first register of this instruction.
+     * Provides the symbol key of the argument that is assigned to the first register of this instruction.
      *
-     * @param symbolKey The symbol key.
+     * @return The symbol key, or <tt>null</tt> if none was associated with reg1.
      */
-    public void setSymbolKeyReg1(SymbolKey symbolKey)
-    {
-        this.symbolKeyReg1 = symbolKey;
-    }
-
     public SymbolKey getSymbolKeyReg1()
     {
         return symbolKeyReg1;
+    }
+
+    /**
+     * Provides the functor name of the argument that is assigned to the first register of this instruction.
+     *
+     * @return The functor name, or <tt>null</tt> if none was associated with reg1.
+     */
+    public Integer getFunctorNameReg1()
+    {
+        return functorNameReg1;
     }
 
     /**
@@ -1307,15 +1312,5 @@ public class WAMInstruction implements Sizeable
     public String toString()
     {
         return mnemonic.toString(this);
-    }
-
-    /**
-     * Records the functor name of the argument that is assigned to the first register of this instruction.
-     *
-     * @param name The functor name.
-     */
-    private void setFunctorNameReg1(Integer name)
-    {
-        this.functorNameReg1 = name;
     }
 }

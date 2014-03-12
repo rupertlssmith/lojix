@@ -275,6 +275,13 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         return false;
     }
 
+    /**
+     * Checks if the term argument to an instruction was a constant, in a non-argument position.
+     *
+     * @param  instruction The instruction to test.
+     *
+     * @return <tt>true</tt> iff the term argument to an instruction was a constant, in a non-argument position.
+     */
     private boolean isNonArgConstant(WAMInstruction instruction)
     {
         SymbolKey symbolKey = instruction.getSymbolKeyReg1();
