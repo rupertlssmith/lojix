@@ -103,6 +103,9 @@ public class WAMInstruction implements Sizeable
     /** The instruction to call a predicate. */
     public static final byte CALL = 0x0b;
 
+    /** The instruction to tail call a predicate. */
+    public static final byte EXECUTE = 0x1a;
+
     /** The instruction to return from a called predicate. */
     public static final byte PROCEED = 0x0c;
 
@@ -439,6 +442,48 @@ public class WAMInstruction implements Sizeable
 
         /** The instruction to call a predicate. */
         Call(CALL, "call", 6)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                int fn = code.getInt(ip + 5);
+                int f = fn & 0x00ffffff;
+                instruction.fn = machine.getDeinternedFunctorName(f);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int toCall = machine.internFunctorName(instruction.fn);
+
+                WAMCallPoint callPointToCall = machine.resolveCallPoint(toCall);
+
+                // Ensure that a valid call point was returned, otherwise a linkage error has occurred.
+                if (callPointToCall == null)
+                {
+                    throw new LinkageException("Could not resolve call to " + instruction.fn + ".", null, null,
+                        "Unable to resolve call to " + instruction.fn.getName() + "/" + instruction.fn.getArity() +
+                        ".");
+                }
+
+                int entryPoint = callPointToCall.entryPoint;
+
+                codeBuf.put(code);
+                codeBuf.putInt(entryPoint);
+                codeBuf.put((byte) instruction.fn.getArity());
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " +
+                    ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
+            }
+        },
+
+        /** The instruction to tail call a predicate. */
+        Execute(EXECUTE, "execute", 6)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)

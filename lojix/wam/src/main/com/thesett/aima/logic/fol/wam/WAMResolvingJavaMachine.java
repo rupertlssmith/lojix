@@ -26,6 +26,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CON;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.DEALLOCATE;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.EXECUTE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_LIST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.GET_STRUC;
@@ -875,6 +876,32 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 cp = ip + 6;
 
                 trace.fine(ip + ": CALL " + pn + "/" + n + " (cp = " + cp + ")]");
+
+                // Ensure that the predicate to call is known and linked in, otherwise fail.
+                if (pn == -1)
+                {
+                    failed = true;
+
+                    break;
+                }
+
+                // P <- @(p/n)
+                ip = pn;
+
+                break;
+            }
+
+            // execute @(p/n):
+            case EXECUTE:
+            {
+                // grab @(p/n)
+                int pn = codeBuffer.getInt(ip + 1);
+                int n = codeBuffer.get(ip + 5);
+
+                // num_of_args <- n
+                numOfArgs = n;
+
+                trace.fine(ip + ": EXECUTE " + pn + "/" + n + " (cp = " + cp + ")]");
 
                 // Ensure that the predicate to call is known and linked in, otherwise fail.
                 if (pn == -1)
