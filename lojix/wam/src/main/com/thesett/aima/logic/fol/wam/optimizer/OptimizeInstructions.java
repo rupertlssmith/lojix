@@ -15,8 +15,10 @@
  */
 package com.thesett.aima.logic.fol.wam.optimizer;
 
+import static java.lang.Boolean.TRUE;
 import java.util.LinkedList;
 
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.wam.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.WAMInstruction;
@@ -28,6 +30,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.Pu
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.PutList;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.PutStruc;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetConstant;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetVal;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetVar;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.SetVoid;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.UnifyConstant;
@@ -59,10 +62,10 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         NM,
 
         /** UnifyVar instruction seen. */
-        UV,
+        //UV,
 
         /** PutStruc instruction seen. */
-        PS,
+        //PS,
 
         /** UnifyVar to UnifyVoid elimination. */
         UVE,
@@ -78,7 +81,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     private State state = State.NM;
 
     /** Holds the last instruction seen. */
-    private WAMInstruction last;
+    //private WAMInstruction last;
 
     /** Holds a buffer of pending instructions to output. */
     private LinkedList<WAMInstruction> buffer = new LinkedList<WAMInstruction>();
@@ -96,7 +99,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
      * Builds an instruction optimizer.
      *
      * @param symbolTable The symbol table to get instruction analysis from.
-     * @param interner
+     * @param interner    The functor and variable name interner.
      */
     public OptimizeInstructions(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
@@ -114,7 +117,6 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         {
             if (state != State.UVE)
             {
-                state = State.UVE;
                 voidCount = 0;
             }
 
@@ -122,6 +124,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             WAMInstruction unifyVoid = new WAMInstruction(UnifyVoid, WAMInstruction.REG_ADDR, (byte) ++voidCount);
             shift(unifyVoid);
+            state = State.UVE;
 
             log.fine(next + " -> " + unifyVoid);
         }
@@ -129,7 +132,6 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         {
             if (state != State.SVE)
             {
-                state = State.SVE;
                 voidCount = 0;
             }
 
@@ -137,6 +139,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             WAMInstruction setVoid = new WAMInstruction(SetVoid, WAMInstruction.REG_ADDR, (byte) ++voidCount);
             shift(setVoid);
+            state = State.SVE;
 
             log.fine(next + " -> " + setVoid);
         }
@@ -146,27 +149,31 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
             discard(1);
 
             log.fine(next + " -> eliminated");
+
+            state = State.NM;
         }
 
         // Constant optimizations.
-        else if (UnifyVar == next.getMnemonic())
+        else if ((UnifyVar == next.getMnemonic()) && isConstant(next) && isNonArg(next))
         {
-            state = State.UV;
-            last = next;
-        }
-        else if ((GetStruc == next.getMnemonic()) && (state == State.UV) && (last.getReg1() == next.getReg1()) &&
-                (next.getFn().getArity() == 0))
-        {
-            discard(2);
+            discard(1);
 
-            WAMInstruction unifyConst = new WAMInstruction(UnifyConstant, next.getFn());
+            FunctorName functorName = interner.getDeinternedFunctorName(next.getFunctorNameReg1());
+            WAMInstruction unifyConst = new WAMInstruction(UnifyConstant, functorName);
             shift(unifyConst);
             flush();
             state = State.NM;
 
-            log.fine(last + ", " + next + " -> " + unifyConst);
+            log.fine(next + " -> " + unifyConst);
         }
-        else if ((GetStruc == next.getMnemonic()) && (next.getFn().getArity() == 0))
+        else if ((GetStruc == next.getMnemonic()) && isConstant(next) && isNonArg(next))
+        {
+            discard(1);
+            state = State.NM;
+
+            log.fine(next + " -> eliminated");
+        }
+        else if ((GetStruc == next.getMnemonic()) && isConstant(next) && !isNonArg(next))
         {
             discard(1);
 
@@ -177,41 +184,34 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             log.fine(next + " -> " + getConst);
         }
-        else if ((state == State.NM) && (PutStruc == next.getMnemonic()) && (next.getFn().getArity() == 0))
+        else if ((PutStruc == next.getMnemonic()) && isConstant(next) && isNonArg(next))
         {
-            state = State.PS;
-            last = next;
-        }
-        else if ((state == State.PS) && (SetVar == next.getMnemonic()) && (last.getReg1() == next.getReg1()))
-        {
-            discard(2);
+            discard(1);
+            state = State.NM;
 
-            WAMInstruction setConst = new WAMInstruction(SetConstant, next.getFn());
+            log.fine(next + " -> eliminated");
+        }
+        else if ((PutStruc == next.getMnemonic()) && isConstant(next) && !isNonArg(next))
+        {
+            discard(1);
+
+            WAMInstruction putConst = new WAMInstruction(PutConstant, next.getMode1(), next.getReg1(), next.getFn());
+            shift(putConst);
+            state = State.NM;
+
+            log.fine(next + " -> " + putConst);
+        }
+        else if ((SetVal == next.getMnemonic()) && isConstant(next) && isNonArg(next))
+        {
+            discard(1);
+
+            FunctorName functorName = interner.getDeinternedFunctorName(next.getFunctorNameReg1());
+            WAMInstruction setConst = new WAMInstruction(SetConstant, functorName);
             shift(setConst);
             flush();
             state = State.NM;
 
-            log.fine(last + ", " + next + " -> " + setConst);
-        }
-        else if (state == State.PS)
-        {
-            discard(2);
-
-            WAMInstruction putConst = new WAMInstruction(PutConstant, last.getMode1(), last.getReg1(), last.getFn());
-            shift(putConst);
-
-            log.fine(last + " -> " + putConst);
-
-            if ((PutStruc == next.getMnemonic()) && (next.getFn().getArity() == 0))
-            {
-                last = next;
-                shift(last);
-            }
-            else
-            {
-                state = State.NM;
-                apply(next);
-            }
+            log.fine(next + " -> " + setConst);
         }
 
         // List optimizations.
@@ -222,6 +222,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             WAMInstruction getList = new WAMInstruction(GetList, next.getMode1(), next.getReg1());
             shift(getList);
+            state = State.NM;
 
             log.fine(next + " -> " + getList);
         }
@@ -232,6 +233,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             WAMInstruction putList = new WAMInstruction(PutList, next.getMode1(), next.getReg1());
             shift(putList);
+            state = State.NM;
 
             log.fine(next + " -> " + putList);
         }
@@ -257,6 +259,31 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     }
 
     /**
+     * Checks if the term argument to an instruction was a constant.
+     *
+     * @param  instruction The instruction to test.
+     *
+     * @return <tt>true</tt> iff the term argument to an instruction was a constant. <tt>false</tt> will be returned if
+     *         this information was not recorded, and cannot be determined.
+     */
+    public boolean isConstant(WAMInstruction instruction)
+    {
+        Integer name = instruction.getFunctorNameReg1();
+
+        if (name != null)
+        {
+            FunctorName functorName = interner.getDeinternedFunctorName(name);
+
+            if (functorName.getArity() == 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Checks if the term argument to an instruction was a singleton, non-argument position variable.
      *
      * @param  instruction The instruction to test.
@@ -272,7 +299,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
             Integer count = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
             Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_NON_ARG);
 
-            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && nonArgPositionOnly.equals(true))
+            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && TRUE.equals(nonArgPositionOnly))
             {
                 return true;
             }
@@ -282,22 +309,22 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     }
 
     /**
-     * Checks if the term argument to an instruction was a constant, in a non-argument position.
+     * Checks if the term argument to an instruction was in a non-argument position.
      *
      * @param  instruction The instruction to test.
      *
-     * @return <tt>true</tt> iff the term argument to an instruction was a constant, in a non-argument position.
+     * @return <tt>true</tt> iff the term argument to an instruction was in a non-argument position. <tt>false</tt> will
+     *         be returned if this information was not recorded, and cannot be determined.
      */
-    private boolean isNonArgConstant(WAMInstruction instruction)
+    private boolean isNonArg(WAMInstruction instruction)
     {
-        SymbolKey symbolKey = instruction.getSymbolKeyReg1();
+        Integer functorName = instruction.getFunctorNameReg1();
 
-        if (symbolKey != null)
+        if (functorName != null)
         {
-            Integer count = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_NON_ARG);
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functorName, WAMCompiler.SYMKEY_FUNCTOR_NON_ARG);
 
-            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && nonArgPositionOnly.equals(true))
+            if (TRUE.equals(nonArgPositionOnly))
             {
                 return true;
             }

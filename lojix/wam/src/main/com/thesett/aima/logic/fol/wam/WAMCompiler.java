@@ -38,6 +38,7 @@ import com.thesett.aima.logic.fol.TermUtils;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
@@ -1133,12 +1134,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          * <p/>Checks if a constant ever appears in an argument position.
          *
          * <p/>Sets the 'inTopLevelFunctor' flag, whenever the traversal is directly within a top-level functors
-         * arguments. This set at the end, so that subsequent calls to this will pick up the state of this flag at the
-         * point immediately below a top-level functor.
+         * arguments. This is set at the end, so that subsequent calls to this will pick up the state of this flag at
+         * the point immediately below a top-level functor.
          */
         protected void enterFunctor(Functor functor)
         {
-            /*log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));*/
+            log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));
 
             // Only check position of occurrence for constants.
             if (functor.getArity() == 0)
@@ -1151,12 +1152,23 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
                 symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
 
-                /*log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
+                log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");
             }
 
             // Set the in top level flag, so that any term immediately below this can detect that it is in an
             // argument position.
             inTopLevelFunctor = traverser.isTopLevel();
         }
+
+        /**
+         * <p/>Restores the 'inTopLevelFunctor' flag, to its state prior to entering a functor. This is needed to ensure
+         * this flag is correct for subsequent functors, that are not children of the one currently being left.
+         *
+         * @param functor The functor being left.
+         */
+        /*protected void leaveFunctor(Functor functor)
+        {
+            inTopLevelFunctor = pop;
+        }*/
     }
 }
