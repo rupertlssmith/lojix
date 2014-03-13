@@ -160,6 +160,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testFunctorsMultipleDifferentInnerConstantsUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFunctorsMultipleNestedMixedVarsAndConstantsUnify", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsNestedConstantsMixedWithVarsUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>("testWamBook2_9",
                 engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
