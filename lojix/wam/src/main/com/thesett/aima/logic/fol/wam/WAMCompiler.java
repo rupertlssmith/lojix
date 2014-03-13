@@ -216,7 +216,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     public WAMCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         super(symbolTable, interner);
-        optimizer = new WAMOptimizer(symbolTable);
+        optimizer = new WAMOptimizer(symbolTable, interner);
     }
 
     /** {@inheritDoc} */
@@ -625,6 +625,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                     /*log.fine("nextArg = " + nextArg);*/
 
                     // If it is register not seen before: unify_var.
+                    // If it is register seen before: unify_val.
                     if (!seenRegisters.contains(allocation))
                     {
                         /*log.fine("UNIFY_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
@@ -633,8 +634,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                         instruction = new WAMInstruction(WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
                     }
-
-                    // If it is register seen before: unify_val.
                     else
                     {
                         /*log.fine("UNIFY_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
@@ -1139,6 +1138,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          */
         protected void enterFunctor(Functor functor)
         {
+            /*log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));*/
+
             // Only check position of occurrence for constants.
             if (functor.getArity() == 0)
             {
@@ -1150,7 +1151,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
                 symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
 
-                log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");
+                /*log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
             }
 
             // Set the in top level flag, so that any term immediately below this can detect that it is in an

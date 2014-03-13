@@ -491,7 +491,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     // case read:
                     // Xi <- heap[s]
                     data.put(xi, data.get(sp));
-
                 }
                 else
                 {
@@ -717,6 +716,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     // h <- h + 1
                     hp++;
                 }
+
+                // s <- s + 1
+                //sp++;
 
                 // P <- P + instruction_size(P)
                 ip += 5;

@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.optimizer;
 
 import java.util.List;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.wam.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.WAMOptimizeableListing;
 import com.thesett.common.util.SizeableLinkedList;
@@ -38,14 +39,19 @@ public class WAMOptimizer implements Optimizer
     /** The symbol table. */
     protected final SymbolTable<Integer, String, Object> symbolTable;
 
+    /** Holds the variable and functor name interner for the machine. */
+    private final VariableAndFunctorInterner interner;
+
     /**
      * Builds a WAM instruction optimizer.
      *
      * @param symbolTable The symbol table to get instruction analysis information from.
+     * @param interner    The variable and functor name interner for the machine.
      */
-    public WAMOptimizer(SymbolTable<Integer, String, Object> symbolTable)
+    public WAMOptimizer(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         this.symbolTable = symbolTable;
+        this.interner = interner;
     }
 
     /**
@@ -80,7 +86,7 @@ public class WAMOptimizer implements Optimizer
      */
     private SizeableList<WAMInstruction> optimize(List<WAMInstruction> instructions)
     {
-        StateMachine optimizeConstants = new OptimizeInstructions(symbolTable);
+        StateMachine optimizeConstants = new OptimizeInstructions(symbolTable, interner);
         Matcher<WAMInstruction, WAMInstruction> matcher =
             new Matcher<WAMInstruction, WAMInstruction>(instructions.iterator(), optimizeConstants);
 

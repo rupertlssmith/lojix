@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.optimizer;
 
 import java.util.LinkedList;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.wam.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet.GetConstant;
@@ -85,6 +86,9 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     /** The symbol table. */
     protected final SymbolTable<Integer, String, Object> symbolTable;
 
+    /** Holds the variable and functor name interner for the machine. */
+    private final VariableAndFunctorInterner interner;
+
     /** Counts the number of void variables seen in a row. */
     private int voidCount = 0;
 
@@ -92,10 +96,12 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
      * Builds an instruction optimizer.
      *
      * @param symbolTable The symbol table to get instruction analysis from.
+     * @param interner
      */
-    public OptimizeInstructions(SymbolTable<Integer, String, Object> symbolTable)
+    public OptimizeInstructions(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         this.symbolTable = symbolTable;
+        this.interner = interner;
     }
 
     /** {@inheritDoc} */
