@@ -150,6 +150,12 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testFunctorsSameArityDifferentArgsFailToUnify", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFunctorsDifferentNameSameArgsDoNotUnify", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsMultipleInnerConstantsUnify", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsMultipleInnerConstantsUnifyWithVar", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsVarUnifiesWithMultipleInnerConstants", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>("testWamBook2_9",
                 engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
