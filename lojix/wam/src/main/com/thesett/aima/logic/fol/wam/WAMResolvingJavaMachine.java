@@ -922,7 +922,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 ep = esp;
                 esp = esp + n + 3;
 
-                trace.fine(ip + ": ALLOCATE");
+                trace.fine(ip + ": ALLOCATE " + n);
                 trace.fine("-> env @ " + ep + " " + traceEnvFrame());
 
                 // P <- P + instruction_size(P)
