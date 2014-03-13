@@ -63,7 +63,7 @@ public class BasePrinter extends BasePositionalVisitor
      *
      * @param interner    The name interner.
      * @param symbolTable The compiler symbol table.
-     * @param traverser   The ppositional context traverser.
+     * @param traverser   The positional context traverser.
      * @param column      The column to print to.
      * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.

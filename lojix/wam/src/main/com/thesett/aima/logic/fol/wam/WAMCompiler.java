@@ -1139,7 +1139,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
          */
         protected void enterFunctor(Functor functor)
         {
-            log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));
+            /*log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));*/
 
             // Only check position of occurrence for constants.
             if (functor.getArity() == 0)
@@ -1152,12 +1152,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
                 symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
 
-                log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");
+                /*log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
             }
-
-            // Set the in top level flag, so that any term immediately below this can detect that it is in an
-            // argument position.
-            //inTopLevelFunctor = traverser.isTopLevel();
         }
 
         /**
