@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.TraceIndenter;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
@@ -79,7 +80,7 @@ public class BasePrinter implements AllTermsVisitor
      *
      * @param interner    The name interner.
      * @param symbolTable The compiler symbol table.
-     * @param traverser   The ppositional context traverser.
+     * @param traverser   The positional context traverser.
      * @param column      The column to print to.
      * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.

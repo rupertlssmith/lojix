@@ -45,7 +45,7 @@ public class LabelPrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public LabelPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-                        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, grid, table);
     }
@@ -60,7 +60,7 @@ public class LabelPrinter extends BasePrinter
             for (WAMInstruction instruction : query.getInstructions())
             {
                 WAMLabel label = instruction.getLabel();
-                addLineToRow(label != null ? label.toPrettyString() + ":" : "");
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }
@@ -76,7 +76,7 @@ public class LabelPrinter extends BasePrinter
             for (WAMInstruction instruction : compiledPredicate.getInstructions())
             {
                 WAMLabel label = instruction.getLabel();
-                addLineToRow(label != null ? label.toPrettyString() + ":" : "");
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }

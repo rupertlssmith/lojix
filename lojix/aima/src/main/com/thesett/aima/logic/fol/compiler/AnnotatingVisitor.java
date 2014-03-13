@@ -56,7 +56,7 @@ public class AnnotatingVisitor implements FunctorVisitor, VariableVisitor, Liter
     public static final String VARIABLE_DOMAIN = "varDomain";
 
     /** The basic traverser used to provide positional context to visited terms. */
-    private PositionalTermTraverser traverser;
+    private PositionalContext traverser;
 
     /** The name interner. */
     private VariableAndFunctorInterner interner;
@@ -73,7 +73,7 @@ public class AnnotatingVisitor implements FunctorVisitor, VariableVisitor, Liter
      * @param traverser   The positional context traverser.
      */
     public AnnotatingVisitor(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser)
+        PositionalContext traverser)
     {
         this.traverser = traverser;
         this.interner = interner;

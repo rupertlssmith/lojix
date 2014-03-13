@@ -17,7 +17,6 @@ package com.thesett.aima.logic.fol.compiler;
 
 import com.thesett.aima.logic.fol.ClauseTraverser;
 import com.thesett.aima.logic.fol.FunctorTraverser;
-import com.thesett.aima.logic.fol.PredicateTraverser;
 import com.thesett.aima.logic.fol.TermVisitor;
 
 /**
@@ -35,49 +34,28 @@ import com.thesett.aima.logic.fol.TermVisitor;
  *
  * @author Rupert Smith
  */
-public interface PositionalTermTraverser extends /*PredicateTraverser,*/ ClauseTraverser, FunctorTraverser
+public interface PositionalTermTraverser extends ClauseTraverser, FunctorTraverser, PositionalContext
 {
-    /**
-     * Indicates whether the current term is a top-level functor in a clause head or body.
-     *
-     * @return <tt>true</tt> if the current term is a top-level functor in a clause head or body.
-     */
-    public boolean isTopLevel();
-
-    /**
-     * Indicates whether the current term is in a clause head.
-     *
-     * @return <tt>true</tt> if the current term is in a clause head.
-     */
-    public boolean isInHead();
-
-    /**
-     * Indicates whether the current term is the last functor in a clause body.
-     *
-     * @return <tt>true</tt> if the current term is the last functor in a clause body.
-     */
-    public boolean isLastBodyFunctor();
-
     /**
      * Indicates that a call is being made to a term visitor because its context is being established.
      *
      * @return <tt>true</tt> if a call is being made to a term visitor because its context is being established.
      */
-    public boolean isEnteringContext();
+    boolean isEnteringContext();
 
     /**
      * Indicates that a call is being made to a term visitor because its context is being left.
      *
      * @return <tt>true</tt> if a call is being made to a term visitor because its context is being left.
      */
-    public boolean isLeavingContext();
+    boolean isLeavingContext();
 
     /**
      * Indicates that a call is being made to a term visitor because its context is being changed.
      *
      * @return <tt>true</tt> if a call is being made to a term visitor because its context is being changed.
      */
-    public boolean isContextChange();
+    boolean isContextChange();
 
     /**
      * Allows a visitor to notify on context changes to be set.

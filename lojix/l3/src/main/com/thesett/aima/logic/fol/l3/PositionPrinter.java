@@ -18,8 +18,11 @@ package com.thesett.aima.logic.fol.l3;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.compiler.PositionalContext;
+
 import static com.thesett.aima.logic.fol.l3.L3Instruction.STACK_ADDR;
+
+import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 

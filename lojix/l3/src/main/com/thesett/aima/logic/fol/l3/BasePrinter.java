@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.TraceIndenter;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;

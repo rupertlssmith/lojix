@@ -146,6 +146,12 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     }
 
     /** {@inheritDoc} */
+    public PositionalContext getParentContext()
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
     public void setContextChangeVisitor(TermVisitor contextChangeVisitor)
     {
         this.contextChangeVisitor = contextChangeVisitor;
