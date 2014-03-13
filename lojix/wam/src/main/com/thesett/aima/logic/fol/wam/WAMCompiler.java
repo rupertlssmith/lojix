@@ -430,10 +430,21 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
                 instructions = compileBody(expression, i == 0);
 
-                // Generate the call instructions, followed by the call address, which is f_n of the called program.
-                WAMInstruction instruction =
-                    new WAMInstruction(WAMInstructionSet.Call, interner.getFunctorFunctorName(expression));
-                instructions.add(instruction);
+                // Generate the call or tail-call instructions, followed by the call address, which is f_n of the
+                // called program.
+                if (i == (expressions.length - 1))
+                {
+                    // Deallocate the stack frame at the end of the clause, but prior to calling the last
+                    // body predicate.
+                    instructions.add(new WAMInstruction(WAMInstructionSet.Deallocate));
+                    instructions.add(new WAMInstruction(WAMInstructionSet.Execute,
+                            interner.getFunctorFunctorName(expression)));
+                }
+                else
+                {
+                    instructions.add(new WAMInstruction(WAMInstructionSet.Call,
+                            interner.getFunctorFunctorName(expression)));
+                }
 
                 result.addInstructions(expression, instructions);
             }
@@ -445,12 +456,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             /*log.fine("PROCEED");*/
             postFixInstructions.add(new WAMInstruction(WAMInstructionSet.Proceed));
-        }
-        else
-        {
-            // Deallocate the stack frame at the end of the clause.
-            /*log.fine("DEALLOCATE");*/
-            postFixInstructions.add(new WAMInstruction(WAMInstructionSet.Deallocate));
         }
 
         result.addInstructions(postFixInstructions);

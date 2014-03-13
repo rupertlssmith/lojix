@@ -973,8 +973,11 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine(ip + ": DEALLOCATE");
                 trace.fine("<- env @ " + ep + " " + traceEnvFrame());
 
-                // P <- STACK[E + 1]
-                ip = newip;
+                // CP <- STACK[E + 1]
+                cp = newip;
+
+                // P <- P + instruction_size(P)
+                ip += 1;
 
                 break;
             }
