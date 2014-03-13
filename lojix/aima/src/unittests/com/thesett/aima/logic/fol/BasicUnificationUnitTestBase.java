@@ -292,6 +292,18 @@ public class BasicUnificationUnitTestBase<S extends Clause, T, Q> extends BasicR
         unifyAndAssertNumBindings("f(g(X, X, X))", "f(g(x, x, x))", 1);
     }
 
+    /** Check that multiple different nested constants unify. */
+    public void testFunctorsMultipleDifferentInnerConstantsUnify() throws Exception
+    {
+        unifyAndAssertNumBindings("f(g(x,y,z))", "f(g(x,y,z))", 0);
+    }
+
+    /** Check that nested mixed variables and constants unify. */
+    public void testFunctorsMultipleNestedMixedVarsAndConstantsUnify() throws Exception
+    {
+        unifyAndAssertNumBindings("f(g(w,X,y,Z))", "f(g(W,x,Y,z))", 4);
+    }
+
     /** A unification example from the WAM book. */
     public void testWamBook2_9() throws Exception
     {
