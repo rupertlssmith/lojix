@@ -429,6 +429,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                 // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
                 instructions = compileBody(expression, i == 0);
+
+                // Generate the call instructions, followed by the call address, which is f_n of the called program.
+                WAMInstruction instruction =
+                    new WAMInstruction(WAMInstructionSet.Call, interner.getFunctorFunctorName(expression));
+                instructions.add(instruction);
+
                 result.addInstructions(expression, instructions);
             }
         }
@@ -516,6 +522,11 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule, which it
             // never is for a query.
             SizeableLinkedList<WAMInstruction> instructions = compileBody(expression, false);
+
+            // Generate the call instructions, followed by the call address, which is f_n of the called program.
+            WAMInstruction instruction =
+                new WAMInstruction(WAMInstructionSet.Call, interner.getFunctorFunctorName(expression));
+            instructions.add(instruction);
 
             result.addInstructions(expression, instructions);
         }
@@ -800,11 +811,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 }
             }
         }
-
-        // Generate the call instructions, followed by the call address, which is f_n of the called program.
-        WAMInstruction instruction =
-            new WAMInstruction(WAMInstructionSet.Call, interner.getFunctorFunctorName(expression));
-        instructions.add(instruction);
 
         return instructions;
     }
