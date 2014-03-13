@@ -444,6 +444,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     // mode <- write
                     writeMode = true;
+                    trace.fine("-> write mode");
 
                     break;
                 }
@@ -459,6 +460,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                         // mode <- read
                         writeMode = false;
+                        trace.fine("-> read mode");
                     }
                     else
                     {
@@ -718,7 +720,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 }
 
                 // s <- s + 1
-                //sp++;
+                sp++;
 
                 // P <- P + instruction_size(P)
                 ip += 5;
@@ -772,6 +774,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     // mode <- write
                     writeMode = true;
+                    trace.fine("-> write mode");
 
                     break;
                 }
@@ -784,6 +787,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     // mode <- read
                     writeMode = false;
+                    trace.fine("-> read mode");
 
                     break;
                 }
