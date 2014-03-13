@@ -15,8 +15,6 @@
  */
 package com.thesett.aima.logic.fol.compiler;
 
-import java.util.Queue;
-
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Predicate;
@@ -54,7 +52,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     protected TermVisitor contextChangeVisitor;
 
     /** Holds the context stack for the traversal. */
-    protected Queue<PositionalContextOperator> contextStack = new StackQueue<PositionalContextOperator>();
+    protected StackQueue<PositionalContextOperator> contextStack = new StackQueue<PositionalContextOperator>();
 
     /** Inidicates that the initial context has been established at the start of a traversal. */
     private boolean initialContextCreated;
@@ -108,7 +106,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     {
         PositionalTermTraverserImpl.PositionalContextOperator position = contextStack.peek();
 
-        return (position != null) ? position.topLevel : false;
+        return (position != null) && position.isTopLevel();
     }
 
     /** {@inheritDoc} */
@@ -116,7 +114,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     {
         PositionalTermTraverserImpl.PositionalContextOperator position = contextStack.peek();
 
-        return (position != null) ? position.inHead : false;
+        return (position != null) && position.isInHead();
     }
 
     /** {@inheritDoc} */
@@ -124,7 +122,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     {
         PositionalTermTraverserImpl.PositionalContextOperator position = contextStack.peek();
 
-        return (position != null) ? position.lastBodyFunctor : false;
+        return (position != null) && position.isLastBodyFunctor();
     }
 
     /** {@inheritDoc} */
@@ -148,7 +146,9 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     /** {@inheritDoc} */
     public PositionalContext getParentContext()
     {
-        return null;
+        PositionalTermTraverserImpl.PositionalContextOperator position = contextStack.peek();
+
+        return (position != null) ? position.getParentContext() : null;
     }
 
     /** {@inheritDoc} */
@@ -158,9 +158,9 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     }
 
     /**
-     * Prints the position of this traverer, mainly for debugging purposes.
+     * Prints the position of this traverser, mainly for debugging purposes.
      *
-     * @return The position of this traverer, mainly for debugging purposes.
+     * @return The position of this traverser, mainly for debugging purposes.
      */
     public String toString()
     {
@@ -220,7 +220,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
      *     <td> {@link PositionalTermTraverserImpl}.
      * </table></pre>
      */
-    private class PositionalContextOperator extends StackableOperator
+    private class PositionalContextOperator extends StackableOperator implements PositionalContext
     {
         /** Holds the term that this is the context operator for. */
         Term term;
@@ -293,6 +293,37 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
             }
 
             contextStack.poll();
+        }
+
+        /** {@inheritDoc} */
+        public boolean isTopLevel()
+        {
+            return topLevel;
+        }
+
+        /** {@inheritDoc} */
+        public boolean isInHead()
+        {
+            return inHead;
+        }
+
+        /** {@inheritDoc} */
+        public boolean isLastBodyFunctor()
+        {
+            return lastBodyFunctor;
+        }
+
+        /** {@inheritDoc} */
+        public PositionalContext getParentContext()
+        {
+            if (contextStack.size() > 1)
+            {
+                return contextStack.get(1);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

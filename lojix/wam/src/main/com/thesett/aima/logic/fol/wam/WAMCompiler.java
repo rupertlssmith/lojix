@@ -1088,7 +1088,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
         /** Set when directly within a top-level functor. */
-        private boolean inTopLevelFunctor;
+        //private boolean inTopLevelFunctor;
 
         /**
          * Creates a positional visitor.
@@ -1122,7 +1122,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
             // Clear the nonArgPosition flag is the variable occurs in an argument position.
-            nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
+            nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
             symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
 
             /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
@@ -1149,7 +1149,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
                 // Clear the nonArgPosition flag is the variable occurs in an argument position.
-                nonArgPositionOnly = inTopLevelFunctor ? false : nonArgPositionOnly;
+                nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
                 symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);
 
                 log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");
@@ -1157,18 +1157,19 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
             // Set the in top level flag, so that any term immediately below this can detect that it is in an
             // argument position.
-            inTopLevelFunctor = traverser.isTopLevel();
+            //inTopLevelFunctor = traverser.isTopLevel();
         }
 
         /**
-         * <p/>Restores the 'inTopLevelFunctor' flag, to its state prior to entering a functor. This is needed to ensure
-         * this flag is correct for subsequent functors, that are not children of the one currently being left.
+         * Checks if the current position is immediately within a top-level functor.
          *
-         * @param functor The functor being left.
+         * @return <tt>true</tt> iff the current position is immediately within a top-level functor.
          */
-        /*protected void leaveFunctor(Functor functor)
+        private boolean inTopLevelFunctor()
         {
-            inTopLevelFunctor = pop;
-        }*/
+            PositionalContext parentContext = traverser.getParentContext();
+
+            return (parentContext != null) ? parentContext.isTopLevel() : false;
+        }
     }
 }
