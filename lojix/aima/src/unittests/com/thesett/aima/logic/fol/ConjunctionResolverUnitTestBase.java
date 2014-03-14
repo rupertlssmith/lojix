@@ -78,7 +78,7 @@ public class ConjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
         resolveAndAssertSolutions("[[g(x), h(x), (f(X) :- g(X), h(X))], (?- f(x)), [[]]]");
     }
 
-    /** Check that a non-permanent variable resolved ok, but produces no output binding.  */
+    /** Check that a non-permanent variable resolved ok, but produces no output binding. */
     public void testNonPermanentVariableResolvedOkNoBinding() throws Exception
     {
         resolveAndAssertSolutions("[[g(x), h(x), (f :- g(X), h(Y))], (?- f), [[]]]");
@@ -126,5 +126,14 @@ public class ConjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     public void testSuccesiveConjunctiveTermsOk() throws Exception
     {
         resolveAndAssertSolutions("[[f(a), g(b), h(c)], (?- f(X), g(Y), h(Z)), [[X <-- a, Y <-- b, Z <-- c]]]");
+    }
+
+    /**
+     * Check that variable bindings that appear in multiple calls are handled correctly (permanent variables, and
+     * environment trimming).
+     */
+    public void testManyVariablesAcrossCallsOk() throws Exception
+    {
+        resolveAndAssertSolutions("[[g(x), (f(X, Y, Z) :- g(X), g(Y), g(Z))], (?- f(X, X, X)), [[X <-- x]]]");
     }
 }
