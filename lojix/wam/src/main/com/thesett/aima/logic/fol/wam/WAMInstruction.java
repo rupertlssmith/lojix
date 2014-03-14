@@ -1158,6 +1158,20 @@ public class WAMInstruction implements Sizeable
     }
 
     /**
+     * Creates an instruction for the specified mnemonic that takes a single functor argument and a single register.
+     *
+     * @param mnemonic The instruction mnemonic.
+     * @param reg1     The single register argument.
+     * @param fn       The functor argument.
+     */
+    public WAMInstruction(WAMInstructionSet mnemonic, byte reg1, FunctorName fn)
+    {
+        this.mnemonic = mnemonic;
+        this.reg1 = reg1;
+        this.fn = fn;
+    }
+
+    /**
      * Creates a labelled instruction for the specified mnemonic that takes a single functor argument.
      *
      * @param label    The instructions address label.

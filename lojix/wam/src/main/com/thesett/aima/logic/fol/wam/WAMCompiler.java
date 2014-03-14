@@ -452,7 +452,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 }
                 else
                 {
-                    instructions.add(new WAMInstruction(WAMInstructionSet.Call,
+                    instructions.add(new WAMInstruction(WAMInstructionSet.Call, (byte) (numPermanentVars & 0xff),
                             interner.getFunctorFunctorName(expression)));
                 }
 
@@ -540,7 +540,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
             // Generate the call instructions, followed by the call address, which is f_n of the called program.
             WAMInstruction instruction =
-                new WAMInstruction(WAMInstructionSet.Call, interner.getFunctorFunctorName(expression));
+                new WAMInstruction(WAMInstructionSet.Call, (byte) (numPermanentVars & 0xff),
+                    interner.getFunctorFunctorName(expression));
             instructions.add(instruction);
 
             result.addInstructions(expression, instructions);
