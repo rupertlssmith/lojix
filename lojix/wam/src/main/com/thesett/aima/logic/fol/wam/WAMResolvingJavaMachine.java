@@ -873,7 +873,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 numOfArgs = n;
 
                 // CP <- P + instruction_size(P)
-                cp = ip + 6;
+                cp = ip + 7;
 
                 trace.fine(ip + ": CALL " + pn + "/" + n + " (cp = " + cp + ")]");
 

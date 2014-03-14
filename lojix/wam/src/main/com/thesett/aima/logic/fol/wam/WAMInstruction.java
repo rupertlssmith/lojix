@@ -441,7 +441,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to call a predicate. */
-        Call(CALL, "call", 6)
+        Call(CALL, "call", 7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
@@ -472,6 +472,7 @@ public class WAMInstruction implements Sizeable
                 codeBuf.put(code);
                 codeBuf.putInt(entryPoint);
                 codeBuf.put((byte) instruction.fn.getArity());
+                codeBuf.put(instruction.reg1);
             }
 
             /** {@inheritDoc} */
