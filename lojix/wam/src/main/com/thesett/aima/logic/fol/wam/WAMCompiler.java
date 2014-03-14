@@ -1170,9 +1170,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
      */
     public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
-        /** Set when directly within a top-level functor. */
-        //private boolean inTopLevelFunctor;
-
         /**
          * Creates a positional visitor.
          *
