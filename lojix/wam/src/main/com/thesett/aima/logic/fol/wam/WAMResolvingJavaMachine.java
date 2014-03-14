@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Variable;
-import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE_N;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CON;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.DEALLOCATE;
@@ -930,7 +930,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             }
 
             // allocate N:
-            case ALLOCATE:
+            case ALLOCATE_N:
             {
                 // grab N
                 int n = (int) codeBuffer.get(ip + 1);
@@ -954,7 +954,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 ep = esp;
                 esp = esp + n + 3;
 
-                trace.fine(ip + ": ALLOCATE " + n);
+                trace.fine(ip + ": ALLOCATE_N " + n);
                 trace.fine("-> env @ " + ep + " " + traceEnvFrame());
 
                 // P <- P + instruction_size(P)

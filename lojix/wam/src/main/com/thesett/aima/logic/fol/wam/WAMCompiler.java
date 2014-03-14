@@ -411,7 +411,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             // Allocate a stack frame at the start of the clause.
             /*log.fine("ALLOCATE " + numPermanentVars);*/
-            preFixInstructions.add(new WAMInstruction(WAMInstructionSet.Allocate, REG_ADDR,
+            preFixInstructions.add(new WAMInstruction(WAMInstructionSet.AllocateN, REG_ADDR,
                     (byte) (numPermanentVars & 0xff)));
         }
 
@@ -522,7 +522,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
         // Generate the prefix code for the clause. Queries require a stack frames to hold their environment.
         /*log.fine("ALLOCATE " + numPermanentVars);*/
-        preFixInstructions.add(new WAMInstruction(WAMInstructionSet.Allocate, REG_ADDR,
+        preFixInstructions.add(new WAMInstruction(WAMInstructionSet.AllocateN, REG_ADDR,
                 (byte) (numPermanentVars & 0xff)));
 
         result.addInstructions(preFixInstructions);

@@ -110,7 +110,7 @@ public class WAMInstruction implements Sizeable
     public static final byte PROCEED = 0x0c;
 
     /** The stack frame allocation instruction. */
-    public static final byte ALLOCATE = 0x0d;
+    public static final byte ALLOCATE_N = 0x0d;
 
     /** The stack frame de-allocation instruction. */
     public static final byte DEALLOCATE = 0x0e;
@@ -548,7 +548,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The stack frame allocation instruction. */
-        Allocate(ALLOCATE, "allocate", 2)
+        AllocateN(ALLOCATE_N, "allocate_n", 2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
