@@ -419,8 +419,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             // Allocate a stack frame at the start of the clause.
             /*log.fine("ALLOCATE " + numPermanentVars);*/
-            preFixInstructions.add(new WAMInstruction(WAMInstructionSet.AllocateN, REG_ADDR,
-                    (byte) (numPermanentVars & 0xff)));
+            preFixInstructions.add(new WAMInstruction(WAMInstructionSet.Allocate));
         }
 
         result.addInstructions(preFixInstructions);
@@ -462,9 +461,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 {
                     int permVarsRemaining =
                         (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
-                    System.out.println("permVarsRemaining = " + permVarsRemaining);
 
-                    instructions.add(new WAMInstruction(WAMInstructionSet.Call, (byte) (numPermanentVars & 0xff),
+                    instructions.add(new WAMInstruction(WAMInstructionSet.Call, (byte) (permVarsRemaining & 0xff),
                             interner.getFunctorFunctorName(expression)));
                 }
 
@@ -1019,9 +1017,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
         for (int i = permVarsRemainingCount.length - 1; i >= 0; i--)
         {
-            permVarsRemaining += permVarsRemainingCount[i];
-
             symbolTable.put(clause.getBody()[i].getSymbolKey(), SYMKEY_PERM_VARS_REMAINING, permVarsRemaining);
+            permVarsRemaining += permVarsRemainingCount[i];
         }
     }
 

@@ -958,7 +958,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 trace.fine("-> env @ " + ep + " " + traceEnvFrame());
 
                 // P <- P + instruction_size(P)
-                ip += 2;
+                ip += 1;
 
                 break;
             }
