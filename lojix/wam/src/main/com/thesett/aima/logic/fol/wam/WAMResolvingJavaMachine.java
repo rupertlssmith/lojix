@@ -862,12 +862,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
-            // call @(p/n):
+            // call @(p/n), perms:
             case CALL:
             {
-                // grab @(p/n)
+                // grab @(p/n), perms
                 int pn = codeBuffer.getInt(ip + 1);
                 int n = codeBuffer.get(ip + 5);
+                int numPerms = (int) codeBuffer.get(ip + 6);
 
                 // num_of_args <- n
                 numOfArgs = n;
