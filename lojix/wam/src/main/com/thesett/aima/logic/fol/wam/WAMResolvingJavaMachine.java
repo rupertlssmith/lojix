@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Variable;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.ALLOCATE_N;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CALL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.CON;
@@ -873,10 +874,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // num_of_args <- n
                 numOfArgs = n;
 
+                // STACK[E + 2] <- numPerms
+                data.put(ep + 2, numPerms);
+
                 // CP <- P + instruction_size(P)
                 cp = ip + 7;
 
-                trace.fine(ip + ": CALL " + pn + "/" + n + " (cp = " + cp + ")]");
+                trace.fine(ip + ": CALL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
 
                 // Ensure that the predicate to call is known and linked in, otherwise fail.
                 if (pn == -1)
@@ -929,6 +933,36 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
+            // allocate:
+            case ALLOCATE:
+            {
+                // if E > B
+                //  then newB <- E + STACK[E + 2] + 3
+                // else newB <- B + STACK[B] + 7
+                int esp = nextStackFrame();
+
+                // STACK[newE] <- E
+                data.put(esp, ep);
+
+                // STACK[E + 1] <- CP
+                data.put(esp + 1, cp);
+
+                // STACK[E + 2] <- N
+                data.put(esp + 2, 0);
+
+                // E <- newE
+                // newE <- E + n + 3
+                ep = esp;
+
+                trace.fine(ip + ": ALLOCATE");
+                trace.fine("-> env @ " + ep + " " + traceEnvFrame());
+
+                // P <- P + instruction_size(P)
+                ip += 2;
+
+                break;
+            }
+
             // allocate N:
             case ALLOCATE_N:
             {
@@ -952,7 +986,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // E <- newE
                 // newE <- E + n + 3
                 ep = esp;
-                esp = esp + n + 3;
 
                 trace.fine(ip + ": ALLOCATE_N " + n);
                 trace.fine("-> env @ " + ep + " " + traceEnvFrame());

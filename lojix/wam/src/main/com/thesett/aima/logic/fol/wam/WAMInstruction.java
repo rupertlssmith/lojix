@@ -110,6 +110,9 @@ public class WAMInstruction implements Sizeable
     public static final byte PROCEED = 0x0c;
 
     /** The stack frame allocation instruction. */
+    public static final byte ALLOCATE = 0x1b;
+
+    /** The stack frame allocation instruction for queries. */
     public static final byte ALLOCATE_N = 0x0d;
 
     /** The stack frame de-allocation instruction. */
@@ -548,6 +551,28 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The stack frame allocation instruction. */
+        Allocate(ALLOCATE, "allocate", 1)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                // Do nothing as this instruction takes no arguments.
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
+            }
+        },
+
+        /** The stack frame allocation instruction for queries. */
         AllocateN(ALLOCATE_N, "allocate_n", 2)
         {
             /** {@inheritDoc} */
