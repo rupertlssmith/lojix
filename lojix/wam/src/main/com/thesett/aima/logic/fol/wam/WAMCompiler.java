@@ -906,13 +906,19 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * Allocates stack slots where need to the variables in a program clause.
+     * Allocates stack slots where need to the variables in a program clause. The algorithm here is fairly complex.
      *
      * <p/>A clause head and first body functor are taken together as the first unit, subsequent clause body functors
      * are taken as subsequent units. A variable appearing in more than one unit is said to be permanent, and must be
      * stored on the stack, rather than a register, otherwise the register that it occupies may be overwritten by calls
      * to subsequent units. These variable are called permanent, which really means that they are local variables on the
      * call stack.
+     *
+     * <p/>In addition to working out which variables are permanent, the variables are also ordered by reverse position
+     * of last body of occurrence, and assigned to allocation slots in this order. The number of permanent variables
+     * remaining at each body call is also calculated and recorded against the body functor in the symbol table using
+     * column {@link #SYMKEY_PERM_VARS_REMAINING}. This allocation ordering of the variables and the count of the number
+     * remaining are used to implement environment trimming.
      *
      * @param clause The clause to allocate registers for.
      */
