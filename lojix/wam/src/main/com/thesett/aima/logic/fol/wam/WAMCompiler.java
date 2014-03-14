@@ -341,6 +341,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         // Check if the clause to compile is a fact (no body).
         boolean isFact = clause.getBody() == null;
 
+        // Check if the clause to compile is a chain rule, (one called body).
+        boolean isChainRule = (clause.getBody() != null) && (clause.getBody().length == 1);
+
         // Used to keep track of registers as they are seen during compilation. The first time a variable is seen,
         // a variable is written onto the heap, subsequent times its value. The first time a functor is seen,
         // its structure is written onto the heap, subsequent times it is compared with.
@@ -400,9 +403,11 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstructionSet.TrustMe));
         }
 
-        // Generate the prefix code for the clause. Rules may chain, so require stack frames.
+        // Generate the prefix code for the clause.
+        // Rules may chain multiple, so require stack frames to preserve registers across calls.
         // Facts are always leafs so can use the global continuation point register to return from calls.
-        if (!isFact)
+        // Chain rules only make one call, so also do not need a stack frame.
+        if (!(isFact || isChainRule))
         {
             // Allocate a stack frame at the start of the clause.
             /*log.fine("ALLOCATE " + numPermanentVars);*/
@@ -436,7 +441,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 {
                     // Deallocate the stack frame at the end of the clause, but prior to calling the last
                     // body predicate.
-                    instructions.add(new WAMInstruction(WAMInstructionSet.Deallocate));
+                    // This is not required for chain rules, as they do not need a stack frame.
+                    if (!isChainRule)
+                    {
+                        instructions.add(new WAMInstruction(WAMInstructionSet.Deallocate));
+                    }
+
                     instructions.add(new WAMInstruction(WAMInstructionSet.Execute,
                             interner.getFunctorFunctorName(expression)));
                 }
