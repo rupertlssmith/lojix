@@ -15,6 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -373,7 +378,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         gatherPositionAndOccurrenceInfo(clause);
 
         // Allocate permanent variables for a program clause. Program clauses only use permanent variables when really
-        // needed to preserver variables across calls.
+        // needed to preserve variables across calls.
         allocatePermanentProgramRegisters(clause);
 
         // Labels the entry point to each choice point.
@@ -518,6 +523,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         // Allocate permanent variables for a query. In queries all variables are permanent so that they are preserved
         // on the stack upon completion of the query.
         allocatePermanentQueryRegisters(clause, varNames);
+
         result = new WAMCompiledQuery(varNames, freeVarNames);
 
         // Generate the prefix code for the clause. Queries require a stack frames to hold their environment.
@@ -905,11 +911,36 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
      */
     private void allocatePermanentProgramRegisters(Clause clause)
     {
-        // Create a bag to hold variable occurence counts in.
-        Map<Variable, Integer> variableCountBag = new TreeMap<Variable, Integer>();
+        // A bag to hold variable occurrence counts in.
+        Map<Variable, Integer> variableCountBag = new HashMap<Variable, Integer>();
+
+        // A mapping from variables to the body number in which they appear last.
+        Map<Variable, Integer> lastBodyMap = new HashMap<Variable, Integer>();
+
+        // Get the occurrence counts of variables in all clauses after the initial head and first body grouping.
+        // In the same pass, pick out which body variables last occur in.
+        if ((clause.getBody() != null))
+        {
+            for (int i = clause.getBody().length - 1; i >= 1; i--)
+            {
+                Set<Variable> groupVariables = TermUtils.findFreeVariables(clause.getBody()[i]);
+
+                // Add all their counts to the bag and update their last occurrence positions.
+                for (Variable variable : groupVariables)
+                {
+                    Integer count = variableCountBag.get(variable);
+                    variableCountBag.put(variable, (count == null) ? 1 : (count + 1));
+
+                    if (!lastBodyMap.containsKey(variable))
+                    {
+                        lastBodyMap.put(variable, i);
+                    }
+                }
+            }
+        }
 
         // Get the set of variables in the head and first clause body argument.
-        Set<Variable> firstGroupVariables = new TreeSet<Variable>();
+        Set<Variable> firstGroupVariables = new HashSet<Variable>();
 
         if (clause.getHead() != null)
         {
@@ -923,37 +954,40 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             firstGroupVariables.addAll(firstArgVariables);
         }
 
-        // Add their counts to the bag.
+        // Add their counts to the bag, and set their last positions of occurrence as required.
         for (Variable variable : firstGroupVariables)
         {
-            variableCountBag.put(variable, 1);
-        }
+            Integer count = variableCountBag.get(variable);
+            variableCountBag.put(variable, (count == null) ? 1 : (count + 1));
 
-        // Get the set of variables in all subsequent clauses.
-        if ((clause.getBody() != null))
-        {
-            for (int i = 1; i < clause.getBody().length; i++)
+            if (!lastBodyMap.containsKey(variable))
             {
-                Set<Variable> groupVariables = TermUtils.findFreeVariables(clause.getBody()[i]);
-
-                // Add all their counts to the bag.
-                for (Variable variable : groupVariables)
-                {
-                    Integer count = variableCountBag.get(variable);
-                    variableCountBag.put(variable, (count == null) ? 0 : (count + 1));
-                }
+                lastBodyMap.put(variable, 0);
             }
         }
 
-        // Search the bag for all variable occurrences greater than one, and assign them to stack slots.
-        for (Map.Entry<Variable, Integer> entry : variableCountBag.entrySet())
+        // Sort the variables by reverse position of last occurrence.
+        List<Map.Entry<Variable, Integer>> lastBodyList =
+            new ArrayList<Map.Entry<Variable, Integer>>(lastBodyMap.entrySet());
+        Collections.sort(lastBodyList, new Comparator<Map.Entry<Variable, Integer>>()
+            {
+                public int compare(Map.Entry<Variable, Integer> o1, Map.Entry<Variable, Integer> o2)
+                {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+
+        // Search the count bag for all variable occurrences greater than one, and assign them to stack slots.
+        // The variables are examined by reverse position of last occurrence, to ensure that later variables
+        // are assigned to lower permanent allocation slots for environment trimming purposes.
+        for (Map.Entry<Variable, Integer> entry : lastBodyList)
         {
             Variable variable = entry.getKey();
-            int count = entry.getValue();
+            Integer count = variableCountBag.get(variable);
 
-            if (count > 1)
+            if ((count != null) && (count > 1))
             {
-                /*log.fine("Variable " + variable + " is permanent, count = " + count);*/
+                log.fine("Variable " + variable + " is permanent, count = " + count);
 
                 int allocation = (numPermanentVars++ & (0xff)) | (STACK_ADDR << 8);
                 symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
