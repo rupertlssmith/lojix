@@ -175,6 +175,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** The symbol table key for allocations. */
     protected static final String SYMKEY_ALLOCATION = "allocation";
 
+    /** The symbol table key for the number of permanent variables remaining. */
+    protected static final String SYMKEY_PERM_VARS_REMAINING = "perm_vars_remaining";
+
     /** The symbol table key for variable occurrence counts. */
     public static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
 
@@ -457,6 +460,10 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 }
                 else
                 {
+                    int permVarsRemaining =
+                        (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
+                    System.out.println("permVarsRemaining = " + permVarsRemaining);
+
                     instructions.add(new WAMInstruction(WAMInstructionSet.Call, (byte) (numPermanentVars & 0xff),
                             interner.getFunctorFunctorName(expression)));
                 }
@@ -977,6 +984,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 }
             });
 
+        // Holds counts of permanent variable last appearances against the body in which they last occur.
+        int[] permVarsRemainingCount = new int[(clause.getBody() != null) ? clause.getBody().length : 0];
+
         // Search the count bag for all variable occurrences greater than one, and assign them to stack slots.
         // The variables are examined by reverse position of last occurrence, to ensure that later variables
         // are assigned to lower permanent allocation slots for environment trimming purposes.
@@ -984,6 +994,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             Variable variable = entry.getKey();
             Integer count = variableCountBag.get(variable);
+            int body = entry.getValue();
 
             if ((count != null) && (count > 1))
             {
@@ -991,7 +1002,20 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                 int allocation = (numPermanentVars++ & (0xff)) | (STACK_ADDR << 8);
                 symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+
+                permVarsRemainingCount[body]++;
             }
+        }
+
+        // Roll up the permanent variable remaining counts from the counts of last position of occurrence and
+        // store the count of permanent variables remaining against the body.
+        int permVarsRemaining = 0;
+
+        for (int i = permVarsRemainingCount.length - 1; i >= 0; i--)
+        {
+            permVarsRemaining += permVarsRemainingCount[i];
+
+            symbolTable.put(clause.getBody()[i].getSymbolKey(), SYMKEY_PERM_VARS_REMAINING, permVarsRemaining);
         }
     }
 
