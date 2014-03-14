@@ -482,7 +482,8 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return pretty + " " +
-                    ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
+                    ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "") +
+                    (", " + instruction.reg1);
             }
         },
 
