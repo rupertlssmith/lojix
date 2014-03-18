@@ -61,7 +61,7 @@ public class TrueAndFailResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     /** Check that disjunction of true and fail succeeds. */
     public void testDisjunctionOfTrueAndFailSucceeds() throws Exception
     {
-        resolveAndAssertSolutions("[[], (?- true ; fail ; true ; fail), [[]]]");
+        resolveAndAssertSolutions("[[], (?- true ; fail ; true ; fail), [[], []]]"); // Two solutions.
     }
 
     /** Check that conjunction of true and fail fails. */

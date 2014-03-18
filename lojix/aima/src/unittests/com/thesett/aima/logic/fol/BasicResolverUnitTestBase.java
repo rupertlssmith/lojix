@@ -308,6 +308,8 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
     {
         /*log.fine("protected void resolveAndAssertSolutions(String test): called");*/
 
+        String errorMessages = "";
+
         // Parse the entire test specification as a term.
         parser.setTokenSource(TokenSource.getTokenSourceForString(test));
 
@@ -421,7 +423,6 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
 
             // For each bound variable perform a structural equality check against the expected binding, reporting any
             // mismatches.
-            String errorMessages = "";
 
             for (Map.Entry<Variable, Term> expectedBinding : expectedBindingsMap.entrySet())
             {
@@ -444,30 +445,30 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
                         ", instead its value is " + varInSolution.toString(interner, true, true) + ".\n";
                 }
             }
+        }
 
-            // Check if more solutions than were specified in the test can be found.
-            if (checkExtraSolutions)
+        // Check if more solutions than were specified in the test can be found.
+        if (checkExtraSolutions)
+        {
+            int extraSolutions = 0;
+
+            while (solutions.hasNext() && (extraSolutions < 100))
             {
-                int extraSolutions = 0;
-
-                while (solutions.hasNext() && (extraSolutions < 100))
-                {
-                    solutions.next();
-                    extraSolutions++;
-                }
-
-                if (extraSolutions >= 100)
-                {
-                    errorMessages += "100+ extra solutions were found...";
-                }
-                else if (extraSolutions > 0)
-                {
-                    errorMessages += extraSolutions + " extra solutions were found.";
-                }
+                solutions.next();
+                extraSolutions++;
             }
 
-            assertTrue(errorMessages, "".equals(errorMessages));
+            if (extraSolutions >= 100)
+            {
+                errorMessages += "100+ extra solutions were found...";
+            }
+            else if (extraSolutions > 0)
+            {
+                errorMessages += extraSolutions + " extra solutions were found.";
+            }
         }
+
+        assertTrue(errorMessages, "".equals(errorMessages));
     }
 
     /**
