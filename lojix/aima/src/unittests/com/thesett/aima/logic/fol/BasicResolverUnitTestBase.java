@@ -452,6 +452,7 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
 
                 while (solutions.hasNext() && (extraSolutions < 100))
                 {
+                    solutions.next();
                     extraSolutions++;
                 }
 
