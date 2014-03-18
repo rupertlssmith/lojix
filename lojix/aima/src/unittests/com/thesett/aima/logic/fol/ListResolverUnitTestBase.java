@@ -79,4 +79,11 @@ public class ListResolverUnitTestBase<S extends Clause, T, Q> extends BasicResol
     {
         resolveAndAssertSolutions("[[f([X]), (f([_|XS]) :- f(XS))], (?- f([a, b, c])), [[]]]");
     }
+
+    /** Checks that a list recursion backtracks to find all solutions. */
+    public void testListIterationBacktracks() throws Exception
+    {
+        resolveAndAssertSolutions(
+            "[[m(Y, [Y|_]), (m(X, [_|XS]) :- m(X, XS))], (?- m(X, [a, b, c])), [[X <-- a], [X <-- b], [X <-- c]]]");
+    }
 }

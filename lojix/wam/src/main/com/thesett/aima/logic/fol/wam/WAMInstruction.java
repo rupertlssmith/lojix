@@ -933,7 +933,7 @@ public class WAMInstruction implements Sizeable
          */
         private static String toStringReg1(String pretty, WAMInstruction instruction)
         {
-            return pretty + " X" + instruction.reg1;
+            return pretty + reg1Name(instruction) + instruction.reg1;
         }
 
         /**
@@ -946,7 +946,7 @@ public class WAMInstruction implements Sizeable
          */
         private static String toStringReg1Reg2(String pretty, WAMInstruction instruction)
         {
-            return pretty + " X" + instruction.reg1 + ", A" + instruction.reg2;
+            return pretty + reg1Name(instruction) + instruction.reg1 + ", A" + instruction.reg2;
         }
 
         /**
@@ -959,8 +959,20 @@ public class WAMInstruction implements Sizeable
          */
         private static String toStringReg1Fn(String pretty, WAMInstruction instruction)
         {
-            return pretty + " X" + instruction.reg1 + ", " +
+            return pretty + reg1Name(instruction) + instruction.reg1 + ", " +
                 ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
+        }
+
+        /**
+         * Provides the base name of register 1, "X" for register addressing, "Y" for stack mode addressing.
+         *
+         * @param  instruction The instruction to get the base register name from;
+         *
+         * @return The base name of register 1, "X" for register addressing, "Y" for stack mode addressing.
+         */
+        private static String reg1Name(WAMInstruction instruction)
+        {
+            return (instruction.mode1 == STACK_ADDR) ? " Y" : " X";
         }
 
         /**

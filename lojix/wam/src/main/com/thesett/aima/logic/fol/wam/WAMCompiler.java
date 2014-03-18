@@ -598,7 +598,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
      *
      * @return A listing of the instructions for the clause head in the WAM instruction set.
      */
-    private SizeableLinkedList<WAMInstruction> compileHead(Functor expression /*, Map<Byte, Integer> varNames*/)
+    private SizeableLinkedList<WAMInstruction> compileHead(Functor expression)
     {
         // Used to build up the results in.
         SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();

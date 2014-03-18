@@ -755,7 +755,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 trace.fine(ip + ": GET_LIST " + printSlot(xi, mode));
 
-                int deref = deref(xi);
+                int addr = deref(xi);
                 int tag = derefTag;
                 int val = derefVal;
 
@@ -769,7 +769,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     data.put(hp, listCell(hp + 1));
 
                     // bind(addr, H)
-                    bind(deref, hp);
+                    bind(addr, hp);
 
                     // H <- H + 1
                     hp += 1;
