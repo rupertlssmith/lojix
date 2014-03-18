@@ -17,7 +17,13 @@ package com.thesett.aima.logic.fol.prolog;
 
 import java.io.PrintStream;
 
+import com.thesett.aima.logic.fol.Clause;
+import com.thesett.aima.logic.fol.Parser;
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
+import com.thesett.aima.logic.fol.interpreter.InteractiveParser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
+import com.thesett.aima.logic.fol.isoprologparser.Token;
 
 /**
  * PrologInterpreter builds an interactive resolving interpreter using the interpreted Prolog resolution engine
@@ -44,7 +50,13 @@ public class PrologInterpreter
     {
         try
         {
-            PrologEngine engine = new PrologEngine();
+            VariableAndFunctorInterner interner =
+                new VariableAndFunctorInternerImpl("Prolog_Variable_Namespace", "Prolog_Functor_Namespace");
+            PrologCompiler compiler = new PrologCompiler(interner);
+            PrologResolver resolver = new PrologResolver(interner);
+            Parser<Clause, Token> parser = new InteractiveParser(interner);
+
+            PrologEngine engine = new PrologEngine(parser, interner, compiler, resolver);
             engine.reset();
 
             ResolutionInterpreter<PrologCompiledClause, PrologCompiledClause> interpreter =
