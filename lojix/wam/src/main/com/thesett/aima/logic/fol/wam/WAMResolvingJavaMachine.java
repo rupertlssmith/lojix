@@ -797,7 +797,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 default:
                 {
                     // other: fail <- true;
-                    failed = false;
+                    failed = true;
                 }
                 }
 
