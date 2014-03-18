@@ -7,5 +7,5 @@ N
 N
 s/\/\*\(trace\.fine.*;\)\*\//\1/
 }
-s/private static final boolean TRACE = false; \/\/log.isLoggable(Level.FINE)/private static final boolean TRACE = trace.isLoggable(Level.FINE);/' {} \;
+s/private static final boolean TRACE = false; \/\/log.isLoggable(Level.FINE)/private static final boolean TRACE = trace.isLoggable(java.util.logging.Level.FINE);/' {} \;
 
