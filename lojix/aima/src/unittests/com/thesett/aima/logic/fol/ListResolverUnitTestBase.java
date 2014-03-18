@@ -68,9 +68,15 @@ public class ListResolverUnitTestBase<S extends Clause, T, Q> extends BasicResol
         resolveAndAssertSolutions("[[f([]), (f([_|XS]) :- f(XS))], (?- f([])), [[]]]");
     }
 
-    /** Check that a list recursion pattern termintes on a non empty list. */
+    /** Check that a list recursion pattern terminates on a non empty list. */
     public void testListIterationTerminatesOnList() throws Exception
     {
         resolveAndAssertSolutions("[[f([]), (f([_|XS]) :- f(XS))], (?- f([a, b, c])), [[]]]");
+    }
+
+    /** Check that a list recursion pattern terminates when the termination case is a one element list. */
+    public void testListIterationTerminatesOnNonEmptyFinalCase() throws Exception
+    {
+        resolveAndAssertSolutions("[[f([X]), (f([_|XS]) :- f(XS))], (?- f([a, b, c])), [[]]]");
     }
 }

@@ -687,7 +687,7 @@ public class L2Compiler extends BaseMachine implements LogicCompiler<Clause, L2C
                 if (term instanceof Functor)
                 {
                     /*log.fine("X" + lastAllocatedRegister + " = " +
-                        interner.getFunctorFunctorName(((Functor) term).getName()));*/
+                        interner.getDeinternedFunctorName(((Functor) term).getName()));*/
                 }
                 else if (term instanceof Variable)
                 {

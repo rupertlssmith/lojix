@@ -280,6 +280,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testListIterationTerminatesOnEmpty", engine));
         suite.addTest(new ListResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testListIterationTerminatesOnList", engine));
+        suite.addTest(new ListResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testListIterationTerminatesOnNonEmptyFinalCase", engine));
 
         // Add all the tests defined in this class.
 

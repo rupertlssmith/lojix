@@ -101,6 +101,9 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
     /** Holds the resolution engine to test. */
     protected ResolutionEngine<S, T, Q> engine;
 
+    /** Flag indicating that extra solutions should be checked for and failed against. <tt>true</tt> by default. */
+    private boolean checkExtraSolutions = true;
+
     /**
      * Creates a simple resolution test for the specified resolver, using the specified compiler.
      *
@@ -261,6 +264,18 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
     {
         resolveAndAssertSolutions("[[test([labels([first])]), test([labels([second])])], " +
             "(?- test(_PS), member(labels(L), _PS)), " + "[[L <-- [first]], [L <-- [second]]]]");
+    }
+
+    /**
+     * Sets the state of the extra solutions check.
+     *
+     * @param checkExtraSolutions The state of the extra solutions check.
+     */
+    public BasicResolverUnitTestBase withCheckExtraSolutions(boolean checkExtraSolutions)
+    {
+        this.checkExtraSolutions = checkExtraSolutions;
+
+        return this;
     }
 
     /**
@@ -427,6 +442,26 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
                         "The expected binding variable " + interner.getVariableName(var.getName()) +
                         " is not structurally equal to its expected binding, " + term.toString(interner, true, false) +
                         ", instead its value is " + varInSolution.toString(interner, true, true) + ".\n";
+                }
+            }
+
+            // Check if more solutions than were specified in the test can be found.
+            if (checkExtraSolutions)
+            {
+                int extraSolutions = 0;
+
+                while (solutions.hasNext() && (extraSolutions < 100))
+                {
+                    extraSolutions++;
+                }
+
+                if (extraSolutions >= 100)
+                {
+                    errorMessages += "100+ extra solutions were found...";
+                }
+                else if (extraSolutions > 0)
+                {
+                    errorMessages += extraSolutions + " extra solutions were found.";
                 }
             }
 
