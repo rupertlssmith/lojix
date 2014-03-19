@@ -472,6 +472,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     break;
                 }
+
+                default:
+                {
+                    // fail
+                    failed = true;
+                }
                 }
 
                 // P <- instruction_size(P)
