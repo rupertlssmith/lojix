@@ -160,6 +160,18 @@ public class BasicUnificationUnitTestBase<S extends Clause, T, Q> extends BasicR
         unifyAndAssertFailure("f(a)", "f(a(b))");
     }
 
+    /** Check that a query atom does not unify with a program functor of the same name. */
+    public void testQueryAtomDoesNotUnifyWithProgFunctorArgSameName() throws Exception
+    {
+        unifyAndAssertFailure("f(a(b))", "f(b)");
+    }
+
+    /** Check that a program atom does not unify with a query functor of the same name. */
+    public void testProgAtomDoesNotUnifyWithQueryFunctorArgSameName() throws Exception
+    {
+        unifyAndAssertFailure("f(b)", "f(a(b))");
+    }
+
     /** Check that bound variables, with the same bindings unify. */
     public void testBoundVarUnifiesWithDifferentEqualBoundVarOk() throws Exception
     {

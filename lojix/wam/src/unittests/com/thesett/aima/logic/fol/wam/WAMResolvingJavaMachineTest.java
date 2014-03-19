@@ -113,6 +113,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testProgAtomDoesNotUnifyWithQueryFunctorSameName", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testQueryAtomDoesNotUnifyWithProgFunctorArgSameName", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgAtomDoesNotUnifyWithQueryFunctorArgSameName", engine));
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testBoundVarUnifiesWithDifferentEqualBoundVarOk", engine));
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testBoundVarToFunctorUnifiesWithEqualBoundVarOk", engine));
