@@ -216,6 +216,15 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testAnonymousProgramAndQuery", engine));
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testAnonymousNestedProgramAndQuery", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariableBindsToFunctorInHead", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariableBindsToFunctorArgInHead", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariableBindsToFunctorInBody", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariableBindsToFunctorArgInBody", engine));
+
         // Uses the 'member' built-in predicate, which is not defined.
         /*suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariablesUnboundOnBacktrackingMemberOk", engine));*/
