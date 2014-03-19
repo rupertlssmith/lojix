@@ -100,6 +100,15 @@ public class WAMInstruction implements Sizeable
     /** The instruction to unify with anonymous variables on the heap. */
     public static final byte UNIFY_VOID = 0x19;
 
+    /** The instruction to initialize an argument register, ensuring the stack variable it references is globalized. */
+    public static final byte PUT_UNSAFE_VAL = 0x1c;
+
+    /** The instruction to set a register, ensuring the stack variable it references is globalized. */
+    public static final byte SET_LOCAL_VAL = 0x1d;
+
+    /** The instruction to unify a register, ensuring any stack variable it references is globalized. */
+    public static final byte UNIFY_LOCAL_VAL = 0x1e;
+
     /** The instruction to call a predicate. */
     public static final byte CALL = 0x0b;
 
@@ -183,6 +192,9 @@ public class WAMInstruction implements Sizeable
         /** The instruction to set a register to a heap location. */
         SetVal(SET_VAL, "set_val", 3),
 
+        /** The instruction to set a register, ensuring the stack variable it references is globalized. */
+        SetLocalVal(SET_LOCAL_VAL, "set_local_val", 3),
+
         /** The instruction to compare a register to a structure on the heap. */
         GetStruc(GET_STRUC, "get_struc", 7)
         {
@@ -211,6 +223,9 @@ public class WAMInstruction implements Sizeable
         /** The instruction to unify a register with a location on the heap. */
         UnifyVal(UNIFY_VAL, "unify_val", 3),
 
+        /** The instruction to unify a register, ensuring any stack variable it references is globalized. */
+        UnifyLocalVal(UNIFY_LOCAL_VAL, "unify_local_val", 3),
+
         /** The instruction to copy a heap location into an argument register. */
         PutVar(PUT_VAR, "put_var", 4)
         {
@@ -235,6 +250,30 @@ public class WAMInstruction implements Sizeable
 
         /** The instruction to copy a register into an argument register. */
         PutVal(PUT_VAL, "put_val", 4)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+                disassembleReg1Reg2(code, ip, instruction);
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                emmitCodeReg1Reg2(codeBuf, code, instruction, machine);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return toStringReg1Reg2(pretty, instruction);
+            }
+        },
+
+        /**
+         * The instruction to initialize an argument register, ensuring the stack variable it references is globalized.
+         */
+        PutUnsafeVal(PUT_UNSAFE_VAL, "put_unsafe_val", 4)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
