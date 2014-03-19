@@ -113,7 +113,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         shift(next);
 
         // Anonymous or singleton variable optimizations.
-        if ((UnifyVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
+        if ((UnifyVar == next.getMnemonic()) && isVoidVariable(next))
         {
             if (state != State.UVE)
             {
@@ -128,7 +128,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
             log.fine(next + " -> " + unifyVoid);
         }
-        else if ((SetVar == next.getMnemonic()) && isSingletonNonArgVariable(next))
+        else if ((SetVar == next.getMnemonic()) && isVoidVariable(next))
         {
             if (state != State.SVE)
             {
@@ -284,13 +284,14 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
     }
 
     /**
-     * Checks if the term argument to an instruction was a singleton, non-argument position variable.
+     * Checks if the term argument to an instruction was a singleton, non-argument position variable. The variable must
+     * also be non-permanent to ensure that singleton variables in queries are created.
      *
      * @param  instruction The instruction to test.
      *
      * @return <tt>true</tt> iff the term argument to the instruction was a singleton, non-argument position variable.
      */
-    private boolean isSingletonNonArgVariable(WAMInstruction instruction)
+    private boolean isVoidVariable(WAMInstruction instruction)
     {
         SymbolKey symbolKey = instruction.getSymbolKeyReg1();
 
@@ -298,8 +299,14 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         {
             Integer count = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
             Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_VAR_NON_ARG);
+            Integer allocation = (Integer) symbolTable.get(symbolKey, WAMCompiler.SYMKEY_ALLOCATION);
 
-            if ((count != null) && count.equals(1) && (nonArgPositionOnly != null) && TRUE.equals(nonArgPositionOnly))
+            boolean singleton = (count != null) && count.equals(1);
+            boolean nonArgPosition = (nonArgPositionOnly != null) && TRUE.equals(nonArgPositionOnly);
+            boolean permanent =
+                (allocation != null) && ((byte) ((allocation & 0xff00) >> 8) == WAMInstruction.STACK_ADDR);
+
+            if (singleton && nonArgPosition && !permanent)
             {
                 return true;
             }

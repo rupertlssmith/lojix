@@ -173,7 +173,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(WAMCompiler.class.getName());
 
     /** The symbol table key for allocations. */
-    protected static final String SYMKEY_ALLOCATION = "allocation";
+    public static final String SYMKEY_ALLOCATION = "allocation";
 
     /** The symbol table key for the number of permanent variables remaining. */
     protected static final String SYMKEY_PERM_VARS_REMAINING = "perm_vars_remaining";
@@ -377,12 +377,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
-        gatherPositionAndOccurrenceInfo(clause);
-
         // Allocate permanent variables for a program clause. Program clauses only use permanent variables when really
         // needed to preserve variables across calls.
         allocatePermanentProgramRegisters(clause);
+
+        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
+        gatherPositionAndOccurrenceInfo(clause);
 
         // Labels the entry point to each choice point.
         FunctorName fn = interner.getFunctorFunctorName(clause.getHead());
@@ -522,12 +522,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             freeVarNames.add(var.getName());
         }
 
-        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
-        gatherPositionAndOccurrenceInfo(clause);
-
         // Allocate permanent variables for a query. In queries all variables are permanent so that they are preserved
         // on the stack upon completion of the query.
         allocatePermanentQueryRegisters(clause, varNames);
+
+        // Gather information about the counts and positions of occurrence of variables and constants within the clause.
+        gatherPositionAndOccurrenceInfo(clause);
 
         result = new WAMCompiledQuery(varNames, freeVarNames);
 
