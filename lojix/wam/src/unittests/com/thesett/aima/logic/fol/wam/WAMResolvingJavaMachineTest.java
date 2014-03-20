@@ -228,6 +228,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testVariableBindsToFunctorInHeadThroughCall", engine));
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableBindsToFunctorArgInHeadThroughCall", engine));
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testTemporaryRegistersNotOverwritten", engine));
 
         // Uses the 'member' built-in predicate, which is not defined.
         /*suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(

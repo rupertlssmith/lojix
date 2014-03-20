@@ -302,6 +302,12 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
         resolveAndAssertSolutions("[[b(f(x)), (a(Y) :- b(f(Y)))], (?- a(X)), [[X <-- x]]]");
     }
 
+    /** Check that variables assigned to temporary registers, are not overwritten by argument registers. */
+    public void testTemporaryRegistersNotOverwritten() throws Exception
+    {
+        resolveAndAssertSolutions("[[b(x, y, z), (a(Y) :- b(x, y, Y))], (?- a(X)), [[Y <-- x]]]");
+    }
+
     /**
      * Sets the state of the extra solutions check.
      *
