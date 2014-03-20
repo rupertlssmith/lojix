@@ -38,11 +38,13 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.PROCEED;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_CONST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_LIST;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_STRUC;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_UNSAFE_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.PUT_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.REF;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.RETRY_ME_ELSE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_CONST;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_LOCAL_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.SET_VOID;
@@ -52,6 +54,7 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.SUSPEND;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRUST_ME;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.TRY_ME_ELSE;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_CONST;
+import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_LOCAL_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAL;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VAR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.UNIFY_VOID;
@@ -569,14 +572,25 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
-                // heap[h] <- REF, H
-                data.put(hp, refTo(hp));
+                if (mode == WAMInstruction.REG_ADDR)
+                {
+                    // heap[h] <- REF, H
+                    data.put(hp, refTo(hp));
 
-                // Xn <- heap[h]
-                data.put(xi, data.get(hp));
+                    // Xn <- heap[h]
+                    data.put(xi, data.get(hp));
 
-                // Ai <- heap[h]
-                data.put(ai, data.get(hp));
+                    // Ai <- heap[h]
+                    data.put(ai, data.get(hp));
+                }
+                else
+                {
+                    // STACK[addr] <- REF, addr
+                    data.put(xi, refTo(xi));
+
+                    // Ai <- STACK[addr]
+                    data.put(ai, data.get(xi));
+                }
 
                 // h <- h + 1
                 hp++;
@@ -867,6 +881,105 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 ip += 2;
 
                 break;
+            }
+
+            // put_unsafe_val Yn, Ai:
+            case PUT_UNSAFE_VAL:
+            {
+                // grab addr, Ai
+                byte mode = codeBuffer.get(ip + 1);
+                int yi = (int) codeBuffer.get(ip + 2);
+                byte ai = codeBuffer.get(ip + 3);
+
+                trace.fine(ip + ": PUT_UNSAFE_VAL " + printSlot(yi, WAMInstruction.STACK_ADDR) + ", A" + ai);
+
+                int addr = deref(yi + ep + 3);
+
+                if (addr < ep)
+                {
+                    // Ai <- Xn
+                    data.put(ai, data.get(addr));
+                }
+                else
+                {
+                    data.put(hp, refTo(hp));
+                    bind(addr, hp);
+                    data.put(ai, data.get(hp));
+                    hp++;
+                }
+
+                // P <- P + instruction_size(P)
+                ip += 4;
+            }
+
+            // set_local_val Xi:
+            case SET_LOCAL_VAL:
+            {
+                // grab addr
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+
+                trace.fine(ip + ": SET_LOCAL_VAL " + printSlot(xi, mode));
+
+                int addr = deref(xi);
+
+                if (addr < ep)
+                {
+                    data.put(hp, data.get(addr));
+                }
+                else
+                {
+                    data.put(hp, refTo(hp));
+                    bind(addr, hp);
+                }
+
+                // h <- h + 1
+                hp++;
+
+                // P <- P + instruction_size(P)
+                ip += 3;
+            }
+
+            // unify_local_val Xi:
+            case UNIFY_LOCAL_VAL:
+            {
+                // grab addr
+                byte mode = codeBuffer.get(ip + 1);
+                int xi = getRegisterOrStackSlot(mode);
+
+                trace.fine(ip + ": UNIFY_LOCAL_VAL " + printSlot(xi, mode));
+
+                // switch mode
+                if (!writeMode)
+                {
+                    // case read:
+                    // unify (Xi, s)
+                    failed = !unify(xi, sp);
+                }
+                else
+                {
+                    // case write:
+                    int addr = deref(xi);
+
+                    if (addr < ep)
+                    {
+                        data.put(hp, data.get(addr));
+                    }
+                    else
+                    {
+                        data.put(hp, refTo(hp));
+                        bind(addr, hp);
+                    }
+
+                    // h <- h + 1
+                    hp++;
+                }
+
+                // s <- s + 1
+                sp++;
+
+                // P <- P + instruction_size(P)
+                ip += 3;
             }
 
             // call @(p/n), perms:
