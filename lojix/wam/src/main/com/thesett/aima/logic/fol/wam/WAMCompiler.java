@@ -605,7 +605,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
         // Allocate argument registers on the body, to all functors as outermost arguments.
         // Allocate temporary registers on the body, to all terms not already allocated.
-        lastAllocatedRegister = 0;
         allocateArgumentRegisters(expression);
         allocateTemporaryRegisters(expression);
 
