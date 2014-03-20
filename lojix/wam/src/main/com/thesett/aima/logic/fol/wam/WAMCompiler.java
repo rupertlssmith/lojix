@@ -843,11 +843,21 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * For a predicate of arity n, the first n registers are used to receive its arguments in. Terms appearing directly
-     * in the head of the predicate clause are allocated directly to argument registers, so that when the argument is
-     * read it can be compared directly with the term for a match. Variables appearing in the head of the clause are not
-     * allocated in this way, but are kept in registers with positions higher than the number of arguments (see the
-     * {@link #allocateTemporaryRegisters(Functor)} method for the allocation of registers).
+     * For a predicate of arity n, the first n registers are used to receive its arguments in.
+     *
+     * <p/>Non-variable arguments appearing directly within a functor are allocated to argument registers. This means
+     * that they are directly referenced from the argument registers that pass them to predicate calls, or directly
+     * referenced from the argument registers that are used to read them as call arguments.
+     *
+     * <p/>Variables appearing as functor arguments are not allocated in this way, but are kept in registers with
+     * positions higher than the number of arguments (see the {@link #allocateTemporaryRegisters(Functor)} method for
+     * the allocation of temporary registers, and {@link #allocatePermanentProgramRegisters(Clause)} and
+     * {@link #allocatePermanentQueryRegisters(Clause, Map)} for the allocation of permanent registers on the stack).
+     * The reason for this, is that a variable can appear multiple times in an expression; it may not always be the same
+     * argument. Variables are assigned to other registers, then copied into the argument registers as needed.
+     *
+     * <p/>Argument registers are allocated by argument position within the functor. This means that gaps will be left
+     * in the numbering for variables to be copied in as needed.
      *
      * @param expression The clause head functor to allocate argument registers to.
      */
@@ -870,8 +880,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * Allocates variables within a functor expression to registers. The outermost functor itself is not assigned to a
-     * register in l3 (only in l0). Functors already directly assigned to argument registers will not be re-assigned by
+     * Allocates terms within a functor expression to registers. The outermost functor itself is not assigned to a
+     * register in WAM (only in l0). Functors already directly assigned to argument registers will not be re-assigned by
      * this. Variables as arguments will be assigned but not as argument registers.
      *
      * @param expression The expression to walk over.

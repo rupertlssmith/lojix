@@ -998,8 +998,9 @@ public class WAMInstruction implements Sizeable
          */
         private static String toStringReg1Fn(String pretty, WAMInstruction instruction)
         {
-            return pretty + reg1Name(instruction) + instruction.reg1 + ", " +
-                ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
+            return pretty + " " +
+                ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "") + ", A" +
+                instruction.reg1;
         }
 
         /**

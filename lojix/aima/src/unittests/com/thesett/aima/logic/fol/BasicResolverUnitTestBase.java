@@ -290,6 +290,18 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
         resolveAndAssertSolutions("[[b(f(Y), Y)], (?- b(f(x), X)), [[X <-- x]]]");
     }
 
+    /** Check that a variable argument can bind to a functor in a clause head through a call. */
+    public void testVariableBindsToFunctorInHeadThroughCall() throws Exception
+    {
+        resolveAndAssertSolutions("[[b(f(x)), (a(f(Y)) :- b(f(Y)))], (?- a(X)), [[X <-- f(x)]]]");
+    }
+
+    /** Check that a variable argument can bind to a functor argument in a clause head through a call. */
+    public void testVariableBindsToFunctorArgInHeadThroughCall() throws Exception
+    {
+        resolveAndAssertSolutions("[[b(f(x)), (a(Y) :- b(f(Y)))], (?- a(X)), [[X <-- x]]]");
+    }
+
     /**
      * Sets the state of the extra solutions check.
      *
