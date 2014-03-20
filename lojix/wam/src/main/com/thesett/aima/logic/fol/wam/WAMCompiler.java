@@ -199,10 +199,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** This is used to keep track of registers as they are seen. */
     private Set<Integer> seenRegisters = new TreeSet<Integer>();
 
-    /**
-     * Used to keep track of the last used register assignment across assignments to multiple functors within a clause.
-     */
-    protected int lastAllocatedRegister;
+    /** Used to keep track of the temporary register assignment across multiple functors within a clause. */
+    protected int lastAllocatedTempReg;
 
     /** This is used to keep track of the number of permanent variables. */
     protected int numPermanentVars;
@@ -357,8 +355,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         // its structure is written onto the heap, subsequent times it is compared with.
         seenRegisters = new TreeSet<Integer>();
 
-        // This is used to keep track of the next register available to allocate.
-        lastAllocatedRegister = 0;
+        // This is used to keep track of the next temporary register available to allocate.
+        lastAllocatedTempReg = findMaxArgumentsInClause(clause);
 
         // This is used to keep track of the number of permanent variables.
         numPermanentVars = 0;
@@ -502,8 +500,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         // its structure is written onto the heap, subsequent times it is compared with.
         seenRegisters = new TreeSet<Integer>();
 
-        // This is used to keep track of the next register available to allocate.
-        lastAllocatedRegister = 0;
+        // This is used to keep track of the next temporary register available to allocate.
+        lastAllocatedTempReg = findMaxArgumentsInClause(clause);
 
         // This is used to keep track of the number of permanent variables.
         numPermanentVars = 0;
@@ -571,6 +569,39 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         displayCompiledQuery(result);
 
         observer.onQueryCompilation(result);
+    }
+
+    /**
+     * Examines all top-level functors within a clause, including any head and body, and determines which functor has the
+     * highest number of arguments.
+     *
+     * @param  clause The clause to determine the highest number of arguments within.
+     *
+     * @return The highest number of arguments within any top-level functor in the clause.
+     */
+    private int findMaxArgumentsInClause(Clause clause)
+    {
+        int result = 0;
+
+        Functor head = clause.getHead();
+
+        if (head != null)
+        {
+            result = head.getArity();
+        }
+
+        Functor[] body = clause.getBody();
+
+        if (body != null)
+        {
+            for (int i = 0; i < body.length; i++)
+            {
+                int arity = body[i].getArity();
+                result = (arity > result) ? arity : result;
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -730,10 +761,10 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
         // Allocate argument registers on the body, to all functors as outermost arguments.
         // Allocate temporary registers on the body, to all terms not already allocated.
-        if (!isFirstBody)
+        /*if (!isFirstBody)
         {
             lastAllocatedRegister = 0;
-        }
+        }*/
 
         allocateArgumentRegisters(expression);
         allocateTemporaryRegisters(expression);
@@ -864,15 +895,17 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     {
         // Assign argument registers to functors appearing directly in the argument of the outermost functor.
         // Variables are never assigned directly to argument registers.
-        for (; lastAllocatedRegister < expression.getArity(); lastAllocatedRegister++)
+        int reg = 0;
+
+        for (; reg < expression.getArity(); reg++)
         {
-            Term term = expression.getArgument(lastAllocatedRegister);
+            Term term = expression.getArgument(reg);
 
             if (term instanceof Functor)
             {
                 /*log.fine("X" + lastAllocatedRegister + " = " + interner.getFunctorFunctorName((Functor) term));*/
 
-                int allocation = (lastAllocatedRegister & 0xff) | (REG_ADDR << 8);
+                int allocation = (reg & 0xff) | (REG_ADDR << 8);
                 symbolTable.put(term.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
             }
         }
@@ -906,7 +939,7 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
             if (symbolTable.get(term.getSymbolKey(), SYMKEY_ALLOCATION) == null)
             {
-                int allocation = (lastAllocatedRegister++ & 0xff) | (REG_ADDR << 8);
+                int allocation = (lastAllocatedTempReg++ & 0xff) | (REG_ADDR << 8);
                 symbolTable.put(term.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
             }
         }
