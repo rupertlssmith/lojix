@@ -1307,6 +1307,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 put_unsafe_value Yn, Ai <- first occurrence in last body goal in which Y appears, if it only appears in argument position
                            in this goal.
 
+Record how variable is created, on first seen:
+
 set_value Vn unsafe when
     permanent Vn not initialized in this clause with set_var or unify_var
     temporary Vn not initialized in this clause with set_var or unify_var or put_var
