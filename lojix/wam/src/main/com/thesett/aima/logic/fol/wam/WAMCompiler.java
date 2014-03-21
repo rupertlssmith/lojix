@@ -572,8 +572,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * Examines all top-level functors within a clause, including any head and body, and determines which functor has the
-     * highest number of arguments.
+     * Examines all top-level functors within a clause, including any head and body, and determines which functor has
+     * the highest number of arguments.
      *
      * @param  clause The clause to determine the highest number of arguments within.
      *
@@ -1158,9 +1158,10 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * QueryRegisterAllocatingVisitor visits variables in a query, and if they are not already allocated to a permanent
-     * stack slot, allocates them one. All variables in queries are stack allocated, so that they are preserved on the
-     * stack at the end of the query.
+     * QueryRegisterAllocatingVisitor visits named variables in a query, and if they are not already allocated to a
+     * permanent stack slot, allocates them one. All named variables in queries are stack allocated, so that they are
+     * preserved on the stack at the end of the query. Anonymous variables in queries are singletons, and not included
+     * in the query results, so can be temporary.
      */
     public class QueryRegisterAllocatingVisitor extends DelegatingAllTermsVisitor
     {
@@ -1194,11 +1195,22 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         {
             if (symbolTable.get(variable.getSymbolKey(), SYMKEY_ALLOCATION) == null)
             {
-                /*log.fine("Variable " + variable + " is permanent.");*/
+                if (variable.isAnonymous())
+                {
+                    log.fine("Query variable " + variable + " is temporary.");
 
-                int allocation = (numPermanentVars++ & (0xff)) | (STACK_ADDR << 8);
-                symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
-                varNames.put((byte) allocation, variable.getName());
+                    int allocation = (lastAllocatedTempReg++ & (0xff)) | (REG_ADDR << 8);
+                    symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+                    varNames.put((byte) allocation, variable.getName());
+                }
+                else
+                {
+                    log.fine("Query variable " + variable + " is permanent.");
+
+                    int allocation = (numPermanentVars++ & (0xff)) | (STACK_ADDR << 8);
+                    symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+                    varNames.put((byte) allocation, variable.getName());
+                }
             }
 
             super.visit(variable);

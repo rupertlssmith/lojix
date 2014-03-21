@@ -308,6 +308,12 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
         resolveAndAssertSolutions("[[b(x, y, z), (a(Y) :- b(x, y, Y))], (?- a(X)), [[X <-- z]]]");
     }
 
+    /** Check that a variable created within a clause body can be bound correctly. */
+    public void testBodyVariableBindsOk() throws Exception
+    {
+        resolveAndAssertSolutions("[[h(X,X), g(x), (f(Y) :- h(Y,Z), g(Z))], (?- f(W)), [[W <-- x]]]");
+    }
+
     /**
      * Sets the state of the extra solutions check.
      *
