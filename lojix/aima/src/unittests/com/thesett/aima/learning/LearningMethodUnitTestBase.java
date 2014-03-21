@@ -18,12 +18,11 @@ package com.thesett.aima.learning;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.thesett.aima.state.State;
+
 import junit.framework.TestCase;
 
-
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.state.State;
 
 /**
  * LearningMethodUnitTestBase is a pure unit test base class for deriving test classes for implementations of the

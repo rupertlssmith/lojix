@@ -20,14 +20,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.thesett.aima.state.InfiniteValuesException;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.state.InfiniteValuesException;
 
 /**
  * Checks that {@link HierarchyAttribute}s work as expected.

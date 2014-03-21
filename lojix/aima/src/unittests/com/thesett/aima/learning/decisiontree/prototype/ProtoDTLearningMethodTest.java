@@ -18,13 +18,6 @@ package com.thesett.aima.learning.decisiontree.prototype;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-
-import org.apache.log4j.NDC;
-
 import com.thesett.aima.attribute.impl.BooleanAttribute;
 import com.thesett.aima.attribute.impl.EnumeratedStringAttribute;
 import com.thesett.aima.learning.ClassifyingMachine;
@@ -34,6 +27,12 @@ import com.thesett.aima.learning.LearningMethodUnitTestBase;
 import com.thesett.aima.learning.RestaurantsDataState;
 import com.thesett.aima.state.State;
 import com.thesett.aima.state.impl.MapBackedState;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.apache.log4j.NDC;
 
 /**
  * ProtoDTLearningMethodTest is a pure unit test class for the {@link ProtoDTLearningMethod} class.

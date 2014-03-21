@@ -19,15 +19,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.thesett.aima.search.Operator;
+import com.thesett.aima.search.TraversableStateTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.search.Operator;
-import com.thesett.aima.search.TraversableStateTest;
 
 /**
  * EightPuzzleStateTest is a pure unit test class for the {@link EightPuzzleState} class.

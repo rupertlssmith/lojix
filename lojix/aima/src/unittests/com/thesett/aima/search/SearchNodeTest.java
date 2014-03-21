@@ -21,13 +21,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import com.thesett.aima.search.util.OperatorImpl;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.search.util.OperatorImpl;
 
 /**
  * SearchNodeTest is a pure unit test class for the {@link SearchNode} class.

@@ -186,7 +186,8 @@ public class L3CompiledPredicate extends Predicate<Clause> implements Sentence<L
         return instructions.sizeof();
     }
 
-    /** Provides the compiled byte code instructions as an unmodifiable list.
+    /**
+     * Provides the compiled byte code instructions as an unmodifiable list.
      *
      * @return A list of the byte code instructions for this predicate.
      */
@@ -206,8 +207,7 @@ public class L3CompiledPredicate extends Predicate<Clause> implements Sentence<L
      *
      * @throws LinkageException If required symbols to link to cannot be found in the binary machine.
      */
-    public void emmitCode(int offset, byte[] buffer, L3Machine machine, L3CallPoint callPoint)
-        throws LinkageException
+    public void emmitCode(int offset, byte[] buffer, L3Machine machine, L3CallPoint callPoint) throws LinkageException
     {
         // Ensure that the size of the instruction listing does not exceed max int (highly unlikely).
         if (sizeof() > Integer.MAX_VALUE)

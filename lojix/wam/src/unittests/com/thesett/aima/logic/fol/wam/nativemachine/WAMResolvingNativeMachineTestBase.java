@@ -30,7 +30,6 @@ import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.WAMResolvingJavaMachineTest;
 import com.thesett.aima.logic.fol.wam.WAMResolvingMachine;
-import com.thesett.aima.logic.fol.wam.nativemachine.WAMResolvingNativeMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 import junit.framework.Test;

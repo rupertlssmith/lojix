@@ -22,7 +22,6 @@ import java.util.Set;
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.common.error.ImplementationUnavailableException;
-import com.thesett.common.error.NotImplementedException;
 import com.thesett.common.util.SequenceIterator;
 
 /**
@@ -168,17 +167,6 @@ public class L2ResolvingNativeMachine extends L2ResolvingMachine
     }
 
     /**
-     * This is a call back onto the trace logger, that the native code can use to do any trace logging through Java,
-     * instead of calling 'printf' for example.
-     *
-     * @param message The string to log to the tracer.
-     */
-    private void trace(String message)
-    {
-        /*trace.fine(message);*/
-    }
-
-    /**
      * Provides an iterator that generates all solutions on demand as a sequence of variable bindings.
      *
      * @return An iterator that generates all solutions on demand as a sequence of variable bindings.
@@ -254,4 +242,15 @@ public class L2ResolvingNativeMachine extends L2ResolvingMachine
      * @return The heap cell at the specified location.
      */
     protected native int getHeap(int addr);
+
+    /**
+     * This is a call back onto the trace logger, that the native code can use to do any trace logging through Java,
+     * instead of calling 'printf' for example.
+     *
+     * @param message The string to log to the tracer.
+     */
+    private void trace(String message)
+    {
+        /*trace.fine(message);*/
+    }
 }

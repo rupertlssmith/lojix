@@ -17,7 +17,6 @@ package com.thesett.aima.state.impl;
 
 import junit.framework.TestCase;
 
-
 import org.apache.log4j.NDC;
 
 /**

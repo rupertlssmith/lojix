@@ -15,11 +15,11 @@
  */
 package com.thesett.aima.state;
 
+import com.thesett.aima.state.impl.TestExtendableBean;
+
 import junit.framework.TestCase;
 
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.state.impl.TestExtendableBean;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>

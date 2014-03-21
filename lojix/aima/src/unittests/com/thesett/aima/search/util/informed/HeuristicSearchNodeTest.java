@@ -15,22 +15,21 @@
  */
 package com.thesett.aima.search.util.informed;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-
-import org.apache.log4j.NDC;
-
 import com.thesett.aima.search.SearchNodeTest;
 import com.thesett.aima.search.Successor;
 import com.thesett.aima.search.TestTraversableState;
 import com.thesett.aima.search.util.OperatorImpl;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.apache.log4j.NDC;
+
 /**
  * HeuristicSearchNodeTest is a pure unit test class for the {@link HeuristicSearchNode} class. HeuristicSearchNode
- * extends {@link com.thesett.aima.search.SearchNode} and so the class is subjected to the same tests as a search
- * node, using the {@link SearchNodeTest} test class suite.
+ * extends {@link com.thesett.aima.search.SearchNode} and so the class is subjected to the same tests as a search node,
+ * using the {@link SearchNodeTest} test class suite.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -48,9 +47,9 @@ public class HeuristicSearchNodeTest extends TestCase
     HeuristicSearchNode<String, TestTraversableState> testSearchNode;
 
     /**
-     * Default constructor that will result in the tests being run on the
-     * {@link com.thesett.aima.search.SearchNode} class. This is used to check the sanity of the tests being run
-     * and the default implementation of the heuristic search node class.
+     * Default constructor that will result in the tests being run on the {@link com.thesett.aima.search.SearchNode}
+     * class. This is used to check the sanity of the tests being run and the default implementation of the heuristic
+     * search node class.
      */
     public HeuristicSearchNodeTest(String testName)
     {

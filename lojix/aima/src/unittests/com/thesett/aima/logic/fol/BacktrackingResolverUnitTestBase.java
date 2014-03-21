@@ -100,12 +100,12 @@ public class BacktrackingResolverUnitTestBase<S extends Clause, T, Q> extends Ba
         // Compile the domain clauses and insert them into the resolver.
         for (String predicate : domain)
         {
-            /*T clause = */compileDomainClause(predicate);
+            /*T clause = */ compileDomainClause(predicate);
             //resolver.addToDomain(clause);
         }
 
         // Compile the query and insert it into the resolver.
-        /*Q q = */compileQuery(query);
+        /*Q q = */ compileQuery(query);
         //resolver.setQuery(q);
 
         // Perform all possible resolutions.

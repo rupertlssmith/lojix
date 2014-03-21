@@ -220,7 +220,7 @@ public class L2ResolvingJavaMachineTest extends TestCase
 
             if (test instanceof BasicResolverUnitTestBase)
             {
-                ((BasicResolverUnitTestBase)test).withCheckExtraSolutions(false);
+                ((BasicResolverUnitTestBase) test).withCheckExtraSolutions(false);
             }
         }
         // Add all the tests defined in this class.

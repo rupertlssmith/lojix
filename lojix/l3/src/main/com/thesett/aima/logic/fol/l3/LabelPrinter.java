@@ -18,7 +18,6 @@ package com.thesett.aima.logic.fol.l3;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
@@ -46,7 +45,7 @@ public class LabelPrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public LabelPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-                        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, grid, table);
     }
@@ -61,7 +60,7 @@ public class LabelPrinter extends BasePrinter
             for (L3Instruction instruction : query.getInstructions())
             {
                 L3Label label = instruction.getLabel();
-                addLineToRow(label != null ? label.toPrettyString() + ":" : "");
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }
@@ -77,7 +76,7 @@ public class LabelPrinter extends BasePrinter
             for (L3Instruction instruction : compiledPredicate.getInstructions())
             {
                 L3Label label = instruction.getLabel();
-                addLineToRow(label != null ? label.toPrettyString() + ":" : "");
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }

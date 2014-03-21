@@ -22,7 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.thesett.aima.attribute.time.DateOnly;
-import com.thesett.aima.state.*;
+import com.thesett.aima.state.BaseType;
+import com.thesett.aima.state.InfiniteValuesException;
+import com.thesett.aima.state.RandomInstanceFactory;
+import com.thesett.aima.state.Type;
+import com.thesett.aima.state.TypeVisitor;
 import com.thesett.common.error.NotImplementedException;
 
 /**

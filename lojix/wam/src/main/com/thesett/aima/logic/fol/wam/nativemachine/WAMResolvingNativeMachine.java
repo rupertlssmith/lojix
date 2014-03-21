@@ -114,8 +114,6 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
         }
     }
 
-
-
     /**
      * Resets the machine, to its initial state. This clears any programs from the machine, and clears all of its stacks
      * and heaps.

@@ -15,16 +15,15 @@
  */
 package com.thesett.aima.search.util.uninformed;
 
+import com.thesett.aima.search.SearchNotExhaustiveException;
+import com.thesett.aima.search.TestTraversableState;
+import com.thesett.aima.search.impl.BaseQueueSearchTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.search.SearchNotExhaustiveException;
-import com.thesett.aima.search.TestTraversableState;
-import com.thesett.aima.search.impl.BaseQueueSearchTest;
 
 /**
  * IterativeDeepeningSearchTest is a pure unit test class for the {@link IterativeDeepeningSearch} class.

@@ -15,20 +15,16 @@
  */
 package com.thesett.mlang.parser;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.Cons;
 import com.thesett.aima.logic.fol.DoubleLiteral;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.IntLiteral;
-import com.thesett.aima.logic.fol.Nil;
 import com.thesett.aima.logic.fol.NumericType;
 import com.thesett.aima.logic.fol.OpSymbol;
 import static com.thesett.aima.logic.fol.OpSymbol.Associativity.FX;
@@ -38,7 +34,6 @@ import static com.thesett.aima.logic.fol.OpSymbol.Associativity.YFX;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.StringLiteral;
 import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.TermUtils;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;

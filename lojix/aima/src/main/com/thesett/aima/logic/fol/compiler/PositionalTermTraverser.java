@@ -62,5 +62,5 @@ public interface PositionalTermTraverser extends ClauseTraverser, FunctorTravers
      *
      * @param contextChangeVisitor The visitor to notify on context changes.
      */
-    public void setContextChangeVisitor(TermVisitor contextChangeVisitor);
+    void setContextChangeVisitor(TermVisitor contextChangeVisitor);
 }

@@ -17,13 +17,12 @@ package com.thesett.aima.learning;
 
 import java.util.Map;
 
-import junit.framework.TestCase;
-
-
-import org.apache.log4j.NDC;
-
 import com.thesett.aima.state.OrdinalAttribute;
 import com.thesett.aima.state.State;
+
+import junit.framework.TestCase;
+
+import org.apache.log4j.NDC;
 
 /**
  * ClassifyingMachineUnitTestBase is a pure unit test base class for deriving test classes for implementations of the

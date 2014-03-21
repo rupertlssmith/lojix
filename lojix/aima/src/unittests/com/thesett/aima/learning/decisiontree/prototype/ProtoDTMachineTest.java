@@ -15,16 +15,14 @@
  */
 package com.thesett.aima.learning.decisiontree.prototype;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-
-
 import com.thesett.aima.learning.ClassifyingFailureException;
 import com.thesett.aima.learning.ClassifyingMachineUnitTestBase;
 import com.thesett.aima.learning.RestaurantsDataState;
 import com.thesett.aima.state.State;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * ProtoDTMachineTest is a pure unit test class for the {@link ProtoDTMachine} class.

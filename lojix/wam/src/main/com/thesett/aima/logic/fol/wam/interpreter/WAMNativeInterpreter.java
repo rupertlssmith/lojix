@@ -65,7 +65,8 @@ public class WAMNativeInterpreter
             Parser<Clause, Token> parser = new SentenceParser(machine);
             parser.setTokenSource(TokenSource.getTokenSourceForInputStream(System.in));
 
-            LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler = new WAMCompiler(symbolTable, machine);
+            LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler =
+                new WAMCompiler(symbolTable, machine);
 
             ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =
                 new ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>(parser, machine, compiler, machine)

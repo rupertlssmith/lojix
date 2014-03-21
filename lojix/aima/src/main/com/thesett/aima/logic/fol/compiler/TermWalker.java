@@ -27,10 +27,10 @@ import com.thesett.aima.search.util.Searches;
  * TermWalker combines together a {@link QueueBasedSearchMethod}, a {@link com.thesett.aima.logic.fol.TermTraverser} and
  * a {@link com.thesett.aima.logic.fol.TermVisitor}, to implement a walk over a recursive term data structure. The queue
  * based search method, controls the order of the walk and the order in which nodes in the term are examined. The
- * traverser allows context information to be embedded in the traversal operators, such that whenever a node is examined,
- * the operators leading to it from the root node, will have been expanded in the order that they are encountered along
- * the path from the root to the current node. The term visitor allows visitor methods to be established on a sub-set of
- * the term nodes in order to effect some function or transformation of the term.
+ * traverser allows context information to be embedded in the traversal operators, such that whenever a node is
+ * examined, the operators leading to it from the root node, will have been expanded in the order that they are
+ * encountered along the path from the root to the current node. The term visitor allows visitor methods to be
+ * established on a sub-set of the term nodes in order to effect some function or transformation of the term.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations

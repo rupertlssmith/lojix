@@ -22,7 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.thesett.aima.attribute.time.TimeOnly;
-import com.thesett.aima.state.*;
+import com.thesett.aima.state.BaseType;
+import com.thesett.aima.state.InfiniteValuesException;
+import com.thesett.aima.state.RandomInstanceFactory;
+import com.thesett.aima.state.Type;
+import com.thesett.aima.state.TypeVisitor;
 
 /**
  * Implements an integer range type. This allows a sequential range of ints to be defined as a named type.
@@ -95,7 +99,7 @@ public class TimeRangeType extends BaseType<TimeOnly> implements Type<TimeOnly>,
     public static TimeRangeType createInstance(String name, TimeOnly min, TimeOnly max)
     {
         // Ensure that min is less than or equal to max.
-        if (min != null && max != null && min.compareTo(max) > 0)
+        if ((min != null) && (max != null) && (min.compareTo(max) > 0))
         {
             throw new IllegalArgumentException("'min' must be less than or equal to 'max'.");
         }

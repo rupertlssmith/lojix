@@ -30,8 +30,7 @@ import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
  *
  * @author Rupert Smith
  */
-public class UnifyAndNonUnifyResolverUnitTestBase<S extends Clause, T, Q>
-    extends UnifierUnitTestBase
+public class UnifyAndNonUnifyResolverUnitTestBase<S extends Clause, T, Q> extends UnifierUnitTestBase
 {
     /**
      * Holds a basic resolver that supplies the resolve and check bindings test method over a resolver, parser,

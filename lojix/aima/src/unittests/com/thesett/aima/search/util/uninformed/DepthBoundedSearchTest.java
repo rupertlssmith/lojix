@@ -15,14 +15,13 @@
  */
 package com.thesett.aima.search.util.uninformed;
 
+import com.thesett.aima.search.impl.BaseQueueSearchTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 import org.apache.log4j.NDC;
-
-import com.thesett.aima.search.impl.BaseQueueSearchTest;
 
 /**
  * DepthBoundedSearchTst is a pure unit test class for the {@link DepthBoundedSearch} class.

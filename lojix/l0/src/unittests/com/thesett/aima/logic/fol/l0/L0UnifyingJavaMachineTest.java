@@ -15,10 +15,6 @@
  */
 package com.thesett.aima.logic.fol.l0;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
@@ -29,6 +25,10 @@ import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.isoprologparser.TermParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.common.parsing.SourceCodeException;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * L0UnifyingJavaMachineTest tests unification over a range of terms in first order logic, in order to test all success

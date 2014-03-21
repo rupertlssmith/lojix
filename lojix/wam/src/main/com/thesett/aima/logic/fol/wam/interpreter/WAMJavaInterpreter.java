@@ -25,7 +25,6 @@ import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 import com.thesett.aima.logic.fol.isoprologparser.SentenceParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
-import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
 import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.WAMCompiler;

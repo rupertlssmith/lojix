@@ -18,8 +18,6 @@ package com.thesett.aima.learning;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
-
 import com.thesett.aima.attribute.impl.BooleanAttribute;
 import com.thesett.aima.attribute.impl.EnumAttribute;
 import com.thesett.aima.attribute.impl.EnumeratedStringAttribute;

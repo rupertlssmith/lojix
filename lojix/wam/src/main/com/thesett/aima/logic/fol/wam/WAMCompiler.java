@@ -1303,3 +1303,18 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         }
     }
 }
+/*
+put_unsafe_value Yn, Ai <- first occurrence in last body goal in which Y appears, if it only appears in argument position
+                           in this goal.
+
+set_value Vn unsafe when
+    permanent Vn not initialized in this clause with set_var or unify_var
+    temporary Vn not initialized in this clause with set_var or unify_var or put_var
+
+unify_var <- in nested functor in head
+set_var <- in nested functor in body
+put_var <- in argument position functor in body
+
+set_local_val Vn <- first occurrence meeting above conditions.
+unify_local_val Vn <-first occurrence meeting above conditions.
+*/

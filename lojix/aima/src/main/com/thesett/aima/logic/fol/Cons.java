@@ -76,6 +76,12 @@ public class Cons extends RecursiveList
         return listToString(interner, true, printVarName, printBindings);
     }
 
+    /** {@inheritDoc} */
+    public String toString()
+    {
+        return arguments[0].toString() + " :: [ " + arguments[1].toString() + " ]";
+    }
+
     /**
      * Pretty prints a term relative to the symbol namings provided by the specified interner.
      *
@@ -157,11 +163,5 @@ public class Cons extends RecursiveList
 
             return value;
         }
-    }
-
-    /** {@inheritDoc} */
-    public String toString()
-    {
-        return  arguments[0].toString() + " :: [ " + arguments[1].toString() + " ]";
     }
 }

@@ -23,7 +23,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-
 import org.apache.log4j.NDC;
 
 /**
