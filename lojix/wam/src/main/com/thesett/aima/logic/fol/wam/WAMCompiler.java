@@ -187,8 +187,30 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     /** The symbol table key for functor position of occurrence. */
     public static final String SYMKEY_FUNCTOR_NON_ARG = "functor_non_arg";
 
+    /** The symbol table key for variable introduction type. */
+    public static final String SYMKEY_VARIABLE_INTRO = "variable_intro";
+
+    /** The symbol table key for the last functor in which a variable occurs, if it is purely in argument position. */
+    public static final String SYMKEY_VAR_LAST_ARG_FUNCTOR = "var_last_arg_functor";
+
     /** The symbol table key for predicate sources. */
     protected static final String SYMKEY_PREDICATES = "source_predicates";
+
+    /** Enumerates the possible ways in which a variable can be introduced to a clause. */
+    private enum VarIntroduction
+    {
+        /** Introduced by a get instruction. */
+        Get,
+
+        /** Introduced by a put instruction. */
+        Put,
+
+        /** Introduced by a set instruction */
+        Set,
+
+        /** Introduced by a unify instruction. */
+        Unify
+    }
 
     /** Holds a list of all predicates encountered in the current scope. */
     protected Queue<SymbolKey> predicatesInScope = new LinkedList<SymbolKey>();
@@ -702,12 +724,31 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                         seenRegisters.add(allocation);
 
                         instruction = new WAMInstruction(WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
+
+                        // Record the way in which this variable was introduced into the clause.
+                        symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Unify);
                     }
                     else
                     {
-                        /*log.fine("UNIFY_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
+                        // Check if the variable is 'local' and use a local instruction on the first occurrence.
+                        VarIntroduction introduction =
+                            (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO);
 
-                        instruction = new WAMInstruction(WAMInstructionSet.UnifyVal, addrMode, address, nextArg);
+                        if (isLocalVariable(introduction, addrMode))
+                        {
+                            log.fine("UNIFY_LOCAL_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);
+
+                            instruction =
+                                new WAMInstruction(WAMInstructionSet.UnifyLocalVal, addrMode, address, nextArg);
+
+                            symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
+                        }
+                        else
+                        {
+                            /*log.fine("UNIFY_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
+
+                            instruction = new WAMInstruction(WAMInstructionSet.UnifyVal, addrMode, address, nextArg);
+                        }
                     }
 
                     instructions.add(instruction);
@@ -731,6 +772,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                     seenRegisters.add(allocation);
 
                     instruction = new WAMInstruction(WAMInstructionSet.GetVar, addrMode, address, (byte) (j & 0xff));
+
+                    // Record the way in which this variable was introduced into the clause.
+                    symbolTable.put(nextVar.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Get);
                 }
                 else
                 {
@@ -795,14 +839,34 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 WAMInstruction instruction =
                     new WAMInstruction(WAMInstructionSet.PutVar, addrMode, address, (byte) (j & 0xff));
                 instructions.add(instruction);
+
+                // Record the way in which this variable was introduced into the clause.
+                symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Put);
             }
             else if (nextOutermostArg.isVar())
             {
-                /*log.fine("PUT_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
+                // Check if this is the last body functor in which this variable appears, it does so only in argument
+                // position, and this is the first occurrence of these conditions. In which case, an unsafe put is to
+                // be used.
+                if (isLastBodyTermInArgPositionOnly((Variable) nextOutermostArg, expression) &&
+                        (addrMode == WAMInstruction.STACK_ADDR))
+                {
+                    log.fine("PUT_UNSAFE_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);
 
-                WAMInstruction instruction =
-                    new WAMInstruction(WAMInstructionSet.PutVal, addrMode, address, (byte) (j & 0xff));
-                instructions.add(instruction);
+                    WAMInstruction instruction =
+                        new WAMInstruction(WAMInstructionSet.PutUnsafeVal, addrMode, address, (byte) (j & 0xff));
+                    instructions.add(instruction);
+
+                    symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
+                }
+                else
+                {
+                    /*log.fine("PUT_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
+
+                    WAMInstruction instruction =
+                        new WAMInstruction(WAMInstructionSet.PutVal, addrMode, address, (byte) (j & 0xff));
+                    instructions.add(instruction);
+                }
             }
 
             // When a functor is encountered, output a put_struc.
@@ -856,11 +920,30 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                             /*log.fine("SET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
                             instruction = new WAMInstruction(WAMInstructionSet.SetVar, addrMode, address, nextArg);
+
+                            // Record the way in which this variable was introduced into the clause.
+                            symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Set);
                         }
                         else
                         {
-                            /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                            instruction = new WAMInstruction(WAMInstructionSet.SetVal, addrMode, address, nextArg);
+                            // Check if the variable is 'local' and use a local instruction on the first occurrence.
+                            VarIntroduction introduction =
+                                (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO);
+
+                            if (isLocalVariable(introduction, addrMode))
+                            {
+                                log.fine("SET_LOCAL_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);
+
+                                instruction =
+                                    new WAMInstruction(WAMInstructionSet.SetLocalVal, addrMode, address, nextArg);
+
+                                symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
+                            }
+                            else
+                            {
+                                /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
+                                instruction = new WAMInstruction(WAMInstructionSet.SetVal, addrMode, address, nextArg);
+                            }
                         }
 
                         instructions.add(instruction);
@@ -870,6 +953,21 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         }
 
         return instructions;
+    }
+
+    /**
+     * Checks if a variable is appearing within the last body functor in which it occurs, and only does so within
+     * argument position.
+     *
+     * @param  var  The variable to check.
+     * @param  body The current body functor being processed.
+     *
+     * @return <tt>true</tt> iff this is the last body functor that the variable appears in and does so only in argument
+     *         position.
+     */
+    private boolean isLastBodyTermInArgPositionOnly(Variable var, Functor body)
+    {
+        return body == symbolTable.get(var.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR);
     }
 
     /**
@@ -1108,6 +1206,37 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
+     * Determines whether a variable is local, that is, it may only exist on the stack. When variables are introduced
+     * into clauses, the way in which they are introduced is recorded using the {@link VarIntroduction} enum. When a
+     * variable is being written to the heap for the first time, this check may be used to see if a 'local' variant of
+     * an instruction is needed, in order to globalize the variable on the heap.
+     *
+     * <p/>The conditions for a variable being deemed local are:
+     *
+     * <ul>
+     * <li>For a permanent variable, not initialized in this clause with set_var or unify_var instruction.</li>
+     * <li>For a temporary variable, not initialized in this clause with set_var or unify_var or put_var instruction.
+     * </li>
+     * </ul>
+     *
+     * @param  introduction The type of instruction that introduced the variable into the clause.
+     * @param  addrMode     The addressing mode of the variable, permanent variables are stack allocated.
+     *
+     * @return <tt>true</tt> iff the variable is unsafe.
+     */
+    private boolean isLocalVariable(VarIntroduction introduction, byte addrMode)
+    {
+        if (WAMInstruction.STACK_ADDR == addrMode)
+        {
+            return (introduction == VarIntroduction.Get) || (introduction == VarIntroduction.Put);
+        }
+        else
+        {
+            return introduction == VarIntroduction.Get;
+        }
+    }
+
+    /**
      * Pretty prints a compiled predicate.
      *
      * @param predicate The compiled predicate to pretty print.
@@ -1218,12 +1347,29 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     }
 
     /**
-     * PositionAndOccurrenceVisitor visits all variable appearing within a clause to count the number of times that they
-     * occur (singleton detection). All constants within the clause are also checked to see whether or not they only
-     * appear in non-argument positions.
+     * PositionAndOccurrenceVisitor visits a clause to gather information about the positions in which components of the
+     * clause appear.
+     *
+     * <p/>For variables, the following information is gathered:
+     *
+     * <ol>
+     * <li>A count of the number of times the variable occurs in the clause (singleton detection).</li>
+     * <li>A flag indicating that variable only ever appears in non-argument positions.</li>
+     * <li>The last functor body in the clause in which a variable appears, provided it only does so in argument
+     * position.</li>
+     * </ol>
+     *
+     * <p/>For constants, the following information is gathered:
+     *
+     * <ol>
+     * <li>A flag indicating the constant only ever appears in non-argument positions.</li>
+     * </ol>
      */
     public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
+        /** Holds the current top-level body functor. <tt>null</tt> when traversing the head. */
+        private Functor topLevelBodyFunctor;
+
         /**
          * Creates a positional visitor.
          *
@@ -1260,6 +1406,19 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
             symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
 
             /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
+
+            // If in an argument position, record the parent body functor against the variable, as potentially being
+            // the last one it occurs in, in a purely argument position.
+            // If not in an argument position, clear any parent functor recorded against the variable, as this current
+            // last position of occurrence is not purely in argument position.
+            if (inTopLevelFunctor())
+            {
+                symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, topLevelBodyFunctor);
+            }
+            else
+            {
+                symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
+            }
         }
 
         /**
@@ -1288,6 +1447,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                 /*log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
             }
+
+            // Keep track of the current top-level body functor.
+            if (traverser.isTopLevel() && !traverser.isInHead())
+            {
+                topLevelBodyFunctor = functor;
+            }
         }
 
         /**
@@ -1303,20 +1468,3 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         }
     }
 }
-/*
-put_unsafe_value Yn, Ai <- first occurrence in last body goal in which Y appears, if it only appears in argument position
-                           in this goal.
-
-Record how variable is created, on first seen:
-
-set_value Vn unsafe when
-    permanent Vn not initialized in this clause with set_var or unify_var
-    temporary Vn not initialized in this clause with set_var or unify_var or put_var
-
-unify_var <- in nested functor in head
-set_var <- in nested functor in body
-put_var <- in argument position functor in body
-
-set_local_val Vn <- first occurrence meeting above conditions.
-unify_local_val Vn <-first occurrence meeting above conditions.
-*/

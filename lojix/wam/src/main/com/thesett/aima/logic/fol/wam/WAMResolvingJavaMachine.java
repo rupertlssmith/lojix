@@ -888,12 +888,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int yi = (int) codeBuffer.get(ip + 2);
+                int yi = (int) codeBuffer.get(ip + 2) + (ep + 3);
                 byte ai = codeBuffer.get(ip + 3);
 
                 trace.fine(ip + ": PUT_UNSAFE_VAL " + printSlot(yi, WAMInstruction.STACK_ADDR) + ", A" + ai);
 
-                int addr = deref(yi + ep + 3);
+                int addr = deref(yi);
 
                 if (addr < ep)
                 {
@@ -910,6 +910,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 4;
+
+                break;
             }
 
             // set_local_val Xi:
@@ -938,6 +940,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 3;
+
+                break;
             }
 
             // unify_local_val Xi:
@@ -980,6 +984,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 // P <- P + instruction_size(P)
                 ip += 3;
+
+                break;
             }
 
             // call @(p/n), perms:
