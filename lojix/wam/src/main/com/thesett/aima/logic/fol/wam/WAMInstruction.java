@@ -18,12 +18,14 @@ package com.thesett.aima.logic.fol.wam;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Term;
+import com.thesett.common.util.Pair;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.doublemaps.SymbolKey;
 
@@ -1101,6 +1103,9 @@ public class WAMInstruction implements Sizeable
 
     /** An optional target address label. */
     protected WAMLabel target4;
+
+    /** An optional list of entries for an indexing table. */
+    protected List<Pair<Integer, WAMLabel>> indexTable;
 
     /**
      * Creates an instruction for the specified mnemonic.
