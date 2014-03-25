@@ -720,7 +720,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        Try(TRY, "try", 0)
+        Try(TRY, "try", 5)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -752,7 +752,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        Retry(RETRY, "retry", 0)
+        Retry(RETRY, "retry", 5)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -784,7 +784,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        Trust(TRUST, "trust", 0)
+        Trust(TRUST, "trust", 5)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)

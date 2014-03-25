@@ -1283,6 +1283,172 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
+            case WAMInstruction.SWITCH_ON_TERM:
+            {
+                // P <- P + instruction_size(P)
+                ip += 17;
+
+                break;
+            }
+
+            case WAMInstruction.SWITCH_ON_CONST:
+            {
+                // P <- P + instruction_size(P)
+                ip += 9;
+
+                break;
+            }
+
+            case WAMInstruction.SWITCH_ON_STRUC:
+            {
+                // P <- P + instruction_size(P)
+                ip += 9;
+
+                break;
+            }
+
+            case WAMInstruction.TRY:
+            {
+                // grab L
+                int l = (int) codeBuffer.get(ip + 1);
+
+                // if E > B
+                //  then newB <- E + STACK[E + 2] + 3
+                // else newB <- B + STACK[B] + 7
+                int esp = nextStackFrame();
+
+                // STACK[newB] <- num_of_args
+                // n <- STACK[newB]
+                int n = numOfArgs;
+                data.put(esp, n);
+
+                // for i <- 1 to n do STACK[newB + i] <- Ai
+                for (int i = 0; i < n; i++)
+                {
+                    data.put(esp + i + 1, data.get(i));
+                }
+
+                // STACK[newB + n + 1] <- E
+                data.put(esp + n + 1, ep);
+
+                // STACK[newB + n + 2] <- CP
+                data.put(esp + n + 2, cp);
+
+                // STACK[newB + n + 3] <- B
+                data.put(esp + n + 3, bp);
+
+                // STACK[newB + n + 4] <- L
+                data.put(esp + n + 4, ip + 5);
+
+                // STACK[newB + n + 5] <- TR
+                data.put(esp + n + 5, trp);
+
+                // STACK[newB + n + 6] <- H
+                data.put(esp + n + 6, hp);
+
+                // B <- new B
+                bp = esp;
+
+                // HB <- H
+                hbp = hp;
+
+                trace.fine(ip + ": TRY");
+                trace.fine("-> chp @ " + bp + " " + traceChoiceFrame());
+
+                // P <- L
+                ip = l;
+
+                break;
+            }
+
+            case WAMInstruction.RETRY:
+            {
+                // grab L
+                int l = (int) codeBuffer.get(ip + 1);
+
+                // n <- STACK[B]
+                int n = data.get(bp);
+
+                // for i <- 1 to n do Ai <- STACK[B + i]
+                for (int i = 0; i < n; i++)
+                {
+                    data.put(i, data.get(bp + i + 1));
+                }
+
+                // E <- STACK[B + n + 1]
+                ep = data.get(bp + n + 1);
+
+                // CP <- STACK[B + n + 2]
+                cp = data.get(bp + n + 2);
+
+                // STACK[B + n + 4] <- L
+                data.put(bp + n + 4, ip + 5);
+
+                // unwind_trail(STACK[B + n + 5], TR)
+                unwindTrail(data.get(bp + n + 5), trp);
+
+                // TR <- STACK[B + n + 5]
+                trp = data.get(bp + n + 5);
+
+                // H <- STACK[B + n + 6]
+                hp = data.get(bp + n + 6);
+
+                // HB <- H
+                hbp = hp;
+
+                trace.fine(ip + ": RETRY");
+                trace.fine("-- chp @ " + bp + " " + traceChoiceFrame());
+
+                // P <- L
+                ip = l;
+
+                break;
+            }
+
+            case WAMInstruction.TRUST:
+            {
+                // grab L
+                int l = (int) codeBuffer.get(ip + 1);
+
+                // n <- STACK[B]
+                int n = data.get(bp);
+
+                // for i <- 1 to n do Ai <- STACK[B + i]
+                for (int i = 0; i < n; i++)
+                {
+                    data.put(i, data.get(bp + i + 1));
+                }
+
+                // E <- STACK[B + n + 1]
+                ep = data.get(bp + n + 1);
+
+                // CP <- STACK[B + n + 2]
+                cp = data.get(bp + n + 2);
+
+                // unwind_trail(STACK[B + n + 5], TR)
+                unwindTrail(data.get(bp + n + 5), trp);
+
+                // TR <- STACK[B + n + 5]
+                trp = data.get(bp + n + 5);
+
+                // H <- STACK[B + n + 6]
+                hp = data.get(bp + n + 6);
+
+                // HB <- STACK[B + n + 6]
+                hbp = hp;
+
+                // B <- STACK[B + n + 3]
+                bp = data.get(bp + n + 3);
+
+                trace.fine(ip + ": TRUST");
+                trace.fine("<- chp @ " + bp + " " + traceChoiceFrame());
+
+                // P <- L
+                ip = l;
+
+                break;
+            }
+
             // suspend on success:
             case SUSPEND:
             {
