@@ -417,7 +417,6 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         if (isFirst && !isLast && multipleClauses)
         {
             // try me else.
-
             preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstructionSet.TryMeElse, retryLabel));
         }
         else if (!isFirst && !isLast && multipleClauses)

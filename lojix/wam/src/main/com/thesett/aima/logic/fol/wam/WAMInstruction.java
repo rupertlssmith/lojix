@@ -136,6 +136,14 @@ public class WAMInstruction implements Sizeable
     /** The final clause trust or fail instruction. */
     public static final byte TRUST_ME = 0x11;
 
+    public static final byte TRY = 0x1f;
+    public static final byte RETRY = 0x20;
+    public static final byte TRUST = 0x21;
+
+    public static final byte SWITCH_ON_TERM = 0x22;
+    public static final byte SWITCH_ON_CONST = 0x23;
+    public static final byte SWITCH_ON_STRUC = 0x24;
+
     /** The suspend operation. */
     public static final byte SUSPEND = 0x7f;
 
@@ -663,9 +671,6 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
             {
-                int fn = code.getInt(ip + 5);
-                int f = fn & 0x00ffffff;
-                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -675,7 +680,7 @@ public class WAMInstruction implements Sizeable
                 int ip = codeBuf.position();
 
                 // Intern the alternative forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.fn);
+                int toCall = machine.internFunctorName(instruction.jump1);
                 machine.reserveReferenceToLabel(toCall, ip + 1);
 
                 codeBuf.put(code);
@@ -685,7 +690,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.fn;
+                WAMLabel label = (WAMLabel) instruction.jump1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -697,9 +702,6 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
             {
-                int fn = code.getInt(ip + 5);
-                int f = fn & 0x00ffffff;
-                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -713,7 +715,7 @@ public class WAMInstruction implements Sizeable
                 machine.resolveLabelPoint(label, ip);
 
                 // Intern the alternative forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.fn);
+                int toCall = machine.internFunctorName(instruction.jump1);
                 machine.reserveReferenceToLabel(toCall, ip + 1);
 
                 codeBuf.put(code);
@@ -723,7 +725,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.fn;
+                WAMLabel label = (WAMLabel) instruction.jump1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -754,6 +756,40 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return pretty;
+            }
+        },
+
+        SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 15)
+        {
+            /** {@inheritDoc} */
+            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
+            {
+            }
+
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                int label = machine.internFunctorName(instruction.label);
+                machine.resolveLabelPoint(label, ip);
+
+                // Intern the alternative forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.fn);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = (WAMLabel) instruction.fn;
+
+                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
         },
 
@@ -1094,6 +1130,18 @@ public class WAMInstruction implements Sizeable
     /** The optional address label of the instruction. */
     protected WAMLabel label;
 
+    /** An optional target address label. */
+    protected WAMLabel jump1;
+
+    /** An optional target address label. */
+    protected WAMLabel jump2;
+
+    /** An optional target address label. */
+    protected WAMLabel jump3;
+
+    /** An optional target address label. */
+    protected WAMLabel jump4;
+
     /** The instruction. */
     protected WAMInstructionSet mnemonic;
 
@@ -1106,7 +1154,7 @@ public class WAMInstruction implements Sizeable
     /** Holds the second register argument to the instruction. */
     protected byte reg2;
 
-    /** Holds the functor (or label) argument to the instruction. */
+    /** Holds the functor argument to the instruction. */
     protected FunctorName fn;
 
     /** Holds the symbol key of the argument that is held in the first register of this instruction. */
@@ -1260,7 +1308,7 @@ public class WAMInstruction implements Sizeable
     {
         this.label = label;
         this.mnemonic = mnemonic;
-        this.fn = fn;
+        this.jump1 = fn;
     }
 
     /**
