@@ -565,7 +565,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.target1;
+                WAMLabel label = instruction.target1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -595,7 +595,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.target1;
+                WAMLabel label = instruction.target1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -623,7 +623,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 15)
+        SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 17)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -655,30 +655,162 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.fn;
+                return pretty + " " + labelToString(instruction.target1) + " / " + labelToString(instruction.target2) +
+                    " / " + labelToString(instruction.target3) + " / " + labelToString(instruction.target4);
+            }
+        },
+
+        SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 9)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                int label = machine.internFunctorName(instruction.label);
+                machine.resolveLabelPoint(label, ip);
+
+                // Intern the alternative forward labels, and write them out as zero initially, for later completion.
+                int jump = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(jump, ip + 1);
+
+                jump = machine.internFunctorName(instruction.target2);
+                machine.reserveReferenceToLabel(jump, ip + 5);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + labelToString(instruction.target1) + " / " + labelToString(instruction.target2);
+            }
+        },
+
+        SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 9)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                int label = machine.internFunctorName(instruction.label);
+                machine.resolveLabelPoint(label, ip);
+
+                // Intern the alternative forward labels, and write them out as zero initially, for later completion.
+                int jump = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(jump, ip + 1);
+
+                jump = machine.internFunctorName(instruction.target2);
+                machine.reserveReferenceToLabel(jump, ip + 5);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + labelToString(instruction.target1) + " / " + labelToString(instruction.target2);
+            }
+        },
+
+        Try(TRY, "try", 0)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = instruction.target1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
         },
 
-        SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 0)
-        {
-        },
-
-        SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 0)
-        {
-        },
-
-        Try(TRY, "try", 0)
-        {
-        },
-
         Retry(RETRY, "retry", 0)
         {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = instruction.target1;
+
+                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
+            }
         },
 
         Trust(TRUST, "trust", 0)
         {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
+            }
         },
 
         /** The suspend on success instruction. */
@@ -1271,5 +1403,17 @@ public class WAMInstruction implements Sizeable
     public String toString()
     {
         return mnemonic.toString(this);
+    }
+
+    /**
+     * Pretty prints a label as a string.
+     *
+     * @param  label The label to print.
+     *
+     * @return A pretty version of the label.
+     */
+    private static String labelToString(WAMLabel label)
+    {
+        return ((label != null) ? label.toPrettyString() : "");
     }
 }
