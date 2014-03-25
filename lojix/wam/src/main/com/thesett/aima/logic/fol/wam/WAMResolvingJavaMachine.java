@@ -1285,24 +1285,100 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case WAMInstruction.SWITCH_ON_TERM:
             {
-                // P <- P + instruction_size(P)
-                ip += 17;
+                // grab labels
+                int v = (int) codeBuffer.get(ip + 1);
+                int c = (int) codeBuffer.get(ip + 5);
+                int l = (int) codeBuffer.get(ip + 9);
+                int s = (int) codeBuffer.get(ip + 13);
+
+                int addr = deref(1);
+                int tag = derefTag;
+
+                // case STORE[deref(A1)] of
+                switch (tag)
+                {
+                case REF:
+
+                    // <REF, _> : P <- V
+                    ip = v;
+                    break;
+
+                case CON:
+
+                    // <CON, _> : P <- C
+                    ip = c;
+                    break;
+
+                case LIS:
+
+                    // <LIS, _> : P <- L
+                    ip = l;
+                    break;
+
+                case STR:
+
+                    // <STR, _> : P <- S
+                    ip = s;
+                    break;
+                }
 
                 break;
             }
 
             case WAMInstruction.SWITCH_ON_CONST:
             {
-                // P <- P + instruction_size(P)
-                ip += 9;
+                // grab labels
+                int t = (int) codeBuffer.get(ip + 1);
+                int n = (int) codeBuffer.get(ip + 5);
+
+                // <tag, val> <- STORE[deref(A1)]
+                deref(1);
+
+                int val = derefVal;
+
+                // <found, inst> <- get_hash(val, T, N)
+                int inst = get_hash(val, t, n);
+
+                // if found
+                if (inst > 0)
+                {
+                    // then P <- inst
+                    ip = inst;
+                }
+                else
+                {
+                    // else backtrack
+                    failed = true;
+                }
 
                 break;
             }
 
             case WAMInstruction.SWITCH_ON_STRUC:
             {
-                // P <- P + instruction_size(P)
-                ip += 9;
+                // grab labels
+                int t = (int) codeBuffer.get(ip + 1);
+                int n = (int) codeBuffer.get(ip + 5);
+
+                // <tag, val> <- STORE[deref(A1)]
+                deref(1);
+
+                int val = derefVal;
+
+                // <found, inst> <- get_hash(val, T, N)
+                int inst = get_hash(val, t, n);
+
+                // if found
+                if (inst > 0)
+                {
+                    // then P <- inst
+                    ip = inst;
+                }
+                else
+                {
+                    // else backtrack
+                    failed = true;
+                }
 
                 break;
             }
@@ -1553,6 +1629,21 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     protected int getHeap(int addr)
     {
         return data.get(addr);
+    }
+
+    /**
+     * Looks up a value (an interned name referring to a constant or structure), in the hash table of size n referred
+     * to.
+     *
+     * @param  val The value to look up.
+     * @param  t   The offset of the start of the hash table.
+     * @param  n   The size of the hash table in bytes.
+     *
+     * @return <tt>0</tt> iff no match is found, or a pointer into the code area of the matching branch.
+     */
+    private int get_hash(int val, int t, int n)
+    {
+        return 0;
     }
 
     /**
