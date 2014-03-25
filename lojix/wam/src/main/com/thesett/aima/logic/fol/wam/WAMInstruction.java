@@ -25,8 +25,6 @@ import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.common.util.Sizeable;
-import com.thesett.common.util.SizeableLinkedList;
-import com.thesett.common.util.SizeableList;
 import com.thesett.common.util.doublemaps.SymbolKey;
 
 /**
@@ -176,12 +174,6 @@ public class WAMInstruction implements Sizeable
         PutStruc(PUT_STRUC, "put_struc", 7)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Fn(code, ip, instruction, machine);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 emmitCodeReg1Fn(codeBuf, code, instruction, machine);
@@ -206,12 +198,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to compare a register to a structure on the heap. */
         GetStruc(GET_STRUC, "get_struc", 7)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Fn(code, ip, instruction, machine);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -238,12 +224,6 @@ public class WAMInstruction implements Sizeable
         PutVar(PUT_VAR, "put_var", 4)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Reg2(code, ip, instruction);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 emmitCodeReg1Reg2(codeBuf, code, instruction, machine);
@@ -259,12 +239,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to copy a register into an argument register. */
         PutVal(PUT_VAL, "put_val", 4)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Reg2(code, ip, instruction);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -284,12 +258,6 @@ public class WAMInstruction implements Sizeable
         PutUnsafeVal(PUT_UNSAFE_VAL, "put_unsafe_val", 4)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Reg2(code, ip, instruction);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 emmitCodeReg1Reg2(codeBuf, code, instruction, machine);
@@ -305,12 +273,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to unify an argument register with a variable. */
         GetVar(GET_VAR, "get_var", 4)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Reg2(code, ip, instruction);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -328,12 +290,6 @@ public class WAMInstruction implements Sizeable
         GetVal(GET_VAL, "get_val", 4)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Reg2(code, ip, instruction);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 emmitCodeReg1Reg2(codeBuf, code, instruction, machine);
@@ -349,12 +305,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to copy a constant into an argument register. */
         PutConstant(PUT_CONST, "put_const", 7)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Fn(code, ip, instruction, machine);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
@@ -373,12 +323,6 @@ public class WAMInstruction implements Sizeable
         GetConstant(GET_CONST, "get_const", 7)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleReg1Fn(code, ip, instruction, machine);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
             {
@@ -396,12 +340,6 @@ public class WAMInstruction implements Sizeable
         SetConstant(SET_CONST, "set_const", 5)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleFn(code, ip, instruction, machine);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
             {
@@ -418,12 +356,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to unify the heap with a constant. */
         UnifyConstant(UNIFY_CONST, "unify_const", 5)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                disassembleFn(code, ip, instruction, machine);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
@@ -448,12 +380,6 @@ public class WAMInstruction implements Sizeable
         SetVoid(SET_VOID, "set_void", 2)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 codeBuf.put(code);
@@ -471,12 +397,6 @@ public class WAMInstruction implements Sizeable
         UnifyVoid(UNIFY_VOID, "unify_void", 2)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 codeBuf.put(code);
@@ -493,14 +413,6 @@ public class WAMInstruction implements Sizeable
         /** The instruction to call a predicate. */
         Call(CALL, "call", 7)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                int fn = code.getInt(ip + 5);
-                int f = fn & 0x00ffffff;
-                instruction.fn = machine.getDeinternedFunctorName(f);
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
@@ -538,14 +450,6 @@ public class WAMInstruction implements Sizeable
         Execute(EXECUTE, "execute", 6)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                int fn = code.getInt(ip + 5);
-                int f = fn & 0x00ffffff;
-                instruction.fn = machine.getDeinternedFunctorName(f);
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
             {
@@ -580,12 +484,6 @@ public class WAMInstruction implements Sizeable
         Proceed(PROCEED, "proceed", 1)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 codeBuf.put(code);
@@ -602,12 +500,6 @@ public class WAMInstruction implements Sizeable
         Allocate(ALLOCATE, "allocate", 1)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 codeBuf.put(code);
@@ -623,12 +515,6 @@ public class WAMInstruction implements Sizeable
         /** The stack frame allocation instruction for queries. */
         AllocateN(ALLOCATE_N, "allocate_n", 2)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -647,12 +533,6 @@ public class WAMInstruction implements Sizeable
         Deallocate(DEALLOCATE, "deallocate", 1)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
                 codeBuf.put(code);
@@ -669,18 +549,13 @@ public class WAMInstruction implements Sizeable
         TryMeElse(TRY_ME_ELSE, "try_me_else", 5)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
             {
                 int ip = codeBuf.position();
 
                 // Intern the alternative forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.jump1);
+                int toCall = machine.internFunctorName(instruction.target1);
                 machine.reserveReferenceToLabel(toCall, ip + 1);
 
                 codeBuf.put(code);
@@ -690,7 +565,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.jump1;
+                WAMLabel label = (WAMLabel) instruction.target1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -699,11 +574,6 @@ public class WAMInstruction implements Sizeable
         /** The middle clause retry instruction. */
         RetryMeElse(RETRY_ME_ELSE, "retry_me_else", 5)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
@@ -715,7 +585,7 @@ public class WAMInstruction implements Sizeable
                 machine.resolveLabelPoint(label, ip);
 
                 // Intern the alternative forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.jump1);
+                int toCall = machine.internFunctorName(instruction.target1);
                 machine.reserveReferenceToLabel(toCall, ip + 1);
 
                 codeBuf.put(code);
@@ -725,7 +595,7 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public String toString(WAMInstruction instruction)
             {
-                WAMLabel label = (WAMLabel) instruction.jump1;
+                WAMLabel label = (WAMLabel) instruction.target1;
 
                 return pretty + " " + ((label != null) ? label.toPrettyString() : "");
             }
@@ -734,12 +604,6 @@ public class WAMInstruction implements Sizeable
         /** The final clause trust or fail instruction. */
         TrustMe(TRUST_ME, "trust_me", 1)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -762,11 +626,6 @@ public class WAMInstruction implements Sizeable
         SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 15)
         {
             /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-            }
-
-            /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
                 throws LinkageException
             {
@@ -776,9 +635,18 @@ public class WAMInstruction implements Sizeable
                 int label = machine.internFunctorName(instruction.label);
                 machine.resolveLabelPoint(label, ip);
 
-                // Intern the alternative forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.fn);
-                machine.reserveReferenceToLabel(toCall, ip + 1);
+                // Intern the alternative forward labels, and write them out as zero initially, for later completion.
+                int jump = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(jump, ip + 1);
+
+                jump = machine.internFunctorName(instruction.target2);
+                machine.reserveReferenceToLabel(jump, ip + 5);
+
+                jump = machine.internFunctorName(instruction.target3);
+                machine.reserveReferenceToLabel(jump, ip + 9);
+
+                jump = machine.internFunctorName(instruction.target4);
+                machine.reserveReferenceToLabel(jump, ip + 13);
 
                 codeBuf.put(code);
                 codeBuf.putInt(0);
@@ -793,15 +661,29 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 0)
+        {
+        },
+
+        SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 0)
+        {
+        },
+
+        Try(TRY, "try", 0)
+        {
+        },
+
+        Retry(RETRY, "retry", 0)
+        {
+        },
+
+        Trust(TRUST, "trust", 0)
+        {
+        },
+
         /** The suspend on success instruction. */
         Suspend(SUSPEND, "suspend", 1)
         {
-            /** {@inheritDoc} */
-            protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-            {
-                // Do nothing as this instruction takes no arguments.
-            }
-
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
@@ -909,20 +791,6 @@ public class WAMInstruction implements Sizeable
         public int length()
         {
             return length;
-        }
-
-        /**
-         * Disassembles the arguments of an instruction. This is a default implementation to handle the most common
-         * case; instructions with one register argument.
-         *
-         * @param instruction The instruction, including its arguments.
-         * @param code        The code buffer.
-         * @param ip          The address of the instruction to disassemble.
-         * @param machine     The binary machine to disassemble from.
-         */
-        protected void disassembleArguments(WAMInstruction instruction, ByteBuffer code, int ip, WAMMachine machine)
-        {
-            disassembleReg1(code, ip, instruction, machine);
         }
 
         /**
@@ -1064,83 +932,10 @@ public class WAMInstruction implements Sizeable
             return pretty + " " +
                 ((instruction.fn != null) ? (instruction.fn.getName() + "/" + instruction.fn.getArity()) : "");
         }
-
-        /**
-         * Disassembles the arguments to an instruction that takes one register and one functor reference.
-         *
-         * @param code        The code buffer to disassemble from.
-         * @param ip          The instruction pointer within the code buffer.
-         * @param instruction The instruction to store the disassembles arguments in.
-         * @param machine     The binary machine to disassemble from.
-         */
-        private static void disassembleReg1Fn(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
-        {
-            //instruction.mode1 = code[ip + 1];
-            instruction.reg1 = code.get(ip + 1);
-
-            int fn = code.getInt(ip + 2);
-            int f = fn >> 8;
-            instruction.fn = machine.getDeinternedFunctorName(f);
-        }
-
-        /**
-         * Disassembles the arguments to an instruction that takes one register argument.
-         *
-         * @param code        The code buffer to disassemble from.
-         * @param ip          The instruction pointer within the code buffer.
-         * @param instruction The instruction to store the disassembles arguments in.
-         * @param machine     The binary machine to disassemble from.
-         */
-        private static void disassembleReg1(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
-        {
-            instruction.mode1 = code.get(ip + 1);
-            instruction.reg1 = code.get(ip + 2);
-        }
-
-        /**
-         * Disassembles the arguments to an instruction that takes two register arguments.
-         *
-         * @param code        The code buffer to disassemble from.
-         * @param ip          The instruction pointer within the code buffer.
-         * @param instruction The instruction to store the disassembles arguments in.
-         */
-        private static void disassembleReg1Reg2(ByteBuffer code, int ip, WAMInstruction instruction)
-        {
-            instruction.mode1 = code.get(ip + 1);
-            instruction.reg1 = code.get(ip + 2);
-            instruction.reg2 = code.get(ip + 3);
-        }
-
-        /**
-         * Disassembles the arguments to an instruction that takes one functor argument.
-         *
-         * @param code        The code buffer to disassemble from.
-         * @param ip          The instruction pointer within the code buffer.
-         * @param instruction The instruction to store the disassembles arguments in.
-         * @param machine     The binary machine to disassemble from.
-         */
-        private static void disassembleFn(ByteBuffer code, int ip, WAMInstruction instruction, WAMMachine machine)
-        {
-            int fn = code.getInt(ip + 1);
-            int f = fn >> 8;
-            instruction.fn = machine.getDeinternedFunctorName(f);
-        }
     }
 
     /** The optional address label of the instruction. */
     protected WAMLabel label;
-
-    /** An optional target address label. */
-    protected WAMLabel jump1;
-
-    /** An optional target address label. */
-    protected WAMLabel jump2;
-
-    /** An optional target address label. */
-    protected WAMLabel jump3;
-
-    /** An optional target address label. */
-    protected WAMLabel jump4;
 
     /** The instruction. */
     protected WAMInstructionSet mnemonic;
@@ -1162,6 +957,18 @@ public class WAMInstruction implements Sizeable
 
     /** Holds the functor name of the argument that is assigned to the first register of this instruction. */
     private Integer functorNameReg1;
+
+    /** An optional target address label. */
+    protected WAMLabel target1;
+
+    /** An optional target address label. */
+    protected WAMLabel target2;
+
+    /** An optional target address label. */
+    protected WAMLabel target3;
+
+    /** An optional target address label. */
+    protected WAMLabel target4;
 
     /**
      * Creates an instruction for the specified mnemonic.
@@ -1308,7 +1115,7 @@ public class WAMInstruction implements Sizeable
     {
         this.label = label;
         this.mnemonic = mnemonic;
-        this.jump1 = fn;
+        this.target1 = fn;
     }
 
     /**
@@ -1321,40 +1128,6 @@ public class WAMInstruction implements Sizeable
     {
         this.label = label;
         this.mnemonic = mnemonic;
-    }
-
-    /**
-     * Disassembles the instructions from the specified byte buffer, starting at a given location (ip). An interner for
-     * the functor names encountered in the instruction buffer must also be supplied, in order to look up the functor
-     * names by encoded value.
-     *
-     * @param  ip      The start instruction pointer into the buffer.
-     * @param  code    The code buffer.
-     * @param  machine The binary machine to disassemble from.
-     *
-     * @return A list of instructions disassembles from the code buffer.
-     */
-    public static SizeableList<WAMInstruction> dissasemble(int ip, ByteBuffer code, WAMMachine machine)
-    {
-        SizeableList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
-
-        int end = code.position();
-
-        while (ip < end)
-        {
-            byte iCode = code.get(ip);
-
-            WAMInstruction instruction = new WAMInstruction(iCode);
-
-            //instruction.mnemonic = WAMInstructionSet.fromCode(iCode);
-            instruction.mnemonic.disassembleArguments(instruction, code, ip, machine);
-
-            result.add(instruction);
-
-            ip += instruction.mnemonic.length();
-        }
-
-        return result;
     }
 
     /**
