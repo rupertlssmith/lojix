@@ -1337,7 +1337,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int val = derefVal;
 
                 // <found, inst> <- get_hash(val, T, N)
-                int inst = get_hash(val, t, n);
+                int inst = getHash(val, t, n);
 
                 // if found
                 if (inst > 0)
@@ -1366,7 +1366,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int val = derefVal;
 
                 // <found, inst> <- get_hash(val, T, N)
-                int inst = get_hash(val, t, n);
+                int inst = getHash(val, t, n);
 
                 // if found
                 if (inst > 0)
@@ -1641,7 +1641,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      *
      * @return <tt>0</tt> iff no match is found, or a pointer into the code area of the matching branch.
      */
-    private int get_hash(int val, int t, int n)
+    private int getHash(int val, int t, int n)
     {
         return 0;
     }
