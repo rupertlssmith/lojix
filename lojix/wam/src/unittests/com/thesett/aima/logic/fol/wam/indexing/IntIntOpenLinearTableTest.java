@@ -112,16 +112,12 @@ public class IntIntOpenLinearTableTest extends TestCase
 
             testMap.put(key, i);
             entries.put(key, i);
-
-            System.out.println("Put (" + key + ", " + i + ")");
         }
 
         for (Map.Entry<Integer, Integer> entry : entries.entrySet())
         {
             int key = entry.getKey();
             int value = entry.getValue();
-
-            System.out.println("Get (" + key + ", " + value + ")");
 
             int testValue = testMap.get(key);
 
