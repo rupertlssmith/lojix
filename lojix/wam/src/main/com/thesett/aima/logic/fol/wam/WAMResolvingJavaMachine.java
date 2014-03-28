@@ -999,14 +999,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // num_of_args <- n
                 numOfArgs = n;
 
-                // STACK[E + 2] <- numPerms
-                data.put(ep + 2, numPerms);
-
-                // CP <- P + instruction_size(P)
-                cp = ip + 7;
-
-                trace.fine(ip + ": CALL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
-
                 // Ensure that the predicate to call is known and linked in, otherwise fail.
                 if (pn == -1)
                 {
@@ -1014,6 +1006,14 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     break;
                 }
+
+                // STACK[E + 2] <- numPerms
+                data.put(ep + 2, numPerms);
+
+                // CP <- P + instruction_size(P)
+                cp = ip + 7;
+
+                trace.fine(ip + ": CALL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
 
                 // P <- @(p/n)
                 ip = pn;
