@@ -15,15 +15,6 @@
  */
 package com.thesett.aima.logic.fol;
 
-import com.thesett.aima.logic.fol.AllTermsVisitor;
-import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.Functor;
-import com.thesett.aima.logic.fol.IntegerType;
-import com.thesett.aima.logic.fol.LiteralType;
-import com.thesett.aima.logic.fol.Predicate;
-import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.Variable;
-import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.doublemaps.SymbolTable;
 

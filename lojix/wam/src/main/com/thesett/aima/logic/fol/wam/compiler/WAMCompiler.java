@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.thesett.aima.logic.fol.AllTermsVisitor;
+import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.DelegatingAllTermsVisitor;
 import com.thesett.aima.logic.fol.Functor;
@@ -48,7 +49,6 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
-import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
 import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;
