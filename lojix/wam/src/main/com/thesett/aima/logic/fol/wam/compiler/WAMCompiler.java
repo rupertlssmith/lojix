@@ -48,7 +48,7 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
-import com.thesett.aima.logic.fol.wam.BasePositionalVisitor;
+import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
 import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;

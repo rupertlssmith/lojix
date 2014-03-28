@@ -17,7 +17,7 @@ package com.thesett.aima.logic.fol.wam.printer;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
-import com.thesett.aima.logic.fol.wam.BasePositionalVisitor;
+import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.common.util.TraceIndenter;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
