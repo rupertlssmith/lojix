@@ -78,7 +78,7 @@ public class BuiltInTransform implements Function<Functor, Functor>
      *
      * @param  functor The functor to attempt to map onto a built-in.
      *
-     * @return The functor umodified, or a {@link BuiltInFunctor} replacement for it.
+     * @return The functor unmodified, or a {@link BuiltInFunctor} replacement for it.
      */
     public Functor apply(Functor functor)
     {

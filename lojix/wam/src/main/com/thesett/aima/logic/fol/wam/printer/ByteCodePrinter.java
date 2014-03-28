@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.printer;
 
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.WAMInstruction;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
- * ByteCodePrinter prints the compiled bytecode in its unoptimzed state.
+ * ByteCodePrinter prints the compiled bytecode.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Print the unoptimized compiled byte code.
+ * <tr><td> Print the compiled byte code.
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class UnoptimizedByteCodePrinter extends BasePrinter
+public class ByteCodePrinter extends BasePrinter
 {
     /**
      * Creates a printer.
@@ -44,9 +47,8 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
      * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
-    public UnoptimizedByteCodePrinter(VariableAndFunctorInterner interner,
-        SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-        DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+    public ByteCodePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
+        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, grid, table);
     }
@@ -58,7 +60,7 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
         {
             WAMCompiledQuery query = (WAMCompiledQuery) clause;
 
-            for (WAMInstruction instruction : query.getUnoptimizedInstructions())
+            for (WAMInstruction instruction : query.getInstructions())
             {
                 addLineToRow(instruction.toString());
                 nextRow();
@@ -73,7 +75,7 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
         {
             WAMCompiledPredicate compiledPredicate = (WAMCompiledPredicate) predicate;
 
-            for (WAMInstruction instruction : compiledPredicate.getUnoptimizedInstructions())
+            for (WAMInstruction instruction : compiledPredicate.getInstructions())
             {
                 addLineToRow(instruction.toString());
                 nextRow();

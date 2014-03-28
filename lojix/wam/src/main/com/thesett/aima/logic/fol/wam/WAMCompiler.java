@@ -53,6 +53,8 @@ import static com.thesett.aima.logic.fol.wam.WAMInstruction.STACK_ADDR;
 import static com.thesett.aima.logic.fol.wam.WAMInstruction.WAMInstructionSet;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
 import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;
+import com.thesett.aima.logic.fol.wam.printer.WAMCompiledQueryPrintingVisitor;
+import com.thesett.aima.logic.fol.wam.printer.WAMCompiledTermsPrintingVisitor;
 import com.thesett.aima.search.QueueBasedSearchMethod;
 import com.thesett.aima.search.util.Searches;
 import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;

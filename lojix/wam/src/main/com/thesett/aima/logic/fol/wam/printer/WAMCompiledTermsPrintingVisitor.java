@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.printer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +28,13 @@ import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.wam.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.printer.ByteCodePrinter;
+import com.thesett.aima.logic.fol.wam.printer.LabelPrinter;
+import com.thesett.aima.logic.fol.wam.printer.PositionPrinter;
+import com.thesett.aima.logic.fol.wam.printer.PrintingTable;
+import com.thesett.aima.logic.fol.wam.printer.SourceClausePrinter;
+import com.thesett.aima.logic.fol.wam.printer.UnoptimizedByteCodePrinter;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.common.util.doublemaps.SymbolTable;

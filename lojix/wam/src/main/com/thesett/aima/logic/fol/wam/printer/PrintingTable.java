@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.printer;
 
 /**
  * PrintingTable collects information about the row count, and row and column sizes, in order to print information in a

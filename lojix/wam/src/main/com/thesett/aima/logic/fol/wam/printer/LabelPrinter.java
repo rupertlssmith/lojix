@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.printer;
 
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.WAMInstruction;
+import com.thesett.aima.logic.fol.wam.WAMLabel;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
- * ByteCodePrinter prints the compiled bytecode.
+ * LabelPrinter prints labels for any bytecode instructions that are labelled.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Print the compiled byte code.
+ * <tr><td> Print any labels on the bytecode instructions.
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class ByteCodePrinter extends BasePrinter
+public class LabelPrinter extends BasePrinter
 {
     /**
      * Creates a printer.
@@ -44,7 +48,7 @@ public class ByteCodePrinter extends BasePrinter
      * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
-    public ByteCodePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
+    public LabelPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
         PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, grid, table);
@@ -59,7 +63,8 @@ public class ByteCodePrinter extends BasePrinter
 
             for (WAMInstruction instruction : query.getInstructions())
             {
-                addLineToRow(instruction.toString());
+                WAMLabel label = instruction.getLabel();
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }
@@ -74,7 +79,8 @@ public class ByteCodePrinter extends BasePrinter
 
             for (WAMInstruction instruction : compiledPredicate.getInstructions())
             {
-                addLineToRow(instruction.toString());
+                WAMLabel label = instruction.getLabel();
+                addLineToRow((label != null) ? (label.toPrettyString() + ":") : "");
                 nextRow();
             }
         }
