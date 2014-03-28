@@ -181,6 +181,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     /** Holds the choice point base pointer. */
     private int bp;
 
+    /** Holds the last call choice point pointer. */
+    private int b0;
+
     /** Holds the trail pointer. */
     private int trp;
 
@@ -228,6 +231,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         // The stack comes after the heap. Pointers are zero initially, since no stack frames exist yet.
         ep = 0;
         bp = 0;
+        b0 = 0;
 
         // The trail comes after the stack.
         trp = TRAIL_BASE;
@@ -1015,6 +1019,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 trace.fine(ip + ": CALL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
 
+                // B0 <- B
+                b0 = bp;
+
                 // P <- @(p/n)
                 ip = pn;
 
@@ -1040,6 +1047,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                     break;
                 }
+
+                // B0 <- B
+                b0 = bp;
 
                 // P <- @(p/n)
                 ip = pn;
