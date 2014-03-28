@@ -1770,7 +1770,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         }
         else
         {
-            //   P <- STACK[B + STACK[B] + 4]
+            // B0 <- STACK[B + STACK[B} + 7]
+            b0 = data.get(bp + data.get(bp) + 7);
+
+            // P <- STACK[B + STACK[B] + 4]
             ip = data.get(bp + data.get(bp) + 4);
 
             return false;
@@ -1845,6 +1848,25 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             //  STORE[TRAIL[i]] <- <REF, TRAIL[i]>
             int tmp = data.get(addr);
             data.put(tmp, refTo(tmp));
+        }
+    }
+
+    private void tidyTrail()
+    {
+        int i = data.get(bp + data.get(bp) + 5);
+
+        while (i < trp) {
+            int addr = data.get(i);
+
+            if ((addr < hbp) || ((hp < addr) && (addr < bp)))
+            {
+                i++;
+            }
+            else
+            {
+                data.put(i, data.get(trp - 1));
+                trp--;
+            }
         }
     }
 
