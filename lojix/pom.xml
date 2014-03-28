@@ -140,8 +140,6 @@
       <module>l2</module>
       <module>l3</module>
       <module>wam</module>
-      <module>vam</module>
-      <module>mlang</module>
     </modules>
 
     <dependencyManagement>
