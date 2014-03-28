@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.ALLOCATE_N;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CALL;
@@ -58,9 +60,6 @@ import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.UNIFY_LOCAL
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.UNIFY_VAL;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.UNIFY_VAR;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.UNIFY_VOID;
-
-import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
-import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SequenceIterator;
 import com.thesett.common.util.doublemaps.SymbolTable;
 

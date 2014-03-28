@@ -28,13 +28,12 @@ import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Resolver;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
-import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.REF;
-import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STR;
-
 import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.REF;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STR;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**

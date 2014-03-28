@@ -17,7 +17,6 @@ package com.thesett.aima.logic.fol.wam.printer;
 
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.wam.printer.WAMCompiledTermsPrintingVisitor;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**

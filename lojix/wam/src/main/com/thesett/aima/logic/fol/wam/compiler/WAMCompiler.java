@@ -48,7 +48,6 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
-
 import com.thesett.aima.logic.fol.wam.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
@@ -420,12 +419,14 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         if (isFirst && !isLast && multipleClauses)
         {
             // try me else.
-            preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TryMeElse, retryLabel));
+            preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TryMeElse,
+                    retryLabel));
         }
         else if (!isFirst && !isLast && multipleClauses)
         {
             // retry me else.
-            preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.RetryMeElse, retryLabel));
+            preFixInstructions.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.RetryMeElse,
+                    retryLabel));
         }
         else if (isLast && multipleClauses)
         {
@@ -484,8 +485,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                     int permVarsRemaining =
                         (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
 
-                    instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Call, (byte) (permVarsRemaining & 0xff),
-                            interner.getFunctorFunctorName(expression)));
+                    instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Call,
+                            (byte) (permVarsRemaining & 0xff), interner.getFunctorFunctorName(expression)));
                 }
 
                 result.addInstructions(expression, instructions);
@@ -725,7 +726,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                         seenRegisters.add(allocation);
 
-                        instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
+                        instruction =
+                            new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
 
                         // Record the way in which this variable was introduced into the clause.
                         symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Unify);
@@ -738,10 +740,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                         if (isLocalVariable(introduction, addrMode))
                         {
-                            log.fine("UNIFY_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address);
+                            log.fine("UNIFY_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") +
+                                address);
 
                             instruction =
-                                new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyLocalVal, addrMode, address, nextArg);
+                                new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyLocalVal, addrMode, address,
+                                    nextArg);
 
                             symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
                         }
@@ -749,7 +753,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                         {
                             /*log.fine("UNIFY_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
 
-                            instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyVal, addrMode, address, nextArg);
+                            instruction =
+                                new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyVal, addrMode, address,
+                                    nextArg);
                         }
                     }
 
@@ -773,7 +779,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                     seenRegisters.add(allocation);
 
-                    instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.GetVar, addrMode, address, (byte) (j & 0xff));
+                    instruction =
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.GetVar, addrMode, address,
+                            (byte) (j & 0xff));
 
                     // Record the way in which this variable was introduced into the clause.
                     symbolTable.put(nextVar.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Get);
@@ -782,7 +790,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 {
                     /*log.fine("GET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
 
-                    instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.GetVal, addrMode, address, (byte) (j & 0xff));
+                    instruction =
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.GetVal, addrMode, address,
+                            (byte) (j & 0xff));
                 }
 
                 instructions.add(instruction);
@@ -853,10 +863,12 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                 if (isLastBodyTermInArgPositionOnly((Variable) nextOutermostArg, expression) &&
                         (addrMode == WAMInstruction.STACK_ADDR))
                 {
-                    log.fine("PUT_UNSAFE_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address + ", A" + j);
+                    log.fine("PUT_UNSAFE_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address + ", A" +
+                        j);
 
                     WAMInstruction instruction =
-                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutUnsafeVal, addrMode, address, (byte) (j & 0xff));
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutUnsafeVal, addrMode, address,
+                            (byte) (j & 0xff));
                     instructions.add(instruction);
 
                     symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
@@ -866,7 +878,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                     /*log.fine("PUT_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
 
                     WAMInstruction instruction =
-                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVal, addrMode, address, (byte) (j & 0xff));
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVal, addrMode, address,
+                            (byte) (j & 0xff));
                     instructions.add(instruction);
                 }
             }
@@ -921,7 +934,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
                             seenRegisters.add(allocation);
 
                             /*log.fine("SET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                            instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVar, addrMode, address, nextArg);
+                            instruction =
+                                new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVar, addrMode, address, nextArg);
 
                             // Record the way in which this variable was introduced into the clause.
                             symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Set);
@@ -934,17 +948,21 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
 
                             if (isLocalVariable(introduction, addrMode))
                             {
-                                log.fine("SET_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address);
+                                log.fine("SET_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") +
+                                    address);
 
                                 instruction =
-                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address, nextArg);
+                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address,
+                                        nextArg);
 
                                 symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
                             }
                             else
                             {
                                 /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                                instruction = new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVal, addrMode, address, nextArg);
+                                instruction =
+                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVal, addrMode, address,
+                                        nextArg);
                             }
                         }
 
