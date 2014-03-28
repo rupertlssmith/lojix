@@ -1535,6 +1535,45 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
+            case WAMInstruction.NECK_CUT:
+            {
+                ip += 1;
+
+                if (bp > b0)
+                {
+                    bp = b0;
+                    tidyTrail();
+                }
+
+                break;
+            }
+
+            case WAMInstruction.GET_LEVEL:
+            {
+                int yn = (int) codeBuffer.get(ip + 1) + (ep + 3);
+
+                data.put(yn, b0);
+
+                ip += 2;
+
+                break;
+            }
+
+            case WAMInstruction.CUT:
+            {
+                int yn = (int) codeBuffer.get(ip + 1) + (ep + 3);
+
+                if (bp > yn)
+                {
+                    bp = yn;
+                    tidyTrail();
+                }
+
+                ip += 2;
+
+                break;
+            }
+
             // suspend on success:
             case SUSPEND:
             {
@@ -1855,7 +1894,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     {
         int i = data.get(bp + data.get(bp) + 5);
 
-        while (i < trp) {
+        while (i < trp)
+        {
             int addr = data.get(i);
 
             if ((addr < hbp) || ((hp < addr) && (addr < bp)))
