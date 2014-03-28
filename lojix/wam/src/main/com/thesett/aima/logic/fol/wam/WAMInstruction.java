@@ -144,6 +144,10 @@ public class WAMInstruction implements Sizeable
     public static final byte SWITCH_ON_CONST = 0x23;
     public static final byte SWITCH_ON_STRUC = 0x24;
 
+    public static final byte NECK_CUT = 0x25;
+    public static final byte GET_LEVEL = 0x26;
+    public static final byte CUT = 0x27;
+
     /** The suspend operation. */
     public static final byte SUSPEND = 0x7f;
 
@@ -828,6 +832,54 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return pretty;
+            }
+        },
+
+        NeckCut(NECK_CUT, "neck_cut", 1)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+            }
+
+            /** {@inheritDoc} */
+
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
+            }
+        },
+
+        GetLevel(GET_LEVEL, "get_level", 2)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+                codeBuf.put(instruction.reg1);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + instruction.reg1;
+            }
+        },
+
+        Cut(CUT, "cut", 2)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+                codeBuf.put(instruction.reg1);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty + " " + instruction.reg1;
             }
         };
 
