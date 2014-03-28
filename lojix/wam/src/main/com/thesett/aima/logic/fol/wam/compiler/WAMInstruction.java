@@ -137,16 +137,31 @@ public class WAMInstruction implements Sizeable
     /** The final clause trust or fail instruction. */
     public static final byte TRUST_ME = 0x11;
 
+    /** The first clause indexing try instruction. */
     public static final byte TRY = 0x1f;
+
+    /** The middle clause indexing retry instruction. */
     public static final byte RETRY = 0x20;
+
+    /** The final clause indexing trust or fail instruction. */
     public static final byte TRUST = 0x21;
 
+    /** The second level indexing instruction. */
     public static final byte SWITCH_ON_TERM = 0x22;
+
+    /** The third level indexing instruction for constants. */
     public static final byte SWITCH_ON_CONST = 0x23;
+
+    /** The third level indexing instruction for structures. */
     public static final byte SWITCH_ON_STRUC = 0x24;
 
+    /** The simpler neck-cut instruction. */
     public static final byte NECK_CUT = 0x25;
+
+    /** The get level instruction for cuts. */
     public static final byte GET_LEVEL = 0x26;
+
+    /** The full deep cut instruction. */
     public static final byte CUT = 0x27;
 
     /** The suspend operation. */
@@ -630,6 +645,103 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The first clause indexing try instruction. */
+        Try(TRY, "try", 5)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = instruction.target1;
+
+                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
+            }
+        },
+
+        /** The middle clause indexing retry instruction. */
+        Retry(RETRY, "retry", 5)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = instruction.target1;
+
+                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
+            }
+        },
+
+        /** The final clause indexing trust or fail instruction. */
+        Trust(TRUST, "trust", 5)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                if (instruction.label != null)
+                {
+                    int label = machine.internFunctorName(instruction.label);
+                    machine.resolveLabelPoint(label, ip);
+                }
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
+            }
+        },
+
+        /** The second level indexing instruction. */
         SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 17)
         {
             /** {@inheritDoc} */
@@ -667,6 +779,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The third level indexing instruction for constants. */
         SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 9)
         {
             /** {@inheritDoc} */
@@ -697,6 +810,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The third level indexing instruction for structures. */
         SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 9)
         {
             /** {@inheritDoc} */
@@ -727,115 +841,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
-        Try(TRY, "try", 5)
-        {
-            /** {@inheritDoc} */
-            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
-                throws LinkageException
-            {
-                int ip = codeBuf.position();
-
-                // Resolve any forward reference to the label for this instruction.
-                if (instruction.label != null)
-                {
-                    int label = machine.internFunctorName(instruction.label);
-                    machine.resolveLabelPoint(label, ip);
-                }
-
-                // Intern the forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.target1);
-                machine.reserveReferenceToLabel(toCall, ip + 1);
-
-                codeBuf.put(code);
-                codeBuf.putInt(0);
-            }
-
-            /** {@inheritDoc} */
-            public String toString(WAMInstruction instruction)
-            {
-                WAMLabel label = instruction.target1;
-
-                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
-            }
-        },
-
-        Retry(RETRY, "retry", 5)
-        {
-            /** {@inheritDoc} */
-            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
-                throws LinkageException
-            {
-                int ip = codeBuf.position();
-
-                // Resolve any forward reference to the label for this instruction.
-                if (instruction.label != null)
-                {
-                    int label = machine.internFunctorName(instruction.label);
-                    machine.resolveLabelPoint(label, ip);
-                }
-
-                // Intern the forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.target1);
-                machine.reserveReferenceToLabel(toCall, ip + 1);
-
-                codeBuf.put(code);
-                codeBuf.putInt(0);
-            }
-
-            /** {@inheritDoc} */
-            public String toString(WAMInstruction instruction)
-            {
-                WAMLabel label = instruction.target1;
-
-                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
-            }
-        },
-
-        Trust(TRUST, "trust", 5)
-        {
-            /** {@inheritDoc} */
-            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
-            {
-                int ip = codeBuf.position();
-
-                // Resolve any forward reference to the label for this instruction.
-                if (instruction.label != null)
-                {
-                    int label = machine.internFunctorName(instruction.label);
-                    machine.resolveLabelPoint(label, ip);
-                }
-
-                // Intern the forward label, and write it out as zero initially, for later completion.
-                int toCall = machine.internFunctorName(instruction.target1);
-                machine.reserveReferenceToLabel(toCall, ip + 1);
-
-                codeBuf.put(code);
-                codeBuf.putInt(0);
-            }
-
-            /** {@inheritDoc} */
-            public String toString(WAMInstruction instruction)
-            {
-                return pretty;
-            }
-        },
-
-        /** The suspend on success instruction. */
-        Suspend(SUSPEND, "suspend", 1)
-        {
-            /** {@inheritDoc} */
-            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
-            {
-                codeBuf.put(code);
-            }
-
-            /** {@inheritDoc} */
-            public String toString(WAMInstruction instruction)
-            {
-                return pretty;
-            }
-        },
-
+        /** The simpler neck-cut instruction. */
         NeckCut(NECK_CUT, "neck_cut", 1)
         {
             /** {@inheritDoc} */
@@ -852,6 +858,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The get level instruction for cuts. */
         GetLevel(GET_LEVEL, "get_level", 2)
         {
             /** {@inheritDoc} */
@@ -868,6 +875,7 @@ public class WAMInstruction implements Sizeable
             }
         },
 
+        /** The full deep cut instruction. */
         Cut(CUT, "cut", 2)
         {
             /** {@inheritDoc} */
@@ -881,6 +889,22 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return pretty + " " + instruction.reg1;
+            }
+        },
+
+        /** The suspend on success instruction. */
+        Suspend(SUSPEND, "suspend", 1)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
             }
         };
 
