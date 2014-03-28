@@ -61,12 +61,6 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         /** No Match. */
         NM,
 
-        /** UnifyVar instruction seen. */
-        //UV,
-
-        /** PutStruc instruction seen. */
-        //PS,
-
         /** UnifyVar to UnifyVoid elimination. */
         UVE,
 
@@ -79,9 +73,6 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
     /** Holds the current state machine state. */
     private State state = State.NM;
-
-    /** Holds the last instruction seen. */
-    //private WAMInstruction last;
 
     /** Holds a buffer of pending instructions to output. */
     private LinkedList<WAMInstruction> buffer = new LinkedList<WAMInstruction>();
