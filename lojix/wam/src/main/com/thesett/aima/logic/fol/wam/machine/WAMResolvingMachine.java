@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.machine;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -28,8 +28,13 @@ import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Resolver;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
-import static com.thesett.aima.logic.fol.wam.WAMInstruction.REF;
-import static com.thesett.aima.logic.fol.wam.WAMInstruction.STR;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.REF;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STR;
+
+import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -244,7 +249,7 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
     {
         // Execute the query and program. The starting point for the execution is the first functor in the query
         // body, this will follow on to the subsequent functors and make calls to functors in the compiled programs.
-        boolean success = execute(query.callPoint);
+        boolean success = execute(query.getCallPoint());
 
         // Used to collect the results in.
         Set<Variable> results = null;

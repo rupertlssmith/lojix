@@ -19,7 +19,7 @@ import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
-import static com.thesett.aima.logic.fol.wam.WAMInstruction.STACK_ADDR;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STACK_ADDR;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 

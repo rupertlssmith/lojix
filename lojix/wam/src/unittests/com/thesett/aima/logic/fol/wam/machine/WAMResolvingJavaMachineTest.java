@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.machine;
 
 import com.thesett.aima.logic.fol.BacktrackingResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicResolverUnitTestBase;
@@ -27,6 +27,11 @@ import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachine;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 import junit.framework.Test;

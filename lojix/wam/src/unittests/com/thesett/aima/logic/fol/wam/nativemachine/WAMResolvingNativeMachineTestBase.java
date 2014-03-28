@@ -25,11 +25,11 @@ import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
-import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
-import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.WAMCompiler;
-import com.thesett.aima.logic.fol.wam.WAMResolvingJavaMachineTest;
-import com.thesett.aima.logic.fol.wam.WAMResolvingMachine;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachineTest;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 import junit.framework.Test;

@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Variable;
-import com.thesett.aima.logic.fol.wam.WAMCallPoint;
-import com.thesett.aima.logic.fol.wam.WAMResolvingMachine;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.error.ImplementationUnavailableException;
 import com.thesett.common.error.NotImplementedException;
 import com.thesett.common.util.SequenceIterator;

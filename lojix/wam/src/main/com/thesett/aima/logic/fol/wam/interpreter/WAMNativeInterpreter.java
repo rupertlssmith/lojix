@@ -25,10 +25,10 @@ import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 import com.thesett.aima.logic.fol.isoprologparser.SentenceParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
-import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
-import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.WAMCompiler;
-import com.thesett.aima.logic.fol.wam.WAMResolvingMachine;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.aima.logic.fol.wam.nativemachine.WAMResolvingNativeMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 

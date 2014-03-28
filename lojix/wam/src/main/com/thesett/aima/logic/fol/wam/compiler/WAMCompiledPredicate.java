@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.compiler;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -24,10 +24,11 @@ import java.util.Set;
 
 import com.thesett.aima.attribute.impl.IdAttribute;
 import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
+import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Sentence;
+import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
@@ -51,11 +52,11 @@ import com.thesett.common.util.SizeableList;
  * @todo   For each functor in the head and body, set this as the containing clause. A mapping from variables to
  *         registers is maintained in the clause, and the functors need to be able to access this mapping.
  */
-public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCompiledQuery>, Sizeable,
+public class WAMCompiledPredicate extends Predicate<Clause> implements Sentence<WAMCompiledPredicate>, Sizeable,
     WAMOptimizeableListing
 {
     /** Used for debugging. */
-    /* private static final Logger log = Logger.getLogger(WAMCompiledQuery.class.getName()); */
+    /* private static final Logger log = Logger.getLogger(WAMCompiledClause.class.getName()); */
 
     /** Defines the possible states of compiled code, unlinked, or linked into a machine. */
     public enum LinkStatus
@@ -66,6 +67,9 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
         /** The code is linked into a binary machine. */
         Linked
     }
+
+    /** Holds the interned name of this predicate. */
+    private final int name;
 
     /** Holds the state of the byte code in this compiled functor, whether it has been linked or not. */
     protected LinkStatus status;
@@ -97,53 +101,39 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
     /**
      * Creates an empty (invalid) compiled program sentence in WAM. The variables of the program sentence are not
      * recorded, since they only need to be tracked in order to display the results of queries.
+     *
+     * @param name The interned name of this predicate.
      */
-    public WAMCompiledQuery()
+    public WAMCompiledPredicate(int name)
     {
-        super(null, null);
+        super(null);
+        this.name = name;
     }
 
     /**
-     * Creates an empty (invalid) compiled query sentence in WAM.
+     * Provides the interned name of this predicate.
      *
-     * @param varNames     A mapping from registers to variables for the compiled clause.
-     * @param freeVarNames The set of variables in the clause that are free.
+     * @return The interned name of this predicate.
      */
-    public WAMCompiledQuery(Map<Byte, Integer> varNames, Set<Integer> freeVarNames)
+    public int getName()
     {
-        super(null, null);
-
-        this.varNames = varNames;
-        this.nonAnonymousFreeVariables = freeVarNames;
+        return name;
     }
 
     /**
-     * Sets a compiled head functor to this clause.
+     * Adds a body clause to this predicate, plus instructions to implement it.
      *
-     * @param head         The head of this clause.
-     * @param instructions A list of instructions to add to the head.
-     */
-    public void setHead(Functor head, SizeableList<WAMInstruction> instructions)
-    {
-        this.head = head;
-
-        addInstructions(instructions);
-    }
-
-    /**
-     * Adds a conjunctive body functor to this query clause.
-     *
-     * @param body         A conjunctive body functor to add to this clause.
+     * @param body         A body clause to add to this predicate.
      * @param instructions A list of instructions to add to the body.
      */
-    public void addInstructions(Functor body, SizeableList<WAMInstruction> instructions)
+    public void addInstructions(Clause body, SizeableList<WAMInstruction> instructions)
     {
         int oldLength;
 
         if (this.body == null)
         {
             oldLength = 0;
-            this.body = new Functor[1];
+            this.body = new Clause[1];
         }
         else
         {
@@ -171,7 +161,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
      *
      * @return The wrapped sentence in the logical language.
      */
-    public WAMCompiledQuery getT()
+    public WAMCompiledPredicate getT()
     {
         return this;
     }
@@ -222,7 +212,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
     }
 
     /**
-     * Emmits the binary byte code for the clause into a machine, writing into the specified byte array. The state of
+     * Emits the binary byte code for the clause into a machine, writing into the specified byte array. The state of
      * this clause is changed to 'Linked' to indicate that it has been linked into a binary machine.
      *
      * @param  buffer    The code buffer to write to.
@@ -239,7 +229,7 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
             throw new RuntimeException("The instruction listing size exceeds Integer.MAX_VALUE.");
         }
 
-        // Used to keep track of the size of the emitted code, in bytes, as it is written.
+        // Used to keep track of the size of the emmitted code, in bytes, as it is written.
         int length = 0;
 
         // Insert the compiled code into the byte code machine's code area.

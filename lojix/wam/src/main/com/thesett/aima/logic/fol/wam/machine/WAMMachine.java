@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.machine;
 
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 
 /**
  * WAMMachine is an abstract machine capable of handling the WAM language in its compiled form.

@@ -18,8 +18,8 @@ package com.thesett.aima.logic.fol.wam.optimizer;
 import java.util.List;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.wam.WAMInstruction;
-import com.thesett.aima.logic.fol.wam.WAMOptimizeableListing;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.aima.logic.fol.wam.compiler.WAMOptimizeableListing;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.SizeableList;
 import com.thesett.common.util.doublemaps.SymbolTable;

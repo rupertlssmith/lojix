@@ -19,10 +19,10 @@ import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
-import com.thesett.aima.logic.fol.wam.WAMCompiledPredicate;
-import com.thesett.aima.logic.fol.wam.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.WAMInstruction;
-import com.thesett.aima.logic.fol.wam.WAMLabel;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 

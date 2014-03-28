@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam;
+package com.thesett.aima.logic.fol.wam.compiler;
 
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
@@ -25,6 +25,7 @@ import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.common.util.Pair;
 import com.thesett.common.util.Sizeable;
 import com.thesett.common.util.doublemaps.SymbolKey;

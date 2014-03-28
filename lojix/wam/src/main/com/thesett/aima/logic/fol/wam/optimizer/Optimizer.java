@@ -15,7 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.optimizer;
 
-import com.thesett.aima.logic.fol.wam.WAMOptimizeableListing;
+import com.thesett.aima.logic.fol.wam.compiler.WAMOptimizeableListing;
 
 /**
  * An optimized is a function over {@link WAMOptimizeableListing} that produces an optimized version of the instruction
