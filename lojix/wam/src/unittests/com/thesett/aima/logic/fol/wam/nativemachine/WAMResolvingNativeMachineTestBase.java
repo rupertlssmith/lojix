@@ -25,9 +25,9 @@ import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachineTest;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
@@ -82,7 +82,8 @@ public class WAMResolvingNativeMachineTestBase extends TestCase
 
         machine = WAMResolvingNativeMachine.getInstance(symbolTable);
 
-        LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler = new WAMCompiler(symbolTable, machine);
+        LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler =
+            new WAMCompiler(symbolTable, machine);
         Parser<Clause, Token> parser = new ClauseParser(machine);
 
         ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =

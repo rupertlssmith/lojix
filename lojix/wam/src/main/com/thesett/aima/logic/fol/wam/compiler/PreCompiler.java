@@ -21,72 +21,83 @@ import com.thesett.aima.logic.fol.LogicCompilerObserver;
 import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.wam.builtins.BuiltInTransform;
 import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
- * WAMCompiler implements the {@link LogicCompiler} interface for the complete WAM compilation chain. It is a
- * supervising compiler, that chains together the work of the compiler pipe-line stages.
+ * PreCompiler transforms clauses for compilation, substituting built-ins for any built-ins in the source expressions to
+ * compile.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Chain together the compiler pipe-line stages.
+ * <tr><td> Perform the built-ins transformation.
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery>
+public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Clause, Clause>
 {
-    PreCompiler preCompiler;
-    InstructionCompiler instructionCompiler;
+    /** Holds the compiler output observer. */
+    private LogicCompilerObserver<Clause, Clause> observer;
 
     /**
-     * Creates a new WAMCompiler.
+     * Creates a new PreCompiler.
      *
      * @param symbolTable The symbol table.
      * @param interner    The machine to translate functor and variable names.
      */
-    public WAMCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
+    public PreCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         super(symbolTable, interner);
-
-        preCompiler = new PreCompiler(symbolTable, interner);
-        instructionCompiler = new InstructionCompiler(symbolTable, interner);
-
-        preCompiler.setCompilerObserver(new ClauseChainObserver());
     }
 
     /** {@inheritDoc} */
     public void compile(Sentence<Clause> sentence) throws SourceCodeException
     {
-        preCompiler.compile(sentence);
+        Clause clause = sentence.getT();
+
+        substituteBuiltIns(clause);
+
+        if (observer != null)
+        {
+            if (clause.isQuery())
+            {
+                observer.onQueryCompilation(sentence);
+            }
+            else
+            {
+                observer.onCompilation(sentence);
+            }
+        }
     }
 
     /** {@inheritDoc} */
-    public void setCompilerObserver(LogicCompilerObserver<WAMCompiledPredicate, WAMCompiledQuery> observer)
+    public void setCompilerObserver(LogicCompilerObserver<Clause, Clause> observer)
     {
-        instructionCompiler.setCompilerObserver(observer);
+        this.observer = observer;
     }
 
     /** {@inheritDoc} */
     public void endScope() throws SourceCodeException
     {
-        preCompiler.endScope();
-        instructionCompiler.endScope();
     }
 
-    class ClauseChainObserver implements LogicCompilerObserver<Clause, Clause>
+    /**
+     * Substitutes built-ins within a clause, with their built-in definitions.
+     *
+     * @param clause The clause to transform.
+     */
+    private void substituteBuiltIns(Clause clause)
     {
-        /** {@inheritDoc} */
-        public void onCompilation(Sentence<Clause> sentence) throws SourceCodeException
-        {
-            instructionCompiler.compile(sentence);
-        }
+        BuiltInTransform builtInTransform = new BuiltInTransform(interner);
 
-        /** {@inheritDoc} */
-        public void onQueryCompilation(Sentence<Clause> sentence) throws SourceCodeException
+        if (clause.getBody() != null)
         {
-            instructionCompiler.compile(sentence);
+            for (int i = 0; i < clause.getBody().length; i++)
+            {
+                clause.getBody()[i] = builtInTransform.apply(clause.getBody()[i]);
+            }
         }
     }
 }

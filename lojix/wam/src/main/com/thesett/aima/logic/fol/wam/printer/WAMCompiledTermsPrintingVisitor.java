@@ -28,14 +28,14 @@ import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
  * WAMCompiledTermsPrintingVisitor assists with pretty printing queries and predicates compiled by the
- * {@link WAMCompiler}.
+ * {@link InstructionCompiler}.
  *
  * <p/>This class is abstract because it implements a default behaviour for all terms, which is to apply a stack of
  * column printers to them. Depending on the entry point of this pretty printer, the top-level term being printed should

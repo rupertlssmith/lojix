@@ -25,9 +25,10 @@ import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.interpreter.ResolutionInterpreter;
 import com.thesett.aima.logic.fol.isoprologparser.SentenceParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
@@ -39,7 +40,7 @@ import com.thesett.common.util.doublemaps.SymbolTableImpl;
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Create an interpreter for WAM.
- *     <td> {@link SentenceParser}, {@link WAMCompiler}, {@link WAMResolvingJavaMachine}
+ *     <td> {@link SentenceParser}, {@link InstructionCompiler}, {@link WAMResolvingJavaMachine}
  * </table></pre>
  *
  * @author Rupert Smith
