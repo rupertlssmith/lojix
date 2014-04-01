@@ -605,7 +605,7 @@ public class PrologParser implements PrologParserConstants
         }
         else
         {
-            var = new Variable(nameId, null, name.image.startsWith("_"));
+            var = new Variable(nameId, null, name.image.equals("_"));
             variableContext.put(nameId, var);
 
             return var;

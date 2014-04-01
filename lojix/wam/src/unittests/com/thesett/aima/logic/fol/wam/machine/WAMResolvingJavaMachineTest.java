@@ -232,8 +232,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testTemporaryRegistersNotOverwritten", engine));
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testBodyVariableBindsOk", engine));
-        /*suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testVariablesUnboundOnBacktrackingMemberOk", engine));*/
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariablesUnboundOnBacktrackingMemberOk", engine));
 
         // Add all tests defined in the ConjunctionResolverUnitTestBase class.
         suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
