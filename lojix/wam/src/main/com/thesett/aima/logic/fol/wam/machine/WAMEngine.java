@@ -41,7 +41,7 @@ import com.thesett.common.util.Source;
  *
  * @author Rupert Smith
  */
-class WAMEngine extends ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>
+public class WAMEngine extends ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>
 {
     /** Holds the name of the resource on the classpath that contains the built-in library. */
     private static final String BUILT_IN_LIB = "wam_builtins.pl";

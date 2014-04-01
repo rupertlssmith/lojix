@@ -26,9 +26,10 @@ import com.thesett.aima.logic.fol.isoprologparser.SentenceParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
 import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
+import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.machine.WAMEngine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.aima.logic.fol.wam.nativemachine.WAMResolvingNativeMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
@@ -70,13 +71,8 @@ public class WAMNativeInterpreter
                 new WAMCompiler(symbolTable, machine);
 
             ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =
-                new ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>(parser, machine, compiler, machine)
-                {
-                    public void reset()
-                    {
-                        machine.reset();
-                    }
-                };
+                new WAMEngine(parser, machine, compiler, machine);
+            engine.reset();
 
             ResolutionInterpreter<WAMCompiledPredicate, WAMCompiledQuery> interpreter =
                 new ResolutionInterpreter<WAMCompiledPredicate, WAMCompiledQuery>(engine);
