@@ -1179,38 +1179,25 @@ public class InstructionCompiler extends DefaultBuiltIn
             }
         }
 
+        /**
+         * Upon leaving the clause, sets the nonArgPosition flag on any constants that need it.
+         *
+         * @param clause The clause being left.
+         */
         protected void leaveClause(Clause clause)
         {
-            //System.out.println("=== Leaving Clause ===");
-
-            //System.out.println("Contants: " + constants.keySet());
-            //System.out.println(" Arg Pos: " + argumentConstants);
-
             // Remove the set of constants appearing in argument positions, from the set of all constants, to derive
             // the set of constants that appear in non-argument positions only.
             constants.keySet().removeAll(argumentConstants);
 
-            //System.out.println(" Non Arg: " + constants.keySet());
-
             // Set the nonArgPosition flag on all symbol keys for all constants that only appear in non-arg positions.
             for (List<SymbolKey> symbolKeys : constants.values())
             {
-                //System.out.println(" Symbols: " + symbolKeys);
                 for (SymbolKey symbolKey : symbolKeys)
                 {
                     symbolTable.put(symbolKey, SYMKEY_FUNCTOR_NON_ARG, true);
                 }
             }
-
-            /*// Get the nonArgPosition flag, or initialize it to true.
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functor.getName(), SYMKEY_FUNCTOR_NON_ARG);
-            nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
-
-            // Clear the nonArgPosition flag is the variable occurs in an argument position.
-            nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
-            symbolTable.put(functor.getName(), SYMKEY_FUNCTOR_NON_ARG, nonArgPositionOnly);*/
-
-            /*log.fine("Constant " + functor + " nonArgPosition is " + nonArgPositionOnly + ".");*/
         }
 
         /**
