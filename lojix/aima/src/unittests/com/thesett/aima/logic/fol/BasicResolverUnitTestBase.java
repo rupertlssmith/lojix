@@ -555,9 +555,6 @@ public class BasicResolverUnitTestBase<S extends Clause, T, Q> extends TestCase
     protected void setUp()
     {
         NDC.push(getName());
-
-        // Reset the resolver on every test, to ensure that it starts from a clean condition.
-        engine.reset();
     }
 
     /** Ensures that the NDC is cleaned up before the next test. */
