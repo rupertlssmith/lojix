@@ -92,10 +92,10 @@ class WAMEngine extends ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompil
                     break;
                 }
 
-                //compiler.compile(sentence);
+                compiler.compile(sentence);
             }
 
-            //compiler.endScope();
+            compiler.endScope();
         }
         catch (SourceCodeException e)
         {
