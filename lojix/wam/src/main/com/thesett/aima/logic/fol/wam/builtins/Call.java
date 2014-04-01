@@ -20,8 +20,12 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
+ * Call implements the Prolog 'call' operator. Call resolves its argument as a query. The argument to call may be a
+ * variable, but must be bound to a callable functor or atom at the time the call is made in order to be valid.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Call a callable functor or atom as a query for resolution.
  * </table></pre>
  *
  * @author Rupert Smith

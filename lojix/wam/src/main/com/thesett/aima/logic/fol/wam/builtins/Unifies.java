@@ -20,8 +20,13 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
+ * Unifies is the ISO Prolog built in operator '='/2. It performs a standard unification (no occurs check) on its left
+ * and right arguments, possibly binding variables as a result of the unification, and succeeds iff the unification
+ * succeeds.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Unify the left and right arguments of the unify operator.
  * </table></pre>
  *
  * @author Rupert Smith

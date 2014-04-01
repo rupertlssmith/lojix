@@ -20,8 +20,12 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
+ * Disjunction implements the Prolog disjunction operator ';' that sets up multiple choice points potentially leading to
+ * multiple solutions.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Implement the disjunction operator.
  * </table></pre>
  *
  * @author Rupert Smith

@@ -20,8 +20,14 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
+ * NonUnifies is the ISO Prolog built in operator '\='/2. It performs a standard unification (no occurrs check) on its
+ * left and right arguments, possibly binding variables as a result of the unification, and fails iff the unification
+ * succeeds. As failure will cause this proof step to be undone, any variable bindings resulting from the unification
+ * will immediately be discarded.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Check if unification of the left and right arguments of the non-unify operator fails.
  * </table></pre>
  *
  * @author Rupert Smith
