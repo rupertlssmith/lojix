@@ -16,6 +16,8 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.common.util.SizeableLinkedList;
 
 /**
  * BaseBuiltIn provides a base-class on which built-in predicates may be implemented.
@@ -36,5 +38,18 @@ public abstract class BaseBuiltIn extends BuiltInFunctor
     protected BaseBuiltIn(Functor functor)
     {
         super(functor);
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
+        int permVarsRemaining)
+    {
+        return null;
     }
 }

@@ -49,6 +49,7 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
+import com.thesett.aima.logic.fol.wam.builtins.BuiltIn;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
 import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;
@@ -170,7 +171,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * @author Rupert Smith
  */
 public class InstructionCompiler extends BaseMachine
-    implements LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery>
+    implements LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery>, BuiltIn
 {
     /** Used for debugging. */
     private static final java.util.logging.Logger log =
@@ -352,6 +353,203 @@ public class InstructionCompiler extends BaseMachine
         }
     }
 
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
+        int permVarsRemaining)
+    {
+        // Used to build up the results in.
+        SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
+
+        // Generate the call or tail-call instructions, followed by the call address, which is f_n of the
+        // called program.
+        if (lastBody)
+        {
+            // Deallocate the stack frame at the end of the clause, but prior to calling the last
+            // body predicate.
+            // This is not required for chain rules, as they do not need a stack frame.
+            if (!chainRule)
+            {
+                instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Deallocate));
+            }
+
+            instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Execute,
+                    interner.getFunctorFunctorName(expression)));
+        }
+        else
+        {
+            instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Call,
+                    (byte) (permVarsRemaining & 0xff), interner.getFunctorFunctorName(expression)));
+        }
+
+        return instructions;
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    {
+        // Used to build up the results in.
+        SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
+
+        // Allocate argument registers on the body, to all functors as outermost arguments.
+        // Allocate temporary registers on the body, to all terms not already allocated.
+        /*if (!isFirstBody)
+        {
+            lastAllocatedRegister = 0;
+        }*/
+
+        allocateArgumentRegisters(expression);
+        allocateTemporaryRegisters(expression);
+
+        // Loop over all of the arguments to the outermost functor.
+        int numOutermostArgs = expression.getArity();
+
+        for (int j = 0; j < numOutermostArgs; j++)
+        {
+            Term nextOutermostArg = expression.getArgument(j);
+            int allocation = (Integer) symbolTable.get(nextOutermostArg.getSymbolKey(), SYMKEY_ALLOCATION);
+
+            byte addrMode = (byte) ((allocation & 0xff00) >> 8);
+            byte address = (byte) (allocation & 0xff);
+
+            // On the first occurrence of a variable output a put_var.
+            // On a subsequent variable occurrence output a put_val.
+            if (nextOutermostArg.isVar() && !seenRegisters.contains(allocation))
+            {
+                seenRegisters.add(allocation);
+
+                // The variable has been moved into an argument register.
+                //varNames.remove((byte) allocation);
+                //varNames.put((byte) j, ((Variable) nextOutermostArg).getName());
+
+                /*log.fine("PUT_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
+
+                WAMInstruction instruction =
+                    new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVar, addrMode, address, (byte) (j & 0xff));
+                instructions.add(instruction);
+
+                // Record the way in which this variable was introduced into the clause.
+                symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Put);
+            }
+            else if (nextOutermostArg.isVar())
+            {
+                // Check if this is the last body functor in which this variable appears, it does so only in argument
+                // position, and this is the first occurrence of these conditions. In which case, an unsafe put is to
+                // be used.
+                if (isLastBodyTermInArgPositionOnly((Variable) nextOutermostArg, expression) &&
+                        (addrMode == WAMInstruction.STACK_ADDR))
+                {
+                    log.fine("PUT_UNSAFE_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address + ", A" +
+                        j);
+
+                    WAMInstruction instruction =
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutUnsafeVal, addrMode, address,
+                            (byte) (j & 0xff));
+                    instructions.add(instruction);
+
+                    symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
+                }
+                else
+                {
+                    /*log.fine("PUT_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
+
+                    WAMInstruction instruction =
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVal, addrMode, address,
+                            (byte) (j & 0xff));
+                    instructions.add(instruction);
+                }
+            }
+
+            // When a functor is encountered, output a put_struc.
+            else if (nextOutermostArg.isFunctor())
+            {
+                Functor nextFunctorArg = (Functor) nextOutermostArg;
+
+                // Heap cells are to be created in an order such that no heap cell can appear before other cells that it
+                // refers to. A postfix traversal of the functors in the term to compile is used to achieve this, as
+                // child functors in a head will be visited first.
+                // Walk over the query term in post-fix order, picking out just the functors.
+                QueueBasedSearchMethod<Term, Term> postfixSearch = new PostFixSearch<Term, Term>();
+                postfixSearch.reset();
+                postfixSearch.addStartState(nextFunctorArg);
+                postfixSearch.setGoalPredicate(new FunctorTermPredicate());
+
+                Iterator<Term> treeWalker = Searches.allSolutions(postfixSearch);
+
+                // For each functor encountered: put_struc.
+                while (treeWalker.hasNext())
+                {
+                    Functor nextFunctor = (Functor) treeWalker.next();
+                    allocation = (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SYMKEY_ALLOCATION);
+                    addrMode = (byte) ((allocation & 0xff00) >> 8);
+                    address = (byte) (allocation & 0xff);
+
+                    // Ouput a put_struc instuction, except on the outermost functor.
+                    /*log.fine("PUT_STRUC " + interner.getFunctorName(nextFunctor) + "/" + nextFunctor.getArity() +
+                        ((addrMode == REG_ADDR) ? ", X" : ", Y") + address);*/
+
+                    WAMInstruction instruction =
+                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutStruc, addrMode, address,
+                            interner.getDeinternedFunctorName(nextFunctor.getName()), nextFunctor);
+                    instructions.add(instruction);
+
+                    // For each argument of the functor.
+                    int numArgs = nextFunctor.getArity();
+
+                    for (int i = 0; i < numArgs; i++)
+                    {
+                        Term nextArg = nextFunctor.getArgument(i);
+                        allocation = (Integer) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_ALLOCATION);
+                        addrMode = (byte) ((allocation & 0xff00) >> 8);
+                        address = (byte) (allocation & 0xff);
+
+                        // If it is new variable: set_var or put_var.
+                        // If it is variable or functor already seen: set_val or put_val.
+                        if (nextArg.isVar() && !seenRegisters.contains(allocation))
+                        {
+                            seenRegisters.add(allocation);
+
+                            /*log.fine("SET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
+                            instruction =
+                                new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVar, addrMode, address, nextArg);
+
+                            // Record the way in which this variable was introduced into the clause.
+                            symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Set);
+                        }
+                        else
+                        {
+                            // Check if the variable is 'local' and use a local instruction on the first occurrence.
+                            VarIntroduction introduction =
+                                (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO);
+
+                            if (isLocalVariable(introduction, addrMode))
+                            {
+                                log.fine("SET_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") +
+                                    address);
+
+                                instruction =
+                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address,
+                                        nextArg);
+
+                                symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
+                            }
+                            else
+                            {
+                                /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
+                                instruction =
+                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVal, addrMode, address,
+                                        nextArg);
+                            }
+                        }
+
+                        instructions.add(instruction);
+                    }
+                }
+            }
+        }
+
+        return instructions;
+    }
+
     /**
      * Compiles a program clause, and adds its instructions to a compiled predicate.
      *
@@ -464,33 +662,28 @@ public class InstructionCompiler extends BaseMachine
             {
                 expression = expressions[i];
 
-                // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
-                instructions = compileBody(expression, i == 0);
+                boolean isLastBody = i == (expressions.length - 1);
+                Integer permVarsRemaining =
+                    (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
 
-                // Generate the call or tail-call instructions, followed by the call address, which is f_n of the
-                // called program.
-                if (i == (expressions.length - 1))
+                // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
+                BuiltIn builtIn;
+
+                if (expression instanceof BuiltIn)
                 {
-                    // Deallocate the stack frame at the end of the clause, but prior to calling the last
-                    // body predicate.
-                    // This is not required for chain rules, as they do not need a stack frame.
-                    if (!isChainRule)
-                    {
-                        instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Deallocate));
-                    }
-
-                    instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Execute,
-                            interner.getFunctorFunctorName(expression)));
+                    builtIn = (BuiltIn) expression;
                 }
                 else
                 {
-                    int permVarsRemaining =
-                        (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
-
-                    instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Call,
-                            (byte) (permVarsRemaining & 0xff), interner.getFunctorFunctorName(expression)));
+                    builtIn = this;
                 }
 
+                // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
+                instructions = builtIn.compileBody(expression, i == 0);
+                result.addInstructions(expression, instructions);
+
+                // Call the body. The number of permanent variables remaining is specified for environment trimming.
+                instructions = builtIn.compileBodyCall(expression, isLastBody, isChainRule, permVarsRemaining);
                 result.addInstructions(expression, instructions);
             }
         }
@@ -570,16 +763,26 @@ public class InstructionCompiler extends BaseMachine
         {
             Functor expression = expressions[i];
 
+            // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
+            BuiltIn builtIn;
+
+            if (expression instanceof BuiltIn)
+            {
+                builtIn = (BuiltIn) expression;
+            }
+            else
+            {
+                builtIn = this;
+            }
+
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule, which it
             // never is for a query.
-            SizeableLinkedList<WAMInstruction> instructions = compileBody(expression, false);
+            SizeableLinkedList<WAMInstruction> instructions = builtIn.compileBody(expression, false);
+            result.addInstructions(expression, instructions);
 
-            // Generate the call instructions, followed by the call address, which is f_n of the called program.
-            WAMInstruction instruction =
-                new WAMInstruction(WAMInstruction.WAMInstructionSet.Call, (byte) (numPermanentVars & 0xff),
-                    interner.getFunctorFunctorName(expression));
-            instructions.add(instruction);
-
+            // Queries are never chain rules, and as all permanent variables are preserved, bodies are never called
+            // as last calls.
+            instructions = builtIn.compileBodyCall(expression, false, false, numPermanentVars);
             result.addInstructions(expression, instructions);
         }
 
@@ -798,179 +1001,6 @@ public class InstructionCompiler extends BaseMachine
                 }
 
                 instructions.add(instruction);
-            }
-        }
-
-        return instructions;
-    }
-
-    /**
-     * Compiles the body of a clause into an instruction listing in WAM.
-     *
-     * @param  expression  The clause body to compile.
-     * @param  isFirstBody <tt>true</tt> iff this is the first body of a program clause.
-     *
-     * @return A listing of the instructions for the clause body in the WAM instruction set.
-     */
-    private SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
-    {
-        // Used to build up the results in.
-        SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
-
-        // Allocate argument registers on the body, to all functors as outermost arguments.
-        // Allocate temporary registers on the body, to all terms not already allocated.
-        /*if (!isFirstBody)
-        {
-            lastAllocatedRegister = 0;
-        }*/
-
-        allocateArgumentRegisters(expression);
-        allocateTemporaryRegisters(expression);
-
-        // Loop over all of the arguments to the outermost functor.
-        int numOutermostArgs = expression.getArity();
-
-        for (int j = 0; j < numOutermostArgs; j++)
-        {
-            Term nextOutermostArg = expression.getArgument(j);
-            int allocation = (Integer) symbolTable.get(nextOutermostArg.getSymbolKey(), SYMKEY_ALLOCATION);
-
-            byte addrMode = (byte) ((allocation & 0xff00) >> 8);
-            byte address = (byte) (allocation & 0xff);
-
-            // On the first occurrence of a variable output a put_var.
-            // On a subsequent variable occurrence output a put_val.
-            if (nextOutermostArg.isVar() && !seenRegisters.contains(allocation))
-            {
-                seenRegisters.add(allocation);
-
-                // The variable has been moved into an argument register.
-                //varNames.remove((byte) allocation);
-                //varNames.put((byte) j, ((Variable) nextOutermostArg).getName());
-
-                /*log.fine("PUT_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
-
-                WAMInstruction instruction =
-                    new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVar, addrMode, address, (byte) (j & 0xff));
-                instructions.add(instruction);
-
-                // Record the way in which this variable was introduced into the clause.
-                symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Put);
-            }
-            else if (nextOutermostArg.isVar())
-            {
-                // Check if this is the last body functor in which this variable appears, it does so only in argument
-                // position, and this is the first occurrence of these conditions. In which case, an unsafe put is to
-                // be used.
-                if (isLastBodyTermInArgPositionOnly((Variable) nextOutermostArg, expression) &&
-                        (addrMode == WAMInstruction.STACK_ADDR))
-                {
-                    log.fine("PUT_UNSAFE_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") + address + ", A" +
-                        j);
-
-                    WAMInstruction instruction =
-                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutUnsafeVal, addrMode, address,
-                            (byte) (j & 0xff));
-                    instructions.add(instruction);
-
-                    symbolTable.put(nextOutermostArg.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
-                }
-                else
-                {
-                    /*log.fine("PUT_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address + ", A" + j);*/
-
-                    WAMInstruction instruction =
-                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutVal, addrMode, address,
-                            (byte) (j & 0xff));
-                    instructions.add(instruction);
-                }
-            }
-
-            // When a functor is encountered, output a put_struc.
-            else if (nextOutermostArg.isFunctor())
-            {
-                Functor nextFunctorArg = (Functor) nextOutermostArg;
-
-                // Heap cells are to be created in an order such that no heap cell can appear before other cells that it
-                // refers to. A postfix traversal of the functors in the term to compile is used to achieve this, as
-                // child functors in a head will be visited first.
-                // Walk over the query term in post-fix order, picking out just the functors.
-                QueueBasedSearchMethod<Term, Term> postfixSearch = new PostFixSearch<Term, Term>();
-                postfixSearch.reset();
-                postfixSearch.addStartState(nextFunctorArg);
-                postfixSearch.setGoalPredicate(new FunctorTermPredicate());
-
-                Iterator<Term> treeWalker = Searches.allSolutions(postfixSearch);
-
-                // For each functor encountered: put_struc.
-                while (treeWalker.hasNext())
-                {
-                    Functor nextFunctor = (Functor) treeWalker.next();
-                    allocation = (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SYMKEY_ALLOCATION);
-                    addrMode = (byte) ((allocation & 0xff00) >> 8);
-                    address = (byte) (allocation & 0xff);
-
-                    // Ouput a put_struc instuction, except on the outermost functor.
-                    /*log.fine("PUT_STRUC " + interner.getFunctorName(nextFunctor) + "/" + nextFunctor.getArity() +
-                        ((addrMode == REG_ADDR) ? ", X" : ", Y") + address);*/
-
-                    WAMInstruction instruction =
-                        new WAMInstruction(WAMInstruction.WAMInstructionSet.PutStruc, addrMode, address,
-                            interner.getDeinternedFunctorName(nextFunctor.getName()), nextFunctor);
-                    instructions.add(instruction);
-
-                    // For each argument of the functor.
-                    int numArgs = nextFunctor.getArity();
-
-                    for (int i = 0; i < numArgs; i++)
-                    {
-                        Term nextArg = nextFunctor.getArgument(i);
-                        allocation = (Integer) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_ALLOCATION);
-                        addrMode = (byte) ((allocation & 0xff00) >> 8);
-                        address = (byte) (allocation & 0xff);
-
-                        // If it is new variable: set_var or put_var.
-                        // If it is variable or functor already seen: set_val or put_val.
-                        if (nextArg.isVar() && !seenRegisters.contains(allocation))
-                        {
-                            seenRegisters.add(allocation);
-
-                            /*log.fine("SET_VAR " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                            instruction =
-                                new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVar, addrMode, address, nextArg);
-
-                            // Record the way in which this variable was introduced into the clause.
-                            symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Set);
-                        }
-                        else
-                        {
-                            // Check if the variable is 'local' and use a local instruction on the first occurrence.
-                            VarIntroduction introduction =
-                                (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO);
-
-                            if (isLocalVariable(introduction, addrMode))
-                            {
-                                log.fine("SET_LOCAL_VAL " + ((addrMode == WAMInstruction.REG_ADDR) ? "X" : "Y") +
-                                    address);
-
-                                instruction =
-                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address,
-                                        nextArg);
-
-                                symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
-                            }
-                            else
-                            {
-                                /*log.fine("SET_VAL " + ((addrMode == REG_ADDR) ? "X" : "Y") + address);*/
-                                instruction =
-                                    new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVal, addrMode, address,
-                                        nextArg);
-                            }
-                        }
-
-                        instructions.add(instruction);
-                    }
-                }
             }
         }
 

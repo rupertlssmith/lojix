@@ -27,7 +27,7 @@ import com.thesett.aima.logic.fol.Functor;
  *
  * @author Rupert Smith
  */
-public class Fail extends BuiltInFunctor
+public class Fail extends BaseBuiltIn
 {
     /**
      * Creates a fail built-in to implement the specified functor.

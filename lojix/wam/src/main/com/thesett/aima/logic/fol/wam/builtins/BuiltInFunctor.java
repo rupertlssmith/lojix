@@ -16,6 +16,8 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.common.util.SizeableLinkedList;
 
 /**
  * BuiltInFunctor provides a mapping from a functor onto its built-in implementation, in the case of built-in predicates
