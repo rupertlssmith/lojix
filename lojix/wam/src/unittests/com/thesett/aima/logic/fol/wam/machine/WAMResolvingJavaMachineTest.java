@@ -18,6 +18,7 @@ package com.thesett.aima.logic.fol.wam.machine;
 import com.thesett.aima.logic.fol.BacktrackingResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicUnificationUnitTestBase;
+import com.thesett.aima.logic.fol.CallAndNotResolverUnitTestBase;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.ConjunctionResolverUnitTestBase;
 import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
@@ -25,6 +26,7 @@ import com.thesett.aima.logic.fol.ListResolverUnitTestBase;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.TrueAndFailResolverUnitTestBase;
+import com.thesett.aima.logic.fol.UnifyAndNonUnifyResolverUnitTestBase;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
@@ -236,10 +238,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testTemporaryRegistersNotOverwritten", engine));
         suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testBodyVariableBindsOk", engine));
-
-        // Uses the 'member' built-in predicate, which is not defined.
-        /*suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testVariablesUnboundOnBacktrackingMemberOk", engine));*/
+        suite.addTest(new BasicResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testVariablesUnboundOnBacktrackingMemberOk", engine));
 
         // Add all tests defined in the ConjunctionResolverUnitTestBase class.
         suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -278,11 +278,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
-        // These make use of the built-in '=' operators, so won't work unless that is defined.
-        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testVariableTakesBindingsFromManyDisjunctionPaths", engine));*/
+                "testVariableTakesBindingsFromManyDisjunctionPaths", engine));
 
         // Add all tests defined in the BacktrackingResolverUnitTestBase class.
         suite.addTest(new BacktrackingResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -310,6 +309,22 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new ListResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testListIterationBacktracks", engine));
 
+        // Add all tests defined in the CallAndNotResolverUnitTestBase class.
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testSimpleCallOk", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testCallFunctorWithArgumentBindsVariable", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testCallFunctorWithArgumentBindsVariableInChainedCall", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNotFunctorWithArgumentOkWhenArgumentsDoNotMatch", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNotFunctorWithArgumentDoesNotBindVariableInDoubleNegation", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNotFailSucceeds", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNotTrueFails", engine));
+
         // Add all tests defined in the TrueAndFailResolverUnitTestBase class.
         suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testTrueSucceeds", engine));
@@ -321,6 +336,72 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testConjunctionOfTrueAndFailFails", engine));
         suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testConjunctionOfTruesSucceeds", engine));
+
+        // Add all the tests defined in the UnifyAndNonUnifyResolverUnitTestBase class.
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAtomsUnifyOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNonMatchingAtomsFailUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeLeftVarUnifiesAtomOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeLeftVarUnifiesFunctorOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeRightVarUnifiesAtomOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeRightVarUnifiesFunctorOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeVarUnifiesWithSameNameOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeVarUnifiesWithDifferentNameOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testQueryAtomDoesNotUnifyWithProgFunctorSameName", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgAtomDoesNotUnifyWithQueryFunctorSameName", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarUnifiesWithDifferentEqualBoundVarOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarToFunctorUnifiesWithEqualBoundVarOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarFailsToUnifyWithDifferentBinding", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarToFunctorFailsToUnifyWithDifferentFunctorBinding", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgBoundVarUnifiesWithDifferentEqualBoundVarOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgBoundVarToFunctorUnifiesWithEqualBoundVarOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgBoundVarFailsToUnifyWithDifferentBinding", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testProgBoundVarToFunctorFailsToUnifyWithDifferentFunctorBinding", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarInQueryUnifiesAgainstVarInProg", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarFailsToUnifyWithDifferentlyBoundVar", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarPropagatesIntoFunctors", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundVarUnifiesToSameVar", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundProgVarUnifiesToDifferentQueryVar", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testBoundQueryVarUnifiesToDifferentProgVar", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsSameArityUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsDifferentArityFailToUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsSameArityDifferentArgsFailToUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFunctorsDifferentNameSameArgsDoNotUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testEqualNumbersUnifyOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNonEqualNumbersFailToUnify", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testEqualStringsUnifyOk", engine));
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNonEqualStringsFailToUnify", engine));
 
         // Add all the tests defined in this class.
 
