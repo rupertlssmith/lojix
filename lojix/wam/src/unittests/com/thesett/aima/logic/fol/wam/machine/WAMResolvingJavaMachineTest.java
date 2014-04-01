@@ -89,13 +89,7 @@ public class WAMResolvingJavaMachineTest extends TestCase
         Parser<Clause, Token> parser = new ClauseParser(machine);
 
         ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =
-            new ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery>(parser, machine, compiler, machine)
-            {
-                public void reset()
-                {
-                    machine.reset();
-                }
-            };
+            new WAMEngine(parser, machine, compiler, machine);
 
         // Add all tests defined in the BasicUnificationTestBase class
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -417,4 +411,5 @@ public class WAMResolvingJavaMachineTest extends TestCase
     {
         NDC.pop();
     }
+
 }
