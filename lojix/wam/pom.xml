@@ -116,7 +116,14 @@
                 </executions>
             </plugin>
 
-    </plugins>
-  </build>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/prolog</directory>
+            </resource>
+        </resources>
+
+    </build>
 
 </project>
