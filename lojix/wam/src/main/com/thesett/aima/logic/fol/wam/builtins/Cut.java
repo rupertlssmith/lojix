@@ -16,6 +16,8 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.common.util.SizeableLinkedList;
 
 /**
  * Cut implements the prolog '!' operator, that prevents back-tracking within a functor. '!' is true; that is it does
@@ -39,5 +41,18 @@ public class Cut extends BaseBuiltIn
     public Cut(Functor functor)
     {
         super(functor);
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    {
+        return new SizeableLinkedList<WAMInstruction>();
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
+        int permVarsRemaining)
+    {
+        return new SizeableLinkedList<WAMInstruction>();
     }
 }

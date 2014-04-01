@@ -16,6 +16,9 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.common.util.SizeableLinkedList;
 
 /**
  * Implements the fail atom. This always fails without generating any choice points.
@@ -37,5 +40,22 @@ public class Fail extends BaseBuiltIn
     public Fail(Functor functor)
     {
         super(functor);
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    {
+        return new SizeableLinkedList<WAMInstruction>();
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
+        int permVarsRemaining)
+    {
+        SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
+
+        instructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Execute, new FunctorName("__fail__", 0)));
+
+        return instructions;
     }
 }

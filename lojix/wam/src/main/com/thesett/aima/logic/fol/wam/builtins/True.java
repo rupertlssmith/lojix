@@ -16,6 +16,8 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.common.util.SizeableLinkedList;
 
 /**
  * Implements the true atom. This always succeeds without generating any choice points.
@@ -37,5 +39,18 @@ public class True extends BaseBuiltIn
     public True(Functor functor)
     {
         super(functor);
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    {
+        return new SizeableLinkedList<WAMInstruction>();
+    }
+
+    /** {@inheritDoc} */
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
+        int permVarsRemaining)
+    {
+        return new SizeableLinkedList<WAMInstruction>();
     }
 }
