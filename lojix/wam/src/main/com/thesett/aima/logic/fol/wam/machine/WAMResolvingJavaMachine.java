@@ -1157,7 +1157,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case TRY_ME_ELSE:
             {
                 // grab L
-                int l = (int) codeBuffer.get(ip + 1);
+                int l = codeBuffer.getInt(ip + 1);
 
                 // if E > B
                 //  then newB <- E + STACK[E + 2] + 3
@@ -1212,7 +1212,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case RETRY_ME_ELSE:
             {
                 // grab L
-                int l = (int) codeBuffer.get(ip + 1);
+                int l = codeBuffer.getInt(ip + 1);
 
                 // n <- STACK[B]
                 int n = data.get(bp);
@@ -1298,10 +1298,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.SWITCH_ON_TERM:
             {
                 // grab labels
-                int v = (int) codeBuffer.get(ip + 1);
-                int c = (int) codeBuffer.get(ip + 5);
-                int l = (int) codeBuffer.get(ip + 9);
-                int s = (int) codeBuffer.get(ip + 13);
+                int v = codeBuffer.getInt(ip + 1);
+                int c = codeBuffer.getInt(ip + 5);
+                int l = codeBuffer.getInt(ip + 9);
+                int s = codeBuffer.getInt(ip + 13);
 
                 int addr = deref(1);
                 int tag = derefTag;
@@ -1340,8 +1340,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.SWITCH_ON_CONST:
             {
                 // grab labels
-                int t = (int) codeBuffer.get(ip + 1);
-                int n = (int) codeBuffer.get(ip + 5);
+                int t = codeBuffer.getInt(ip + 1);
+                int n = codeBuffer.getInt(ip + 5);
 
                 // <tag, val> <- STORE[deref(A1)]
                 deref(1);
@@ -1369,8 +1369,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.SWITCH_ON_STRUC:
             {
                 // grab labels
-                int t = (int) codeBuffer.get(ip + 1);
-                int n = (int) codeBuffer.get(ip + 5);
+                int t = codeBuffer.getInt(ip + 1);
+                int n = codeBuffer.getInt(ip + 5);
 
                 // <tag, val> <- STORE[deref(A1)]
                 deref(1);
@@ -1398,7 +1398,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.TRY:
             {
                 // grab L
-                int l = (int) codeBuffer.get(ip + 1);
+                int l = codeBuffer.getInt(ip + 1);
 
                 // if E > B
                 //  then newB <- E + STACK[E + 2] + 3
@@ -1452,7 +1452,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.RETRY:
             {
                 // grab L
-                int l = (int) codeBuffer.get(ip + 1);
+                int l = codeBuffer.getInt(ip + 1);
 
                 // n <- STACK[B]
                 int n = data.get(bp);
@@ -1496,7 +1496,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             case WAMInstruction.TRUST:
             {
                 // grab L
-                int l = (int) codeBuffer.get(ip + 1);
+                int l = codeBuffer.getInt(ip + 1);
 
                 // n <- STACK[B]
                 int n = data.get(bp);
