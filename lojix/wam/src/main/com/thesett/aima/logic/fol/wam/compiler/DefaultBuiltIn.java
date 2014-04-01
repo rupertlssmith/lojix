@@ -34,9 +34,14 @@ import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
+ * DefaultBuiltIn implements the standard WAM Prolog compilation for normal Prolog programs. Splitting this out into
+ * DefaultBuiltIn which supplies the {@link BuiltIn} interface, allows different compilations to be used for built in
+ * predicates that behave differently to the normal compilation.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Generate instructions to set up the arguments to a call to a built-in functor.</td></tr>
+ * <tr><td> Generate instructions to call to a built-in functor.</td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
