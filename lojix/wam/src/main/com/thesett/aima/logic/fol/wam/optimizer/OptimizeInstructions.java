@@ -316,11 +316,12 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
      */
     private boolean isNonArg(WAMInstruction instruction)
     {
-        Integer functorName = instruction.getFunctorNameReg1();
+        SymbolKey symbolKey = instruction.getSymbolKeyReg1();
 
-        if (functorName != null)
+        if (symbolKey != null)
         {
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(functorName, InstructionCompiler.SYMKEY_FUNCTOR_NON_ARG);
+            Boolean nonArgPositionOnly =
+                (Boolean) symbolTable.get(symbolKey, InstructionCompiler.SYMKEY_FUNCTOR_NON_ARG);
 
             if (TRUE.equals(nonArgPositionOnly))
             {
