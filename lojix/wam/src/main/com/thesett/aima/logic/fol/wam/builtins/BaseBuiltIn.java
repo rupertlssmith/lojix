@@ -41,7 +41,7 @@ public abstract class BaseBuiltIn extends BuiltInFunctor
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
     {
         return null;
     }

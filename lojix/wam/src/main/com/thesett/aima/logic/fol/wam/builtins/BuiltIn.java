@@ -33,17 +33,17 @@ import com.thesett.common.util.SizeableLinkedList;
 public interface BuiltIn
 {
     /**
-     * Compiles a built-in body of a clause into an instruction listing in WAM.
+     * Compiles the arguments to a call to a body of a clause into an instruction listing in WAM.
      *
      * @param  expression  The clause body to compile.
      * @param  isFirstBody <tt>true</tt> iff this is the first body of a program clause.
      *
      * @return A listing of the instructions for the clause body in the WAM instruction set.
      */
-    SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody);
+    SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody);
 
     /**
-     * Compiles a call to a built-in as a body of a clause into an instruction listing in WAM.
+     * Compiles a call to a body of a clause into an instruction listing in WAM.
      *
      * @param  expression        The body functor to call.
      * @param  lastBody          Iff this is the last body in a clause.

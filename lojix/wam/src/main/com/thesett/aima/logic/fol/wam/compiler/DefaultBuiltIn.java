@@ -111,7 +111,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
     {
         // Used to build up the results in.
         SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();

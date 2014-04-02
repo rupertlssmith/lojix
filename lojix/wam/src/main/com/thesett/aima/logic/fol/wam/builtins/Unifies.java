@@ -44,7 +44,7 @@ public class Unifies extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBody(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
     {
         return new SizeableLinkedList<WAMInstruction>();
     }
