@@ -195,6 +195,9 @@ public class InstructionCompiler extends DefaultBuiltIn
     /** The symbol table key for the last functor in which a variable occurs, if it is purely in argument position. */
     public static final String SYMKEY_VAR_LAST_ARG_FUNCTOR = "var_last_arg_functor";
 
+    /** The symbol table key for permanent variable offset to hold a cut to choice point frame in. */
+    protected static final String SYMKEY_CLAUSE_PERM_CUT = "clause_perm_cut";
+
     /** The symbol table key for predicate sources. */
     protected static final String SYMKEY_PREDICATES = "source_predicates";
 
@@ -441,6 +444,8 @@ public class InstructionCompiler extends DefaultBuiltIn
                 expression = expressions[i];
 
                 boolean isLastBody = i == (expressions.length - 1);
+                boolean isFirstBody = i == 0;
+
                 Integer permVarsRemaining =
                     (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
 
@@ -461,7 +466,8 @@ public class InstructionCompiler extends DefaultBuiltIn
                 result.addInstructions(expression, instructions);
 
                 // Call the body. The number of permanent variables remaining is specified for environment trimming.
-                instructions = builtIn.compileBodyCall(expression, isLastBody, isChainRule, permVarsRemaining);
+                instructions =
+                    builtIn.compileBodyCall(expression, isFirstBody, isLastBody, isChainRule, permVarsRemaining);
                 result.addInstructions(expression, instructions);
             }
         }
@@ -540,6 +546,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         for (int i = 0; i < expressions.length; i++)
         {
             Functor expression = expressions[i];
+            boolean isFirstBody = i == 0;
 
             // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
             BuiltIn builtIn;
@@ -560,7 +567,7 @@ public class InstructionCompiler extends DefaultBuiltIn
 
             // Queries are never chain rules, and as all permanent variables are preserved, bodies are never called
             // as last calls.
-            instructions = builtIn.compileBodyCall(expression, false, false, numPermanentVars);
+            instructions = builtIn.compileBodyCall(expression, isFirstBody, false, false, numPermanentVars);
             result.addInstructions(expression, instructions);
         }
 

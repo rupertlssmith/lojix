@@ -80,15 +80,15 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
-        int permVarsRemaining)
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean isFirstBody, boolean isLastBody, boolean chainRule,
+                                                              int permVarsRemaining)
     {
         // Used to build up the results in.
         SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
 
         // Generate the call or tail-call instructions, followed by the call address, which is f_n of the
         // called program.
-        if (lastBody)
+        if (isLastBody)
         {
             // Deallocate the stack frame at the end of the clause, but prior to calling the last
             // body predicate.

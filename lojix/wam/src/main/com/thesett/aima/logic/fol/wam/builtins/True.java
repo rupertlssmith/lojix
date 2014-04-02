@@ -48,8 +48,8 @@ public class True extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
-        int permVarsRemaining)
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean isFirstBody, boolean isLastBody, boolean chainRule,
+                                                              int permVarsRemaining)
     {
         return new SizeableLinkedList<WAMInstruction>();
     }

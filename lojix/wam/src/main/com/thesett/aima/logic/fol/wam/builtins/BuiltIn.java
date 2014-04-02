@@ -46,13 +46,14 @@ public interface BuiltIn
      * Compiles a call to a body of a clause into an instruction listing in WAM.
      *
      * @param  expression        The body functor to call.
-     * @param  lastBody          Iff this is the last body in a clause.
+     * @param  isFirstBody       Iff this is the first body in a clause.
+     * @param  isLastBody        Iff this is the last body in a clause.
      * @param  chainRule         Iff the clause is a chain rule, so has no environment frame.
      * @param  permVarsRemaining The number of permanent variables remaining at this point in the calling clause. Used
      *                           for environment trimming.
      *
      * @return A list of instructions for the body call.
      */
-    SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
-        int permVarsRemaining);
+    SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean isFirstBody, boolean isLastBody,
+        boolean chainRule, int permVarsRemaining);
 }

@@ -17,6 +17,8 @@ package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.WAMInstructionSet.Cut;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.WAMInstructionSet.NeckCut;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
@@ -50,9 +52,20 @@ public class Cut extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean lastBody, boolean chainRule,
-        int permVarsRemaining)
+    public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean isFirstBody,
+        boolean isLastBody, boolean chainRule, int permVarsRemaining)
     {
-        return new SizeableLinkedList<WAMInstruction>();
+        SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();
+
+        if (isFirstBody)
+        {
+            instructions.add(new WAMInstruction(NeckCut));
+        }
+        else
+        {
+            instructions.add(new WAMInstruction(Cut /*, yn*/));
+        }
+
+        return instructions;
     }
 }

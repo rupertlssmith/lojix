@@ -45,10 +45,11 @@ public class CutResolverUnitTestBase<S extends Clause, T, Q> extends BasicResolv
 
     public void testNeckCutPreventsBacktrackingOk() throws Exception
     {
-        //resolveAndAssertSolutions("[[f(x)], (?- f(X)), [[X <-- x]]]");
+        resolveAndAssertSolutions("[[(f(x) :- !, true), f(y)], (?- f(X)), [[X <-- x]]]");
     }
 
     public void testDeepCutPreventsBacktrackingOk() throws Exception
     {
+        resolveAndAssertSolutions("[[g(x), (f(X) :- g(X), !, true), f(y)], (?- f(X)), [[X <-- x]]]");
     }
 }
