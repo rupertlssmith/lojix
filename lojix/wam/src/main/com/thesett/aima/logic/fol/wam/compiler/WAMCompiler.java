@@ -50,8 +50,8 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
     {
         super(symbolTable, interner);
 
-        preCompiler = new PreCompiler(symbolTable, interner);
         instructionCompiler = new InstructionCompiler(symbolTable, interner);
+        preCompiler = new PreCompiler(symbolTable, interner, instructionCompiler);
 
         preCompiler.setCompilerObserver(new ClauseChainObserver());
     }

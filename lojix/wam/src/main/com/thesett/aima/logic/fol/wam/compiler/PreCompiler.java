@@ -41,15 +41,22 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
     /** Holds the compiler output observer. */
     private LogicCompilerObserver<Clause, Clause> observer;
 
+    /** Holds the default built in, for standard compilation and interners and symbol tables. */
+    private final DefaultBuiltIn defaultBuiltIn;
+
     /**
      * Creates a new PreCompiler.
      *
-     * @param symbolTable The symbol table.
-     * @param interner    The machine to translate functor and variable names.
+     * @param symbolTable    The symbol table.
+     * @param interner       The machine to translate functor and variable names.
+     * @param defaultBuiltIn The default built in, for standard compilation and interners and symbol tables.
      */
-    public PreCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
+    public PreCompiler(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner,
+        DefaultBuiltIn defaultBuiltIn)
     {
         super(symbolTable, interner);
+
+        this.defaultBuiltIn = defaultBuiltIn;
     }
 
     /** {@inheritDoc} */
@@ -90,7 +97,7 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
      */
     private void substituteBuiltIns(Clause clause)
     {
-        BuiltInTransform builtInTransform = new BuiltInTransform(this);
+        BuiltInTransform builtInTransform = new BuiltInTransform(defaultBuiltIn);
 
         if (clause.getBody() != null)
         {

@@ -21,7 +21,7 @@ import java.util.Map;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import com.thesett.common.util.Function;
 import com.thesett.common.util.ReflectionUtils;
 
@@ -43,18 +43,18 @@ public class BuiltInTransform implements Function<Functor, Functor>
     private Map<FunctorName, Class<? extends BuiltInFunctor>> builtIns =
         new HashMap<FunctorName, Class<? extends BuiltInFunctor>>();
 
-    /** Holds the base machine, which is used to supply name interners and symbol tables. */
-    private final BaseMachine baseMachine;
+    /** Holds the default built in, for standard compilation and interners and symbol tables. */
+    private final DefaultBuiltIn defaultBuiltIn;
 
     /**
      * Initializes the built-in transformation by population the the table of mappings of functors onto their built-in
      * implementations.
      *
-     * @param baseMachine The base machine used to supply interners and symbol tables.
+     * @param defaultBuiltIn The default built in, for standard compilation and interners and symbol tables.
      */
-    public BuiltInTransform(BaseMachine baseMachine)
+    public BuiltInTransform(DefaultBuiltIn defaultBuiltIn)
     {
-        this.baseMachine = baseMachine;
+        this.defaultBuiltIn = defaultBuiltIn;
 
         builtIns.put(new FunctorName("true", 0), True.class);
         builtIns.put(new FunctorName("fail", 0), Fail.class);
@@ -84,7 +84,7 @@ public class BuiltInTransform implements Function<Functor, Functor>
      */
     public Functor apply(Functor functor)
     {
-        FunctorName functorName = baseMachine.getInterner().getFunctorFunctorName(functor);
+        FunctorName functorName = defaultBuiltIn.getInterner().getFunctorFunctorName(functor);
 
         Class<? extends BuiltInFunctor> builtInClass;
 
@@ -93,7 +93,7 @@ public class BuiltInTransform implements Function<Functor, Functor>
         if (builtInClass != null)
         {
             return ReflectionUtils.newInstance(ReflectionUtils.getConstructor(builtInClass,
-                    new Class[] { Functor.class, BaseMachine.class }), new Object[] { functor, baseMachine });
+                    new Class[] { Functor.class, DefaultBuiltIn.class }), new Object[] { functor, defaultBuiltIn });
         }
         else
         {

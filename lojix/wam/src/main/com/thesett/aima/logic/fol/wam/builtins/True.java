@@ -16,7 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
-import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
@@ -35,12 +35,12 @@ public class True extends BaseBuiltIn
     /**
      * Creates a true built-in to implement the specified functor.
      *
-     * @param functor     The functor to implement as a built in.
-     * @param baseMachine The base machine to supply name interners and symbol tables.
+     * @param functor        The functor to implement as a built in.
+     * @param defaultBuiltIn The default built in, for standard compilation and interners and symbol tables.
      */
-    public True(Functor functor, BaseMachine baseMachine)
+    public True(Functor functor, DefaultBuiltIn defaultBuiltIn)
     {
-        super(functor, baseMachine);
+        super(functor, defaultBuiltIn);
     }
 
     /** {@inheritDoc} */

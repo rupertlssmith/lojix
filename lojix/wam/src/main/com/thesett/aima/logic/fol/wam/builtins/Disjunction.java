@@ -17,7 +17,7 @@ package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import static com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler.SYMKEY_PERM_VARS_REMAINING;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
@@ -38,12 +38,12 @@ public class Disjunction extends BaseBuiltIn
     /**
      * Creates a cut built-in to implement the specified functor.
      *
-     * @param functor     The functor to implement as a built-in.
-     * @param baseMachine The base machine to supply name interners and symbol tables.
+     * @param functor        The functor to implement as a built-in.
+     * @param defaultBuiltIn The default built in, for standard compilation and interners and symbol tables.
      */
-    public Disjunction(Functor functor, BaseMachine baseMachine)
+    public Disjunction(Functor functor, DefaultBuiltIn defaultBuiltIn)
     {
-        super(functor, baseMachine);
+        super(functor, defaultBuiltIn);
     }
 
     /** {@inheritDoc} */
@@ -59,7 +59,7 @@ public class Disjunction extends BaseBuiltIn
             Functor expression = (Functor) expressions[i];
 
             Integer permVarsRemaining =
-                (Integer) baseMachine.getSymbolTable().get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
+                (Integer) defaultBuiltIn.getSymbolTable().get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
 
             // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
             BuiltIn builtIn;
@@ -70,7 +70,7 @@ public class Disjunction extends BaseBuiltIn
             }
             else
             {
-                builtIn = this;
+                builtIn = defaultBuiltIn;
             }
 
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
