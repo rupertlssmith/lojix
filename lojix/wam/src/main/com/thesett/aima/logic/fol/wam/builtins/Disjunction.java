@@ -49,6 +49,8 @@ public class Disjunction extends BaseBuiltIn
     /** {@inheritDoc} */
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody)
     {
+        System.out.println("Compiling disjunction: " + functor);
+
         SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         SizeableLinkedList<WAMInstruction> instructions;
 
@@ -78,7 +80,7 @@ public class Disjunction extends BaseBuiltIn
             result.addAll(instructions);
 
             // Call the body. The number of permanent variables remaining is specified for environment trimming.
-            instructions = builtIn.compileBodyCall(expression, false, false, false, permVarsRemaining);
+            instructions = builtIn.compileBodyCall(expression, false, false, false, 0/*permVarsRemaining*/);
             result.addAll(instructions);
         }
 
