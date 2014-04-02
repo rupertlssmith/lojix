@@ -18,15 +18,14 @@ package com.thesett.aima.logic.fol.wam.machine;
 import com.thesett.aima.logic.fol.BacktrackingResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicUnificationUnitTestBase;
-import com.thesett.aima.logic.fol.CallAndNotResolverUnitTestBase;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.ConjunctionResolverUnitTestBase;
+import com.thesett.aima.logic.fol.CutResolverUnitTestBase;
 import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
 import com.thesett.aima.logic.fol.ListResolverUnitTestBase;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.TrueAndFailResolverUnitTestBase;
-import com.thesett.aima.logic.fol.UnifyAndNonUnifyResolverUnitTestBase;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
@@ -303,6 +302,12 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new ListResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testListIterationBacktracks", engine));
 
+        // Add all tests defined in the CutResolverUnitTestBase class.
+        suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNeckCutPreventsBacktrackingOk", engine));
+        suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDeepCutPreventsBacktrackingOk", engine));
+
         // Add all tests defined in the CallAndNotResolverUnitTestBase class.
         /*suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testSimpleCallOk", engine));
@@ -324,6 +329,7 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testTrueSucceeds", engine));
         suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFailFails", engine));
+
         /*suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testDisjunctionOfTrueAndFailSucceeds", engine));*/
         suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
