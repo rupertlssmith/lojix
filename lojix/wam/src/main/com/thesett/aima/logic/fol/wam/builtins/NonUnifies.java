@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.bytecode.BaseMachine;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
@@ -37,11 +38,12 @@ public class NonUnifies extends BaseBuiltIn
     /**
      * Creates a cut built-in to implement the specified functor.
      *
-     * @param functor The functor to implement as a built-in.
+     * @param functor     The functor to implement as a built-in.
+     * @param baseMachine The base machine to supply name interners and symbol tables.
      */
-    public NonUnifies(Functor functor)
+    public NonUnifies(Functor functor, BaseMachine baseMachine)
     {
-        super(functor);
+        super(functor, baseMachine);
     }
 
     /** {@inheritDoc} */

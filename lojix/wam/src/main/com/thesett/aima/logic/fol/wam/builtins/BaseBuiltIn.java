@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.bytecode.BaseMachine;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
@@ -30,14 +31,20 @@ import com.thesett.common.util.SizeableLinkedList;
  */
 public abstract class BaseBuiltIn extends BuiltInFunctor
 {
+    /** Holds the base machine, which is used to supply name interners and symbol tables. */
+    protected final BaseMachine baseMachine;
+
     /**
      * Creates the base built in on the specified functor.
      *
-     * @param functor The functor to create a built-in for.
+     * @param functor     The functor to create a built-in for.
+     * @param baseMachine The base machine to supply name interners and symbol tables.
      */
-    protected BaseBuiltIn(Functor functor)
+    protected BaseBuiltIn(Functor functor, BaseMachine baseMachine)
     {
         super(functor);
+
+        this.baseMachine = baseMachine;
     }
 
     /** {@inheritDoc} */

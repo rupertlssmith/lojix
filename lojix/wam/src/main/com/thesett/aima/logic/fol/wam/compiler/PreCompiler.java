@@ -90,7 +90,7 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
      */
     private void substituteBuiltIns(Clause clause)
     {
-        BuiltInTransform builtInTransform = new BuiltInTransform(interner);
+        BuiltInTransform builtInTransform = new BuiltInTransform(this);
 
         if (clause.getBody() != null)
         {

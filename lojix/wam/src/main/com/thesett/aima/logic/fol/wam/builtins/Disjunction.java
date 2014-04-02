@@ -16,6 +16,9 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import static com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler.SYMKEY_PERM_VARS_REMAINING;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
@@ -35,17 +38,51 @@ public class Disjunction extends BaseBuiltIn
     /**
      * Creates a cut built-in to implement the specified functor.
      *
-     * @param functor The functor to implement as a built-in.
+     * @param functor     The functor to implement as a built-in.
+     * @param baseMachine The base machine to supply name interners and symbol tables.
      */
-    public Disjunction(Functor functor)
+    public Disjunction(Functor functor, BaseMachine baseMachine)
     {
-        super(functor);
+        super(functor, baseMachine);
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody)
     {
-        return new SizeableLinkedList<WAMInstruction>();
+        SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
+        SizeableLinkedList<WAMInstruction> instructions;
+
+        Term[] expressions = functor.getArguments();
+
+        for (int i = 0; i < expressions.length; i++)
+        {
+            Functor expression = (Functor) expressions[i];
+
+            Integer permVarsRemaining =
+                (Integer) baseMachine.getSymbolTable().get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
+
+            // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
+            BuiltIn builtIn;
+
+            if (expression instanceof BuiltIn)
+            {
+                builtIn = (BuiltIn) expression;
+            }
+            else
+            {
+                builtIn = this;
+            }
+
+            // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
+            instructions = builtIn.compileBodyArguments(expression, false);
+            result.addAll(instructions);
+
+            // Call the body. The number of permanent variables remaining is specified for environment trimming.
+            instructions = builtIn.compileBodyCall(expression, false, false, false, permVarsRemaining);
+            result.addAll(instructions);
+        }
+
+        return result;
     }
 
     /** {@inheritDoc} */

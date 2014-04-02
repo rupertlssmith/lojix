@@ -178,7 +178,7 @@ public class InstructionCompiler extends DefaultBuiltIn
     public static final String SYMKEY_ALLOCATION = "allocation";
 
     /** The symbol table key for the number of permanent variables remaining. */
-    protected static final String SYMKEY_PERM_VARS_REMAINING = "perm_vars_remaining";
+    public static final String SYMKEY_PERM_VARS_REMAINING = "perm_vars_remaining";
 
     /** The symbol table key for variable occurrence counts. */
     public static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
