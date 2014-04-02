@@ -4,6 +4,8 @@
 
 =(X, X).
 
+\=(X, Y) :- \+(X = Y).
+
 not(X) :- call(X),!,fail.
 not(X).
 

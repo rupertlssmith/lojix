@@ -25,6 +25,7 @@ import com.thesett.aima.logic.fol.ListResolverUnitTestBase;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.TrueAndFailResolverUnitTestBase;
+import com.thesett.aima.logic.fol.UnifyAndNonUnifyResolverUnitTestBase;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
@@ -337,7 +338,7 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testConjunctionOfTruesSucceeds", engine));
 
         // Add all the tests defined in the UnifyAndNonUnifyResolverUnitTestBase class.
-        /*suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+        suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testAtomsUnifyOk", engine));
         suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testNonMatchingAtomsFailUnify", engine));
@@ -400,7 +401,7 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testEqualStringsUnifyOk", engine));
         suite.addTest(new UnifyAndNonUnifyResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testNonEqualStringsFailToUnify", engine));*/
+                "testNonEqualStringsFailToUnify", engine));
 
         // Add all the tests defined in this class.
 
