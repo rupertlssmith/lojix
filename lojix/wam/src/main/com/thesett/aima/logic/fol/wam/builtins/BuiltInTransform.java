@@ -58,8 +58,8 @@ public class BuiltInTransform implements Function<Functor, Functor>
         builtIns.put(new FunctorName("true", 0), True.class);
         builtIns.put(new FunctorName("fail", 0), Fail.class);
         builtIns.put(new FunctorName("!", 0), Cut.class);
-        builtIns.put(new FunctorName("=", 2), Unifies.class);
-        builtIns.put(new FunctorName("\\=", 2), NonUnifies.class);
+        /*builtIns.put(new FunctorName("=", 2), Unifies.class);
+        builtIns.put(new FunctorName("\\=", 2), NonUnifies.class);*/
         builtIns.put(new FunctorName(";", 2), Disjunction.class);
         builtIns.put(new FunctorName("call", 1), Call.class);
         /*builtIns.put(new FunctorName("is", 2), Is.class);
