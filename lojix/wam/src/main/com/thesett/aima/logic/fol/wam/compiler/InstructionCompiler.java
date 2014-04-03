@@ -1061,5 +1061,4 @@ public class InstructionCompiler extends DefaultBuiltIn
             super.visit(variable);
         }
     }
-
 }

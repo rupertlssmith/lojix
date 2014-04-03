@@ -22,6 +22,7 @@ import com.thesett.aima.logic.fol.TermTraverser;
 import com.thesett.aima.logic.fol.TermVisitor;
 import com.thesett.aima.search.QueueBasedSearchMethod;
 import com.thesett.aima.search.util.Searches;
+import com.thesett.common.util.logic.UnaryPredicate;
 
 /**
  * TermWalker combines together a {@link QueueBasedSearchMethod}, a {@link com.thesett.aima.logic.fol.TermTraverser} and
@@ -43,13 +44,16 @@ import com.thesett.aima.search.util.Searches;
 public class TermWalker
 {
     /** Holds the search that order the walk. */
-    QueueBasedSearchMethod<Term, Term> search;
+    private final QueueBasedSearchMethod<Term, Term> search;
 
     /** Holds the traverser to expand selected nodes with context. */
-    TermTraverser traverser;
+    private final TermTraverser traverser;
 
     /** Holds the visitor to apply to every goal node discovered by the search. */
-    TermVisitor visitor;
+    private final TermVisitor visitor;
+
+    /** Holds an optional goal predicate. */
+    private UnaryPredicate<Term> goalPredicate;
 
     /**
      * Creates a term walker using the specified search, traverser and visitor.
@@ -66,6 +70,16 @@ public class TermWalker
     }
 
     /**
+     * Sets up a goal predicate to be applied on the underlying queue based search method.
+     *
+     * @param goalPredicate The predicate that evaluates search states to check if they are goals.
+     */
+    public void setGoalPredicate(UnaryPredicate<Term> goalPredicate)
+    {
+        this.goalPredicate = goalPredicate;
+    }
+
+    /**
      * Walks over the supplied term.
      *
      * @param term The term to walk over.
@@ -77,6 +91,12 @@ public class TermWalker
 
         // Create a fresh search starting from the term.
         search.reset();
+
+        if (goalPredicate != null)
+        {
+            search.setGoalPredicate(goalPredicate);
+        }
+
         search.addStartState(term);
 
         Iterator<Term> treeWalker = Searches.allSolutions(search);

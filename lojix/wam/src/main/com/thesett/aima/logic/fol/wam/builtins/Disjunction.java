@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.wam.DisjAndConjWalk;
 import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import static com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler.SYMKEY_PERM_VARS_REMAINING;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
@@ -50,6 +51,9 @@ public class Disjunction extends BaseBuiltIn
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody)
     {
         System.out.println("Compiling disjunction: " + functor);
+
+        DisjAndConjWalk walk = new DisjAndConjWalk();
+        walk.testWalk(functor);
 
         SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         SizeableLinkedList<WAMInstruction> instructions;
