@@ -19,8 +19,12 @@ import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.LogicCompilerObserver;
 import com.thesett.aima.logic.fol.Sentence;
+import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.TermVisitor;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.compiler.TermWalker;
+import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.builtins.BuiltInTransform;
 import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.util.doublemaps.SymbolTable;
@@ -99,12 +103,23 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
     {
         BuiltInTransform builtInTransform = new BuiltInTransform(defaultBuiltIn);
 
+        TermWalker walk = TermWalkers.conjunctionAndDisjunctionOpSymbolWalker(new MyTermVisitor());
+        walk.walk(clause);
+
         if (clause.getBody() != null)
         {
             for (int i = 0; i < clause.getBody().length; i++)
             {
                 clause.getBody()[i] = builtInTransform.apply(clause.getBody()[i]);
             }
+        }
+    }
+
+    private static class MyTermVisitor implements TermVisitor
+    {
+        public void visit(Term term)
+        {
+            System.out.println("Visiting: " + term);
         }
     }
 }
