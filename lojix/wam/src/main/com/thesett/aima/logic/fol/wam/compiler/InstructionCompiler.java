@@ -30,7 +30,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.thesett.aima.logic.fol.AllTermsVisitor;
-import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.DelegatingAllTermsVisitor;
 import com.thesett.aima.logic.fol.Functor;
@@ -42,7 +41,6 @@ import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.TermUtils;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
@@ -1064,159 +1062,4 @@ public class InstructionCompiler extends DefaultBuiltIn
         }
     }
 
-    /**
-     * PositionAndOccurrenceVisitor visits a clause to gather information about the positions in which components of the
-     * clause appear.
-     *
-     * <p/>For variables, the following information is gathered:
-     *
-     * <ol>
-     * <li>A count of the number of times the variable occurs in the clause (singleton detection).</li>
-     * <li>A flag indicating that variable only ever appears in non-argument positions.</li>
-     * <li>The last functor body in the clause in which a variable appears, provided it only does so in argument
-     * position.</li>
-     * </ol>
-     *
-     * <p/>For constants, the following information is gathered:
-     *
-     * <ol>
-     * <li>A flag indicating the constant only ever appears in non-argument positions.</li>
-     * </ol>
-     */
-    public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
-    {
-        /** Holds the current top-level body functor. <tt>null</tt> when traversing the head. */
-        private Functor topLevelBodyFunctor;
-
-        /** Holds a set of all constants encountered. */
-        private Map<Integer, List<SymbolKey>> constants = new HashMap<Integer, List<SymbolKey>>();
-
-        /** Holds a set of all constants found to be in argument positions. */
-        private Set<Integer> argumentConstants = new HashSet<Integer>();
-
-        /**
-         * Creates a positional visitor.
-         *
-         * @param interner    The name interner.
-         * @param symbolTable The compiler symbol table.
-         * @param traverser   The positional context traverser.
-         */
-        public PositionAndOccurrenceVisitor(VariableAndFunctorInterner interner,
-            SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
-        {
-            super(interner, symbolTable, traverser);
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * <p/>Counts variable occurrences and detects if the variable ever appears in an argument position.
-         */
-        protected void enterVariable(Variable variable)
-        {
-            // Initialize the count to one or add one to an existing count.
-            Integer count = (Integer) symbolTable.get(variable.getSymbolKey(), SYMKEY_VAR_OCCURRENCE_COUNT);
-            count = (count == null) ? 1 : (count + 1);
-            symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_OCCURRENCE_COUNT, count);
-
-            /*log.fine("Variable " + variable + " has count " + count + ".");*/
-
-            // Get the nonArgPosition flag, or initialize it to true.
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG);
-            nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
-
-            // Clear the nonArgPosition flag is the variable occurs in an argument position.
-            nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
-            symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
-
-            /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
-
-            // If in an argument position, record the parent body functor against the variable, as potentially being
-            // the last one it occurs in, in a purely argument position.
-            // If not in an argument position, clear any parent functor recorded against the variable, as this current
-            // last position of occurrence is not purely in argument position.
-            if (inTopLevelFunctor())
-            {
-                symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, topLevelBodyFunctor);
-            }
-            else
-            {
-                symbolTable.put(variable.getSymbolKey(), SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         *
-         * <p/>Checks if a constant ever appears in an argument position.
-         *
-         * <p/>Sets the 'inTopLevelFunctor' flag, whenever the traversal is directly within a top-level functors
-         * arguments. This is set at the end, so that subsequent calls to this will pick up the state of this flag at
-         * the point immediately below a top-level functor.
-         */
-        protected void enterFunctor(Functor functor)
-        {
-            /*log.fine("Functor: " + functor.getName() + " <- " + symbolTable.getSymbolKey(functor.getName()));*/
-
-            // Only check position of occurrence for constants.
-            if (functor.getArity() == 0)
-            {
-                // Add the constant to the set of all constants encountered.
-                List<SymbolKey> constantSymKeys = constants.get(functor.getName());
-
-                if (constantSymKeys == null)
-                {
-                    constantSymKeys = new LinkedList<SymbolKey>();
-                    constants.put(functor.getName(), constantSymKeys);
-                }
-
-                constantSymKeys.add(functor.getSymbolKey());
-
-                // If the constant ever appears in argument position, take note of this.
-                if (inTopLevelFunctor())
-                {
-                    argumentConstants.add(functor.getName());
-                }
-            }
-
-            // Keep track of the current top-level body functor.
-            if (traverser.isTopLevel() && !traverser.isInHead())
-            {
-                topLevelBodyFunctor = functor;
-            }
-        }
-
-        /**
-         * Upon leaving the clause, sets the nonArgPosition flag on any constants that need it.
-         *
-         * @param clause The clause being left.
-         */
-        protected void leaveClause(Clause clause)
-        {
-            // Remove the set of constants appearing in argument positions, from the set of all constants, to derive
-            // the set of constants that appear in non-argument positions only.
-            constants.keySet().removeAll(argumentConstants);
-
-            // Set the nonArgPosition flag on all symbol keys for all constants that only appear in non-arg positions.
-            for (List<SymbolKey> symbolKeys : constants.values())
-            {
-                for (SymbolKey symbolKey : symbolKeys)
-                {
-                    symbolTable.put(symbolKey, SYMKEY_FUNCTOR_NON_ARG, true);
-                }
-            }
-        }
-
-        /**
-         * Checks if the current position is immediately within a top-level functor.
-         *
-         * @return <tt>true</tt> iff the current position is immediately within a top-level functor.
-         */
-        private boolean inTopLevelFunctor()
-        {
-            PositionalContext parentContext = traverser.getParentContext();
-
-            return (parentContext != null) ? parentContext.isTopLevel() : false;
-        }
-    }
 }
