@@ -19,6 +19,8 @@ import com.thesett.aima.logic.fol.OpSymbol;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.TermVisitor;
 import com.thesett.aima.logic.fol.compiler.DefaultTraverser;
+import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
 import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;
 import com.thesett.common.util.logic.UnaryPredicate;
@@ -63,13 +65,45 @@ public class TermWalkers
     /**
      * Provides a depth first walk over a term, visiting only when a goal predicate matches.
      *
-     * @param  visitor The visitor to apply to each term.
+     * @param  unaryPredicate The goal predicate.
+     * @param  visitor        The visitor to apply to each term.
      *
      * @return A depth first walk over a term, visiting only when a goal predicate matches.
      */
     public static TermWalker goalWalker(UnaryPredicate<Term> unaryPredicate, TermVisitor visitor)
     {
         TermWalker walker = simpleWalker(visitor);
+        walker.setGoalPredicate(unaryPredicate);
+
+        return walker;
+    }
+
+    /**
+     * Provides a positional depth first walk over a term.
+     *
+     * @param  visitor The visitor to apply to each term, and to notify of positional context changes.
+     *
+     * @return A positional depth first walk over a term.
+     */
+    public static TermWalker positionalWalker(TermVisitor visitor)
+    {
+        PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
+        positionalTraverser.setContextChangeVisitor(visitor);
+
+        return new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser, visitor);
+    }
+
+    /**
+     * Provides a positional depth first walk over a term, visiting only when a goal predicate matches.
+     *
+     * @param  unaryPredicate The goal predicate.
+     * @param  visitor        The visitor to apply to each term.
+     *
+     * @return A positional depth first walk over a term, visiting only when a goal predicate matches.
+     */
+    public static TermWalker positionalGoalWalker(UnaryPredicate<Term> unaryPredicate, TermVisitor visitor)
+    {
+        TermWalker walker = positionalWalker(visitor);
         walker.setGoalPredicate(unaryPredicate);
 
         return walker;
