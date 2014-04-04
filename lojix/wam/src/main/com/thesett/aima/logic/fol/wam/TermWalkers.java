@@ -56,9 +56,8 @@ public class TermWalkers
     public static TermWalker simpleWalker(TermVisitor visitor)
     {
         DepthFirstBacktrackingSearch<Term, Term> search = new DepthFirstBacktrackingSearch<Term, Term>();
-        TermWalker walker = new TermWalker(search, new DefaultTraverser(), visitor);
 
-        return walker;
+        return new TermWalker(search, new DefaultTraverser(), visitor);
     }
 
     /**
