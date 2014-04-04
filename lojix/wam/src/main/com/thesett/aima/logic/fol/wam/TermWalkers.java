@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
 import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;
+import com.thesett.aima.search.util.uninformed.PostFixSearch;
 import com.thesett.common.util.logic.UnaryPredicate;
 
 /**
@@ -112,14 +113,31 @@ public class TermWalkers
     }
 
     /**
+     * Provides a positional postfix walk over a term.
+     *
+     * @param  visitor The visitor to apply to each term, and to notify of positional context changes.
+     *
+     * @return A positional postfix first walk over a term.
+     */
+    public static TermWalker positionalPostfixWalker(PositionalTermVisitor visitor)
+    {
+        PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
+        positionalTraverser.setContextChangeVisitor(visitor);
+        visitor.setPositionalTraverser(positionalTraverser);
+
+        return new TermWalker(new PostFixSearch<Term, Term>(), positionalTraverser, visitor);
+    }
+
+    /**
      * Provides a walk over a term, that finds all conjunction and disjunction operators.
      *
      * @param  visitor The visitor to apply to each term.
      *
      * @return A walk over a term, that finds all conjunction and disjunction operators.
      */
-    public static TermWalker conjunctionAndDisjunctionOpSymbolWalker(TermVisitor visitor)
+    public static TermWalker conjunctionAndDisjunctionOpSymbolWalker(PositionalTermVisitor visitor)
     {
+        //return positionalGoalWalker(CONJ_DISJ_OP_SYMBOL_PREDICATE, visitor);
         return goalWalker(CONJ_DISJ_OP_SYMBOL_PREDICATE, visitor);
     }
 }

@@ -18,11 +18,12 @@ package com.thesett.aima.logic.fol.wam.compiler;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.LogicCompilerObserver;
+import com.thesett.aima.logic.fol.PositionalTermVisitor;
 import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.TermVisitor;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
 import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.builtins.BuiltInTransform;
@@ -103,7 +104,7 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
     {
         BuiltInTransform builtInTransform = new BuiltInTransform(defaultBuiltIn);
 
-        TermWalker walk = TermWalkers.conjunctionAndDisjunctionOpSymbolWalker(new MyTermVisitor());
+        TermWalker walk = TermWalkers.positionalPostfixWalker(new MyTermVisitor());
         walk.walk(clause);
 
         if (clause.getBody() != null)
@@ -115,11 +116,18 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
         }
     }
 
-    private static class MyTermVisitor implements TermVisitor
+    private static class MyTermVisitor implements PositionalTermVisitor
     {
+        private PositionalTermTraverser traverser;
+
         public void visit(Term term)
         {
             System.out.println("Visiting: " + term);
+        }
+
+        public void setPositionalTraverser(PositionalTermTraverser traverser)
+        {
+            this.traverser = traverser;
         }
     }
 }
