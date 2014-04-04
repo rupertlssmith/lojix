@@ -19,7 +19,7 @@ import com.thesett.aima.search.Traversable;
 import com.thesett.aima.search.spi.QueueSearchAlgorithm;
 
 /**
- * Implements a post-fix ordered search. This is done by passing a FIFO stack to the {@link BaseQueueSearch}
+ * Implements a post-fix ordered search. This is done by passing a FIFO stack to the {@link QueueSearchAlgorithm}
  * implementation in combination with the 'peek at head' flag. The use of the peek at head flag ensures that successor
  * nodes are examined before parent nodes, resulting in a post-fix ordering of the search.
  *
