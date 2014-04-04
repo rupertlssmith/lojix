@@ -24,38 +24,35 @@ import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;
 import com.thesett.common.util.logic.UnaryPredicate;
 
 /**
+ * TermWalkers is a helper class that supplies various types of searched over {@link Term} abstract syntax trees.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Provide a walkers over term trees. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public class TermWalkers
 {
+    /** Predicate matching conjunction and disjunction operators. */
     public static final UnaryPredicate<Term> CONJ_DISJ_OP_SYMBOL_PREDICATE =
         new UnaryPredicate<Term>()
         {
             public boolean evaluate(Term term)
             {
-                if (term instanceof OpSymbol)
-                {
-                    OpSymbol opSymbol = (OpSymbol) term;
-
-                    if (opSymbol.getTextName().equals(";"))
-                    {
-                        return true;
-                    }
-                    else if (opSymbol.getTextName().equals(","))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return (term instanceof OpSymbol) &&
+                    (((OpSymbol) term).getTextName().equals(";") || ((OpSymbol) term).getTextName().equals(","));
             }
         };
 
+    /**
+     * Provides a simple depth first walk over a term.
+     *
+     * @param  visitor The visitor to apply to each term.
+     *
+     * @return A simple depth first walk over a term.
+     */
     public static TermWalker simpleWalker(TermVisitor visitor)
     {
         DepthFirstBacktrackingSearch<Term, Term> search = new DepthFirstBacktrackingSearch<Term, Term>();
@@ -64,6 +61,13 @@ public class TermWalkers
         return walker;
     }
 
+    /**
+     * Provides a depth first walk over a term, visiting only when a goal predicate matches.
+     *
+     * @param  visitor The visitor to apply to each term.
+     *
+     * @return A depth first walk over a term, visiting only when a goal predicate matches.
+     */
     public static TermWalker goalWalker(UnaryPredicate<Term> unaryPredicate, TermVisitor visitor)
     {
         TermWalker walker = simpleWalker(visitor);
@@ -72,6 +76,13 @@ public class TermWalkers
         return walker;
     }
 
+    /**
+     * Provides a walk over a term, that finds all conjunction and disjunction operators.
+     *
+     * @param  visitor The visitor to apply to each term.
+     *
+     * @return A walk over a term, that finds all conjunction and disjunction operators.
+     */
     public static TermWalker conjunctionAndDisjunctionOpSymbolWalker(TermVisitor visitor)
     {
         return goalWalker(CONJ_DISJ_OP_SYMBOL_PREDICATE, visitor);
