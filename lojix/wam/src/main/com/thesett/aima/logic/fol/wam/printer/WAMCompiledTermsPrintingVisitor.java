@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.AllTermsVisitor;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.DelegatingAllTermsVisitor;
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.PositionalTermVisitor;
 import com.thesett.aima.logic.fol.Predicate;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
@@ -49,7 +50,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * @author Rupert Smith
  */
-public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTermsVisitor implements PrintingTable
+public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTermsVisitor implements PrintingTable,
+    PositionalTermVisitor
 {
     /** The positional traverser used to traverse the clause being printed. */
     protected PositionalTermTraverser traverser;
@@ -98,12 +100,7 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
 
     }
 
-    /**
-     * Sets up the symbol key traverser used to traverse the clause being printed, and providing a positional context as
-     * it does so.
-     *
-     * @param traverser The symbol key traverser traverser used to traverse the clause being printed.
-     */
+    /** {@inheritDoc} */
     public void setPositionalTraverser(PositionalTermTraverser traverser)
     {
         this.traverser = traverser;
