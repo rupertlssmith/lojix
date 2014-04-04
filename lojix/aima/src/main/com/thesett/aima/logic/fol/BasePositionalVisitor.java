@@ -50,7 +50,7 @@ public class BasePositionalVisitor implements AllTermsVisitor
      *
      * @param interner    The name interner.
      * @param symbolTable The compiler symbol table.
-     * @param traverser   The ppositional context traverser.
+     * @param traverser   The positional context traverser.
      */
     public BasePositionalVisitor(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
         PositionalTermTraverser traverser)
