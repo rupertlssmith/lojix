@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam;
 
 import com.thesett.aima.logic.fol.OpSymbol;
+import com.thesett.aima.logic.fol.PositionalTermVisitor;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.TermVisitor;
 import com.thesett.aima.logic.fol.compiler.DefaultTraverser;
@@ -85,10 +86,11 @@ public class TermWalkers
      *
      * @return A positional depth first walk over a term.
      */
-    public static TermWalker positionalWalker(TermVisitor visitor)
+    public static TermWalker positionalWalker(PositionalTermVisitor visitor)
     {
         PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
         positionalTraverser.setContextChangeVisitor(visitor);
+        visitor.setPositionalTraverser(positionalTraverser);
 
         return new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser, visitor);
     }
@@ -101,7 +103,7 @@ public class TermWalkers
      *
      * @return A positional depth first walk over a term, visiting only when a goal predicate matches.
      */
-    public static TermWalker positionalGoalWalker(UnaryPredicate<Term> unaryPredicate, TermVisitor visitor)
+    public static TermWalker positionalGoalWalker(UnaryPredicate<Term> unaryPredicate, PositionalTermVisitor visitor)
     {
         TermWalker walker = positionalWalker(visitor);
         walker.setGoalPredicate(unaryPredicate);

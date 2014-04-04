@@ -45,6 +45,7 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
+import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.builtins.BuiltIn;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
@@ -965,14 +966,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         WAMCompiledTermsPrintingVisitor displayVisitor =
             new WAMCompiledPredicatePrintingVisitor(interner, symbolTable, result);
 
-        PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
-        displayVisitor.setPositionalTraverser(positionalTraverser);
-        positionalTraverser.setContextChangeVisitor(displayVisitor);
-
-        TermWalker walker =
-            new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser, displayVisitor);
-
-        walker.walk(predicate);
+        TermWalkers.positionalWalker(displayVisitor).walk(predicate);
 
         log.fine(result.toString());
     }
@@ -990,14 +984,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         WAMCompiledTermsPrintingVisitor displayVisitor =
             new WAMCompiledQueryPrintingVisitor(interner, symbolTable, result);
 
-        PositionalTermTraverser positionalTraverser = new PositionalTermTraverserImpl();
-        displayVisitor.setPositionalTraverser(positionalTraverser);
-        positionalTraverser.setContextChangeVisitor(displayVisitor);
-
-        TermWalker walker =
-            new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), positionalTraverser, displayVisitor);
-
-        walker.walk(query);
+        TermWalkers.positionalWalker(displayVisitor).walk(query);
 
         log.fine(result.toString());
     }
