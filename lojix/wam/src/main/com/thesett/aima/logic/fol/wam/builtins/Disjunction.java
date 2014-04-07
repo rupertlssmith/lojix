@@ -16,12 +16,12 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.Term;
-import com.thesett.aima.logic.fol.compiler.TermWalker;
-import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import static com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler.SYMKEY_PERM_VARS_REMAINING;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
+import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
 import com.thesett.common.util.SizeableLinkedList;
 
 /**
@@ -62,6 +62,34 @@ public class Disjunction extends BaseBuiltIn
         {
             Functor expression = (Functor) expressions[i];
 
+            boolean isFirst = i == 0;
+            boolean isLast = i == (expressions.length - 1);
+            boolean multiple = expressions.length > 1;
+
+            // Labels the entry point to each choice point.
+            //FunctorName fn = interner.getFunctorFunctorName(clause.getHead());
+            FunctorName fn = new FunctorName("test", 0);
+            WAMLabel entryLabel = new WAMLabel(fn, i);
+
+            // Label for the entry point to the next choice point, to backtrack to.
+            WAMLabel retryLabel = new WAMLabel(fn, i + 1);
+
+            if (isFirst && !isLast && multiple)
+            {
+                // try me else.
+                result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TryMeElse, retryLabel));
+            }
+            else if (!isFirst && !isLast && multiple)
+            {
+                // retry me else.
+                result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.RetryMeElse, retryLabel));
+            }
+            else if (isLast && multiple)
+            {
+                // trust me.
+                result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TrustMe));
+            }
+
             Integer permVarsRemaining =
                 (Integer) defaultBuiltIn.getSymbolTable().get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
 
@@ -82,7 +110,7 @@ public class Disjunction extends BaseBuiltIn
             result.addAll(instructions);
 
             // Call the body. The number of permanent variables remaining is specified for environment trimming.
-            instructions = builtIn.compileBodyCall(expression, false, false, false, 0/*permVarsRemaining*/);
+            instructions = builtIn.compileBodyCall(expression, false, false, false, 0 /*permVarsRemaining*/);
             result.addAll(instructions);
         }
 
