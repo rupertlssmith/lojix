@@ -271,10 +271,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
-        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testVariableTakesBindingsFromManyDisjunctionPaths", engine));
+                "testVariableTakesBindingsFromManyDisjunctionPaths", engine));*/
 
         // Add all tests defined in the BacktrackingResolverUnitTestBase class.
         suite.addTest(new BacktrackingResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(

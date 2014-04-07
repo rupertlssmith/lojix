@@ -47,6 +47,20 @@ public abstract class BaseBuiltIn extends BuiltInFunctor
         this.defaultBuiltIn = defaultBuiltIn;
     }
 
+    /**
+     * Creates the base built in on the specified functor.
+     *
+     * @param functor        The functor to create a built-in for.
+     * @param defaultBuiltIn The default built in, for standard compilation and interners and symbol tables.
+     * @param isTopLevel     <tt>true</tt> iff this is a top-level functor within a clause.
+     */
+    protected BaseBuiltIn(Functor functor, DefaultBuiltIn defaultBuiltIn, boolean isTopLevel)
+    {
+        super(functor, isTopLevel);
+
+        this.defaultBuiltIn = defaultBuiltIn;
+    }
+
     /** {@inheritDoc} */
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
     {

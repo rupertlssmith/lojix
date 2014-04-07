@@ -33,6 +33,9 @@ public abstract class BuiltInFunctor extends Functor implements BuiltIn
     /** Holds the functor that this is a built in for. */
     protected Functor functor;
 
+    /** Flag to indicate if this functor is top-level within a clause body. */
+    protected final boolean isTopLevel;
+
     /**
      * Creates a built-in for the specified functor.
      *
@@ -42,6 +45,20 @@ public abstract class BuiltInFunctor extends Functor implements BuiltIn
     {
         super(functor.getName(), functor.getArguments());
         this.functor = functor;
+        this.isTopLevel = false;
+    }
+
+    /**
+     * Creates a built-in for the specified functor.
+     *
+     * @param functor    The functor to create a built-in for.
+     * @param isTopLevel <tt>true</tt> iff this is a top-level functor within a clause.
+     */
+    public BuiltInFunctor(Functor functor, boolean isTopLevel)
+    {
+        super(functor.getName(), functor.getArguments());
+        this.functor = functor;
+        this.isTopLevel = isTopLevel;
     }
 
     /**
