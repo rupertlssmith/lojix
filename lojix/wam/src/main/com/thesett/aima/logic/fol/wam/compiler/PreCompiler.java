@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.compiler;
 
 import com.thesett.aima.logic.fol.Clause;
+import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.LogicCompilerObserver;
 import com.thesett.aima.logic.fol.PositionalTermVisitor;
@@ -43,11 +44,17 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  */
 public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Clause, Clause>
 {
+    /** Used for debugging. */
+    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(PreCompiler.class.getName());
+
     /** Holds the compiler output observer. */
     private LogicCompilerObserver<Clause, Clause> observer;
 
     /** Holds the default built in, for standard compilation and interners and symbol tables. */
     private final DefaultBuiltIn defaultBuiltIn;
+
+    /** Holds the built in transformation. */
+    private BuiltInTransform builtInTransform;
 
     /**
      * Creates a new PreCompiler.
@@ -62,6 +69,7 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
         super(symbolTable, interner);
 
         this.defaultBuiltIn = defaultBuiltIn;
+        builtInTransform = new BuiltInTransform(defaultBuiltIn);
     }
 
     /** {@inheritDoc} */
@@ -102,29 +110,58 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
      */
     private void substituteBuiltIns(Clause clause)
     {
-        BuiltInTransform builtInTransform = new BuiltInTransform(defaultBuiltIn);
-
-        TermWalker walk = TermWalkers.positionalPostfixWalker(new MyTermVisitor());
+        TermWalker walk = TermWalkers.positionalWalker(new BuiltInTransformVisitor());
         walk.walk(clause);
-
-        if (clause.getBody() != null)
-        {
-            for (int i = 0; i < clause.getBody().length; i++)
-            {
-                clause.getBody()[i] = builtInTransform.apply(clause.getBody()[i]);
-            }
-        }
     }
 
-    private static class MyTermVisitor implements PositionalTermVisitor
+    /**
+     * BuiltInTransformVisitor should be used with a depth first positional walk over a term to compile. On leaving each
+     * term, that is in a post-fix order, if the term is a functor, the built-in transformation function is applied to
+     * it. If the built-in applies a transformation to a functor, it is substituted within its parent for the built-in.
+     */
+    private class BuiltInTransformVisitor implements PositionalTermVisitor
     {
+        /** The position traverser used to provide psotional context to the search. */
         private PositionalTermTraverser traverser;
 
+        /**
+         * Applies the built-in transform during a post-fix visit of a term.
+         *
+         * @param term The term to visit.
+         */
         public void visit(Term term)
         {
-            System.out.println("Visiting: " + term);
+            int pos = traverser.getPosition();
+
+            if (traverser.isLeavingContext() && !traverser.isInHead() && (pos >= 0) && (term instanceof Functor))
+            {
+                Functor functor = (Functor) term;
+                Functor transformed = builtInTransform.apply(functor);
+
+                if (functor != transformed)
+                {
+                    log.fine("Transformed: " + functor + " to " + transformed.getClass());
+
+                    Term parentTerm = traverser.getParentContext().getTerm();
+
+                    if (parentTerm instanceof Clause)
+                    {
+                        Clause parentClause = (Clause) parentTerm;
+
+                        parentClause.getBody()[pos] = transformed;
+
+                    }
+                    else if (parentTerm instanceof Functor)
+                    {
+                        Functor parentFunctor = (Functor) parentTerm;
+
+                        parentFunctor.getArguments()[pos] = transformed;
+                    }
+                }
+            }
         }
 
+        /** {@inheritDoc} */
         public void setPositionalTraverser(PositionalTermTraverser traverser)
         {
             this.traverser = traverser;

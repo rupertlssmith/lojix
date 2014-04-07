@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.compiler;
 
+import com.thesett.aima.logic.fol.Term;
+
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -45,6 +47,20 @@ public interface PositionalContext
      * @return <tt>true</tt> if the current term is the last functor in a clause body.
      */
     boolean isLastBodyFunctor();
+
+    /**
+     * Provides the term at this position.
+     *
+     * @return The term at this position.
+     */
+    Term getTerm();
+
+    /**
+     * Provides the 'position' of the current term within its parent.
+     *
+     * @return The 'position' of the current term within its parent.
+     */
+    int getPosition();
 
     /**
      * Gets the positional context of the parent position to this one.
