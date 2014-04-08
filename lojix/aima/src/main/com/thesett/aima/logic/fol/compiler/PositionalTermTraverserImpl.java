@@ -188,25 +188,26 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
     /** {@inheritDoc} */
     protected StackableOperator createHeadOperator(Functor head, Clause clause)
     {
-        return new PositionalContextOperator(head, -1, true, true, false, null);
+        return new PositionalContextOperator(head, -1, true, true, false, null, contextStack.peek());
     }
 
     /** {@inheritDoc} */
     protected StackableOperator createBodyOperator(Functor bodyFunctor, int pos, Functor[] body, Clause clause)
     {
-        return new PositionalContextOperator(bodyFunctor, pos, true, false, pos == (body.length - 1), null);
+        return new PositionalContextOperator(bodyFunctor, pos, true, false, pos == (body.length - 1), null,
+            contextStack.peek());
     }
 
     /** {@inheritDoc} */
     protected StackableOperator createTermOperator(Term argument, int pos, Functor functor)
     {
-        return new PositionalContextOperator(argument, pos, false, null, false, null);
+        return new PositionalContextOperator(argument, pos, false, null, false, null, contextStack.peek());
     }
 
     /** {@inheritDoc} */
     protected StackableOperator createClauseOperator(Clause bodyClause, int pos, Clause[] body, Predicate predicate)
     {
-        return new PositionalContextOperator(bodyClause, pos, false, false, false, null);
+        return new PositionalContextOperator(bodyClause, pos, false, false, false, null, contextStack.peek());
     }
 
     /**
@@ -219,7 +220,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
         if (!initialContextCreated)
         {
             PositionalContextOperator initialContext =
-                new PositionalContextOperator(term, -1, false, false, false, null);
+                new PositionalContextOperator(term, -1, false, false, false, null, contextStack.peek());
             contextStack.offer(initialContext);
             term.setReversable(initialContext);
             initialContextCreated = true;
@@ -265,7 +266,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
          * @param delegate        A stackable operator to chain onto this one.
          */
         private PositionalContextOperator(Term term, Integer position, Boolean topLevel, Boolean inHead,
-            Boolean lastBodyFunctor, StackableOperator delegate)
+            Boolean lastBodyFunctor, StackableOperator delegate, PositionalContextOperator parent)
         {
             super(delegate);
 
@@ -283,7 +284,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
 
             if (previousContext == null)
             {
-                previousContext = new PositionalContextOperator(null, -1, false, false, false, null);
+                previousContext = new PositionalContextOperator(null, -1, false, false, false, null, previousContext);
             }
 
             topLevel = (topLevel == null) ? previousContext.topLevel : topLevel;
