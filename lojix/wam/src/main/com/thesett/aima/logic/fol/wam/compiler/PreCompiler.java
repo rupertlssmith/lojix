@@ -183,8 +183,8 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
         }
 
         /**
-         * They are considered top-level when they appear at the top-level within a clause, or directly beneath a parent
-         * conjunction or disjunction that is considered to be top-level.
+         * Functors are considered top-level when they appear at the top-level within a clause, or directly beneath a
+         * parent conjunction or disjunction that is considered to be top-level.
          */
         public boolean isTopLevel()
         {

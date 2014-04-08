@@ -255,6 +255,9 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
         /** The state of the last functor flag to establish. */
         Boolean lastBodyFunctor;
 
+        /** The parent context if any. */
+        PositionalContextOperator parent;
+
         /**
          * Creates a context establishing operation.
          *
@@ -275,6 +278,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
             this.topLevel = topLevel;
             this.inHead = inHead;
             this.lastBodyFunctor = lastBodyFunctor;
+            this.parent = parent;
         }
 
         /** {@inheritDoc} */
@@ -352,14 +356,7 @@ public class PositionalTermTraverserImpl extends BasicTraverser implements Posit
         /** {@inheritDoc} */
         public PositionalContext getParentContext()
         {
-            if (contextStack.size() > 1)
-            {
-                return contextStack.get(1);
-            }
-            else
-            {
-                return null;
-            }
+            return parent;
         }
     }
 }

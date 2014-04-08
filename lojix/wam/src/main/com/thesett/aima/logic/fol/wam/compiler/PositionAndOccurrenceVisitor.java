@@ -25,10 +25,12 @@ import java.util.Set;
 import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
+import com.thesett.aima.logic.fol.wam.builtins.BuiltInFunctor;
 import com.thesett.common.util.doublemaps.SymbolKey;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
@@ -102,8 +104,8 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
             (Boolean) symbolTable.get(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_NON_ARG);
         nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
-        // Clear the nonArgPosition flag is the variable occurs in an argument position.
-        nonArgPositionOnly = inTopLevelFunctor() ? false : nonArgPositionOnly;
+        // Clear the nonArgPosition flag if the variable occurs in an argument position.
+        nonArgPositionOnly = inTopLevelFunctor(traverser) ? false : nonArgPositionOnly;
         symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
 
         /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
@@ -112,7 +114,7 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
         // the last one it occurs in, in a purely argument position.
         // If not in an argument position, clear any parent functor recorded against the variable, as this current
         // last position of occurrence is not purely in argument position.
-        if (inTopLevelFunctor())
+        if (inTopLevelFunctor(traverser))
         {
             symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_LAST_ARG_FUNCTOR,
                 topLevelBodyFunctor);
@@ -151,14 +153,14 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
             constantSymKeys.add(functor.getSymbolKey());
 
             // If the constant ever appears in argument position, take note of this.
-            if (inTopLevelFunctor())
+            if (inTopLevelFunctor(traverser))
             {
                 argumentConstants.add(functor.getName());
             }
         }
 
         // Keep track of the current top-level body functor.
-        if (traverser.isTopLevel() && !traverser.isInHead())
+        if (isTopLevel(traverser) && !traverser.isInHead())
         {
             topLevelBodyFunctor = functor;
         }
@@ -188,12 +190,48 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     /**
      * Checks if the current position is immediately within a top-level functor.
      *
+     * @param  context The position context to examine.
+     *
      * @return <tt>true</tt> iff the current position is immediately within a top-level functor.
      */
-    private boolean inTopLevelFunctor()
+    private boolean inTopLevelFunctor(PositionalContext context)
     {
-        PositionalContext parentContext = traverser.getParentContext();
+        PositionalContext parentContext = context.getParentContext();
 
-        return (parentContext != null) ? parentContext.isTopLevel() : false;
+        return isTopLevel(parentContext);
+    }
+
+    /**
+     * Functors are considered top-level when they appear at the top-level within a clause, or directly beneath a parent
+     * conjunction or disjunction that is considered to be top-level.
+     *
+     * @param  context The position context to examine.
+     *
+     * @return <tt>true</tt> iff the current position is a top-level functor.
+     */
+    private boolean isTopLevel(PositionalContext context)
+    {
+        if ((context != null) && context.isTopLevel())
+        {
+            return true;
+        }
+        else
+        {
+            PositionalContext parentContext = context.getParentContext();
+
+            if (parentContext != null)
+            {
+                Term parentTerm = parentContext.getTerm();
+
+                if (parentTerm instanceof BuiltInFunctor)
+                {
+                    BuiltInFunctor parentBuiltIn = (BuiltInFunctor) parentTerm;
+
+                    return parentBuiltIn.isTopLevel();
+                }
+            }
+        }
+
+        return false;
     }
 }
