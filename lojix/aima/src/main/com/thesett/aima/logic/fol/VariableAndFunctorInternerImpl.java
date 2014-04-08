@@ -83,7 +83,14 @@ public class VariableAndFunctorInternerImpl implements VariableAndFunctorInterne
     /** {@inheritDoc} */
     public String getVariableName(int name)
     {
-        return getVariableInterner().getAttributeFromInt(name).getValue();
+        if (name < 0)
+        {
+            return "_G" + (-name);
+        }
+        else
+        {
+            return getVariableInterner().getAttributeFromInt(name).getValue();
+        }
     }
 
     /** {@inheritDoc} */

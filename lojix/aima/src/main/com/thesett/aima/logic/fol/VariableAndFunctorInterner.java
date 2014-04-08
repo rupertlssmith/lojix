@@ -76,9 +76,9 @@ public interface VariableAndFunctorInterner
     int internVariableName(String name);
 
     /**
-     * De-internes a variable name as a string from its intered form.
+     * De-interns a variable name as a string from its interned form.
      *
-     * @param  name The interened variable name.
+     * @param  name The interned variable name.
      *
      * @return The variable name as a string.
      */
