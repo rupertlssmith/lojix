@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.WAMInstructionSet.Cut;
@@ -48,7 +49,8 @@ public class Cut extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         return new SizeableLinkedList<WAMInstruction>();
     }

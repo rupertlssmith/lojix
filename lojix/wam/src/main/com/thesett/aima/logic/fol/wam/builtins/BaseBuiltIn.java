@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
@@ -48,7 +49,8 @@ public abstract class BaseBuiltIn extends BuiltInFunctor
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         return null;
     }

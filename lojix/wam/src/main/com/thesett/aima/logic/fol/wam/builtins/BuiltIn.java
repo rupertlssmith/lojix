@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.SizeableLinkedList;
 
@@ -35,12 +36,19 @@ public interface BuiltIn
     /**
      * Compiles the arguments to a call to a body of a clause into an instruction listing in WAM.
      *
+     * <p/>The name of the clause containing the body, and the position of the body within this clause are passed as
+     * arguments, mainly so that these coordinates can be used to help make any labels generated within the generated
+     * code unique.
+     *
      * @param  expression  The clause body to compile.
      * @param  isFirstBody <tt>true</tt> iff this is the first body of a program clause.
+     * @param  clauseName  The name of the clause within which this body appears.
+     * @param  bodyNumber  The body position within the containing clause.
      *
      * @return A listing of the instructions for the clause body in the WAM instruction set.
      */
-    SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody);
+    SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber);
 
     /**
      * Compiles a call to a body of a clause into an instruction listing in WAM.

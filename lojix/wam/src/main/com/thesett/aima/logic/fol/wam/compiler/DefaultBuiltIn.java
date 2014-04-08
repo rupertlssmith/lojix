@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.FunctorTermPredicate;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
@@ -111,7 +112,8 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         // Used to build up the results in.
         SizeableLinkedList<WAMInstruction> instructions = new SizeableLinkedList<WAMInstruction>();

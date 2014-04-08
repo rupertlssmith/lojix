@@ -45,7 +45,8 @@ public class Fail extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         return new SizeableLinkedList<WAMInstruction>();
     }

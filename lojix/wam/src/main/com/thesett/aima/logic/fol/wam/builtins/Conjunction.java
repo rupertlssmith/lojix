@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.wam.compiler.DefaultBuiltIn;
 import static com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler.SYMKEY_PERM_VARS_REMAINING;
@@ -47,7 +48,8 @@ public class Conjunction extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         System.out.println("Compiling conjunction.");
 
@@ -76,7 +78,7 @@ public class Conjunction extends BaseBuiltIn
             }
 
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
-            instructions = builtIn.compileBodyArguments(expression, false);
+            instructions = builtIn.compileBodyArguments(expression, false, clauseName, bodyNumber);
             result.addAll(instructions);
 
             // Call the body. The number of permanent variables remaining is specified for environment trimming.

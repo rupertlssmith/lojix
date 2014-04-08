@@ -49,7 +49,8 @@ public class Disjunction extends BaseBuiltIn
     }
 
     /** {@inheritDoc} */
-    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody)
+    public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody,
+        FunctorName clauseName, int bodyNumber)
     {
         System.out.println("Compiling disjunction.");
 
@@ -58,8 +59,14 @@ public class Disjunction extends BaseBuiltIn
 
         Term[] expressions = functor.getArguments();
 
-        FunctorName cfn = new FunctorName("continue", 0);
-        WAMLabel continueLabel = new WAMLabel(cfn, 0);
+        // Invent some unique names for choice points within a clause.
+        clauseName = new FunctorName(clauseName.getName() + "_" + bodyNumber, 0);
+
+        FunctorName choicePointRootName = new FunctorName(clauseName.getName() + "_choice", 0);
+        FunctorName continuationPointName = new FunctorName(clauseName.getName() + "_cont", 0);
+
+        // Labels the continuation point to jump to, when a choice point succeeds.
+        WAMLabel continueLabel = new WAMLabel(continuationPointName, 0);
 
         for (int i = 0; i < expressions.length; i++)
         {
@@ -69,12 +76,10 @@ public class Disjunction extends BaseBuiltIn
             boolean isLast = i == (expressions.length - 1);
 
             // Labels the entry point to each choice point.
-            //FunctorName fn = interner.getFunctorFunctorName(clause.getHead());
-            FunctorName fn = new FunctorName("test", 0);
-            WAMLabel entryLabel = new WAMLabel(fn, i);
+            WAMLabel entryLabel = new WAMLabel(choicePointRootName, i);
 
             // Label for the entry point to the next choice point, to backtrack to.
-            WAMLabel retryLabel = new WAMLabel(fn, i + 1);
+            WAMLabel retryLabel = new WAMLabel(choicePointRootName, i + 1);
 
             if (isFirst && !isLast)
             {
@@ -108,7 +113,7 @@ public class Disjunction extends BaseBuiltIn
             }
 
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
-            instructions = builtIn.compileBodyArguments(expression, false);
+            instructions = builtIn.compileBodyArguments(expression, false, clauseName, i);
             result.addAll(instructions);
 
             // Call the body. The number of permanent variables remaining is specified for environment trimming.

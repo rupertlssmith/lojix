@@ -461,7 +461,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                 }
 
                 // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule.
-                instructions = builtIn.compileBodyArguments(expression, i == 0);
+                instructions = builtIn.compileBodyArguments(expression, i == 0, fn, i);
                 result.addInstructions(expression, instructions);
 
                 // Call the body. The number of permanent variables remaining is specified for environment trimming.
@@ -542,6 +542,9 @@ public class InstructionCompiler extends DefaultBuiltIn
         // Compile all of the conjunctive parts of the body of the clause, if there are any.
         Functor[] expressions = clause.getBody();
 
+        // The current query does not have a name, so invent one for it.
+        FunctorName fn = new FunctorName("top_query", 0);
+
         for (int i = 0; i < expressions.length; i++)
         {
             Functor expression = expressions[i];
@@ -561,7 +564,7 @@ public class InstructionCompiler extends DefaultBuiltIn
 
             // The 'isFirstBody' parameter is only set to true, when this is the first functor of a rule, which it
             // never is for a query.
-            SizeableLinkedList<WAMInstruction> instructions = builtIn.compileBodyArguments(expression, false);
+            SizeableLinkedList<WAMInstruction> instructions = builtIn.compileBodyArguments(expression, false, fn, i);
             result.addInstructions(expression, instructions);
 
             // Queries are never chain rules, and as all permanent variables are preserved, bodies are never called
