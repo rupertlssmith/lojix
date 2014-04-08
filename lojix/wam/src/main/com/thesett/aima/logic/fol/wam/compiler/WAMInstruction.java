@@ -930,6 +930,12 @@ public class WAMInstruction implements Sizeable
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
             {
+                int ip = codeBuf.position();
+
+                // Resolve any forward reference to the label for this instruction.
+                int label = machine.internFunctorName(instruction.label);
+                machine.resolveLabelPoint(label, ip);
+
                 codeBuf.put(code);
             }
 

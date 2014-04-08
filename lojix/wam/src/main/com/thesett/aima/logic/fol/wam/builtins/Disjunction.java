@@ -58,6 +58,9 @@ public class Disjunction extends BaseBuiltIn
 
         Term[] expressions = functor.getArguments();
 
+        FunctorName cfn = new FunctorName("continue", 0);
+        WAMLabel continueLabel = new WAMLabel(cfn, 0);
+
         for (int i = 0; i < expressions.length; i++)
         {
             Functor expression = (Functor) expressions[i];
@@ -112,7 +115,12 @@ public class Disjunction extends BaseBuiltIn
             // Call the body. The number of permanent variables remaining is specified for environment trimming.
             instructions = builtIn.compileBodyCall(expression, false, false, false, 0 /*permVarsRemaining*/);
             result.addAll(instructions);
+
+            // Proceed if this disjunctive branch completes successfully.
+            result.add(new WAMInstruction(null, WAMInstruction.WAMInstructionSet.Continue, continueLabel));
         }
+
+        result.add(new WAMInstruction(continueLabel, WAMInstruction.WAMInstructionSet.NoOp));
 
         return result;
     }

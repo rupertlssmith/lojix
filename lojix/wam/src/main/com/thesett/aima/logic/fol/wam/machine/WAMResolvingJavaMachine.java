@@ -1581,6 +1581,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab L
                 int l = codeBuffer.getInt(ip + 1);
 
+                trace.fine(ip + ": CONTINUE " + l);
+
                 ip = l;
 
                 break;
@@ -1588,6 +1590,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case WAMInstruction.NO_OP:
             {
+                trace.fine(ip + ": NO_OP");
+
                 ip += 1;
 
                 break;
