@@ -1576,6 +1576,23 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
+            case WAMInstruction.CONTINUE:
+            {
+                // grab L
+                int l = codeBuffer.getInt(ip + 1);
+
+                ip = l;
+
+                break;
+            }
+
+            case WAMInstruction.NO_OP:
+            {
+                ip += 1;
+
+                break;
+            }
+
             // suspend on success:
             case SUSPEND:
             {

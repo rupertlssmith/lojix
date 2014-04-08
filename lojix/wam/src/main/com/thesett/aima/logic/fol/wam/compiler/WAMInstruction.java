@@ -164,6 +164,12 @@ public class WAMInstruction implements Sizeable
     /** The full deep cut instruction. */
     public static final byte CUT = 0x27;
 
+    /** The continue instruction for inline choice points. */
+    public static final byte CONTINUE = 0x28;
+
+    /** The no-op instruction, useful for inserting labels into the code. */
+    public static final byte NO_OP = 0x29;
+
     /** The suspend operation. */
     public static final byte SUSPEND = 0x7f;
 
@@ -889,6 +895,49 @@ public class WAMInstruction implements Sizeable
             public String toString(WAMInstruction instruction)
             {
                 return pretty + " " + instruction.reg1;
+            }
+        },
+
+        /** The continue instruction for inline choice points. */
+        Continue(CONTINUE, "continue", 5)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+                throws LinkageException
+            {
+                int ip = codeBuf.position();
+
+                // Intern the forward label, and write it out as zero initially, for later completion.
+                int toCall = machine.internFunctorName(instruction.target1);
+                machine.reserveReferenceToLabel(toCall, ip + 1);
+
+                codeBuf.put(code);
+                codeBuf.putInt(0);
+            }
+
+            /** {@inheritDoc} */
+            public String toString(WAMInstruction instruction)
+            {
+                WAMLabel label = instruction.target1;
+
+                return pretty + " " + ((label != null) ? label.toPrettyString() : "");
+            }
+        },
+
+        /** The no-op instruction, useful for inserting labels into the code. */
+        NoOp(NO_OP, "no_op", 1)
+        {
+            /** {@inheritDoc} */
+            public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
+            {
+                codeBuf.put(code);
+            }
+
+            /** {@inheritDoc} */
+
+            public String toString(WAMInstruction instruction)
+            {
+                return pretty;
             }
         },
 
