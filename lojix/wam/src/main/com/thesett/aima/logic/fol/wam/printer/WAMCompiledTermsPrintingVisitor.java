@@ -208,8 +208,9 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
     {
         printers.add(new SourceClausePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new PositionPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new LabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
+        printers.add(new UnoptimizedLabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new UnoptimizedByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
+        printers.add(new LabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
         printers.add(new ByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
     }
 
