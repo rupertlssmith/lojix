@@ -52,8 +52,6 @@ public class Disjunction extends BaseBuiltIn
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody,
         FunctorName clauseName, int bodyNumber)
     {
-        System.out.println("Compiling disjunction.");
-
         SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         SizeableLinkedList<WAMInstruction> instructions;
 
@@ -62,8 +60,8 @@ public class Disjunction extends BaseBuiltIn
         // Invent some unique names for choice points within a clause.
         clauseName = new FunctorName(clauseName.getName() + "_" + bodyNumber, 0);
 
-        FunctorName choicePointRootName = new FunctorName(clauseName.getName() + "_choice", 0);
-        FunctorName continuationPointName = new FunctorName(clauseName.getName() + "_cont", 0);
+        FunctorName choicePointRootName = new FunctorName(clauseName.getName() + "_ilc", 0);
+        FunctorName continuationPointName = new FunctorName(clauseName.getName() + "_cnt", 0);
 
         // Labels the continuation point to jump to, when a choice point succeeds.
         WAMLabel continueLabel = new WAMLabel(continuationPointName, 0);

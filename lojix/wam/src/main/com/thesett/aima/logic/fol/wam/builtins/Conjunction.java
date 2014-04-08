@@ -51,8 +51,6 @@ public class Conjunction extends BaseBuiltIn
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor functor, boolean isFirstBody,
         FunctorName clauseName, int bodyNumber)
     {
-        System.out.println("Compiling conjunction.");
-
         SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         SizeableLinkedList<WAMInstruction> instructions;
 

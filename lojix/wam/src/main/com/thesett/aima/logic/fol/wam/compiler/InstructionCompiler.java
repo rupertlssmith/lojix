@@ -543,7 +543,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         Functor[] expressions = clause.getBody();
 
         // The current query does not have a name, so invent one for it.
-        FunctorName fn = new FunctorName("top_query", 0);
+        FunctorName fn = new FunctorName("tq", 0);
 
         for (int i = 0; i < expressions.length; i++)
         {
