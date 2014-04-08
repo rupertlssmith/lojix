@@ -48,8 +48,9 @@ public class UnoptimizedLabelPrinter extends BasePrinter
      * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
-    public UnoptimizedLabelPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-                                   PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+    public UnoptimizedLabelPrinter(VariableAndFunctorInterner interner,
+        SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
+        DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, grid, table);
     }
