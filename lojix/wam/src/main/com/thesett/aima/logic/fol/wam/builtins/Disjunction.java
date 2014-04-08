@@ -66,6 +66,9 @@ public class Disjunction extends BaseBuiltIn
         // Labels the continuation point to jump to, when a choice point succeeds.
         WAMLabel continueLabel = new WAMLabel(continuationPointName, 0);
 
+        // Do a loop over the children of this disjunction, and any child disjunctions encountered. This could be a
+        // search? or just recursive exploration. I think it will need to be a DFS.
+
         for (int i = 0; i < expressions.length; i++)
         {
             Functor expression = (Functor) expressions[i];
