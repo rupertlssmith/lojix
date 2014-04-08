@@ -67,7 +67,6 @@ public class Disjunction extends BaseBuiltIn
 
             boolean isFirst = i == 0;
             boolean isLast = i == (expressions.length - 1);
-            boolean multiple = expressions.length > 1;
 
             // Labels the entry point to each choice point.
             //FunctorName fn = interner.getFunctorFunctorName(clause.getHead());
@@ -77,17 +76,17 @@ public class Disjunction extends BaseBuiltIn
             // Label for the entry point to the next choice point, to backtrack to.
             WAMLabel retryLabel = new WAMLabel(fn, i + 1);
 
-            if (isFirst && !isLast && multiple)
+            if (isFirst && !isLast)
             {
                 // try me else.
                 result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TryMeElse, retryLabel));
             }
-            else if (!isFirst && !isLast && multiple)
+            else if (!isFirst && !isLast)
             {
                 // retry me else.
                 result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.RetryMeElse, retryLabel));
             }
-            else if (isLast && multiple)
+            else if (isLast)
             {
                 // trust me.
                 result.add(new WAMInstruction(entryLabel, WAMInstruction.WAMInstructionSet.TrustMe));
@@ -116,8 +115,12 @@ public class Disjunction extends BaseBuiltIn
             instructions = builtIn.compileBodyCall(expression, false, false, false, 0 /*permVarsRemaining*/);
             result.addAll(instructions);
 
-            // Proceed if this disjunctive branch completes successfully.
-            result.add(new WAMInstruction(null, WAMInstruction.WAMInstructionSet.Continue, continueLabel));
+            // Proceed if this disjunctive branch completes successfully. This does not need to be done for the last
+            // branch, as the continuation point will come immediately after.
+            if (!isLast)
+            {
+                result.add(new WAMInstruction(null, WAMInstruction.WAMInstructionSet.Continue, continueLabel));
+            }
         }
 
         result.add(new WAMInstruction(continueLabel, WAMInstruction.WAMInstructionSet.NoOp));
