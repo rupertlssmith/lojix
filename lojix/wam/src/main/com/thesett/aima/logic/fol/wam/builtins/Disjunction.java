@@ -146,8 +146,8 @@ public class Disjunction extends BaseBuiltIn
 
     /**
      * Gathers the functors to compile as a sequence of choice points. These exist as the arguments to disjunctions
-     * recursively below the supplied disjunction. They are flattened into a list, by performing a left-to-right infix
-     * traversal over the disjunctions, and adding their arguments into a list.
+     * recursively below the supplied disjunction. They are flattened into a list, by performing a left-to-right depth
+     * first traversal over the disjunctions, and adding their arguments into a list.
      *
      * @param disjunction The disjunction to explore the arguments of.
      * @param expressions The flattened list of disjunctive terms.
