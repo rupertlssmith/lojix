@@ -271,7 +271,6 @@ public class InstructionCompiler extends DefaultBuiltIn
 
         // Extract the clause to compile from the parsed sentence.
         Clause clause = sentence.getT();
-        initialiseSymbolTable(clause);
 
         // Classify the sentence to compile by the different sentence types in the language.
         if (clause.isQuery())
@@ -592,24 +591,6 @@ public class InstructionCompiler extends DefaultBuiltIn
         }
 
         return result;
-    }
-
-    /**
-     * Runs a symbol key traverser over the clause to be compiled, to ensure that all of its terms and sub-terms have
-     * their symbol keys initialised.
-     *
-     * @param clause The clause to initialise the symbol keys of.
-     */
-    private void initialiseSymbolTable(Clause clause)
-    {
-        // Run the symbol key traverser over the clause, to ensure that all terms have their symbol keys correctly
-        // set up.
-        SymbolKeyTraverser symbolKeyTraverser = new SymbolKeyTraverser(interner, symbolTable, null);
-        symbolKeyTraverser.setContextChangeVisitor(symbolKeyTraverser);
-
-        TermWalker symWalker =
-            new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), symbolKeyTraverser, symbolKeyTraverser);
-        symWalker.walk(clause);
     }
 
     /**

@@ -19,11 +19,14 @@ import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.LogicCompilerObserver;
 import com.thesett.aima.logic.fol.Sentence;
+import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.bytecode.BaseMachine;
+import com.thesett.aima.logic.fol.compiler.SymbolKeyTraverser;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
 import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.builtins.BuiltInTransform;
+import com.thesett.aima.search.util.backtracking.DepthFirstBacktrackingSearch;
 import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
@@ -74,6 +77,8 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
         Clause clause = sentence.getT();
 
         substituteBuiltIns(clause);
+        initialiseSymbolTable(clause);
+        topLevelCheck(clause);
 
         if (observer != null)
         {
@@ -108,6 +113,35 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
     {
         TermWalker walk =
             TermWalkers.positionalWalker(new BuiltInTransformVisitor(interner, symbolTable, null, builtInTransform));
+        walk.walk(clause);
+    }
+
+    /**
+     * Runs a symbol key traverser over the clause to be compiled, to ensure that all of its terms and sub-terms have
+     * their symbol keys initialised.
+     *
+     * @param clause The clause to initialise the symbol keys of.
+     */
+    private void initialiseSymbolTable(Clause clause)
+    {
+        // Run the symbol key traverser over the clause, to ensure that all terms have their symbol keys correctly
+        // set up.
+        SymbolKeyTraverser symbolKeyTraverser = new SymbolKeyTraverser(interner, symbolTable, null);
+        symbolKeyTraverser.setContextChangeVisitor(symbolKeyTraverser);
+
+        TermWalker symWalker =
+            new TermWalker(new DepthFirstBacktrackingSearch<Term, Term>(), symbolKeyTraverser, symbolKeyTraverser);
+        symWalker.walk(clause);
+    }
+
+    /**
+     * Finds and marks all functors within the clause that are considered to be top-level.
+     *
+     * @param clause The clause to top-level check.
+     */
+    private void topLevelCheck(Clause clause)
+    {
+        TermWalker walk = TermWalkers.positionalWalker(new TopLevelCheckVisitor(interner, symbolTable, null));
         walk.walk(clause);
     }
 }

@@ -30,6 +30,13 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * BuiltInTransformVisitor should be used with a depth first positional walk over a term to compile. On leaving each
  * term, that is in a post-fix order, if the term is a functor, the built-in transformation function is applied to it.
  * If the built-in applies a transformation to a functor, it is substituted within its parent for the built-in.
+ *
+ * <pre><p/><table id="crc"><caption>CRC Card</caption>
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Substitute built-ins into a term to compile.</td></tr>
+ * </table></pre>
+ *
+ * @author Rupert Smith
  */
 class BuiltInTransformVisitor extends BasePositionalVisitor implements PositionalTermVisitor
 {

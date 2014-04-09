@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.builtins;
 
 import com.thesett.aima.logic.fol.Functor;
+import com.thesett.common.util.doublemaps.SymbolKey;
 
 /**
  * BuiltInFunctor provides a mapping from a functor onto its built-in implementation, in the case of built-in predicates
@@ -33,9 +34,6 @@ public abstract class BuiltInFunctor extends Functor implements BuiltIn
     /** Holds the functor that this is a built in for. */
     protected Functor functor;
 
-    /** Flag to indicate if this functor is top-level within a clause body. */
-    private boolean isTopLevel;
-
     /**
      * Creates a built-in for the specified functor.
      *
@@ -45,7 +43,6 @@ public abstract class BuiltInFunctor extends Functor implements BuiltIn
     {
         super(functor.getName(), functor.getArguments());
         this.functor = functor;
-        this.isTopLevel = false;
     }
 
     /**
@@ -58,23 +55,15 @@ public abstract class BuiltInFunctor extends Functor implements BuiltIn
         return functor;
     }
 
-    /**
-     * Indicates whether this functor is top-level within a clause body.
-     *
-     * @return <tt>true</tt> iff this functor is top-level within a clause body.
-     */
-    public boolean isTopLevel()
+    /** {@inheritDoc} */
+    public void setSymbolKey(SymbolKey key)
     {
-        return isTopLevel;
+        functor.setSymbolKey(key);
     }
 
-    /**
-     * Sets the top-level indicator on this built-in functor.
-     *
-     * @param topLevel <tt>true</tt> iff this functor is top-level within a clause body.
-     */
-    public void setTopLevel(boolean topLevel)
+    /** {@inheritDoc} */
+    public SymbolKey getSymbolKey()
     {
-        isTopLevel = topLevel;
+        return functor.getSymbolKey();
     }
 }

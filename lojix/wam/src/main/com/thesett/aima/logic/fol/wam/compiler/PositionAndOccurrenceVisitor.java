@@ -30,7 +30,6 @@ import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalContext;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
-import com.thesett.aima.logic.fol.wam.builtins.BuiltInFunctor;
 import com.thesett.common.util.doublemaps.SymbolKey;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
@@ -92,8 +91,7 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     protected void enterVariable(Variable variable)
     {
         // Initialize the count to one or add one to an existing count.
-        Integer count =
-            (Integer) symbolTable.get(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT);
+        Integer count = (Integer) symbolTable.get(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT);
         count = (count == null) ? 1 : (count + 1);
         symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT, count);
 
@@ -116,8 +114,7 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
         // last position of occurrence is not purely in argument position.
         if (inTopLevelFunctor(traverser))
         {
-            symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR,
-                topLevelBodyFunctor);
+            symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR, topLevelBodyFunctor);
         }
         else
         {
@@ -198,7 +195,7 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
         PositionalContext parentContext = context.getParentContext();
 
-        return isTopLevel(parentContext);
+        return parentContext.isTopLevel() || isTopLevel(parentContext);
     }
 
     /**
@@ -211,27 +208,17 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
      */
     private boolean isTopLevel(PositionalContext context)
     {
-        if ((context != null) && context.isTopLevel())
+        Term term = context.getTerm();
+
+        if (term.getSymbolKey() == null)
         {
-            return true;
-        }
-        else
-        {
-            PositionalContext parentContext = context.getParentContext();
+            System.out.println("Null symbol key.");
 
-            if (parentContext != null)
-            {
-                Term parentTerm = parentContext.getTerm();
-
-                if (parentTerm instanceof BuiltInFunctor)
-                {
-                    BuiltInFunctor parentBuiltIn = (BuiltInFunctor) parentTerm;
-
-                    return parentBuiltIn.isTopLevel();
-                }
-            }
+            return false;
         }
 
-        return false;
+        Boolean isTopLevel = (Boolean) symbolTable.get(term.getSymbolKey(), SymbolTableKeys.SYMKEY_TOP_LEVEL_FUNCTOR);
+
+        return (isTopLevel == null) ? false : isTopLevel;
     }
 }
