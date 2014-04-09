@@ -224,7 +224,7 @@ public class L3ResolvingNativeMachineTestBase extends TestCase
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
-                "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
+                "testFailsOnNoMatchingOutOfSeveralPossibleFunctors", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(

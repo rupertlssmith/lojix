@@ -155,7 +155,7 @@ public class PrologResolverTest extends TestCase
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(
-                "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
+                "testFailsOnNoMatchingOutOfSeveralPossibleFunctors", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(

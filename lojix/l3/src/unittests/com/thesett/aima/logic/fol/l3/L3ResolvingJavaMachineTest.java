@@ -230,7 +230,7 @@ public class L3ResolvingJavaMachineTest extends TestCase
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
-                "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
+                "testFailsOnNoMatchingOutOfSeveralPossibleFunctors", engine));
         // These make use of the built-in '=' operators, so won't work unless that is defined.
         /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, L3CompiledPredicate, L3CompiledQuery>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));

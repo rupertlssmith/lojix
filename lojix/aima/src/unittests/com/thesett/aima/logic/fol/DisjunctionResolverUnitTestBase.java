@@ -58,7 +58,7 @@ public class DisjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     }
 
     /** Check that resolution against two possible matching functors fails when none are matched. */
-    public void testFailsOnNoMatchingOutOfServeralPossibleFunctors() throws Exception
+    public void testFailsOnNoMatchingOutOfSeveralPossibleFunctors() throws Exception
     {
         resolveAndAssertFailure(new String[] { "f(x)", "f(y)" }, "?- f(z)");
     }

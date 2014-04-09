@@ -224,7 +224,7 @@ public class WAMResolvingNativeMachineTestBase extends TestCase
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testResolvesOnSecondMatchingPossibleFunctor", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testFailsOnNoMatchingOutOfServeralPossibleFunctors", engine));
+                "testFailsOnNoMatchingOutOfSeveralPossibleFunctors", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
