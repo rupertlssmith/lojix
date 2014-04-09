@@ -135,7 +135,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
         {
             Term nextOutermostArg = expression.getArgument(j);
             int allocation =
-                (Integer) symbolTable.get(nextOutermostArg.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION);
+                (Integer) symbolTable.get(nextOutermostArg.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
 
             byte addrMode = (byte) ((allocation & 0xff00) >> 8);
             byte address = (byte) (allocation & 0xff);
@@ -157,7 +157,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                 instructions.add(instruction);
 
                 // Record the way in which this variable was introduced into the clause.
-                symbolTable.put(nextOutermostArg.getSymbolKey(), InstructionCompiler.SYMKEY_VARIABLE_INTRO,
+                symbolTable.put(nextOutermostArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO,
                     VarIntroduction.Put);
             }
             else if (nextOutermostArg.isVar())
@@ -176,7 +176,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                             (byte) (j & 0xff));
                     instructions.add(instruction);
 
-                    symbolTable.put(nextOutermostArg.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_LAST_ARG_FUNCTOR,
+                    symbolTable.put(nextOutermostArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR,
                         null);
                 }
                 else
@@ -211,7 +211,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                 {
                     Functor nextFunctor = (Functor) treeWalker.next();
                     allocation =
-                        (Integer) symbolTable.get(nextFunctor.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION);
+                        (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
                     addrMode = (byte) ((allocation & 0xff00) >> 8);
                     address = (byte) (allocation & 0xff);
 
@@ -231,7 +231,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                     {
                         Term nextArg = nextFunctor.getArgument(i);
                         allocation =
-                            (Integer) symbolTable.get(nextArg.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION);
+                            (Integer) symbolTable.get(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
                         addrMode = (byte) ((allocation & 0xff00) >> 8);
                         address = (byte) (allocation & 0xff);
 
@@ -246,7 +246,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                                 new WAMInstruction(WAMInstruction.WAMInstructionSet.SetVar, addrMode, address, nextArg);
 
                             // Record the way in which this variable was introduced into the clause.
-                            symbolTable.put(nextArg.getSymbolKey(), InstructionCompiler.SYMKEY_VARIABLE_INTRO,
+                            symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO,
                                 VarIntroduction.Set);
                         }
                         else
@@ -254,7 +254,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                             // Check if the variable is 'local' and use a local instruction on the first occurrence.
                             VarIntroduction introduction =
                                 (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(),
-                                    InstructionCompiler.SYMKEY_VARIABLE_INTRO);
+                                    SymbolTableKeys.SYMKEY_VARIABLE_INTRO);
 
                             if (isLocalVariable(introduction, addrMode))
                             {
@@ -265,7 +265,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                                     new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address,
                                         nextArg);
 
-                                symbolTable.put(nextArg.getSymbolKey(), InstructionCompiler.SYMKEY_VARIABLE_INTRO,
+                                symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO,
                                     null);
                             }
                             else
@@ -318,7 +318,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                 /*log.fine("X" + lastAllocatedRegister + " = " + interner.getFunctorFunctorName((Functor) term));*/
 
                 int allocation = (reg & 0xff) | (WAMInstruction.REG_ADDR << 8);
-                symbolTable.put(term.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION, allocation);
+                symbolTable.put(term.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION, allocation);
             }
         }
     }
@@ -349,10 +349,10 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
         {
             Term term = treeWalker.next();
 
-            if (symbolTable.get(term.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION) == null)
+            if (symbolTable.get(term.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION) == null)
             {
                 int allocation = (lastAllocatedTempReg++ & 0xff) | (WAMInstruction.REG_ADDR << 8);
-                symbolTable.put(term.getSymbolKey(), InstructionCompiler.SYMKEY_ALLOCATION, allocation);
+                symbolTable.put(term.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION, allocation);
             }
         }
     }
@@ -400,6 +400,6 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
      */
     private boolean isLastBodyTermInArgPositionOnly(Variable var, Functor body)
     {
-        return body == symbolTable.get(var.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_LAST_ARG_FUNCTOR);
+        return body == symbolTable.get(var.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR);
     }
 }

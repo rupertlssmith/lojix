@@ -93,20 +93,20 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
     {
         // Initialize the count to one or add one to an existing count.
         Integer count =
-            (Integer) symbolTable.get(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
+            (Integer) symbolTable.get(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT);
         count = (count == null) ? 1 : (count + 1);
-        symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_OCCURRENCE_COUNT, count);
+        symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT, count);
 
         /*log.fine("Variable " + variable + " has count " + count + ".");*/
 
         // Get the nonArgPosition flag, or initialize it to true.
         Boolean nonArgPositionOnly =
-            (Boolean) symbolTable.get(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_NON_ARG);
+            (Boolean) symbolTable.get(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_NON_ARG);
         nonArgPositionOnly = (nonArgPositionOnly == null) ? true : nonArgPositionOnly;
 
         // Clear the nonArgPosition flag if the variable occurs in an argument position.
         nonArgPositionOnly = inTopLevelFunctor(traverser) ? false : nonArgPositionOnly;
-        symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
+        symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_NON_ARG, nonArgPositionOnly);
 
         /*log.fine("Variable " + variable + " nonArgPosition is " + nonArgPositionOnly + ".");*/
 
@@ -116,12 +116,12 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
         // last position of occurrence is not purely in argument position.
         if (inTopLevelFunctor(traverser))
         {
-            symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_LAST_ARG_FUNCTOR,
+            symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR,
                 topLevelBodyFunctor);
         }
         else
         {
-            symbolTable.put(variable.getSymbolKey(), InstructionCompiler.SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
+            symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
         }
     }
 
@@ -182,7 +182,7 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
         {
             for (SymbolKey symbolKey : symbolKeys)
             {
-                symbolTable.put(symbolKey, InstructionCompiler.SYMKEY_FUNCTOR_NON_ARG, true);
+                symbolTable.put(symbolKey, SymbolTableKeys.SYMKEY_FUNCTOR_NON_ARG, true);
             }
         }
     }

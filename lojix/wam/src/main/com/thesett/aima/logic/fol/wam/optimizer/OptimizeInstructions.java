@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
+import com.thesett.aima.logic.fol.wam.compiler.SymbolTableKeys;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.WAMInstructionSet.GetConstant;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.WAMInstructionSet.GetList;
@@ -288,9 +288,9 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
         if (symbolKey != null)
         {
-            Integer count = (Integer) symbolTable.get(symbolKey, InstructionCompiler.SYMKEY_VAR_OCCURRENCE_COUNT);
-            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, InstructionCompiler.SYMKEY_VAR_NON_ARG);
-            Integer allocation = (Integer) symbolTable.get(symbolKey, InstructionCompiler.SYMKEY_ALLOCATION);
+            Integer count = (Integer) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_VAR_OCCURRENCE_COUNT);
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_VAR_NON_ARG);
+            Integer allocation = (Integer) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_ALLOCATION);
 
             boolean singleton = (count != null) && count.equals(1);
             boolean nonArgPosition = (nonArgPositionOnly != null) && TRUE.equals(nonArgPositionOnly);
@@ -321,7 +321,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
         if (symbolKey != null)
         {
             Boolean nonArgPositionOnly =
-                (Boolean) symbolTable.get(symbolKey, InstructionCompiler.SYMKEY_FUNCTOR_NON_ARG);
+                (Boolean) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_FUNCTOR_NON_ARG);
 
             if (TRUE.equals(nonArgPositionOnly))
             {

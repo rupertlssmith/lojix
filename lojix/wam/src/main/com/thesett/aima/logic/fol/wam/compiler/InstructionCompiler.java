@@ -173,33 +173,6 @@ public class InstructionCompiler extends DefaultBuiltIn
     private static final java.util.logging.Logger log =
         java.util.logging.Logger.getLogger(InstructionCompiler.class.getName());
 
-    /** The symbol table key for allocations. */
-    public static final String SYMKEY_ALLOCATION = "allocation";
-
-    /** The symbol table key for the number of permanent variables remaining. */
-    public static final String SYMKEY_PERM_VARS_REMAINING = "perm_vars_remaining";
-
-    /** The symbol table key for variable occurrence counts. */
-    public static final String SYMKEY_VAR_OCCURRENCE_COUNT = "var_occurrence_count";
-
-    /** The symbol table key for variable position of occurrence. */
-    public static final String SYMKEY_VAR_NON_ARG = "var_non_arg";
-
-    /** The symbol table key for functor position of occurrence. */
-    public static final String SYMKEY_FUNCTOR_NON_ARG = "functor_non_arg";
-
-    /** The symbol table key for variable introduction type. */
-    public static final String SYMKEY_VARIABLE_INTRO = "variable_intro";
-
-    /** The symbol table key for the last functor in which a variable occurs, if it is purely in argument position. */
-    public static final String SYMKEY_VAR_LAST_ARG_FUNCTOR = "var_last_arg_functor";
-
-    /** The symbol table key for permanent variable offset to hold a cut to choice point frame in. */
-    protected static final String SYMKEY_CLAUSE_PERM_CUT = "clause_perm_cut";
-
-    /** The symbol table key for predicate sources. */
-    protected static final String SYMKEY_PREDICATES = "source_predicates";
-
     /** Holds a list of all predicates encountered in the current scope. */
     protected Queue<SymbolKey> predicatesInScope = new LinkedList<SymbolKey>();
 
@@ -243,7 +216,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         for (SymbolKey predicateKey = predicatesInScope.poll(); predicateKey != null;
                 predicateKey = predicatesInScope.poll())
         {
-            List<Clause> clauseList = (List<Clause>) scopeTable.get(predicateKey, SYMKEY_PREDICATES);
+            List<Clause> clauseList = (List<Clause>) scopeTable.get(predicateKey, SymbolTableKeys.SYMKEY_PREDICATES);
 
             // Used to keep track of where within the predicate the current clause is.
             int size = clauseList.size();
@@ -274,11 +247,11 @@ public class InstructionCompiler extends DefaultBuiltIn
             observer.onCompilation(result);
 
             // Move up the low water mark on the predicates table.
-            symbolTable.setLowMark(predicateKey, SYMKEY_PREDICATES);
+            symbolTable.setLowMark(predicateKey, SymbolTableKeys.SYMKEY_PREDICATES);
         }
 
         // Clear up the symbol table, and bump the compilation scope up by one.
-        symbolTable.clearUpToLowMark(SYMKEY_PREDICATES);
+        symbolTable.clearUpToLowMark(SymbolTableKeys.SYMKEY_PREDICATES);
         scopeTable = null;
         scope++;
     }
@@ -316,12 +289,12 @@ public class InstructionCompiler extends DefaultBuiltIn
             // Check in the symbol table, if a compiled predicate with name matching the program clause exists, and if
             // not create it.
             SymbolKey predicateKey = scopeTable.getSymbolKey(clause.getHead().getName());
-            List<Clause> clauseList = (List<Clause>) scopeTable.get(predicateKey, SYMKEY_PREDICATES);
+            List<Clause> clauseList = (List<Clause>) scopeTable.get(predicateKey, SymbolTableKeys.SYMKEY_PREDICATES);
 
             if (clauseList == null)
             {
                 clauseList = new LinkedList<Clause>();
-                scopeTable.put(predicateKey, SYMKEY_PREDICATES, clauseList);
+                scopeTable.put(predicateKey, SymbolTableKeys.SYMKEY_PREDICATES, clauseList);
                 predicatesInScope.offer(predicateKey);
             }
 
@@ -446,7 +419,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                 boolean isFirstBody = i == 0;
 
                 Integer permVarsRemaining =
-                    (Integer) symbolTable.get(expression.getSymbolKey(), SYMKEY_PERM_VARS_REMAINING);
+                    (Integer) symbolTable.get(expression.getSymbolKey(), SymbolTableKeys.SYMKEY_PERM_VARS_REMAINING);
 
                 // Select a non-default built-in implementation to compile the functor with, if it is a built-in.
                 BuiltIn builtIn;
@@ -684,7 +657,8 @@ public class InstructionCompiler extends DefaultBuiltIn
             if (nextTerm.isFunctor())
             {
                 Functor nextFunctor = (Functor) nextTerm;
-                int allocation = (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SYMKEY_ALLOCATION);
+                int allocation =
+                    (Integer) symbolTable.get(nextFunctor.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
 
                 byte addrMode = (byte) ((allocation & 0xff00) >> 8);
                 byte address = (byte) (allocation & 0xff);
@@ -704,7 +678,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                 for (int i = 0; i < numArgs; i++)
                 {
                     Term nextArg = nextFunctor.getArgument(i);
-                    allocation = (Integer) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_ALLOCATION);
+                    allocation = (Integer) symbolTable.get(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
                     addrMode = (byte) ((allocation & 0xff00) >> 8);
                     address = (byte) (allocation & 0xff);
 
@@ -722,13 +696,15 @@ public class InstructionCompiler extends DefaultBuiltIn
                             new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyVar, addrMode, address, nextArg);
 
                         // Record the way in which this variable was introduced into the clause.
-                        symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Unify);
+                        symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO,
+                            VarIntroduction.Unify);
                     }
                     else
                     {
                         // Check if the variable is 'local' and use a local instruction on the first occurrence.
                         VarIntroduction introduction =
-                            (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO);
+                            (VarIntroduction) symbolTable.get(nextArg.getSymbolKey(),
+                                SymbolTableKeys.SYMKEY_VARIABLE_INTRO);
 
                         if (isLocalVariable(introduction, addrMode))
                         {
@@ -739,7 +715,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                                 new WAMInstruction(WAMInstruction.WAMInstructionSet.UnifyLocalVal, addrMode, address,
                                     nextArg);
 
-                            symbolTable.put(nextArg.getSymbolKey(), SYMKEY_VARIABLE_INTRO, null);
+                            symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO, null);
                         }
                         else
                         {
@@ -757,7 +733,7 @@ public class InstructionCompiler extends DefaultBuiltIn
             else if (j < numOutermostArgs)
             {
                 Variable nextVar = (Variable) nextTerm;
-                int allocation = (Integer) symbolTable.get(nextVar.getSymbolKey(), SYMKEY_ALLOCATION);
+                int allocation = (Integer) symbolTable.get(nextVar.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION);
                 byte addrMode = (byte) ((allocation & 0xff00) >> 8);
                 byte address = (byte) (allocation & 0xff);
 
@@ -776,7 +752,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                             (byte) (j & 0xff));
 
                     // Record the way in which this variable was introduced into the clause.
-                    symbolTable.put(nextVar.getSymbolKey(), SYMKEY_VARIABLE_INTRO, VarIntroduction.Get);
+                    symbolTable.put(nextVar.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO, VarIntroduction.Get);
                 }
                 else
                 {
@@ -806,8 +782,8 @@ public class InstructionCompiler extends DefaultBuiltIn
      * <p/>In addition to working out which variables are permanent, the variables are also ordered by reverse position
      * of last body of occurrence, and assigned to allocation slots in this order. The number of permanent variables
      * remaining at each body call is also calculated and recorded against the body functor in the symbol table using
-     * column {@link #SYMKEY_PERM_VARS_REMAINING}. This allocation ordering of the variables and the count of the number
-     * remaining are used to implement environment trimming.
+     * column {@link SymbolTableKeys#SYMKEY_PERM_VARS_REMAINING}. This allocation ordering of the variables and the
+     * count of the number remaining are used to implement environment trimming.
      *
      * @param clause The clause to allocate registers for.
      */
@@ -896,7 +872,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                 log.fine("Variable " + variable + " is permanent, count = " + count);
 
                 int allocation = (numPermanentVars++ & (0xff)) | (WAMInstruction.STACK_ADDR << 8);
-                symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+                symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION, allocation);
 
                 permVarsRemainingCount[body]++;
             }
@@ -908,7 +884,8 @@ public class InstructionCompiler extends DefaultBuiltIn
 
         for (int i = permVarsRemainingCount.length - 1; i >= 0; i--)
         {
-            symbolTable.put(clause.getBody()[i].getSymbolKey(), SYMKEY_PERM_VARS_REMAINING, permVarsRemaining);
+            symbolTable.put(clause.getBody()[i].getSymbolKey(), SymbolTableKeys.SYMKEY_PERM_VARS_REMAINING,
+                permVarsRemaining);
             permVarsRemaining += permVarsRemainingCount[i];
         }
     }
@@ -1028,14 +1005,14 @@ public class InstructionCompiler extends DefaultBuiltIn
          */
         public void visit(Variable variable)
         {
-            if (symbolTable.get(variable.getSymbolKey(), SYMKEY_ALLOCATION) == null)
+            if (symbolTable.get(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION) == null)
             {
                 if (variable.isAnonymous())
                 {
                     log.fine("Query variable " + variable + " is temporary.");
 
                     int allocation = (lastAllocatedTempReg++ & (0xff)) | (WAMInstruction.REG_ADDR << 8);
-                    symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+                    symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION, allocation);
                     varNames.put((byte) allocation, variable.getName());
                 }
                 else
@@ -1043,7 +1020,7 @@ public class InstructionCompiler extends DefaultBuiltIn
                     log.fine("Query variable " + variable + " is permanent.");
 
                     int allocation = (numPermanentVars++ & (0xff)) | (WAMInstruction.STACK_ADDR << 8);
-                    symbolTable.put(variable.getSymbolKey(), SYMKEY_ALLOCATION, allocation);
+                    symbolTable.put(variable.getSymbolKey(), SymbolTableKeys.SYMKEY_ALLOCATION, allocation);
                     varNames.put((byte) allocation, variable.getName());
                 }
             }
