@@ -212,8 +212,6 @@ public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
 
         if (term.getSymbolKey() == null)
         {
-            System.out.println("Null symbol key.");
-
             return false;
         }
 
