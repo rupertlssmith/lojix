@@ -15,6 +15,9 @@
  */
 package com.thesett.aima.logic.fol.wam.builtins;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.Term;
@@ -55,8 +58,6 @@ public class Disjunction extends BaseBuiltIn
         SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         SizeableLinkedList<WAMInstruction> instructions;
 
-        Term[] expressions = functor.getArguments();
-
         // Invent some unique names for choice points within a clause.
         clauseName = new FunctorName(clauseName.getName() + "_" + bodyNumber, 0);
 
@@ -68,13 +69,15 @@ public class Disjunction extends BaseBuiltIn
 
         // Do a loop over the children of this disjunction, and any child disjunctions encountered. This could be a
         // search? or just recursive exploration. I think it will need to be a DFS.
+        List<Term> expressions = new ArrayList<Term>();
+        gatherDisjunctions((Disjunction) functor, expressions);
 
-        for (int i = 0; i < expressions.length; i++)
+        for (int i = 0; i < expressions.size(); i++)
         {
-            Functor expression = (Functor) expressions[i];
+            Functor expression = (Functor) expressions.get(i);
 
             boolean isFirst = i == 0;
-            boolean isLast = i == (expressions.length - 1);
+            boolean isLast = i == (expressions.size() - 1);
 
             // Labels the entry point to each choice point.
             WAMLabel entryLabel = new WAMLabel(choicePointRootName, i);
@@ -139,5 +142,40 @@ public class Disjunction extends BaseBuiltIn
         boolean isLastBody, boolean chainRule, int permVarsRemaining)
     {
         return new SizeableLinkedList<WAMInstruction>();
+    }
+
+    /**
+     * Gathers the functors to compile as a sequence of choice points. These exist as the arguments to disjunctions
+     * recursively below the supplied disjunction. They are flattened into a list, by performing a left-to-right infix
+     * traversal over the disjunctions, and adding their arguments into a list.
+     *
+     * @param disjunction The disjunction to explore the arguments of.
+     * @param expressions The flattened list of disjunctive terms.
+     */
+    private void gatherDisjunctions(Disjunction disjunction, List<Term> expressions)
+    {
+        // Left argument.
+        gatherDisjunctionsExploreArgument(disjunction.getArguments()[0], expressions);
+
+        // Right argument.
+        gatherDisjunctionsExploreArgument(disjunction.getArguments()[1], expressions);
+    }
+
+    /**
+     * Explores one argument of a disjunction as part of the {@link #gatherDisjunctions(Disjunction, List)} function.
+     *
+     * @param term        The argument to explore.
+     * @param expressions The flattened list of disjunctive terms.
+     */
+    private void gatherDisjunctionsExploreArgument(Term term, List<Term> expressions)
+    {
+        if (term instanceof Disjunction)
+        {
+            gatherDisjunctions((Disjunction) term, expressions);
+        }
+        else
+        {
+            expressions.add(term);
+        }
     }
 }
