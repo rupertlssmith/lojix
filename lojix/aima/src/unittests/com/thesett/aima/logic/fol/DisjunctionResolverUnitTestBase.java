@@ -85,6 +85,6 @@ public class DisjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     /** Checks that a conjunction and disjunction bracketed so the disjunction succeeds, find a solution. */
     public void testJunctionBracketingAllowsDisjunction() throws Exception
     {
-        resolveAndAssertSolutions("[[a, b], (?- (X = a, X = b); X = c), [[X <-- c]]]");
+        resolveAndAssertSolutions("[[], (?- (X = a, X = b); X = c), [[X <-- c]]]");
     }
 }
