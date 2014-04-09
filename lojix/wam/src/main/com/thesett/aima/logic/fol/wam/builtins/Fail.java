@@ -61,4 +61,14 @@ public class Fail extends BaseBuiltIn
 
         return instructions;
     }
+
+    /**
+     * Creates a string representation of this functor, mostly used for debugging purposes.
+     *
+     * @return A string representation of this functor.
+     */
+    public String toString()
+    {
+        return "Fail";
+    }
 }

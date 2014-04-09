@@ -178,4 +178,14 @@ public class Disjunction extends BaseBuiltIn
             expressions.add(term);
         }
     }
+
+    /**
+     * Creates a string representation of this functor, mostly used for debugging purposes.
+     *
+     * @return A string representation of this functor.
+     */
+    public String toString()
+    {
+        return "Disjunction: [ arguments = " + toStringArguments() + " ]";
+    }
 }
