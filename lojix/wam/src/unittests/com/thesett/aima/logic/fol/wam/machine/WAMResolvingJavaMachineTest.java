@@ -275,6 +275,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromManyDisjunctionPaths", engine));
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingFalse", engine));
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingAllowsDisjunction", engine));
 
         // Add all tests defined in the BacktrackingResolverUnitTestBase class.
         suite.addTest(new BacktrackingResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(

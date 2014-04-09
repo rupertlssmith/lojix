@@ -66,13 +66,25 @@ public class DisjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     /** Checks that a pair of disjunct functors explores both solutions. */
     public void testVariableTakesBindingsFromTwoDisjunctionPaths() throws Exception
     {
-        resolveAndAssertSolutions("[[a, b], (?- X = a; X = b), [[X <-- a], [X <-- b]]]");
+        resolveAndAssertSolutions("[[], (?- X = a; X = b), [[X <-- a], [X <-- b]]]");
     }
 
     /** Checks that a sequence of disjunct functors explores all solutions. */
     public void testVariableTakesBindingsFromManyDisjunctionPaths() throws Exception
     {
-        resolveAndAssertSolutions("[[a, b, c, d, e], (?- X = a; X = b; X = c; X = d; X = e), " +
+        resolveAndAssertSolutions("[[], (?- X = a; X = b; X = c; X = d; X = e), " +
             "[[X <-- a], [X <-- b], [X <-- c], [X <-- d], [X <-- e]]]");
+    }
+
+    /** Checks that a conjunction and disjunction bracketed so the conjunction fails, will fail. */
+    public void testJunctionBracketingFalse() throws Exception
+    {
+        resolveAndAssertFailure(new String[] {}, "?- X = a, (X = b; X = c)");
+    }
+
+    /** Checks that a conjunction and disjunction bracketed so the disjunction succeeds, find a solution. */
+    public void testJunctionBracketingAllowsDisjunction() throws Exception
+    {
+        resolveAndAssertSolutions("[[a, b], (?- (X = a, X = b); X = c), [[X <-- c]]]");
     }
 }
