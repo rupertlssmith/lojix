@@ -30,14 +30,6 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * BuiltInTransformVisitor should be used with a depth first positional walk over a term to compile. On leaving each
  * term, that is in a post-fix order, if the term is a functor, the built-in transformation function is applied to it.
  * If the built-in applies a transformation to a functor, it is substituted within its parent for the built-in.
- *
- * <p/>Conjunctions and disjunctions are treated specially by this transform. The conjunction and disjunction operators
- * may appear within any structure, but are only to be compiled as such if they are 'top-level'. They are considered
- * top-level when they appear at the top-level within a clause, or directly beneath a parent conjunction or disjunction
- * that is considered to be top-level. Effectively they are flattened into the top-level of the clause in which they
- * appear, but the original structure is preserved rather than actually flattened at this time, as it can change meaning
- * depending on how the term is bracketed. This traversal simply marks all conjunctions and disjunctions that are part
- * of the clause top-level, with the top-level flag.
  */
 class BuiltInTransformVisitor extends BasePositionalVisitor implements PositionalTermVisitor
 {
@@ -103,37 +95,7 @@ class BuiltInTransformVisitor extends BasePositionalVisitor implements Positiona
 
                     parentFunctor.getArguments()[pos] = builtInFunctor;
                 }
-
-                if (isTopLevel())
-                {
-                    builtInFunctor.setTopLevel(true);
-                }
             }
         }
-    }
-
-    /**
-     * Functors are considered top-level when they appear at the top-level within a clause, or directly beneath a parent
-     * conjunction or disjunction that is considered to be top-level.
-     */
-    private boolean isTopLevel()
-    {
-        if (traverser.isTopLevel())
-        {
-            return true;
-        }
-        else
-        {
-            Term parentTerm = traverser.getParentContext().getTerm();
-
-            if (parentTerm instanceof BuiltInFunctor)
-            {
-                BuiltInFunctor parentBuiltIn = (BuiltInFunctor) parentTerm;
-
-                return parentBuiltIn.isTopLevel();
-            }
-        }
-
-        return false;
     }
 }

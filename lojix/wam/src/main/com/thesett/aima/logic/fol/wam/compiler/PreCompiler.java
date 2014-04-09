@@ -110,5 +110,4 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
             TermWalkers.positionalWalker(new BuiltInTransformVisitor(interner, symbolTable, null, builtInTransform));
         walk.walk(clause);
     }
-
 }
