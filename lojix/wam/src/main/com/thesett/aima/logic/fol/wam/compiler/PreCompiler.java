@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.compiler;
 
+import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.LogicCompiler;
@@ -111,7 +112,7 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
      */
     private void substituteBuiltIns(Clause clause)
     {
-        TermWalker walk = TermWalkers.positionalWalker(new BuiltInTransformVisitor());
+        TermWalker walk = TermWalkers.positionalWalker(new BuiltInTransformVisitor(interner, symbolTable, null));
         walk.walk(clause);
     }
 
@@ -124,26 +125,42 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
      * operators may appear within any structure, but are only to be compiled as such if they are 'top-level'. They are
      * considered top-level when they appear at the top-level within a clause, or directly beneath a parent conjunction
      * or disjunction that is considered to be top-level. Effectively they are flattened into the top-level of the
-     * clause in which they appear, but the original structure is preserved rather than actually flattened as it changes
-     * meaning depending on how the term is bracketed.
+     * clause in which they appear, but the original structure is preserved rather than actually flattened at this time,
+     * as it can change meaning depending on how the term is bracketed. This traversal simply marks all conjunctions and
+     * disjunctions that are part of the clause top-level, with the top-level flag.
      */
-    private class BuiltInTransformVisitor implements PositionalTermVisitor
+    private class BuiltInTransformVisitor extends BasePositionalVisitor implements PositionalTermVisitor
     {
-        /** The position traverser used to provide psotional context to the search. */
-        private PositionalTermTraverser traverser;
+        /**
+         * Creates the visitor with the supplied interner, symbol table and traverser.
+         *
+         * @param interner    The name interner.
+         * @param symbolTable The compiler symbol table.
+         * @param traverser   The positional context traverser.
+         */
+        private BuiltInTransformVisitor(VariableAndFunctorInterner interner,
+            SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser)
+        {
+            super(interner, symbolTable, traverser);
+        }
+
+        /** {@inheritDoc} */
+        public void setPositionalTraverser(PositionalTermTraverser traverser)
+        {
+            this.traverser = traverser;
+        }
 
         /**
          * Applies the built-in transform during a post-fix visit of a term.
          *
-         * @param term The term to visit.
+         * @param functor The functor to visit.
          */
-        public void visit(Term term)
+        protected void leaveFunctor(Functor functor)
         {
             int pos = traverser.getPosition();
 
-            if (traverser.isLeavingContext() && !traverser.isInHead() && (pos >= 0) && (term instanceof Functor))
+            if (!traverser.isInHead() && (pos >= 0))
             {
-                Functor functor = (Functor) term;
                 Functor transformed = builtInTransform.apply(functor);
 
                 if (functor != transformed)
@@ -176,17 +193,11 @@ public class PreCompiler extends BaseMachine implements LogicCompiler<Clause, Cl
             }
         }
 
-        /** {@inheritDoc} */
-        public void setPositionalTraverser(PositionalTermTraverser traverser)
-        {
-            this.traverser = traverser;
-        }
-
         /**
          * Functors are considered top-level when they appear at the top-level within a clause, or directly beneath a
          * parent conjunction or disjunction that is considered to be top-level.
          */
-        public boolean isTopLevel()
+        private boolean isTopLevel()
         {
             if (traverser.isTopLevel())
             {
