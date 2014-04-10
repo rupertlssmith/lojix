@@ -29,23 +29,11 @@ Implement as:
 
 === Disjunction
 
-TryMe, RetryMe, TrustMe ?
+Does this complicate permanent register assignment? Yes, but use the same procedure to count the number of permanent
+registers, just include nested conjunctive/disjunctive top-level terms in the count.
 
-Disjunction has arity/2, but want to treat a chain of disjunctions like a series of clauses. This means that each
-disjunction cannot operate in isolation. Possibly look ahead at the next functor to see if it is also a disjunction?
+ Problems with current inline implementations:
 
-a ; b
-
-try_me a trust_me b
-
-a ; b ; c
-
-try_me a (look ahead and see next ;) retry_me b (look ahead and see no ;) trust_me c
-
-Look ahead will be possible, as the disjunction has been parsed as a tree beneath a single ;
-
-  ;
-a   ;
-  b   c
-
-Does this complicate permanent register assignment?
+ try_me/retry_me Saves the argument registers of the current clause. In the inline case, another clause may have been
+called prior to this, in which case num_args is set wrong. Need num_args for this predicate, not any that might have
+been called in between.
