@@ -37,7 +37,10 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  */
 public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery>
 {
+    /** Holds the pre-compiler, for analyzing and transforming terms prior to compilation proper. */
     PreCompiler preCompiler;
+
+    /** Holds the instruction generating compiler. */
     InstructionCompiler instructionCompiler;
 
     /**
@@ -75,6 +78,9 @@ public class WAMCompiler extends BaseMachine implements LogicCompiler<Clause, WA
         instructionCompiler.endScope();
     }
 
+    /**
+     * Chains compilation completion events onto the instruction compiler.
+     */
     class ClauseChainObserver implements LogicCompilerObserver<Clause, Clause>
     {
         /** {@inheritDoc} */

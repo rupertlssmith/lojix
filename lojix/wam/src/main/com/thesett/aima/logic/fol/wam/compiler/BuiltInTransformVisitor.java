@@ -50,9 +50,10 @@ class BuiltInTransformVisitor extends BasePositionalVisitor implements Positiona
     /**
      * Creates the visitor with the supplied interner, symbol table and traverser.
      *
-     * @param interner    The name interner.
-     * @param symbolTable The compiler symbol table.
-     * @param traverser   The positional context traverser.
+     * @param interner         The name interner.
+     * @param symbolTable      The compiler symbol table.
+     * @param traverser        The positional context traverser.
+     * @param builtInTransform The built-in transformation function.
      */
     BuiltInTransformVisitor(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
         PositionalTermTraverser traverser, BuiltInTransform builtInTransform)

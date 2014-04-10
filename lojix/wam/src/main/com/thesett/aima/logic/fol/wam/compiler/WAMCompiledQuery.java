@@ -222,6 +222,11 @@ public class WAMCompiledQuery extends Clause<Functor> implements Sentence<WAMCom
         return unoptimizedInstructions;
     }
 
+    /**
+     * Provides the entry call point to this compiled query.
+     *
+     * @return The entry call point to this compiled query.
+     */
     public WAMCallPoint getCallPoint()
     {
         return callPoint;

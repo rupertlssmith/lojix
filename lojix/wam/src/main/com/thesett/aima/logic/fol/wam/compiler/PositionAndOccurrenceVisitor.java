@@ -58,6 +58,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * <tr><td> Detect variables and constants only appearing in non-argument positions. </td></tr>
  * <tr><td> Identify the last functor in which a variable appears, if it only does as an argument. </td></tr>
  * </table></pre>
+ *
+ * @author Rupert Smith
  */
 public class PositionAndOccurrenceVisitor extends BasePositionalVisitor
 {

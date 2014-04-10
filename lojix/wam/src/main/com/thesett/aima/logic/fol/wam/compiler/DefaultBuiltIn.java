@@ -62,7 +62,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
         /** Introduced by a put instruction. */
         Put,
 
-        /** Introduced by a set instruction */
+        /** Introduced by a set instruction. */
         Set,
 
         /** Introduced by a unify instruction. */
@@ -75,6 +75,12 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
     /** Used to keep track of the temporary register assignment across multiple functors within a clause. */
     protected int lastAllocatedTempReg;
 
+    /**
+     * Creates a built-in, with the specified symbol table and name interner.
+     *
+     * @param symbolTable The symbol table for the compiler and machine.
+     * @param interner    The name interner for the compiler and machine.
+     */
     public DefaultBuiltIn(SymbolTable<Integer, String, Object> symbolTable, VariableAndFunctorInterner interner)
     {
         super(symbolTable, interner);
@@ -176,8 +182,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                             (byte) (j & 0xff));
                     instructions.add(instruction);
 
-                    symbolTable.put(nextOutermostArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR,
-                        null);
+                    symbolTable.put(nextOutermostArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VAR_LAST_ARG_FUNCTOR, null);
                 }
                 else
                 {
@@ -265,8 +270,7 @@ public class DefaultBuiltIn extends BaseMachine implements BuiltIn
                                     new WAMInstruction(WAMInstruction.WAMInstructionSet.SetLocalVal, addrMode, address,
                                         nextArg);
 
-                                symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO,
-                                    null);
+                                symbolTable.put(nextArg.getSymbolKey(), SymbolTableKeys.SYMKEY_VARIABLE_INTRO, null);
                             }
                             else
                             {

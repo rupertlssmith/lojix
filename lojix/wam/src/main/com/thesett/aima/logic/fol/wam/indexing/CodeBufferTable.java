@@ -41,8 +41,9 @@ public interface CodeBufferTable
     /**
      * Initializes the table against an area within a ByteBuffer.
      *
-     * @param t The offset of the start of the hash table.
-     * @param n The size of the hash table in bytes.
+     * @param buffer The underlying buffer to store the hash table in.
+     * @param t      The offset of the start of the hash table.
+     * @param n      The size of the hash table in bytes.
      */
     void setup(ByteBuffer buffer, int t, int n);
 

@@ -70,6 +70,11 @@ class TopLevelCheckVisitor extends BasePositionalVisitor implements PositionalTe
         this.traverser = traverser;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Sets the top-level flag on a functor, if appropriate.
+     */
     protected void enterFunctor(Functor functor)
     {
         if (isTopLevel())
@@ -81,6 +86,8 @@ class TopLevelCheckVisitor extends BasePositionalVisitor implements PositionalTe
     /**
      * Functors are considered top-level when they appear at the top-level within a clause, or directly beneath a parent
      * conjunction or disjunction that is considered to be top-level.
+     *
+     * @return <tt>true</tt> iff the current position is considered to be top-level.
      */
     private boolean isTopLevel()
     {
