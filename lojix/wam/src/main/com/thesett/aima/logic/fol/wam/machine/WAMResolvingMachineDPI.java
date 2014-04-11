@@ -82,13 +82,6 @@ public interface WAMResolvingMachineDPI
     int getHeapSize();
 
     /**
-     * Provides the current heap pointer.
-     *
-     * @return The current heap pointer.
-     */
-    int getHP();
-
-    /**
      * Provides the base offset of the stack within the data area.
      *
      * @return The base offset of the stack within the data area.
@@ -101,4 +94,11 @@ public interface WAMResolvingMachineDPI
      * @return The size of the stack within the data area.
      */
     int getStackSize();
+
+    /**
+     * Provides the internal register file and flags for the machine.
+     *
+     * @return The internal register file and flags for the machine.
+     */
+    WAMInternalRegisters getInternalRegisters();
 }

@@ -22,6 +22,7 @@ import java.util.Set;
 
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
+import com.thesett.aima.logic.fol.wam.machine.WAMInternalRegisters;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.error.ImplementationUnavailableException;
 import com.thesett.common.error.NotImplementedException;
@@ -198,12 +199,6 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
     }
 
     /** {@inheritDoc} */
-    public int getHP()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
     public int getStackBase()
     {
         throw new UnsupportedOperationException();
@@ -211,6 +206,12 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
 
     /** {@inheritDoc} */
     public int getStackSize()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public WAMInternalRegisters getInternalRegisters()
     {
         throw new UnsupportedOperationException();
     }

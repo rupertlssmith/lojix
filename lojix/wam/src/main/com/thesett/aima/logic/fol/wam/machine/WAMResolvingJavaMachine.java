@@ -325,12 +325,6 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     }
 
     /** {@inheritDoc} */
-    public int getHP()
-    {
-        return hp;
-    }
-
-    /** {@inheritDoc} */
     public int getStackBase()
     {
         return STACK_BASE;
@@ -340,6 +334,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     public int getStackSize()
     {
         return STACK_SIZE;
+    }
+
+    /** {@inheritDoc} */
+    public WAMInternalRegisters getInternalRegisters()
+    {
+        return new WAMInternalRegisters(ip, hp, hbp, sp, up, ep, bp, b0, trp, writeMode);
     }
 
     /**
