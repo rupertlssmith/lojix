@@ -260,7 +260,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         // Notify any debug monitor that the machine has been reset.
         if (monitor != null)
         {
-            monitor.onReset();
+            monitor.onReset(this);
         }
     }
 
@@ -1665,7 +1665,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             // Notify any debug monitor that the machine has been stepped.
             if (monitor != null)
             {
-                monitor.onStep();
+                monitor.onStep(this);
             }
         }
 

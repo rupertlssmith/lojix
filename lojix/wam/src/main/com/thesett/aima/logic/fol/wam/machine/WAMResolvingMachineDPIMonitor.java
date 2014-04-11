@@ -30,8 +30,8 @@ package com.thesett.aima.logic.fol.wam.machine;
 public interface WAMResolvingMachineDPIMonitor
 {
     /** Accepts notification that the machine has been reset. */
-    void onReset();
+    void onReset(WAMResolvingMachineDPI dpi);
 
     /** Accepts notification that the machine has been stepped by one instruction. */
-    void onStep();
+    void onStep(WAMResolvingMachineDPI dpi);
 }
