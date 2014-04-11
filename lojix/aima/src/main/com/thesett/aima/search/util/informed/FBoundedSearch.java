@@ -24,7 +24,7 @@ import com.thesett.aima.search.spi.BoundProperty;
 import com.thesett.common.util.StackQueue;
 
 /**
- * Implements an F-bounded search. This procedes depth first but is bounded by a maximum f value where f = heuristic +
+ * Implements an F-bounded search. This proceeds depth first but is bounded by a maximum f value where f = heuristic +
  * cost.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>

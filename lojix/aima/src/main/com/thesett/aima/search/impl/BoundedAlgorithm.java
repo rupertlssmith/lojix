@@ -140,7 +140,7 @@ public class BoundedAlgorithm<O, T extends Traversable<O>> extends BaseQueueSear
         // Initialize the queue with the start states set up in search nodes.
         Queue<SearchNode<O, T>> queue = initSearch.enqueueStartStates(startStates);
 
-        // Get the goal predicate configured as part of the enqueuing start states process.
+        // Get the goal predicate configured as part of the enqueueing start states process.
         UnaryPredicate<T> goalPredicate = initSearch.getGoalPredicate();
 
         // Flag used to indicate whether there are unexplored successor states known to exist beyond the max depth

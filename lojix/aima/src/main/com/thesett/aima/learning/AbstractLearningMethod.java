@@ -88,7 +88,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * Sets the maximum number of search steps that a learning method may take. If it fails to find a solution before
      * this number of steps has been reached its {@link #learn} method should either return the best complete classifying
      * machine that it can or fail with an exception. What exactly constitutes a single step, and the granularity of the
-     * step size, is open to different interpretation by different search algorithms. The recomended guideline is that
+     * step size, is open to different interpretation by different search algorithms. The recommended guideline is that
      * this is the maximum number of test examples that the learning algorithm should examine.
      *
      * @param max the maximum number of test examples that the learning algorithm should examine before failing.
@@ -113,7 +113,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
      */
     public void addExampleStates(Collection<? extends State> exampleStates)
     {
-        // Add the exampes to the existing ones.
+        // Add the examples to the existing ones.
         inputExamples.addAll(exampleStates);
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * goal properties). Setting input properties with this method should restrict the learning algorithm to using just
      * those properties to learn its classification from.
      *
-     * @param property The name of a property in the example states that is to be considerd as input to the learning
+     * @param property The name of a property in the example states that is to be considered as input to the learning
      *                 process.
      */
     public void addInputProperty(String property)
@@ -140,7 +140,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * the goal properties). Setting input properties with this method should restrict the learning algorithm to using
      * just those properties to learn its classification from.
      *
-     * @param properties A collection of property names in the example states that are to be considerd as input to the
+     * @param properties A collection of property names in the example states that are to be considered as input to the
      *                   learning process.
      */
     public void addInputProperties(Collection<String> properties)
@@ -160,7 +160,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * <p>All states support the 'goal' boolean property. Generally, algorithms will assume that this is the property to
      * learn how to classify for unless different properties are set by calling this method.
      *
-     * @param  property The name of a propert in the set of example states that is to be considerd the output to learn
+     * @param  property The name of a property in the set of example states that is to be considered the output to learn
      *                  for.
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
@@ -182,8 +182,8 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * <p>All states support the 'goal' boolean property. Generally, algorithms will assume that this is the property to
      * learn how to classify for unless different properties are set by calling this method.
      *
-     * @param  properties A collection of property names in the set of example state that are considerd to be the output
-     *                    to learn for.
+     * @param  properties A collection of property names in the set of example state that are considered to be the
+     *                    output to learn for.
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
      */
@@ -223,7 +223,7 @@ public abstract class AbstractLearningMethod implements LearningMethod
     }
 
     /**
-     * This should be called at the start of the learn method to intialize the input and output property sets.
+     * This should be called at the start of the learn method to initialize the input and output property sets.
      *
      * @throws LearningFailureException If the set of training data and input and output properties are malformed.
      *                                  Either because the training data set is empty or because there are input or

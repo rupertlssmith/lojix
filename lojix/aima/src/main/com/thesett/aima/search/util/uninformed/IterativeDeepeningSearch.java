@@ -19,7 +19,7 @@ import com.thesett.aima.search.Traversable;
 import com.thesett.aima.search.impl.IterativeBoundAlgorithm;
 
 /**
- * Implements an iterative deepening search. This procedes depth first but is bounded by itertively increasing depths.
+ * Implements an iterative deepening search. This proceeds depth first but is bounded by itertively increasing depths.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations

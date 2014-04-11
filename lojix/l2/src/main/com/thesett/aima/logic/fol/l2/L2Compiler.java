@@ -157,7 +157,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *         over all args, postfix flatten each in turn. Programs: BFS over the whole, but only output proceed for the
  *         outermost functor, and only output get_var and _val instructions for variables in the outermost functor.
  * @todo   Document this stuff that I chaged: Already seen works over registers, not variables and functors (as
- *         registers) seperately. Yes its globaal over the whole sentence. Argument registers are only allocated
+ *         registers) separately. Yes its globaal over the whole sentence. Argument registers are only allocated
  *         directly to functors appearing in the head of the clause, everything else is allocated out-in.
  */
 public class L2Compiler extends BaseMachine implements LogicCompiler<Clause, L2CompiledClause, L2CompiledClause>
@@ -185,7 +185,7 @@ public class L2Compiler extends BaseMachine implements LogicCompiler<Clause, L2C
     private Set<Integer> seenRegisters = new TreeSet<Integer>();
 
     /**
-     * Used to keep track of the last used register assigment accross assignments to multiple functors within a clause.
+     * Used to keep track of the last used register assignment accross assignments to multiple functors within a clause.
      */
     protected int lastAllocatedRegister;
 

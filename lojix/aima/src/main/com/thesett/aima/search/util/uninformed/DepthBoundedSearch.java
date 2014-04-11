@@ -19,7 +19,7 @@ import com.thesett.aima.search.Traversable;
 import com.thesett.aima.search.impl.BoundedAlgorithm;
 
 /**
- * Implements a Depth-bounded search. This procedes depth first but is bounded.
+ * Implements a Depth-bounded search. This proceeds depth first but is bounded.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations

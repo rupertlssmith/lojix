@@ -38,7 +38,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Scan for terms that are always fully ground.
- * <tr><td> Scan variables usages to determine which ones are temporary (occurr in the head only).
+ * <tr><td> Scan variables usages to determine which ones are temporary (occur in the head only).
  *     <td> {@link PositionalTermTraverserImpl}.
  * </table></pre>
  *

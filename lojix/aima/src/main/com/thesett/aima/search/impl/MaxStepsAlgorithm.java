@@ -81,7 +81,7 @@ public class MaxStepsAlgorithm<O, T extends Traversable<O>> extends BaseQueueSea
         // the search method to really start the search again from the start states.
         Queue<SearchNode<O, T>> queue = initSearch.enqueueStartStates(startStates);
 
-        // Get the goal predicate configured as part of the enqueuing start states process.
+        // Get the goal predicate configured as part of the enqueueing start states process.
         UnaryPredicate<T> goalPredicate = initSearch.getGoalPredicate();
 
         // Keep running until the queue becomes empty or a goal state is found.

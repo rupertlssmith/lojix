@@ -518,7 +518,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
             // create more goals, variable bindings and lead to more choice points to explore.
             failed = !operation.proofStep(this);
 
-            // Check if the succesfully proved goal generated any more choice points.
+            // Check if the successfully proved goal generated any more choice points.
             if (!failed)
             {
                 operation.createContinuationStates(this);

@@ -63,7 +63,7 @@ public interface LearningMethod
      * Sets the maximum number of steps that a learning method may take. If it fails to find a solution before
      * this number of steps has been reached its {@link #learn} method should either return the best complete classifying
      * machine that it can or fail with an exception. What exactly constitutes a single step, and the granularity of the
-     * step size, is open to different interpretation by different algorithms. The recomended guideline is that
+     * step size, is open to different interpretation by different algorithms. The recommended guideline is that
      * this is the maximum number of test examples that the learning algorithm should examine.
      *
      * @param max the maximum number of test examples that the learning algorithm should examine before failing.
@@ -90,7 +90,7 @@ public interface LearningMethod
      * goal properties). Setting input properties with this method should restrict the learning algorithm to using just
      * those properties to learn its classification from.
      *
-     * @param property The name of a property in the example states that is to be considerd as input to the learning
+     * @param property The name of a property in the example states that is to be considered as input to the learning
      *                 process.
      */
     public void addInputProperty(String property);
@@ -101,7 +101,7 @@ public interface LearningMethod
      * the goal properties). Setting input properties with this method should restrict the learning algorithm to using
      * just those properties to learn its classification from.
      *
-     * @param properties A collection of property names in the example states that are to be considerd as input to the
+     * @param properties A collection of property names in the example states that are to be considered as input to the
      *                   learning process.
      */
     public void addInputProperties(Collection<String> properties);
@@ -115,7 +115,7 @@ public interface LearningMethod
      * <p>All states support the 'goal' boolean property. Generally, algorithms will assume that this is the property to
      * learn how to classify for unless different properties are set by calling this method.
      *
-     * @param  property The name of a propert in the set of example states that is to be considerd the output to learn
+     * @param  property The name of a propert in the set of example states that is to be considered the output to learn
      *                  for.
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
@@ -131,8 +131,8 @@ public interface LearningMethod
      * <p>All states support the 'goal' boolean property. Generally, algorithms will assume that this is the property to
      * learn how to classify for unless different properties are set by calling this method.
      *
-     * @param  properties A collection of property names in the set of example state that are considerd to be the output
-     *                    to learn for.
+     * @param  properties A collection of property names in the set of example state that are considered to be the
+     *                    output to learn for.
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
      */

@@ -43,7 +43,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * <p/>Clauses to be queried over, have their binary byte code inserted into the machine, in preparation for calling by
  * queries. Queries also have their binary byte code inserted into the machine, and a reference to the most recently
- * inserted query is retained for invokation by the search method.
+ * inserted query is retained for invocation by the search method.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations

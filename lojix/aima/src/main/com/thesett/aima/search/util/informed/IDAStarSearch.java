@@ -24,7 +24,7 @@ import com.thesett.aima.search.spi.BoundProperty;
 import com.thesett.common.util.StackQueue;
 
 /**
- * Implements an iterative deepening A* search. This procedes depth first but is bounded by iteratively increasing
+ * Implements an iterative deepening A* search. This proceeds depth first but is bounded by iteratively increasing
  * values of f (f = heuristic + cost).
  *
  * <p>There are two version of this search. One increases the f-value in fixed increments rather than always taking the

@@ -145,6 +145,16 @@ public class Disjunction extends BaseBuiltIn
     }
 
     /**
+     * Creates a string representation of this functor, mostly used for debugging purposes.
+     *
+     * @return A string representation of this functor.
+     */
+    public String toString()
+    {
+        return "Disjunction: [ arguments = " + toStringArguments() + " ]";
+    }
+
+    /**
      * Gathers the functors to compile as a sequence of choice points. These exist as the arguments to disjunctions
      * recursively below the supplied disjunction. They are flattened into a list, by performing a left-to-right depth
      * first traversal over the disjunctions, and adding their arguments into a list.
@@ -177,15 +187,5 @@ public class Disjunction extends BaseBuiltIn
         {
             expressions.add(term);
         }
-    }
-
-    /**
-     * Creates a string representation of this functor, mostly used for debugging purposes.
-     *
-     * @return A string representation of this functor.
-     */
-    public String toString()
-    {
-        return "Disjunction: [ arguments = " + toStringArguments() + " ]";
     }
 }

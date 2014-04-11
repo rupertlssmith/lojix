@@ -21,7 +21,7 @@ import com.thesett.aima.search.impl.IterativeBoundAlgorithm;
 import com.thesett.aima.search.spi.BoundProperty;
 
 /**
- * Implements an iterative cost increasing search. This procedes depth first but is bounded by iteratively increasing
+ * Implements an iterative cost increasing search. This proceeds depth first but is bounded by iteratively increasing
  * maximum costs.
  *
  * <p>There are two version of this search. One is very similar to a {@link UniformCostSearch} but the costs increase in

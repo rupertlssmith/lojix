@@ -49,7 +49,7 @@ public class L2ResolvingNativeMachine extends L2ResolvingMachine
     /** Defines the initial code area size for the virtual machine. */
     private static final int CODE_SIZE = 10000;
 
-    /** Used to record whether the native implementation library was succesfully loaded. */
+    /** Used to record whether the native implementation library was successfully loaded. */
     private static boolean libraryFound = false;
 
     /** Used to record whether an attempt to load the native library has been made. */

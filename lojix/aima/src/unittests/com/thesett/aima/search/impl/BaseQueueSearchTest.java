@@ -379,7 +379,7 @@ public class BaseQueueSearchTest extends TestCase
 
     /**
      * Check that a search returns null if it encounters its maximum number of steps but the search has completed.
-     * Although the max is reached if the search has succesfully completed it should return null and not throw a search
+     * Although the max is reached if the search has successfully completed it should return null and not throw a search
      * failure exception as it does normally when the max is reached.
      */
     public void testMaximumStepsReachedSearchCompletedReturnsNull() throws Exception
@@ -389,13 +389,13 @@ public class BaseQueueSearchTest extends TestCase
 
         // There are (4^5-1)/(4-1) = 1023/3 = 341 states in the space. Set a maximum step count equal to this, so
         // that there should be no elements left in the queue when the max steps is encountered. Although the
-        // max is reached the search has succesfully completed so it should return null and not throw a search
+        // max is reached the search has successfully completed so it should return null and not throw a search
         // failure exception.
         testSearch.setMaxSteps(341);
 
         // Run the search and assert that it returns null.
         assertNull("The test search over TestTraversableState with 341 states, all non-goal, and a maximum step size " +
-            "of 341 did not return null but the test should have succesfully completed.", testSearch.findGoalPath());
+            "of 341 did not return null but the test should have successfully completed.", testSearch.findGoalPath());
     }
 
     protected void setUp() throws Exception

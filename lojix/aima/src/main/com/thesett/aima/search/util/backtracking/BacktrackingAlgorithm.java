@@ -62,7 +62,7 @@ import com.thesett.common.util.logic.UnaryPredicate;
  * active at once.
  *
  * <p/>To summarize, a backtracking search with depth first ordering should be used when shared state can be built
- * cummulatively, the space or time requirements of replicating shared state is prohibitive, where the complexity of
+ * cumulatively, the space or time requirements of replicating shared state is prohibitive, where the complexity of
  * representing state with path-local visibility is not needed, or where the search ordering of depth first is not an
  * inconvenience. A backtracking search with other orderings can be used where path-local visibility of state can be
  * achieved.
@@ -96,7 +96,7 @@ public class BacktrackingAlgorithm<O, T extends ReTraversable<O>> extends BaseQu
         // the search method to really start the search again from the start states.
         Queue<SearchNode<O, T>> queue = initSearch.enqueueStartStates(startStates);
 
-        // Get the goal predicate configured as part of the enqueuing start states process.
+        // Get the goal predicate configured as part of the enqueueing start states process.
         UnaryPredicate goalPredicate = initSearch.getGoalPredicate();
 
         // Backtrack the most recent goal state, if one has been established.

@@ -22,7 +22,7 @@ import com.thesett.aima.search.Traversable;
  * PathJoinAlgorithms are used to stitch together the forward and reverse portions of a path from start to goal in a
  * bi-directional search.
  *
- * <p>Once a match between the forward and reverse fringes of such a search has been found it is neccessary to walk
+ * <p>Once a match between the forward and reverse fringes of such a search has been found it is necessary to walk
  * backwards along the node found on the reverse fringe adding all its states and operations to the forward search path.
  * If the operations in the reverse half of the path have been stored in the direction of travel away from the goal
  * state then they must be reversed when copying them into the forward path.

@@ -99,7 +99,7 @@ public class DefaultBuiltIn extends BaseBuiltIn
                     matchTerm.toString(state.getInterner(), true, true) + ", ok.");*/
             }
 
-            // Consume the succesfully unified goal from the goal stack.
+            // Consume the successfully unified goal from the goal stack.
             state.getGoalStack().poll();
 
             // Add all functors on the body side of the unified clause onto the goal stack for resolution.

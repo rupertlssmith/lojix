@@ -33,11 +33,11 @@ import com.thesett.common.util.logic.UnaryPredicate;
 
 /**
  * BaseBiDirectionalQueueSearch provides a base implementation for deriving new bidirectional searches from by providing
- * different queue implementations for the forard and reverse portions of the search. For example using a LIFO queue
+ * different queue implementations for the forward and reverse portions of the search. For example using a LIFO queue
  * generates depth first search and a FIFO queue generates breadth first. Heuristic searches can easily be implemented
  * by using priority queues with ordering predicates based on a heuristic evaluation.
  *
- * <p>The search procedes by taking the next element of the forward search fringe and testing to see if it matches one
+ * <p>The search proceeds by taking the next element of the forward search fringe and testing to see if it matches one
  * element of the reverse fringe. It then expands the forward fringe with the successor nodes if no match is found. Then
  * it takes the next element of the reverse fringe and does the same matching and expanding process against the forward
  * fringe. The states need to be hashable in order to make the fringe matching efficient.

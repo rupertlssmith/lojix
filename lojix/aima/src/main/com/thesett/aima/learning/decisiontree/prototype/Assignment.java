@@ -19,9 +19,9 @@ import com.thesett.aima.state.OrdinalAttribute;
 
 /**
  * Assignment is a leaf data element of a decision tree. It represents the outcome of a decision when the decision path
- * reaches the leaf that contians a given assignment. The assignment is the classification of a property of the input
+ * reaches the leaf that contains a given assignment. The assignment is the classification of a property of the input
  * state to the decision, assigning an {@link OrdinalAttribute} value to it. In addition to the actual output attribute
- * an assigment also specifies the output attribute value that a preceding decision must find in the input state in
+ * an assignment also specifies the output attribute value that a preceding decision must find in the input state in
  * order to match this assignment.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>

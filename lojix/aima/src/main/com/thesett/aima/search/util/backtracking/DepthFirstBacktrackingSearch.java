@@ -64,7 +64,7 @@ public class DepthFirstBacktrackingSearch<O, T extends ReTraversable<O>> extends
 
     /**
      * This abstract method should be overriden to return an empty queue of search nodes. Different implementations of
-     * queue search algorithms can control the way the search procedes by using different queue implementations. This
+     * queue search algorithms can control the way the search proceeds by using different queue implementations. This
      * method allows the type of queue to be abstracted out of this search method to be supplied by concrete
      * implementations.
      *

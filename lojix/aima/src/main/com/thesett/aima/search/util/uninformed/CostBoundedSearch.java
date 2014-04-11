@@ -21,7 +21,7 @@ import com.thesett.aima.search.impl.BoundedAlgorithm;
 import com.thesett.aima.search.spi.BoundProperty;
 
 /**
- * Implements a Cost-bounded search. This procedes depth first but is bounded by a maximum path cost.
+ * Implements a Cost-bounded search. This proceeds depth first but is bounded by a maximum path cost.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations

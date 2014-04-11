@@ -320,8 +320,7 @@ public class OptimizeInstructions implements StateMachine<WAMInstruction, WAMIns
 
         if (symbolKey != null)
         {
-            Boolean nonArgPositionOnly =
-                (Boolean) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_FUNCTOR_NON_ARG);
+            Boolean nonArgPositionOnly = (Boolean) symbolTable.get(symbolKey, SymbolTableKeys.SYMKEY_FUNCTOR_NON_ARG);
 
             if (TRUE.equals(nonArgPositionOnly))
             {

@@ -47,7 +47,7 @@ import com.thesett.common.util.logic.UnaryPredicate;
  *
  * <p>Different kinds of search node can be used to capture different information about the states being searched over
  * and this in turn can be used by the queue implementations and ordering functions to control the way in which the
- * search procedes. The most obvious example is to extend the basic search node with a heuristic one that computes
+ * search proceeds. The most obvious example is to extend the basic search node with a heuristic one that computes
  * heuristics for the states and then to provide an ordering over heuristics (Greedy, or A-Star for example) to control
  * the search.
  *
@@ -56,9 +56,9 @@ import com.thesett.common.util.logic.UnaryPredicate;
  *
  * <p>These four aspects of the search routine, the basic algorithm, the search node type, the queue and the rejected
  * state pool can all be combined independently of one another to provide an array of different queue based search
- * techniques in a very flexible manner. It is neccessary though to understand each of the components seperately in
- * order to be able to combine them together succesfully. Implementations of many standard search routines are provided
- * in this package by the combination of plug-in elements, consult the implementations for the details.
+ * techniques in a very flexible manner. It is necessary though to understand each of the components separately in order
+ * to be able to combine them together successfully. Implementations of many standard search routines are provided in
+ * this package by the combination of plug-in elements, consult the implementations for the details.
  *
  * <p>Generally speaking if the queue should become empty without a goal state being found then the search algorithm
  * should return null and terminate. However, it should only do this if the search space is known to have been searched
@@ -68,7 +68,7 @@ import com.thesett.common.util.logic.UnaryPredicate;
  *
  * <p>This class implements {@link QueueSearchState} interface. This is a call-back interface that provides a limited
  * view onto this class to the {@link QueueSearchAlgorithm} implementations so that they can call its
- * {@link #enqueueStartStates} method to intialize the queue ready for searching. This was done for the sake of hiding
+ * {@link #enqueueStartStates} method to initialize the queue ready for searching. This was done for the sake of hiding
  * the full implementation of this class from the search algorithms.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -139,7 +139,7 @@ public abstract class BaseQueueSearch<O, T extends Traversable<O>> implements Qu
 
     /**
      * This abstract method should be overriden to return an empty queue of search nodes. Different implementations of
-     * queue search algorithms can control the way the search procedes by using different queue implementations. This
+     * queue search algorithms can control the way the search proceeds by using different queue implementations. This
      * method allows the type of queue to be abstracted out of this search method to be supplied by concrete
      * implementations.
      *
