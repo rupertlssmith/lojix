@@ -82,7 +82,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * <p/>From figure 2.9 it was concluded that argument registers may only be assigned to functors. Functors can be
  * created on the heap and assigned to argument registers directly. Argument registers for variables, should be loaded
- * from a seperate register assigned to the variable, that comes after the argument registers; so that a variable
+ * from a separate register assigned to the variable, that comes after the argument registers; so that a variable
  * assignment can be copied into multiple arguments, where the same variable is presented multiple times in a predicate
  * call. The register assignment process is carried out in two phases to do this, the first pass covers the argument
  * registers and the arguments of the outermost functor, only assigning to functors, the second pass continues for

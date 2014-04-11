@@ -554,7 +554,7 @@ public class PrologParser implements PrologParserConstants
 
     /**
      * Parses a sequence of terms as a comma seperated argument list. The ',' operator in prolog can be used as an
-     * operator, when it behaves as a functor of arity 2, or it can be used to seperate a sequence of terms that are
+     * operator, when it behaves as a functor of arity 2, or it can be used to separate a sequence of terms that are
      * arguments to a functor or list. The sequence of functors must first be parsed as a term, using the operator
      * precedence of "," to form the term. This method takes such a term and flattens it back into a list of terms,
      * breaking it only on a sequence of commas. Terms that have been parsed as a bracketed expression will not be

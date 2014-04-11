@@ -74,7 +74,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * <li>The book describes a STORE[addr] operation that loads or stores a heap, register or stack address. In the L1 and
  * L0 machines, only heap and register addresses had to be catered for. This made things easier because the registers
  * could be held at the top of the heap and a single common address range used for both. With increasing numbers of data
- * areas in the machine, and Java unable to use direct pointers into memory, a choice between having seperate arrays for
+ * areas in the machine, and Java unable to use direct pointers into memory, a choice between having separate arrays for
  * each data area, or building all data areas within a single array has to be made. The single array approach was
  * chosen, because otherwise the addressing mode would need to be passed down into the 'deref' and 'unify' operations,
  * which would be complicated by having to choose amongst which of several arrays to operate on. An addressing mode has
@@ -82,8 +82,8 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * Once addresses are resolved relative to the register or stack basis, the plain addresses offset to the base of the
  * whole data area are used, and it is these addresses that are passed to the 'deref' and 'unify' operations.
  * <li>The memory layout for the WAM is described in Appendix B.3. of the book. The same layout is usd for this machine
- * with the exception that the code area is held in a seperate array. This follows the x86 machine convention of
- * seperating code and data segments in memory, and also caters well for the sharing of the code area with the JVM as a
+ * with the exception that the code area is held in a separate array. This follows the x86 machine convention of
+ * separating code and data segments in memory, and also caters well for the sharing of the code area with the JVM as a
  * byte buffer.
  * <li>The deref operation is presented in the book as a recursive function. It was turned into an equivalent iterative
  * looping function instead. The deref operation returns multiple parameters, but as Java only supports single return
