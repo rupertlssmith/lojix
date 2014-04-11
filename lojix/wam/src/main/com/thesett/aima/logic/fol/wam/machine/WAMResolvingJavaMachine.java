@@ -385,6 +385,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         // Holds the current continuation point.
         int cp = codeBuffer.position();
 
+        // Notify any debug monitor that execution is starting.
+        if (monitor != null)
+        {
+            monitor.onExecute(this);
+        }
+
         //while (!failed && (ip < code.length))
         while (true)
         {

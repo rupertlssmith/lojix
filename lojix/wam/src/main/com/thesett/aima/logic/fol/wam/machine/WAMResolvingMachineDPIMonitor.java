@@ -21,8 +21,9 @@ package com.thesett.aima.logic.fol.wam.machine;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Accept notification of the machine being reset.</td></tr>
- * <tr><td> Accept notification that the machine has stepped by one instruction.</td></tr>
+ * <tr><td> Accept notification of the machine being reset. </td></tr>
+ * <tr><td> Accept notification that the machine has stepped by one instruction. </td></tr>
+ * <tr><td> Accept notification that the machine is starting a code execution. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -31,6 +32,9 @@ public interface WAMResolvingMachineDPIMonitor
 {
     /** Accepts notification that the machine has been reset. */
     void onReset(WAMResolvingMachineDPI dpi);
+
+    /** Accepts notification that the machine is starting a code execution. */
+    void onExecute(WAMResolvingMachineDPI dpi);
 
     /** Accepts notification that the machine has been stepped by one instruction. */
     void onStep(WAMResolvingMachineDPI dpi);
