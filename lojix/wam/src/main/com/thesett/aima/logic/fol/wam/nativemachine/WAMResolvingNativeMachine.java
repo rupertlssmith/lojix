@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.nativemachine;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -164,6 +165,54 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
     public void setMaxSteps(int max)
     {
         throw new NotImplementedException();
+    }
+
+    /** {@inheritDoc} */
+    public IntBuffer getDataBuffer()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getRegBase()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getRegSize()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getHeapBase()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getHeapSize()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getHP()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getStackBase()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public int getStackSize()
+    {
+        throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */

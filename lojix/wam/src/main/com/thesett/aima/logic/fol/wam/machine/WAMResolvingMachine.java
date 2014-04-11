@@ -54,7 +54,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  * @author Rupert Smith
  */
 public abstract class WAMResolvingMachine extends WAMBaseMachine
-    implements Resolver<WAMCompiledPredicate, WAMCompiledQuery>
+    implements Resolver<WAMCompiledPredicate, WAMCompiledQuery>, WAMResolvingMachineDPI
 {
     /** Used for debugging. */
     /* private static final Logger log = Logger.getLogger(WAMResolvingMachine.class.getName()); */
@@ -70,6 +70,9 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
      * be done.
      */
     protected ByteBuffer codeBuffer;
+
+    /** Holds the abstract machine debugging monitor, or <tt>null</tt> if none is attached. */
+    protected WAMResolvingMachineDPIMonitor monitor;
 
     /**
      * Creates a resolving machine with the specified symbol table.
@@ -169,6 +172,18 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
 
         // Execute the byte code, starting from the first functor of the query.
         return executeAndExtractBindings(currentQuery);
+    }
+
+    /** {@inheritDoc} */
+    public void attachMonitor(WAMResolvingMachineDPIMonitor monitor)
+    {
+        this.monitor = monitor;
+    }
+
+    /** {@inheritDoc} */
+    public ByteBuffer getCodeBuffer()
+    {
+        return codeBuffer;
     }
 
     /**

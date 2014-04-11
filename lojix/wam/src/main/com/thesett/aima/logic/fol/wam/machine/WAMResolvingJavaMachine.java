@@ -256,6 +256,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
         // Ensure that the overridden reset method of WAMBaseMachine is run too, to clear the call table.
         super.reset();
+
+        // Notify any debug monitor that the machine has been reset.
+        if (monitor != null)
+        {
+            monitor.onReset();
+        }
     }
 
     /**
@@ -286,6 +292,54 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     public void setMaxSteps(int max)
     {
         throw new UnsupportedOperationException("WAMResolvingJavaMachine does not support max steps limit on search.");
+    }
+
+    /** {@inheritDoc} */
+    public IntBuffer getDataBuffer()
+    {
+        return data;
+    }
+
+    /** {@inheritDoc} */
+    public int getRegBase()
+    {
+        return 0;
+    }
+
+    /** {@inheritDoc} */
+    public int getRegSize()
+    {
+        return REG_SIZE;
+    }
+
+    /** {@inheritDoc} */
+    public int getHeapBase()
+    {
+        return HEAP_BASE;
+    }
+
+    /** {@inheritDoc} */
+    public int getHeapSize()
+    {
+        return HEAP_SIZE;
+    }
+
+    /** {@inheritDoc} */
+    public int getHP()
+    {
+        return hp;
+    }
+
+    /** {@inheritDoc} */
+    public int getStackBase()
+    {
+        return STACK_BASE;
+    }
+
+    /** {@inheritDoc} */
+    public int getStackSize()
+    {
+        return STACK_SIZE;
     }
 
     /**
@@ -1606,6 +1660,12 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 return true;
             }
+            }
+
+            // Notify any debug monitor that the machine has been stepped.
+            if (monitor != null)
+            {
+                monitor.onStep();
             }
         }
 
