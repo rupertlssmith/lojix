@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl;
+package com.thesett.text;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;

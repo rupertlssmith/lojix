@@ -1,0 +1,63 @@
+/*
+ * Copyright The Sett Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.thesett.text;
+
+import java.util.concurrent.TimeUnit;
+
+import com.thesett.text.api.Controller;
+
+/**
+ * <pre><p/><table id="crc"><caption>CRC Card</caption>
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td>
+ * </table></pre>
+ *
+ * @author Rupert Smith
+ */
+public class Main extends StartStopLifecycleBase
+{
+    ControllerImpl controller = new ControllerImpl();
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            Main main = new Main();
+            main.start();
+
+            Runtime.getRuntime().addShutdownHook(main.getShutdownHook());
+
+            main.awaitTermination(1, TimeUnit.DAYS);
+        }
+        catch (InterruptedException e)
+        {
+            e = null;
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void start()
+    {
+        controller.open();
+        running();
+    }
+
+    public void shutdown()
+    {
+        controller.close();
+        terminated();
+    }
+}

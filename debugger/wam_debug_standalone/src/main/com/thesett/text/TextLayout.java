@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl.model;
+package com.thesett.text;
 
 import java.awt.Component;
 import java.awt.Container;

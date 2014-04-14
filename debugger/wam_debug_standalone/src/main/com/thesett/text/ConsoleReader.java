@@ -13,44 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl;
+package com.thesett.text;
 
-import javax.swing.text.Document;
-
-import com.thesett.text.api.Controller;
-import com.thesett.text.api.model.Text;
-import com.thesett.text.impl.model.TextImpl;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class ControllerImpl implements Controller
+public class ConsoleReader
 {
-    UIFactory uiFactory = new UIFactory();
-    Document document = new TextImpl();
-
-    public Controller open()
+    public ConsoleReader(InputStream stdin, PrintWriter printWriter)
     {
-        uiFactory.createMainWindow();
-        uiFactory.addTextPane(document);
-        uiFactory.showConsole(document);
-        uiFactory.showStatusBar(document);
-
-        return this;
+        throw new UnsupportedOperationException();
     }
 
-    public Controller close()
+    public ConsoleReader()
     {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
-    public Controller update(Text model)
+    public String readLine(String prompt)
     {
-        return this;
+        throw new UnsupportedOperationException();
+    }
+
+    public void printString(String s)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public void printNewline()
+    {
+        throw new UnsupportedOperationException();
     }
 }

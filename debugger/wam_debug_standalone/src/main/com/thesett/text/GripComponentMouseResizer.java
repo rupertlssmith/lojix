@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl;
+package com.thesett.text;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -22,8 +22,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
-
-import com.thesett.text.impl.model.ResizeDelta;
 
 /**
  * GripComponentMouseResizer applies a 'grip' cursor to a component when the mouse is pressed on it. When pressed mouse

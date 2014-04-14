@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl;
+package com.thesett.text;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -27,8 +27,6 @@ import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.text.Document;
-
-import com.thesett.text.impl.model.TextLayout;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
