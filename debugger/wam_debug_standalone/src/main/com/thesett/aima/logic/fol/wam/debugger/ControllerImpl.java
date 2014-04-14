@@ -36,8 +36,10 @@ public class ControllerImpl
     {
         uiFactory.createMainWindow();
         uiFactory.addTextPane(document);
-        uiFactory.showConsole(document);
-        uiFactory.showStatusBar(document);
+        uiFactory.addConsole();
+        uiFactory.addHorizontalBar();
+        uiFactory.addLeftPane();
+        uiFactory.addRightPane();
 
         return this;
     }
