@@ -13,21 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text;
+package com.thesett.aima.logic.fol.wam.debugger;
+
+import javax.swing.text.Document;
+
+import com.thesett.text.impl.model.TextImpl;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface ResizeDelta
+public class ControllerImpl
 {
-    /**
-     * Applies a delta to the console height.
-     *
-     * @param delta The pixel delta to apply.
-     */
-    void deltaResizeTop(int delta);
+    UIFactory uiFactory = new UIFactory();
+    Document document = new TextImpl();
+
+    public ControllerImpl open()
+    {
+        uiFactory.createMainWindow();
+        uiFactory.addTextPane(document);
+        uiFactory.showConsole(document);
+        uiFactory.showStatusBar(document);
+
+        return this;
+    }
+
+    public void close()
+    {
+    }
 }

@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text;
+package com.thesett.aima.logic.fol.wam.debugger;
 
-import javax.swing.text.Document;
-
-import com.thesett.text.impl.model.TextImpl;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -27,22 +25,37 @@ import com.thesett.text.impl.model.TextImpl;
  *
  * @author Rupert Smith
  */
-public class ControllerImpl
+public class Main extends StartStopLifecycleBase
 {
-    UIFactory uiFactory = new UIFactory();
-    Document document = new TextImpl();
+    ControllerImpl controller = new ControllerImpl();
 
-    public ControllerImpl open()
+    public static void main(String[] args)
     {
-        uiFactory.createMainWindow();
-        uiFactory.addTextPane(document);
-        uiFactory.showConsole(document);
-        uiFactory.showStatusBar(document);
+        try
+        {
+            Main main = new Main();
+            main.start();
 
-        return this;
+            Runtime.getRuntime().addShutdownHook(main.getShutdownHook());
+
+            main.awaitTermination(1, TimeUnit.DAYS);
+        }
+        catch (InterruptedException e)
+        {
+            e = null;
+            Thread.currentThread().interrupt();
+        }
     }
 
-    public void close()
+    public void start()
     {
+        controller.open();
+        running();
+    }
+
+    public void shutdown()
+    {
+        controller.close();
+        terminated();
     }
 }

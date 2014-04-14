@@ -13,42 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text;
-
-import java.io.InputStream;
-import java.io.PrintWriter;
+package com.thesett.aima.logic.fol.wam.debugger;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities <th> Collaborations
+ * <tr><th> Responsibilities
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class ConsoleReader
+public interface ResizeDelta
 {
-    public ConsoleReader(InputStream stdin, PrintWriter printWriter)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public ConsoleReader()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public String readLine(String prompt)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public void printString(String s)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    public void printNewline()
-    {
-        throw new UnsupportedOperationException();
-    }
+    /**
+     * Applies a delta to the console height.
+     *
+     * @param delta The pixel delta to apply.
+     */
+    void deltaResizeTop(int delta);
 }

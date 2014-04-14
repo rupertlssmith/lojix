@@ -13,51 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text;
+package com.thesett.aima.logic.fol.wam.debugger;
 
-import java.util.concurrent.TimeUnit;
-
-import com.thesett.text.api.Controller;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class Main extends StartStopLifecycleBase
+public class ConsoleReader
 {
-    ControllerImpl controller = new ControllerImpl();
-
-    public static void main(String[] args)
+    public ConsoleReader(InputStream stdin, PrintWriter printWriter)
     {
-        try
-        {
-            Main main = new Main();
-            main.start();
-
-            Runtime.getRuntime().addShutdownHook(main.getShutdownHook());
-
-            main.awaitTermination(1, TimeUnit.DAYS);
-        }
-        catch (InterruptedException e)
-        {
-            e = null;
-            Thread.currentThread().interrupt();
-        }
+        throw new UnsupportedOperationException();
     }
 
-    public void start()
+    public ConsoleReader()
     {
-        controller.open();
-        running();
+        throw new UnsupportedOperationException();
     }
 
-    public void shutdown()
+    public String readLine(String prompt)
     {
-        controller.close();
-        terminated();
+        throw new UnsupportedOperationException();
+    }
+
+    public void printString(String s)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public void printNewline()
+    {
+        throw new UnsupportedOperationException();
     }
 }
