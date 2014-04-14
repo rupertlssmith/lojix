@@ -13,47 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl.model;
+package com.thesett.text.api;
 
-import javax.swing.text.PlainDocument;
-
-import com.thesett.common.util.Source;
-import com.thesett.text.api.model.Row;
 import com.thesett.text.api.model.Text;
 
 /**
+ * Notifier defines a set of callback functions for updates on the status of the text UI.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities <th> Collaborations
+ * <tr><th> Responsibilities
  * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class TextImpl extends PlainDocument implements Text
+public interface Notifier
 {
-    public void caretAt(int row, int column)
-    {
-    }
+    Notifier resize(int columns, int rows);
 
-    public void insert(char character)
-    {
-    }
+    Notifier caret(int column, int row);
 
-    public void backspace()
-    {
-    }
-
-    public void newline()
-    {
-    }
-
-    public Source<Row> updates()
-    {
-        return null;
-    }
-
-    public Source<Row> full()
-    {
-        return null;
-    }
+    Notifier update(Text mode);
 }

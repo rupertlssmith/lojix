@@ -1,11 +1,11 @@
 /*
- * Copyright 2000-2009 JetBrains s.r.o.
+ * Copyright The Sett Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,17 @@
  */
 package com.thesett.text.impl;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.text.Document;
 
 import com.thesett.text.impl.model.TextLayout;

@@ -132,7 +132,8 @@
     </distributionManagement>
 
     <modules>
-      <module>wam_debug_standalone</module>
+        <module>text_ui</module>
+        <module>wam_debug_standalone</module>      
     </modules>
 
     <dependencyManagement>

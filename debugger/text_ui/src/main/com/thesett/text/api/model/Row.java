@@ -13,47 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl.model;
-
-import javax.swing.text.PlainDocument;
+package com.thesett.text.api.model;
 
 import com.thesett.common.util.Source;
-import com.thesett.text.api.model.Row;
-import com.thesett.text.api.model.Text;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities <th> Collaborations
+ * <tr><th> Responsibilities
  * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class TextImpl extends PlainDocument implements Text
+public interface Row
 {
-    public void caretAt(int row, int column)
-    {
-    }
+    Source<Cell> updates();
 
-    public void insert(char character)
-    {
-    }
-
-    public void backspace()
-    {
-    }
-
-    public void newline()
-    {
-    }
-
-    public Source<Row> updates()
-    {
-        return null;
-    }
-
-    public Source<Row> full()
-    {
-        return null;
-    }
+    int getRow();
 }

@@ -31,6 +31,12 @@
 
         <dependency>
             <groupId>com.thesett</groupId>
+            <artifactId>text_ui</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thesett</groupId>
             <artifactId>aima</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
