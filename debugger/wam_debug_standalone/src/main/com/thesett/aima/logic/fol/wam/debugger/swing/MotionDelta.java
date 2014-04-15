@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger;
+package com.thesett.aima.logic.fol.wam.debugger.swing;
 
 /**
  * MotionDelta provide an interface through which a controller can communicate a motion event, as a relative delta. This

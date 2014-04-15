@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger;
+package com.thesett.aima.logic.fol.wam.debugger.swing;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -35,7 +35,7 @@ import javax.swing.event.MouseInputAdapter;
  *
  * @author Rupert Smith
  */
-class GripComponentMouseMover extends MouseInputAdapter
+public class GripComponentMouseMover extends MouseInputAdapter
 {
     private final Component gripComponent;
     private final MotionDelta resizeable;

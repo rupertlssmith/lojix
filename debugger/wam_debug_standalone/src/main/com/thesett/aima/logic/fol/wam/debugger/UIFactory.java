@@ -25,7 +25,15 @@ import java.awt.MenuBar;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.text.Document;
+
+import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
+import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -108,11 +116,11 @@ public class UIFactory
         frame.getContentPane().add(hbar, DebuggerLayout.STATUS_BAR);
     }
 
-    public void addLeftPane()
+    public void addLeftBar()
     {
         // Left vertical bar.
         JPanel vbar = new JPanel();
-        vbar.setBackground(Color.WHITE);
+        vbar.setBackground(Color.LIGHT_GRAY);
         vbar.setForeground(Color.BLACK);
 
         GripComponentMouseMover resizer =
@@ -121,7 +129,10 @@ public class UIFactory
         vbar.addMouseListener(resizer);
 
         frame.getContentPane().add(vbar, DebuggerLayout.LEFT_VERTICAL_BAR);
+    }
 
+    public void addLeftPane()
+    {
         // Left pane.
         JEditorPane textPane = new JEditorPane();
         textPane.setBackground(Color.DARK_GRAY);
@@ -135,11 +146,11 @@ public class UIFactory
         frame.getContentPane().add(textPane, DebuggerLayout.LEFT_PANE);
     }
 
-    public void addRightPane()
+    public void addRightBar()
     {
         // Right vertical bar.
         JPanel vbar = new JPanel();
-        vbar.setBackground(Color.WHITE);
+        vbar.setBackground(Color.LIGHT_GRAY);
         vbar.setForeground(Color.BLACK);
 
         GripComponentMouseMover resizer =
@@ -148,7 +159,10 @@ public class UIFactory
         vbar.addMouseListener(resizer);
 
         frame.getContentPane().add(vbar, DebuggerLayout.RIGHT_VERTICAL_BAR);
+    }
 
+    public void addRightPane()
+    {
         // Right pane.
         JEditorPane textPane = new JEditorPane();
         textPane.setBackground(Color.DARK_GRAY);

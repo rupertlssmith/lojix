@@ -38,7 +38,9 @@ public class ControllerImpl
         uiFactory.addTextPane(document);
         uiFactory.addConsole();
         uiFactory.addHorizontalBar();
+        uiFactory.addLeftBar();
         uiFactory.addLeftPane();
+        uiFactory.addRightBar();
         uiFactory.addRightPane();
 
         return this;
