@@ -22,7 +22,9 @@ import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
 
-import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.text.Document;
 
 /**
@@ -98,39 +100,12 @@ public class UIFactory
         Font font = new Font("Courier New", Font.PLAIN, 12);
         hbar.setFont(font);
 
-        GripComponentMouseResizer resizer =
-            new GripComponentMouseResizer(hbar, layout, DEFAULT_CURSOR, MOVE_CURSOR);
+        GripComponentMouseMover resizer =
+            new GripComponentMouseMover(hbar, layout.getConsoleHeightResizer(), DEFAULT_CURSOR, MOVE_CURSOR);
         hbar.addMouseMotionListener(resizer);
         hbar.addMouseListener(resizer);
 
         frame.getContentPane().add(hbar, DebuggerLayout.STATUS_BAR);
-    }
-
-    public void addRightPane()
-    {
-        // Right vertical bar.
-        JPanel vbar = new JPanel();
-        vbar.setBackground(Color.WHITE);
-        vbar.setForeground(Color.BLACK);
-
-        GripComponentMouseResizer resizer =
-            new GripComponentMouseResizer(vbar, layout, DEFAULT_CURSOR, MOVE_CURSOR);
-        vbar.addMouseMotionListener(resizer);
-        vbar.addMouseListener(resizer);
-
-        frame.getContentPane().add(vbar, DebuggerLayout.RIGHT_VERTICAL_BAR);
-
-        // Right pane.
-        JEditorPane textPane = new JEditorPane();
-        textPane.setBackground(Color.DARK_GRAY);
-        textPane.setCaretColor(Color.LIGHT_GRAY);
-        textPane.setForeground(Color.WHITE);
-        textPane.setAutoscrolls(true);
-
-        Font font = new Font("Courier New", Font.PLAIN, 12);
-        textPane.setFont(font);
-
-        frame.getContentPane().add(textPane, DebuggerLayout.RIGHT_PANE);
     }
 
     public void addLeftPane()
@@ -140,8 +115,8 @@ public class UIFactory
         vbar.setBackground(Color.WHITE);
         vbar.setForeground(Color.BLACK);
 
-        GripComponentMouseResizer resizer =
-                new GripComponentMouseResizer(vbar, layout, DEFAULT_CURSOR, MOVE_CURSOR);
+        GripComponentMouseMover resizer =
+            new GripComponentMouseMover(vbar, layout.getLeftPaneWidthResizer(), DEFAULT_CURSOR, MOVE_CURSOR);
         vbar.addMouseMotionListener(resizer);
         vbar.addMouseListener(resizer);
 
@@ -158,6 +133,33 @@ public class UIFactory
         textPane.setFont(font);
 
         frame.getContentPane().add(textPane, DebuggerLayout.LEFT_PANE);
+    }
+
+    public void addRightPane()
+    {
+        // Right vertical bar.
+        JPanel vbar = new JPanel();
+        vbar.setBackground(Color.WHITE);
+        vbar.setForeground(Color.BLACK);
+
+        GripComponentMouseMover resizer =
+            new GripComponentMouseMover(vbar, layout.getRightPaneWidthResizer(), DEFAULT_CURSOR, MOVE_CURSOR);
+        vbar.addMouseMotionListener(resizer);
+        vbar.addMouseListener(resizer);
+
+        frame.getContentPane().add(vbar, DebuggerLayout.RIGHT_VERTICAL_BAR);
+
+        // Right pane.
+        JEditorPane textPane = new JEditorPane();
+        textPane.setBackground(Color.DARK_GRAY);
+        textPane.setCaretColor(Color.LIGHT_GRAY);
+        textPane.setForeground(Color.WHITE);
+        textPane.setAutoscrolls(true);
+
+        Font font = new Font("Courier New", Font.PLAIN, 12);
+        textPane.setFont(font);
+
+        frame.getContentPane().add(textPane, DebuggerLayout.RIGHT_PANE);
     }
 
     private void addMenu()

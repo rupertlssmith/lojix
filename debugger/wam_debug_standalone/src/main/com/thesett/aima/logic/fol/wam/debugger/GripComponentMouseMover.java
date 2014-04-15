@@ -19,32 +19,32 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 /**
- * GripComponentMouseResizer applies a 'grip' cursor to a component when the mouse is pressed on it. When pressed mouse
- * motion is applied to a {@link ResizeDelta}, which in turn can be used to move or re-size some aspect of a UI under
+ * GripComponentMouseMover applies a 'grip' cursor to a component when the mouse is pressed on it. When pressed mouse
+ * motion is applied to a {@link MotionDelta}, which in turn can be used to move or re-size some aspect of a UI under
  * mouse control.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Show a different cursor when moving a component.
- * <tr><td> Apply mouse motion on a component to a re-sizable object. <td> {@link ResizeDelta}
+ * <tr><td> Apply mouse motion on a component to a re-sizable object. <td> {@link MotionDelta}
  * </table></pre>
  *
  * @author Rupert Smith
  */
-class GripComponentMouseResizer extends MouseInputAdapter
+class GripComponentMouseMover extends MouseInputAdapter
 {
     private final Component gripComponent;
-    private final ResizeDelta resizeable;
+    private final MotionDelta resizeable;
     private final Cursor defaultCursor;
     private final Cursor moveCursor;
 
     private boolean pressed = false;
     private int lastY;
+    private int lastX;
 
     /**
      * Creates a mouse controlled re-sizer.
@@ -54,7 +54,7 @@ class GripComponentMouseResizer extends MouseInputAdapter
      * @param defaultCursor The default cursor to show when not gripping.
      * @param moveCursor    The move cursor to show when gripping.
      */
-    public GripComponentMouseResizer(Component gripComponent, ResizeDelta resizeable, Cursor defaultCursor,
+    public GripComponentMouseMover(Component gripComponent, MotionDelta resizeable, Cursor defaultCursor,
         Cursor moveCursor)
     {
         this.gripComponent = gripComponent;
@@ -73,6 +73,7 @@ class GripComponentMouseResizer extends MouseInputAdapter
         gripComponent.setCursor(moveCursor);
         pressed = true;
         lastY = e.getYOnScreen();
+        lastX = e.getXOnScreen();
     }
 
     /**
@@ -93,17 +94,30 @@ class GripComponentMouseResizer extends MouseInputAdapter
      */
     public void mouseDragged(MouseEvent e)
     {
-        JSplitPane p;
-
         if (pressed)
         {
             int deltaY = e.getYOnScreen() - lastY;
             lastY = e.getYOnScreen();
 
+            int deltaX = e.getXOnScreen() - lastX;
+            lastX = e.getXOnScreen();
+
+            boolean revalidate = false;
+
             if (deltaY != 0)
             {
-                resizeable.deltaResizeTop(-deltaY);
+                resizeable.deltaY(-deltaY);
+                revalidate = true;
+            }
 
+            if (deltaX != 0)
+            {
+                resizeable.deltaX(-deltaX);
+                revalidate = true;
+            }
+
+            if (revalidate)
+            {
                 SwingUtilities.invokeLater(new Runnable()
                     {
                         public void run()

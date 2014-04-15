@@ -16,18 +16,31 @@
 package com.thesett.aima.logic.fol.wam.debugger;
 
 /**
+ * MotionDelta provide an interface through which a controller can communicate a motion event, as a relative delta. This
+ * could be used to move or resize some on-screen element for example.
+ *
+ * <p/>The delta is usually expressed in pixels, but does not have to be as the units are not specified.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
+ * <tr><th> Responsibilities </th></tr>
+ * <tr><td> Accept a relative motion. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface ResizeDelta
+public interface MotionDelta
 {
     /**
-     * Applies a delta to the console height.
+     * Applies an X-axis motion delta.
      *
-     * @param delta The pixel delta to apply.
+     * @param delta The delta to apply.
      */
-    void deltaResizeTop(int delta);
+    void deltaX(int delta);
+
+    /**
+     * Applies a Y-axis motion delta.
+     *
+     * @param delta The delta to apply.
+     */
+    void deltaY(int delta);
 }

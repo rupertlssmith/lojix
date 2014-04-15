@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author Rupert Smith
  */
-public class DebuggerLayout implements LayoutManager, ResizeDelta
+public class DebuggerLayout implements LayoutManager
 {
     public static final String CENTER = "center";
     public static final String STATUS_BAR = "status";
@@ -96,6 +96,36 @@ public class DebuggerLayout implements LayoutManager, ResizeDelta
         Insets insets = parent.getInsets();
 
         return new Dimension(insets.left + insets.right, insets.top + insets.bottom);
+    }
+
+    /**
+     * Provides a MotionDelta to capture console height resizing through.
+     *
+     * @return A MotionDelta to capture console height resizing through.
+     */
+    public MotionDelta getConsoleHeightResizer()
+    {
+        return new ConsoleHeightResizer();
+    }
+
+    /**
+     * Provides a MotionDelta to capture left pane width resizing through.
+     *
+     * @return A MotionDelta to capture left pane width resizing through.
+     */
+    public MotionDelta getLeftPaneWidthResizer()
+    {
+        return new LeftPaneWidthResizer();
+    }
+
+    /**
+     * Provides a MotionDelta to capture right pane width resizing through.
+     *
+     * @return A MotionDelta to capture right pane width resizing through.
+     */
+    public MotionDelta getRightPaneWidthResizer()
+    {
+        return new RightPaneWidthResizer();
     }
 
     /** {@inheritDoc} */
@@ -177,12 +207,6 @@ public class DebuggerLayout implements LayoutManager, ResizeDelta
         }
     }
 
-    /** {@inheritDoc} */
-    public void deltaResizeTop(int delta)
-    {
-        consoleHeight += delta;
-    }
-
     private int addRightBar(int size)
     {
         return hasRightBar ? size : 0;
@@ -222,5 +246,56 @@ public class DebuggerLayout implements LayoutManager, ResizeDelta
         hasLeftPane = componentMap.containsKey(LEFT_PANE);
         hasRightBar = componentMap.containsKey(RIGHT_VERTICAL_BAR);
         hasRightPane = componentMap.containsKey(RIGHT_PANE);
+    }
+
+    /**
+     * Provides a motion delta to capture resize events for the console height.
+     */
+    private class ConsoleHeightResizer implements MotionDelta
+    {
+        /** {@inheritDoc} */
+        public void deltaX(int delta)
+        {
+        }
+
+        /** {@inheritDoc} */
+        public void deltaY(int delta)
+        {
+            consoleHeight += delta;
+        }
+    }
+
+    /**
+     * Provides a motion delta to capture resize events for the left pane width.
+     */
+    private class LeftPaneWidthResizer implements MotionDelta
+    {
+        /** {@inheritDoc} */
+        public void deltaX(int delta)
+        {
+            leftPaneWidth -= delta;
+        }
+
+        /** {@inheritDoc} */
+        public void deltaY(int delta)
+        {
+        }
+    }
+
+    /**
+     * Provides a motion delta to capture resize events for the right pane width.
+     */
+    private class RightPaneWidthResizer implements MotionDelta
+    {
+        /** {@inheritDoc} */
+        public void deltaX(int delta)
+        {
+            rightPaneWidth += delta;
+        }
+
+        /** {@inheritDoc} */
+        public void deltaY(int delta)
+        {
+        }
     }
 }
