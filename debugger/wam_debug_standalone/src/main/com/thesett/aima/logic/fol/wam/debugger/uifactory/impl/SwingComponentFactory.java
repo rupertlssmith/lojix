@@ -84,7 +84,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         textPane.setForeground(colorScheme.getMainText());
         textPane.setAutoscrolls(true);
 
-        Font font = new Font("Courier New", Font.PLAIN, 12);
+        Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 12);
         textPane.setFont(font);
         textPane.setDocument(document);
 
