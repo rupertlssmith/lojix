@@ -18,17 +18,26 @@ package com.thesett.aima.logic.fol.wam.debugger;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Implements the main method for the debugger stand-alone application.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Attach the UI controller to the lifecycle for the application. </td>
+ *     <td> {@link StartStopLifecycleBase}, {@link ControllerImpl} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public class Main extends StartStopLifecycleBase
 {
+    /** The top-level UI controller for the application. */
     ControllerImpl controller = new ControllerImpl();
 
+    /**
+     * Launches the debugger as a stand-alone Swing application.
+     *
+     * @param args Command line parameters.
+     */
     public static void main(String[] args)
     {
         try
@@ -47,12 +56,22 @@ public class Main extends StartStopLifecycleBase
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Starts the UI.
+     */
     public void start()
     {
         controller.open();
         running();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Closes the UI.
+     */
     public void shutdown()
     {
         controller.close();

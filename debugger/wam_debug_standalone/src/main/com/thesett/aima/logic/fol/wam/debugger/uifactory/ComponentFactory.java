@@ -56,10 +56,11 @@ public interface ComponentFactory<C>
      * Creates a grip-able panel for adjusting the screen layout.
      *
      * @param  motionDelta The motion controller to attach to the grip-able panel.
+     * @param  vertical    <tt>true</tt> iff the grip-panel is vertically oriented, horizontal otherwise.
      *
      * @return A grip-able panel.
      */
-    C createGripPanel(MotionDelta motionDelta);
+    C createGripPanel(MotionDelta motionDelta, boolean vertical);
 
     /**
      * Creates a blank panel for filling empty space.

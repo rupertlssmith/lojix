@@ -31,41 +31,49 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
  */
 public class DarkColorScheme implements ColorScheme
 {
+    /** {@inheritDoc} */
     public Color getMainText()
     {
         return Color.WHITE;
     }
 
+    /** {@inheritDoc} */
     public Color getDisabledText()
     {
         return Color.LIGHT_GRAY;
     }
 
+    /** {@inheritDoc} */
     public Color getHighlight1()
     {
         return Color.CYAN;
     }
 
+    /** {@inheritDoc} */
     public Color getHighlight2()
     {
         return Color.CYAN;
     }
 
+    /** {@inheritDoc} */
     public Color getHighlight3()
     {
         return Color.CYAN;
     }
 
+    /** {@inheritDoc} */
     public Color getHighlight4()
     {
         return Color.CYAN;
     }
 
+    /** {@inheritDoc} */
     public Color getActiveBackground()
     {
         return Color.BLACK;
     }
 
+    /** {@inheritDoc} */
     public Color getInactiveBackground()
     {
         return Color.DARK_GRAY;

@@ -106,7 +106,7 @@ public class SwingMainWindow implements MainWindow<Component>
     private void showHorizontalBar()
     {
         // Left vertical bar.
-        Component bar = factory.createGripPanel(layout.getConsoleHeightResizer());
+        Component bar = factory.createGripPanel(layout.getConsoleHeightResizer(), false);
 
         frame.getContentPane().add(bar, DebuggerLayout.STATUS_BAR);
     }
@@ -115,7 +115,7 @@ public class SwingMainWindow implements MainWindow<Component>
     private void showLeftBar()
     {
         // Left vertical bar.
-        Component bar = factory.createGripPanel(layout.getLeftPaneWidthResizer());
+        Component bar = factory.createGripPanel(layout.getLeftPaneWidthResizer(), true);
 
         frame.getContentPane().add(bar, DebuggerLayout.LEFT_VERTICAL_BAR);
     }
@@ -124,7 +124,7 @@ public class SwingMainWindow implements MainWindow<Component>
     private void showRightBar()
     {
         // Right vertical bar.
-        Component bar = factory.createGripPanel(layout.getRightPaneWidthResizer());
+        Component bar = factory.createGripPanel(layout.getRightPaneWidthResizer(), true);
 
         frame.getContentPane().add(bar, DebuggerLayout.RIGHT_VERTICAL_BAR);
     }

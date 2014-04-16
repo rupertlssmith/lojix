@@ -47,6 +47,12 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     /** The default cursor appearance. */
     private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
+    /** The cursor for vertical resizing controls mouse-over. */
+    private static final Cursor VERTICAL_RESIZE_CURSOR = new Cursor(Cursor.W_RESIZE_CURSOR);
+
+    /** The cursor for horizontal resizing controls mouse-over. */
+    private static final Cursor HORIZONTAL_RESIZE_CURSOR = new Cursor(Cursor.N_RESIZE_CURSOR);
+
     /** The grip cursor appearance to use when moving components. */
     private static final Cursor GRIP_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
 
@@ -86,13 +92,14 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public Component createGripPanel(MotionDelta motionDelta)
+    public Component createGripPanel(MotionDelta motionDelta, boolean vertical)
     {
         JPanel vbar = new JPanel();
         vbar.setBackground(colorScheme.getInactiveBackground());
-        vbar.setForeground(colorScheme.getMainText());
 
-        GripComponentMouseMover resizer = new GripComponentMouseMover(vbar, motionDelta, DEFAULT_CURSOR, GRIP_CURSOR);
+        GripComponentMouseMover resizer =
+            new GripComponentMouseMover(vbar, motionDelta, vertical ? VERTICAL_RESIZE_CURSOR : HORIZONTAL_RESIZE_CURSOR,
+                GRIP_CURSOR);
         vbar.addMouseMotionListener(resizer);
         vbar.addMouseListener(resizer);
 
@@ -103,7 +110,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     public Component createBlankPanel()
     {
         JPanel vbar = new JPanel();
-        vbar.setBackground(colorScheme.getInactiveBackground());
+        vbar.setBackground(colorScheme.getActiveBackground());
         vbar.setForeground(colorScheme.getDisabledText());
 
         return vbar;

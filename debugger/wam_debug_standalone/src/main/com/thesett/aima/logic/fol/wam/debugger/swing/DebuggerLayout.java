@@ -72,7 +72,7 @@ public class DebuggerLayout implements LayoutManager
     public static final int DEFAULT_STATUS_BAR_HEIGHT = 20;
 
     /** Defines the default vertical grip-bar width. */
-    public static final int DEFAULT_VBAR_WIDTH = 8;
+    public static final int DEFAULT_VBAR_WIDTH = 3;
 
     /** Map of all components in the layout by position label. */
     private final Map<String, Component> componentMap = new HashMap<String, Component>();
@@ -184,19 +184,19 @@ public class DebuggerLayout implements LayoutManager
 
         int centerHeight =
             maxHeight - ((hasConsole ? consoleHeight : 0) + (hasStatusBar ? DEFAULT_STATUS_BAR_HEIGHT : 0));
-        int statusBarTop = centerHeight + 1;
-        int consoleTop = statusBarTop + DEFAULT_STATUS_BAR_HEIGHT + 1;
+        int statusBarTop = centerHeight;
+        int consoleTop = statusBarTop + DEFAULT_STATUS_BAR_HEIGHT;
 
         int centerLeft = (hasLeftPane ? leftPaneWidth : 0) + (hasLeftBar ? DEFAULT_VBAR_WIDTH : 0);
         int centerRight = maxWidth - (hasRightPane ? rightPaneWidth : 0) - (hasRightBar ? DEFAULT_VBAR_WIDTH : 0);
         int centerWidth = centerRight - centerLeft;
 
-        int leftBarRight = centerLeft - 1;
+        int leftBarRight = centerLeft;
         int leftBarLeft = leftBarRight - DEFAULT_VBAR_WIDTH;
-        int leftPaneRight = leftBarLeft - 1;
+        int leftPaneRight = leftBarLeft;
 
-        int rightBarLeft = centerRight + 1;
-        int rightPaneLeft = rightBarLeft + DEFAULT_VBAR_WIDTH + 1;
+        int rightBarLeft = centerRight;
+        int rightPaneLeft = rightBarLeft + DEFAULT_VBAR_WIDTH;
 
         for (Component component : parent.getComponents())
         {
