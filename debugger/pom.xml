@@ -126,7 +126,7 @@
         <site>
             <id>All_Projects_Site</id>
             <name>All Projects Site</name>
-            <url>file:/var/www/build_reports/lojix</url>
+            <url>file:/var/www/build_reports/debugger</url>
         </site>
 
     </distributionManagement>
