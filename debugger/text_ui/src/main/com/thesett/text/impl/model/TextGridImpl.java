@@ -13,31 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.api.model;
+package com.thesett.text.impl.model;
+
+import javax.swing.text.PlainDocument;
 
 import com.thesett.common.util.Source;
+import com.thesett.text.api.model.Row;
+import com.thesett.text.api.model.TextGrid;
 
 /**
- * Text defines a model describing a buffer of text.
- *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
+ * <tr><th> Responsibilities <th> Collaborations
  * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface Text
+public class TextGridImpl extends PlainDocument implements TextGrid
 {
-    void caretAt(int row, int column);
+    public void caretAt(int row, int column)
+    {
+    }
 
-    void insert(char character);
+    public void insert(char character)
+    {
+    }
 
-    void backspace();
+    public void backspace()
+    {
+    }
 
-    void newline();
+    public void newline()
+    {
+    }
 
-    Source<Row> updates();
+    public Source<Row> updates()
+    {
+        return null;
+    }
 
-    Source<Row> full();
+    public Source<Row> full()
+    {
+        return null;
+    }
 }

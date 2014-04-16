@@ -15,7 +15,7 @@
  */
 package com.thesett.text.api;
 
-import com.thesett.text.api.model.Text;
+import com.thesett.text.api.model.TextGrid;
 
 /**
  * Controller defines a set of functions for controlling the text UI.
@@ -33,5 +33,5 @@ public interface Controller
 
     Controller close();
 
-    Controller update(Text model);
+    Controller update(TextGrid model);
 }

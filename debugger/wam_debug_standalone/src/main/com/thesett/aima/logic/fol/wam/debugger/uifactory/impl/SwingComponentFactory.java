@@ -28,6 +28,8 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.text.api.model.TextGrid;
+import com.thesett.text.impl.model.TextGridImpl;
 
 /**
  * SwingComponentFactory implements a UI component factory that produces Swing components.
@@ -76,7 +78,13 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public Component createEditor(Document document)
+    public TextGrid createTextGrid()
+    {
+        return new TextGridImpl();
+    }
+
+    /** {@inheritDoc} */
+    public Component createTextPanel(TextGrid model)
     {
         JEditorPane textPane = new JEditorPane();
         textPane.setBackground(colorScheme.getActiveBackground());
@@ -86,7 +94,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
 
         Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 12);
         textPane.setFont(font);
-        textPane.setDocument(document);
+        textPane.setDocument((Document) model);
 
         return textPane;
     }

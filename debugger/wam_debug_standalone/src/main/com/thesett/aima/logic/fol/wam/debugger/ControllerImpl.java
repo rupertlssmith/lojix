@@ -15,13 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
-import javax.swing.text.Document;
-
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
-import com.thesett.text.impl.model.TextImpl;
+import com.thesett.text.api.model.TextGrid;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -36,13 +34,14 @@ public class ControllerImpl
     ColorScheme colorScheme = new DarkColorScheme();
     ComponentFactory componentFactory = new SwingComponentFactory(colorScheme);
     MainWindow mainWindow = componentFactory.createMainWindow();
-    Document document = new TextImpl();
 
     public ControllerImpl open()
     {
         mainWindow.showMainWindow();
         mainWindow.showCentrePane(componentFactory.createBlankPanel());
-        mainWindow.showLeftPane(componentFactory.createEditor(document));
+
+        TextGrid textGrid = componentFactory.createTextGrid();
+        mainWindow.showLeftPane(componentFactory.createTextPanel(textGrid));
 
         return this;
     }
