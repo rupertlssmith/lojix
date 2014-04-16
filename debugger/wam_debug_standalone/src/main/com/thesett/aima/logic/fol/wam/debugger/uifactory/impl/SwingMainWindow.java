@@ -25,24 +25,39 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 
 /**
+ * SwingMainWindow implements the main debugger application window as a stand-alone Swing application.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Show/hide the main window. </td><td> {@link ComponentFactory}</td></tr>
+ * <tr><td> Allow UI component to be placed within the centre, left, right or console position.</td>
+ *     <td> {@link ComponentFactory}</td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public class SwingMainWindow implements MainWindow<Component>
 {
+    /** The application window frame. */
     private JFrame frame;
+
+    /** A customized Swing layout for this application. */
     private DebuggerLayout layout;
+
+    /** The component factory used to build UI elements. */
     private final ComponentFactory<Component> factory;
 
-    public SwingMainWindow(ComponentFactory factory)
+    /**
+     * Creates the main debugger window, implement as a standalone Swing application window.
+     *
+     * @param factory The component factory used to build UI elements.
+     */
+    public SwingMainWindow(ComponentFactory<Component> factory)
     {
         this.factory = factory;
     }
 
+    /** {@inheritDoc} */
     public void showMainWindow()
     {
         frame = new JFrame();
@@ -56,12 +71,14 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.setVisible(true);
     }
 
+    /** {@inheritDoc} */
     public void showCentrePane(Component component)
     {
         frame.getContentPane().add(component, DebuggerLayout.CENTER);
         frame.pack();
     }
 
+    /** {@inheritDoc} */
     public void showConsole(Component component)
     {
         showHorizontalBar();
@@ -69,6 +86,7 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.pack();
     }
 
+    /** {@inheritDoc} */
     public void showLeftPane(Component component)
     {
         showLeftBar();
@@ -76,6 +94,7 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.pack();
     }
 
+    /** {@inheritDoc} */
     public void showRightPane(Component component)
     {
         showRightBar();
@@ -83,6 +102,7 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.pack();
     }
 
+    /** Creates a horizontal grip-able bar for adjusting the console height. */
     private void showHorizontalBar()
     {
         // Left vertical bar.
@@ -91,6 +111,7 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.getContentPane().add(bar, DebuggerLayout.STATUS_BAR);
     }
 
+    /** Creates a vertical grip-able bar for adjusting the left panel width. */
     private void showLeftBar()
     {
         // Left vertical bar.
@@ -99,6 +120,7 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.getContentPane().add(bar, DebuggerLayout.LEFT_VERTICAL_BAR);
     }
 
+    /** Creates a vertical grip-able bar for adjusting the right panel width. */
     private void showRightBar()
     {
         // Right vertical bar.

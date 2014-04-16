@@ -37,13 +37,25 @@ import javax.swing.event.MouseInputAdapter;
  */
 public class GripComponentMouseMover extends MouseInputAdapter
 {
+    /** The grip-able component. */
     private final Component gripComponent;
+
+    /** The motion delta to update as the mouse is moved. */
     private final MotionDelta resizeable;
+
+    /** The non-pressed detault cursor appearance. */
     private final Cursor defaultCursor;
+
+    /** The cursor appearance to use when pressed and moving the component. */
     private final Cursor moveCursor;
 
+    /** Indicates whether the mouse button is down. */
     private boolean pressed = false;
+
+    /** Holds the previous y coordinate. */
     private int lastY;
+
+    /** Holds the previous x coordinate. */
     private int lastX;
 
     /**

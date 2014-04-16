@@ -30,38 +30,81 @@ import java.util.Map;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Add/remove components to the layout in the available positions. </td></tr>
+ * <tr><td> Calculate layout dimensions. </td></tr>
+ * <tr><td> Provide motion receivers for the resizable console and left and right panels. </td>
+ *     <td> {@link MotionDelta} </td></tr>
+ * <tr><td> Layout the components to the positioning defined. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public class DebuggerLayout implements LayoutManager
 {
+    /** Label identifying the center position. */
     public static final String CENTER = "center";
+
+    /** Label identifying the status bar position. */
     public static final String STATUS_BAR = "status";
+
+    /** Label identifying the left grip-bar position. */
     public static final String LEFT_VERTICAL_BAR = "left_vertical_bar";
+
+    /** Label identifying the right grip-bar position. */
     public static final String RIGHT_VERTICAL_BAR = "right_vertical_bar";
+
+    /** Label identifying the right position. */
     public static final String RIGHT_PANE = "right_pane";
+
+    /** Label identifying the left position. */
     public static final String LEFT_PANE = "left_pane";
+
+    /** Label identifying the console position. */
     public static final String CONSOLE = "console";
 
+    /** Defines the default console height. */
     public static final int DEFAULT_CONSOLE_HEIGHT = 80;
+
+    /** Defines the default left or right panel width. */
     public static final int DEFAULT_PANE_WIDTH = 140;
+
+    /** Defines the default status bar height. */
     public static final int DEFAULT_STATUS_BAR_HEIGHT = 20;
+
+    /** Defines the default vertical grip-bar width. */
     public static final int DEFAULT_VBAR_WIDTH = 8;
 
+    /** Map of all components in the layout by position label. */
     private final Map<String, Component> componentMap = new HashMap<String, Component>();
+
+    /** Map from components to position label, in order to identify position when presented with a component. */
     private final Map<Component, String> reverseMap = new HashMap<Component, String>();
 
+    /** The current console height. */
     private int consoleHeight = DEFAULT_CONSOLE_HEIGHT;
+
+    /** The current left panel width. */
     private int leftPaneWidth = DEFAULT_PANE_WIDTH;
+
+    /** The current right panel width. */
     private int rightPaneWidth = DEFAULT_PANE_WIDTH;
 
+    /** Indicates console is in the layout. */
     private boolean hasConsole;
+
+    /** Indicates status bar is in the layout. */
     private boolean hasStatusBar;
+
+    /** Indicates left grip-bar is in the layout. */
     private boolean hasLeftBar;
+
+    /** Indicates left panel is in the layout. */
     private boolean hasLeftPane;
+
+    /** Indicates right grip-bar is in the layout. */
     private boolean hasRightBar;
+
+    /** Indicates right panel is in the layout. */
     private boolean hasRightPane;
 
     /** {@inheritDoc} */
@@ -139,12 +182,13 @@ public class DebuggerLayout implements LayoutManager
         // Check which optional components are present.
         updatePresentComponentFlags();
 
-        int centerHeight = maxHeight - (addConsole(consoleHeight) + addStatusBar(DEFAULT_STATUS_BAR_HEIGHT));
+        int centerHeight =
+            maxHeight - ((hasConsole ? consoleHeight : 0) + (hasStatusBar ? DEFAULT_STATUS_BAR_HEIGHT : 0));
         int statusBarTop = centerHeight + 1;
         int consoleTop = statusBarTop + DEFAULT_STATUS_BAR_HEIGHT + 1;
 
-        int centerLeft = addLeftPane(leftPaneWidth) + addLeftBar(DEFAULT_VBAR_WIDTH);
-        int centerRight = maxWidth - addRightPane(rightPaneWidth) - addRightBar(DEFAULT_VBAR_WIDTH);
+        int centerLeft = (hasLeftPane ? leftPaneWidth : 0) + (hasLeftBar ? DEFAULT_VBAR_WIDTH : 0);
+        int centerRight = maxWidth - (hasRightPane ? rightPaneWidth : 0) - (hasRightBar ? DEFAULT_VBAR_WIDTH : 0);
         int centerWidth = centerRight - centerLeft;
 
         int leftBarRight = centerLeft - 1;
@@ -205,36 +249,6 @@ public class DebuggerLayout implements LayoutManager
 
             component.setBounds(left, top, width, height);
         }
-    }
-
-    private int addRightBar(int size)
-    {
-        return hasRightBar ? size : 0;
-    }
-
-    private int addRightPane(int size)
-    {
-        return hasRightPane ? size : 0;
-    }
-
-    private int addLeftBar(int size)
-    {
-        return hasLeftBar ? size : 0;
-    }
-
-    private int addLeftPane(int size)
-    {
-        return hasLeftPane ? size : 0;
-    }
-
-    private int addConsole(int size)
-    {
-        return hasConsole ? size : 0;
-    }
-
-    private int addStatusBar(int size)
-    {
-        return hasStatusBar ? size : 0;
     }
 
     /** Keeps the set of flags indicating which window components are present, up-to-date. */

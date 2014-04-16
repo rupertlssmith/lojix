@@ -16,9 +16,15 @@
 package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 /**
+ * MainWindow defines the behaviour of the debugger main window.
+ *
+ * <p/>The main window follows a similar layout pattern to many GUI development tools, with centre, left and right, and
+ * console positions within it.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Show/hide the main window. </td></tr>
+ * <tr><td> Allow UI component to be placed within the centre, left, right or console position.</td></tr>
  * </table></pre>
  *
  * @param  <C> The type of UI component this window works with.
@@ -27,13 +33,34 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory;
  */
 public interface MainWindow<C>
 {
+    /** Makes the main window visible. */
     void showMainWindow();
 
+    /**
+     * Displays a component in the centre position.
+     *
+     * @param component The component to display.
+     */
     void showCentrePane(C component);
 
+    /**
+     * Displays a component in the console position.
+     *
+     * @param component The component to display.
+     */
     void showConsole(C component);
 
+    /**
+     * Displays a component in the left position.
+     *
+     * @param component The component to display.
+     */
     void showLeftPane(C component);
 
+    /**
+     * Displays a component in the right position.
+     *
+     * @param component The component to display.
+     */
     void showRightPane(C component);
 }
