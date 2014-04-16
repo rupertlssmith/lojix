@@ -46,7 +46,7 @@ public class DebuggerLayout implements LayoutManager
     public static final String CONSOLE = "console";
 
     public static final int DEFAULT_CONSOLE_HEIGHT = 80;
-    public static final int DEFAULT_PANE_WIDTH = 80;
+    public static final int DEFAULT_PANE_WIDTH = 140;
     public static final int DEFAULT_STATUS_BAR_HEIGHT = 20;
     public static final int DEFAULT_VBAR_WIDTH = 8;
 

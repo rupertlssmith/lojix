@@ -15,39 +15,59 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
-import javax.swing.text.Document;
+import java.awt.Color;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
-import com.thesett.text.impl.model.TextImpl;
 
 /**
+ * Provides a dark color scheme.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Provide dark colors.
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class ControllerImpl
+public class DarkColorScheme implements ColorScheme
 {
-    ColorScheme colorScheme = new DarkColorScheme();
-    ComponentFactory componentFactory = new SwingComponentFactory(colorScheme);
-    MainWindow mainWindow = componentFactory.createMainWindow();
-    Document document = new TextImpl();
-
-    public ControllerImpl open()
+    public Color getMainText()
     {
-        mainWindow.showMainWindow();
-        mainWindow.showCentrePane(componentFactory.createBlankPanel());
-        mainWindow.showLeftPane(componentFactory.createEditor(document));
-
-        return this;
+        return Color.WHITE;
     }
 
-    public void close()
+    public Color getDisabledText()
     {
+        return Color.LIGHT_GRAY;
+    }
+
+    public Color getHighlight1()
+    {
+        return Color.CYAN;
+    }
+
+    public Color getHighlight2()
+    {
+        return Color.CYAN;
+    }
+
+    public Color getHighlight3()
+    {
+        return Color.CYAN;
+    }
+
+    public Color getHighlight4()
+    {
+        return Color.CYAN;
+    }
+
+    public Color getActiveBackground()
+    {
+        return Color.BLACK;
+    }
+
+    public Color getInactiveBackground()
+    {
+        return Color.DARK_GRAY;
     }
 }
