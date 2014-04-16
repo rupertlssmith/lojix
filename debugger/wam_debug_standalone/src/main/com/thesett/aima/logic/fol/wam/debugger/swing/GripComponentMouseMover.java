@@ -43,8 +43,8 @@ public class GripComponentMouseMover extends MouseInputAdapter
     /** The motion delta to update as the mouse is moved. */
     private final MotionDelta resizeable;
 
-    /** The non-pressed detault cursor appearance. */
-    private final Cursor defaultCursor;
+    /** The non-pressed hover cursor appearance. */
+    private final Cursor hoverCursor;
 
     /** The cursor appearance to use when pressed and moving the component. */
     private final Cursor moveCursor;
@@ -63,15 +63,15 @@ public class GripComponentMouseMover extends MouseInputAdapter
      *
      * @param gripComponent The component to 'grip'
      * @param resizeable    The delta re-sizable to apply mouse motion to.
-     * @param defaultCursor The default cursor to show when not gripping.
+     * @param hoverCursor   The hover cursor to show when not gripping.
      * @param moveCursor    The move cursor to show when gripping.
      */
-    public GripComponentMouseMover(Component gripComponent, MotionDelta resizeable, Cursor defaultCursor,
+    public GripComponentMouseMover(Component gripComponent, MotionDelta resizeable, Cursor hoverCursor,
         Cursor moveCursor)
     {
         this.gripComponent = gripComponent;
         this.resizeable = resizeable;
-        this.defaultCursor = defaultCursor;
+        this.hoverCursor = hoverCursor;
         this.moveCursor = moveCursor;
     }
 
@@ -91,12 +91,22 @@ public class GripComponentMouseMover extends MouseInputAdapter
     /**
      * {@inheritDoc}
      *
-     * <p/>Restores the cursor to the default variant.
+     * <p/>Restores the cursor to the hover variant.
      */
     public void mouseReleased(MouseEvent e)
     {
-        gripComponent.setCursor(defaultCursor);
+        gripComponent.setCursor(hoverCursor);
         pressed = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Sets the hover cursor.
+     */
+    public void mouseEntered(MouseEvent e)
+    {
+        gripComponent.setCursor(hoverCursor);
     }
 
     /**

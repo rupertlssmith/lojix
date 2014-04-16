@@ -43,8 +43,6 @@ public class ControllerImpl
         mainWindow.showMainWindow();
         mainWindow.showCentrePane(componentFactory.createBlankPanel());
         mainWindow.showLeftPane(componentFactory.createEditor(document));
-        mainWindow.showRightPane(componentFactory.createBlankPanel());
-        mainWindow.showConsole(componentFactory.createBlankPanel());
 
         return this;
     }
