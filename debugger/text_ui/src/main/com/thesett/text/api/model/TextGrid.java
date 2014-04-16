@@ -15,10 +15,8 @@
  */
 package com.thesett.text.api.model;
 
-import com.thesett.common.util.Source;
-
 /**
- * TextGrid defines a model describing a buffer of text.
+ * TextGrid defines a model describing a buffer of text that uses a monospaced font, and is addressable as a 2d grid.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities
@@ -29,15 +27,21 @@ import com.thesett.common.util.Source;
  */
 public interface TextGrid
 {
-    void caretAt(int row, int column);
+    int getWidth();
 
-    void insert(char character);
+    int getHeight();
 
-    void backspace();
+    int insert(char character, int x, int y);
 
-    void newline();
+    //void caretAt(int row, int column);
 
-    Source<Row> updates();
+    //void insert(char character);
 
-    Source<Row> full();
+    //void backspace();
+
+    //void newline();
+
+    //Source<Row> updates();
+
+    //Source<Row> full();
 }

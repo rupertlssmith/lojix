@@ -31,7 +31,22 @@ import com.thesett.text.api.model.TextGrid;
  */
 public class TextGridImpl extends PlainDocument implements TextGrid
 {
-    public void caretAt(int row, int column)
+    public int getWidth()
+    {
+        return 0;
+    }
+
+    public int getHeight()
+    {
+        return 0;
+    }
+
+    public int insert(char character, int x, int y)
+    {
+        return 0;
+    }
+
+    /*public void caretAt(int row, int column)
     {
     }
 
@@ -55,5 +70,5 @@ public class TextGridImpl extends PlainDocument implements TextGrid
     public Source<Row> full()
     {
         return null;
-    }
+    }*/
 }
