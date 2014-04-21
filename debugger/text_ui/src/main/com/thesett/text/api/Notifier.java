@@ -15,7 +15,7 @@
  */
 package com.thesett.text.api;
 
-import com.thesett.text.api.model.TextGrid;
+import com.thesett.text.api.model.TextGridModel;
 
 /**
  * Notifier defines a set of callback functions for updates on the status of the text UI.
@@ -33,5 +33,5 @@ public interface Notifier
 
     Notifier caret(int column, int row);
 
-    Notifier update(TextGrid mode);
+    Notifier update(TextGridModel mode);
 }

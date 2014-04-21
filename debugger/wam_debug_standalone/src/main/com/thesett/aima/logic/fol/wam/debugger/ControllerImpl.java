@@ -15,11 +15,13 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
+import javax.swing.text.BadLocationException;
+
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
-import com.thesett.text.api.model.TextGrid;
+import com.thesett.text.api.model.TextGridModel;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -40,8 +42,24 @@ public class ControllerImpl
         mainWindow.showMainWindow();
         mainWindow.showCentrePane(componentFactory.createBlankPanel());
 
-        TextGrid textGrid = componentFactory.createTextGrid();
+        TextGridModel textGrid = componentFactory.createTextGrid();
         mainWindow.showLeftPane(componentFactory.createTextPanel(textGrid));
+
+        try
+        {
+            TextGridModel innerGrid = textGrid.createInnerGrid(0, 0, 5, 5);
+
+            for (int i = 0; i < 5; i++) {
+
+                for (int j = 0; j < 5; j++) {
+                    innerGrid.insert("x", i, j);
+                }
+            }
+        }
+        catch (BadLocationException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         return this;
     }

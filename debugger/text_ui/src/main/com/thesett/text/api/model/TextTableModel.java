@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.impl.model;
+package com.thesett.text.api.model;
 
-import com.thesett.text.api.model.Cell;
+import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 
 /**
+ * TextTableModel is a {@link TextGridModel} that additionally divides its grid area into addressable rows and columns.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td>
@@ -25,12 +27,6 @@ import com.thesett.text.api.model.Cell;
  *
  * @author Rupert Smith
  */
-public class CellImpl implements Cell
+public interface TextTableModel extends TextGridModel, DoubleKeyedMap<Integer, Integer, TextGridModel>
 {
-    int column;
-
-    public int getColumn()
-    {
-        return column;
-    }
 }

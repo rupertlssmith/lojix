@@ -16,7 +16,7 @@
 package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
-import com.thesett.text.api.model.TextGrid;
+import com.thesett.text.api.model.TextGridModel;
 
 /**
  * ComponentFactory builds UI components that are compatible with other elements of the UI.
@@ -47,7 +47,7 @@ public interface ComponentFactory<C>
      *
      * @return An empty text grid model.
      */
-    TextGrid createTextGrid();
+    TextGridModel createTextGrid();
 
     /**
      * Creates an editor panel.
@@ -56,7 +56,7 @@ public interface ComponentFactory<C>
      *
      * @return An editor panel.
      */
-    C createTextPanel(TextGrid model);
+    C createTextPanel(TextGridModel model);
 
     /**
      * Creates a grip-able panel for adjusting the screen layout.

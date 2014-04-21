@@ -28,7 +28,7 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
-import com.thesett.text.api.model.TextGrid;
+import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.impl.model.TextGridImpl;
 
 /**
@@ -78,13 +78,13 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public TextGrid createTextGrid()
+    public TextGridModel createTextGrid()
     {
         return new TextGridImpl();
     }
 
     /** {@inheritDoc} */
-    public Component createTextPanel(TextGrid model)
+    public Component createTextPanel(TextGridModel model)
     {
         JEditorPane textPane = new JEditorPane();
         textPane.setBackground(colorScheme.getActiveBackground());

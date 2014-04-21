@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.text.api.model;
+package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
-import com.thesett.common.util.Source;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
+ * <tr><th> Responsibilities <th> Collaborations
  * <tr><td>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface Row
+public class RegisterSetMonitor implements PropertyChangeListener
 {
-    Source<Cell> updates();
-
-    int getRow();
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+    }
 }
