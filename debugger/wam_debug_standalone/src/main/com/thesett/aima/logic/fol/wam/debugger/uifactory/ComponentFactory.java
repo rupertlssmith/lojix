@@ -50,7 +50,7 @@ public interface ComponentFactory<C>
     TextGridModel createTextGrid();
 
     /**
-     * Creates an editor panel.
+     * Creates an non-editable text panel.
      *
      * @param  model The underlying document data model.
      *
