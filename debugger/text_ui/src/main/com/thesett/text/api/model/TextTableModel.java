@@ -27,6 +27,6 @@ import com.thesett.common.util.doublemaps.DoubleKeyedMap;
  *
  * @author Rupert Smith
  */
-public interface TextTableModel extends TextGridModel, DoubleKeyedMap<Integer, Integer, TextGridModel>
+public interface TextTableModel extends TextGridModel, DoubleKeyedMap<Integer, Integer, String>
 {
 }

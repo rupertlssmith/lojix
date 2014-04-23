@@ -19,11 +19,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 
-import javax.swing.*;
-import javax.swing.text.Document;
+import javax.swing.JPanel;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
+import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
@@ -83,19 +83,17 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public Component createTextPanel(TextGridModel model)
+    public Component createTextGridPanel(TextGridModel model)
     {
-        JTextArea textPane = new JTextArea();
+        JTextGrid textPane = new JTextGrid();
 
         textPane.setBackground(colorScheme.getActiveBackground());
-        textPane.setCaretColor(colorScheme.getHighlight1());
         textPane.setForeground(colorScheme.getMainText());
         textPane.setAutoscrolls(true);
-        textPane.setEditable(false);
 
         Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 12);
         textPane.setFont(font);
-        textPane.setDocument((Document) model);
+        textPane.setModel(model);
 
         return textPane;
     }

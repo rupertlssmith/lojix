@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class Main extends StartStopLifecycleBase
 {
     /** The top-level UI controller for the application. */
-    ControllerImpl controller = new ControllerImpl();
+    ControllerImpl controller = new ControllerImpl(null);
 
     /**
      * Launches the debugger as a stand-alone Swing application.

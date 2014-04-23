@@ -55,19 +55,19 @@ public class TextTableImpl extends NestedTextGridImpl implements TextTableModel
     }
 
     /** {@inheritDoc} */
-    public TextGridModel put(Integer primaryKey, Integer secondaryKey, TextGridModel value)
+    public String put(Integer primaryKey, Integer secondaryKey, String value)
     {
         return null;
     }
 
     /** {@inheritDoc} */
-    public TextGridModel get(Integer primaryKey, Integer secondaryKey)
+    public String get(Integer primaryKey, Integer secondaryKey)
     {
         return null;
     }
 
     /** {@inheritDoc} */
-    public TextGridModel remove(Integer primaryKey, Integer secondaryKey)
+    public String remove(Integer primaryKey, Integer secondaryKey)
     {
         return null;
     }

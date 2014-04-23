@@ -15,8 +15,6 @@
  */
 package com.thesett.text.impl.model;
 
-import javax.swing.text.BadLocationException;
-
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -68,15 +66,21 @@ public class NestedTextGridImpl implements TextGridModel
     }
 
     /** {@inheritDoc} */
-    public void insert(char character, int c, int r) throws BadLocationException
+    public void insert(char character, int c, int r)
     {
         parent.insert(character, c + column, r + row);
     }
 
     /** {@inheritDoc} */
-    public void insert(String string, int c, int r) throws BadLocationException
+    public void insert(String string, int c, int r)
     {
         parent.insert(string, c + column, r + row);
+    }
+
+    /** {@inheritDoc} */
+    public char getCharAt(int c, int r)
+    {
+        return parent.getCharAt(c + column, r + row);
     }
 
     /** {@inheritDoc} */

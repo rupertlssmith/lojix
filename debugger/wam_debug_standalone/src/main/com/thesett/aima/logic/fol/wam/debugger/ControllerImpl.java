@@ -15,13 +15,12 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
-import javax.swing.text.BadLocationException;
-
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
 import com.thesett.text.api.model.TextGridModel;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
@@ -33,9 +32,16 @@ import com.thesett.text.api.model.TextGridModel;
  */
 public class ControllerImpl
 {
-    ColorScheme colorScheme = new DarkColorScheme();
-    ComponentFactory componentFactory = new SwingComponentFactory(colorScheme);
-    MainWindow mainWindow = componentFactory.createMainWindow();
+    private ColorScheme colorScheme = new DarkColorScheme();
+    private ComponentFactory componentFactory = new SwingComponentFactory(colorScheme);
+    private MainWindow mainWindow = componentFactory.createMainWindow();
+
+    private final RegisterModel registerModel;
+
+    public ControllerImpl(RegisterModel registerModel)
+    {
+        this.registerModel = registerModel;
+    }
 
     public ControllerImpl open()
     {
@@ -43,22 +49,16 @@ public class ControllerImpl
         mainWindow.showCentrePane(componentFactory.createBlankPanel());
 
         TextGridModel textGrid = componentFactory.createTextGrid();
-        mainWindow.showLeftPane(componentFactory.createTextPanel(textGrid));
+        mainWindow.showLeftPane(componentFactory.createTextGridPanel(textGrid));
 
-        try
+        TextTableModel table = textGrid.createTable(0, 0, 16, 10);
+
+        String[] registerNames = new String[] { "ip", "hp", "ep", "bp" };
+
+        for (int i = 0; i < registerNames.length; i++)
         {
-            TextGridModel innerGrid = textGrid.createInnerGrid(0, 0, 5, 5);
-
-            for (int i = 0; i < 5; i++) {
-
-                for (int j = 0; j < 5; j++) {
-                    innerGrid.insert("x", i, j);
-                }
-            }
-        }
-        catch (BadLocationException e)
-        {
-            throw new RuntimeException(e);
+            String registerName = registerNames[i];
+            table.put(0, i, registerName);
         }
 
         return this;

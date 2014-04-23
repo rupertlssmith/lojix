@@ -15,10 +15,7 @@
  */
 package com.thesett.text.impl.model;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.PlainDocument;
-
+import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -30,30 +27,60 @@ import com.thesett.text.api.model.TextTableModel;
  *
  * @author Rupert Smith
  */
-public class TextGridImpl extends PlainDocument implements TextGridModel
+public class TextGridImpl implements TextGridModel
 {
+    /** Width of this child grid. */
+    protected int width;
+
+    /** Height of this child grid. */
+    protected int height;
+
+    /** Holds the grid data. */
+    HashMapXY<Character> data = new HashMapXY<Character>(100);
+
     /** {@inheritDoc} */
     public int getWidth()
     {
-        return -1;
+        return width;
     }
 
     /** {@inheritDoc} */
     public int getHeight()
     {
-        return -1;
+        return height;
     }
 
     /** {@inheritDoc} */
-    public void insert(char character, int c, int r) throws BadLocationException
+    public void insert(char character, int c, int r)
     {
-        insertString(rowColumnToOffset(r, c), Character.toString(character), null);
+        width = c > width ? c : width;
+        height = r > height ? r : height;
+
+        data.put((long) c, (long) r, character);
     }
 
     /** {@inheritDoc} */
-    public void insert(String string, int c, int r) throws BadLocationException
+    public void insert(String string, int c, int r)
     {
-        insertString(rowColumnToOffset(r, c), string, null);
+        for (char character : string.toCharArray())
+        {
+            insert(character, c++, r);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public char getCharAt(int c, int r)
+    {
+        Character character = data.get((long) c, (long) r);
+
+        if (character == null)
+        {
+            return ' ';
+        }
+        else
+        {
+            return character;
+        }
     }
 
     /** {@inheritDoc} */
@@ -66,37 +93,5 @@ public class TextGridImpl extends PlainDocument implements TextGridModel
     public TextTableModel createTable(int c, int r, int w, int h)
     {
         return new TextTableImpl(c, r, w, h, this);
-    }
-
-    /**
-     * Converts a row and column to an offset with the document model.
-     *
-     * @param  r The row position.
-     * @param  c The column position.
-     *
-     * @return The corresponding offset within the document model.
-     */
-    protected int rowColumnToOffset(int r, int c)
-    {
-        return rowToOffset(r) + c;
-    }
-
-    /**
-     * Converts a row number to an offset within the document.
-     *
-     * @param  r The row number to convert.
-     *
-     * @return The offset within the document corresponding to the start of the row.
-     */
-    private int rowToOffset(int r)
-    {
-        Element element = getDefaultRootElement().getElement(r);
-
-        if (element != null)
-        {
-            element.getStartOffset();
-        }
-
-        return getStartPosition().getOffset();
     }
 }

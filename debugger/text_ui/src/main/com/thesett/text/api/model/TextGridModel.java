@@ -15,8 +15,6 @@
  */
 package com.thesett.text.api.model;
 
-import javax.swing.text.BadLocationException;
-
 /**
  * TextGridModel defines a model describing a buffer of text that is addressable as a 2d grid, by row and column
  * positions within the text. This is mainly intended for use with monospaced fonts, so that the text forms a regular 2d
@@ -54,7 +52,7 @@ public interface TextGridModel
      * @param c         The column position.
      * @param r         The row position.
      */
-    void insert(char character, int c, int r) throws BadLocationException;
+    void insert(char character, int c, int r);
 
     /**
      * Inserts a string into the grid starting at the specified location.
@@ -63,7 +61,17 @@ public interface TextGridModel
      * @param c      The column position.
      * @param r      The row position.
      */
-    void insert(String string, int c, int r) throws BadLocationException;
+    void insert(String string, int c, int r);
+
+    /**
+     * Reads the character from the grid at the specified location.
+     *
+     * @param  c The column position.
+     * @param  r The row position.
+     *
+     * @return The character at the specified location.
+     */
+    char getCharAt(int c, int r);
 
     /**
      * Creates a child grid within this grid.

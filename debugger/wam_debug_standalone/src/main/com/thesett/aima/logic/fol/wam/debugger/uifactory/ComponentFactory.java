@@ -56,7 +56,7 @@ public interface ComponentFactory<C>
      *
      * @return An editor panel.
      */
-    C createTextPanel(TextGridModel model);
+    C createTextGridPanel(TextGridModel model);
 
     /**
      * Creates a grip-able panel for adjusting the screen layout.
