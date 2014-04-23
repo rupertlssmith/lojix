@@ -33,8 +33,15 @@ import com.thesett.aima.logic.fol.wam.machine.WAMInternalRegisters;
  *
  * @author Rupert Smith
  */
-public class InternalRegisterBean extends WAMInternalRegisters
+public class InternalRegisterBean extends WAMInternalRegisters implements RegisterModel
 {
+    /** Defines the names of the machine registers. */
+    public static final String[] REGISTER_NAMES =
+        new String[] { "ip", "hp", "hbp", "sp", "up", "ep", "bp", "b0", "trp" };
+
+    /** Defines the names of the machine flags. */
+    public static final String[] FLAG_NAMES = new String[] { "writeMode" };
+
     /** Holds any property change listener to notify of register value changes. */
     private PropertyChangeListener listener;
 
@@ -145,15 +152,40 @@ public class InternalRegisterBean extends WAMInternalRegisters
         return trp;
     }
 
-    /** Used to record whether the machine is in structure read or write mode. */
-    public boolean isWriteMode()
+    /** Provides the write mode flag. */
+    public boolean getWriteMode()
     {
         return writeMode;
     }
 
-    public void setWriteMode(boolean writeMode)
+    /** {@inheritDoc} */
+    public String[] getRegisterNames()
     {
-        this.writeMode = writeMode;
+        return REGISTER_NAMES;
+    }
+
+    /** {@inheritDoc} */
+    public String[] getFlagNames()
+    {
+        return FLAG_NAMES;
+    }
+
+    /** {@inheritDoc} */
+    public int getRegisterSizeBytes(String name)
+    {
+        return 4;
+    }
+
+    /** {@inheritDoc} */
+    public byte[] getRegister(String name)
+    {
+        return new byte[0];
+    }
+
+    /** {@inheritDoc} */
+    public boolean getFlag(String name)
+    {
+        return false;
     }
 
     /**
