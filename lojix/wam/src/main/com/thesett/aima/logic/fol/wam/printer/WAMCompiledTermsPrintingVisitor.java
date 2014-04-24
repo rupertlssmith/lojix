@@ -150,9 +150,9 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
      */
     protected void printTable()
     {
-        for (int i = 0; i < printTable.getHeight(); i++)
+        for (int i = 0; i < printTable.getRowCount(); i++)
         {
-            for (int j = 0; j < printTable.getWidth(); j++)
+            for (int j = 0; j < printTable.getColumnCount(); j++)
             {
                 String valueToPrint = printTable.get(j, i);
                 valueToPrint = (valueToPrint == null) ? "" : valueToPrint;
