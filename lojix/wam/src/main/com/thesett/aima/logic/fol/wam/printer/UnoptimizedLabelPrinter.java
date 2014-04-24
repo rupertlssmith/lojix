@@ -23,7 +23,6 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -45,14 +44,13 @@ public class UnoptimizedLabelPrinter extends BasePrinter
      * @param symbolTable The compiler symbol table.
      * @param traverser   The positional context traverser.
      * @param column      The column to print to.
-     * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
     public UnoptimizedLabelPrinter(VariableAndFunctorInterner interner,
         SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-        DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+        PrintingTable table)
     {
-        super(interner, symbolTable, traverser, column, grid, table);
+        super(interner, symbolTable, traverser, column, table);
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,6 @@ import com.thesett.aima.logic.fol.BasePositionalVisitor;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.TraceIndenter;
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -53,9 +52,6 @@ public class BasePrinter extends BasePositionalVisitor
     protected String indent = "";
 
     /** The grid of cells to output to. */
-    private DoubleKeyedMap<Long, Long, String> grid;
-
-    /** The grid of cells to output to. */
     private PrintingTable table;
 
     /**
@@ -65,15 +61,13 @@ public class BasePrinter extends BasePositionalVisitor
      * @param symbolTable The compiler symbol table.
      * @param traverser   The positional context traverser.
      * @param column      The column to print to.
-     * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
     public BasePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+        PositionalTermTraverser traverser, int column, PrintingTable table)
     {
         super(interner, symbolTable, traverser);
         this.currentColumn = column;
-        this.grid = grid;
         this.table = table;
     }
 
@@ -85,7 +79,7 @@ public class BasePrinter extends BasePositionalVisitor
     protected void addLineToRow(String line)
     {
         int lineLength = line.length();
-        grid.put((long) currentColumn, (long) currentRow, line);
+        table.put(currentColumn, currentRow, line);
         table.setMaxColumnWidth(currentColumn, lineLength);
     }
 

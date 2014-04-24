@@ -16,9 +16,7 @@
 package com.thesett.aima.logic.fol.wam.printer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.thesett.aima.logic.fol.AllTermsVisitor;
 import com.thesett.aima.logic.fol.Clause;
@@ -30,8 +28,6 @@ import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
-import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -50,8 +46,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * @author Rupert Smith
  */
-public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTermsVisitor implements PrintingTable,
-    PositionalTermVisitor
+public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTermsVisitor implements PositionalTermVisitor
 {
     /** The positional traverser used to traverse the clause being printed. */
     protected PositionalTermTraverser traverser;
@@ -65,23 +60,10 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
     /** Holds the string buffer to pretty print the results into. */
     private StringBuffer result;
 
-    /** Holds a table with cell data to pretty print. */
-    DoubleKeyedMap<Long, Long, String> grid = new HashMapXY<String>(10);
-
-    /** Holds the maximum row sizes in the grid. */
-    Map<Integer, Integer> maxRowSizes = new HashMap<Integer, Integer>();
-
-    /** Holds the maximum column sizes in the grid. */
-    Map<Integer, Integer> maxColumnSizes = new HashMap<Integer, Integer>();
-
     /** Holds a list of all column printers to apply. */
     List<AllTermsVisitor> printers = new ArrayList<AllTermsVisitor>();
 
-    /** Used to count the maximum row with data in it. */
-    int maxRows;
-
-    /** Used to count the maximum column with data in it. */
-    int maxColumns;
+    PrintingTable printTable = new PrintingTableImpl();
 
     /**
      * Creates a pretty printing visitor for clauses being compiled in WAM.
@@ -150,68 +132,17 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
         super.visit(variable);
     }
 
-    /**
-     * Updates the maximum row count of the data table.
-     *
-     * @param row The maximum row count reached.
-     */
-    public void setMaxRowCount(int row)
-    {
-        if (maxRows < row)
-        {
-            maxRows = row;
-        }
-    }
-
-    /**
-     * Updates the maximum row height for a row of the data table.
-     *
-     * @param row    The row to update.
-     * @param height The max height reached.
-     */
-    public void setMaxRowHeight(int row, int height)
-    {
-        Integer previousValue = maxRowSizes.get(row);
-
-        if (previousValue == null)
-        {
-            maxRowSizes.put(row, height);
-        }
-        else if (previousValue < height)
-        {
-            maxRowSizes.put(row, height);
-        }
-    }
-
-    /**
-     * Updates the maximum column width for a column of the data table.
-     *
-     * @param column The column to update.
-     * @param width  The max width reached.
-     */
-    public void setMaxColumnWidth(int column, int width)
-    {
-        Integer previousValue = maxColumnSizes.get(column);
-
-        if (previousValue == null)
-        {
-            maxColumnSizes.put(column, width);
-        }
-        else if (previousValue < width)
-        {
-            maxColumnSizes.put(column, width);
-        }
-    }
-
     /** Sets up the stack of column printers. */
     protected void initializePrinters()
     {
-        printers.add(new SourceClausePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new PositionPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new UnoptimizedLabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new UnoptimizedByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new LabelPrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
-        printers.add(new ByteCodePrinter(interner, symbolTable, traverser, maxColumns++, grid, this));
+        int maxColumns = 0;
+
+        printers.add(new SourceClausePrinter(interner, symbolTable, traverser, maxColumns++, printTable));
+        printers.add(new PositionPrinter(interner, symbolTable, traverser, maxColumns++, printTable));
+        printers.add(new UnoptimizedLabelPrinter(interner, symbolTable, traverser, maxColumns++, printTable));
+        printers.add(new UnoptimizedByteCodePrinter(interner, symbolTable, traverser, maxColumns++, printTable));
+        printers.add(new LabelPrinter(interner, symbolTable, traverser, maxColumns++, printTable));
+        printers.add(new ByteCodePrinter(interner, symbolTable, traverser, maxColumns++, printTable));
     }
 
     /**
@@ -219,15 +150,15 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
      */
     protected void printTable()
     {
-        for (int i = 0; i < maxRows; i++)
+        for (int i = 0; i < printTable.getHeight(); i++)
         {
-            for (int j = 0; j < maxColumns; j++)
+            for (int j = 0; j < printTable.getWidth(); j++)
             {
-                String valueToPrint = grid.get((long) j, (long) i);
+                String valueToPrint = printTable.get(j, i);
                 valueToPrint = (valueToPrint == null) ? "" : valueToPrint;
                 result.append(valueToPrint);
 
-                Integer maxColumnSize = maxColumnSizes.get(j);
+                Integer maxColumnSize = printTable.getMaxColumnSize(j);
                 int padding = ((maxColumnSize == null) ? 0 : maxColumnSize) - valueToPrint.length();
                 padding = (padding < 0) ? 0 : padding;
 

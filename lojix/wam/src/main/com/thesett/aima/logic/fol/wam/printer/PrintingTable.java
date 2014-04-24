@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.printer;
 
+import com.thesett.common.util.doublemaps.DoubleKeyedMap;
+
 /**
  * PrintingTable collects information about the row count, and row and column sizes, in order to print information in a
  * table format.
@@ -26,7 +28,7 @@ package com.thesett.aima.logic.fol.wam.printer;
  *
  * @author Rupert Smith
  */
-public interface PrintingTable
+public interface PrintingTable extends DoubleKeyedMap<Integer, Integer, String>
 {
     /**
      * Updates the maximum row count.
@@ -50,4 +52,27 @@ public interface PrintingTable
      * @param width  The new maximum column width, accepted if larger than the previous value.
      */
     void setMaxColumnWidth(int column, int width);
+
+    /**
+     * Provides the offset of the last row with data in it.
+     *
+     * @return The offset of the last row with data in it.
+     */
+    int getHeight();
+
+    /**
+     * Provides the offset of the last column with data in it.
+     *
+     * @return The offset of the last column with data in it.
+     */
+    int getWidth();
+
+    /**
+     * Provides the maximum width of the specified column.
+     *
+     * @param  col The column offset to get.
+     *
+     * @return The maximum column width.
+     */
+    int getMaxColumnSize(int col);
 }

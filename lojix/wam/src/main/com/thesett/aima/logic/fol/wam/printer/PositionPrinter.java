@@ -20,7 +20,6 @@ import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STACK_ADDR;
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -44,13 +43,12 @@ public class PositionPrinter extends BasePrinter
      * @param symbolTable The compiler symbol table.
      * @param traverser   The positional context traverser.
      * @param column      The column to print to.
-     * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
     public PositionPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+        PositionalTermTraverser traverser, int column, PrintingTable table)
     {
-        super(interner, symbolTable, traverser, column, grid, table);
+        super(interner, symbolTable, traverser, column, table);
     }
 
     /** {@inheritDoc} */

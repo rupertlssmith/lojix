@@ -44,14 +44,13 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
      * @param symbolTable The compiler symbol table.
      * @param traverser   The positional context traverser.
      * @param column      The column to print to.
-     * @param grid        The grid to print to.
      * @param table       The table to inform of cell sizes and positions.
      */
     public UnoptimizedByteCodePrinter(VariableAndFunctorInterner interner,
-        SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-        DoubleKeyedMap<Long, Long, String> grid, PrintingTable table)
+                                      SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
+                                      PrintingTable table)
     {
-        super(interner, symbolTable, traverser, column, grid, table);
+        super(interner, symbolTable, traverser, column, table);
     }
 
     /** {@inheritDoc} */
