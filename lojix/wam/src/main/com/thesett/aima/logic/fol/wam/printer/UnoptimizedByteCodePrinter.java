@@ -22,7 +22,6 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.SymbolTable;
 
 /**
@@ -47,8 +46,8 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public UnoptimizedByteCodePrinter(VariableAndFunctorInterner interner,
-                                      SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-                                      PrintingTable table)
+        SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
+        PrintingTable table)
     {
         super(interner, symbolTable, traverser, column, table);
     }

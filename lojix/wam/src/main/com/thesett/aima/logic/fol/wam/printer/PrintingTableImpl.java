@@ -114,8 +114,8 @@ public class PrintingTableImpl implements PrintingTable
     /** {@inheritDoc} */
     public String put(Integer col, Integer row, String value)
     {
-        maxColumns = col > maxColumns ? col : maxColumns;
-        maxRows = row > maxRows ? row : maxRows;
+        maxColumns = (col > maxColumns) ? col : maxColumns;
+        maxRows = (row > maxRows) ? row : maxRows;
 
         return grid.put((long) col, (long) row, value);
     }
