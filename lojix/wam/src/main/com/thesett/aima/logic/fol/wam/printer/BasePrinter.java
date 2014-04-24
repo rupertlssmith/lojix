@@ -78,14 +78,12 @@ public class BasePrinter extends BasePositionalVisitor
      */
     protected void addLineToRow(String line)
     {
-        int lineLength = line.length();
         table.put(currentColumn, currentRow, line);
-        table.setMaxColumnWidth(currentColumn, lineLength);
     }
 
     /** Moves on to the next cell in the next row of the table. */
     protected void nextRow()
     {
-        table.setMaxRowCount(++currentRow);
+        ++currentRow;
     }
 }

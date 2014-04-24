@@ -31,29 +31,6 @@ import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 public interface PrintingTable extends DoubleKeyedMap<Integer, Integer, String>
 {
     /**
-     * Updates the maximum row count.
-     *
-     * @param row The new maximum row count, accepted if larger than the previous value.
-     */
-    void setMaxRowCount(int row);
-
-    /**
-     * Updates the maximum row height.
-     *
-     * @param row    The row to update stats for.
-     * @param height The new maximum row height, accepted if larger than the previous value.
-     */
-    void setMaxRowHeight(int row, int height);
-
-    /**
-     * Updates the maximum column width.
-     *
-     * @param column The column to update stats for.
-     * @param width  The new maximum column width, accepted if larger than the previous value.
-     */
-    void setMaxColumnWidth(int column, int width);
-
-    /**
      * Provides the offset of the last row with data in it.
      *
      * @return The offset of the last row with data in it.

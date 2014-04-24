@@ -79,26 +79,6 @@ public class PrintingTableImpl implements PrintingTable
         }
     }
 
-    /**
-     * Updates the maximum column width for a column of the data table.
-     *
-     * @param column The column to update.
-     * @param width  The max width reached.
-     */
-    public void setMaxColumnWidth(int column, int width)
-    {
-        Integer previousValue = maxColumnSizes.get(column);
-
-        if (previousValue == null)
-        {
-            maxColumnSizes.put(column, width);
-        }
-        else if (previousValue < width)
-        {
-            maxColumnSizes.put(column, width);
-        }
-    }
-
     /** {@inheritDoc} */
     public void clear()
     {
@@ -116,6 +96,8 @@ public class PrintingTableImpl implements PrintingTable
     {
         maxColumns = (col > maxColumns) ? col : maxColumns;
         maxRows = (row > maxRows) ? row : maxRows;
+
+        updateMaxColumnWidth(col, value.length());
 
         return grid.put((long) col, (long) row, value);
     }
@@ -160,5 +142,25 @@ public class PrintingTableImpl implements PrintingTable
     public int getMaxColumnSize(int col)
     {
         return maxColumnSizes.get(col);
+    }
+
+    /**
+     * Updates the maximum column width for a column of the data table.
+     *
+     * @param column The column to update.
+     * @param width  The max width reached.
+     */
+    private void updateMaxColumnWidth(int column, int width)
+    {
+        Integer previousValue = maxColumnSizes.get(column);
+
+        if (previousValue == null)
+        {
+            maxColumnSizes.put(column, width);
+        }
+        else if (previousValue < width)
+        {
+            maxColumnSizes.put(column, width);
+        }
     }
 }

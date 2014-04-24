@@ -26,7 +26,7 @@ import com.thesett.text.api.model.TextTableModel;
  *
  * @author Rupert Smith
  */
-public class TextTableImpl extends NestedTextGridImpl implements TextTableModel
+public class TextTableImpl implements TextTableModel
 {
     /**
      * Creates a table addressable text grid.
@@ -40,7 +40,6 @@ public class TextTableImpl extends NestedTextGridImpl implements TextTableModel
      */
     public TextTableImpl(int c, int r, int w, int h, TextGridModel parent)
     {
-        super(c, r, w, h, parent);
     }
 
     /** {@inheritDoc} */
