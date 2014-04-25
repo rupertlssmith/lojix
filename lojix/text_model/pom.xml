@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.thesett</groupId>
-    <artifactId>text_ui</artifactId>
-    <name>text_ui</name>
+    <artifactId>text_model</artifactId>
+    <name>text_model</name>
     <version>0.3-SNAPSHOT</version>
 
     <description>Text mode UI construction.</description>

@@ -29,4 +29,26 @@ import com.thesett.common.util.doublemaps.DoubleKeyedMap;
  */
 public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
 {
+    /**
+     * Provides the offset of the last row with data in it.
+     *
+     * @return The offset of the last row with data in it.
+     */
+    int getHeight();
+
+    /**
+     * Provides the offset of the last column with data in it.
+     *
+     * @return The offset of the last column with data in it.
+     */
+    int getWidth();
+
+    /**
+     * Provides the maximum width of the specified column.
+     *
+     * @param  col The column offset to get.
+     *
+     * @return The maximum column width.
+     */
+    int getMaxColumnSize(int col);
 }

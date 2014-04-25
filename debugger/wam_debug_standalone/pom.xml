@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>text_ui</artifactId>
+            <artifactId>text_model</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
 

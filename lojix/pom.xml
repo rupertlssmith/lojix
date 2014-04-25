@@ -133,6 +133,7 @@
 
     <modules>
       <module>aima</module>
+      <module>text_model</module>
       <module>interpreter</module>
       <module>prolog</module>
       <module>l0</module>

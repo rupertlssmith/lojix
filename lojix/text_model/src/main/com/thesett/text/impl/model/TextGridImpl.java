@@ -53,8 +53,8 @@ public class TextGridImpl implements TextGridModel
     /** {@inheritDoc} */
     public void insert(char character, int c, int r)
     {
-        width = c > width ? c : width;
-        height = r > height ? r : height;
+        width = (c > width) ? c : width;
+        height = (r > height) ? r : height;
 
         data.put((long) c, (long) r, character);
     }
@@ -92,6 +92,6 @@ public class TextGridImpl implements TextGridModel
     /** {@inheritDoc} */
     public TextTableModel createTable(int c, int r, int w, int h)
     {
-        return new TextTableImpl(c, r, w, h, this);
+        return new TextTableImpl();
     }
 }
