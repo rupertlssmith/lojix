@@ -18,20 +18,37 @@ package com.thesett.text.api;
 import com.thesett.text.api.model.TextGridModel;
 
 /**
- * Notifier defines a set of callback functions for updates on the status of the text UI.
+ * TextGridEvent is an event that describes a change to a text grid model.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
- * <tr><td>
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Provide the changed model.
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface Notifier
+public class TextGridEvent
 {
-    Notifier resize(int columns, int rows);
+    /** The changed model. */
+    private final TextGridModel model;
 
-    Notifier caret(int column, int row);
+    /**
+     * Creates a text grid update event.
+     *
+     * @param model The changed model.
+     */
+    public TextGridEvent(TextGridModel model)
+    {
+        this.model = model;
+    }
 
-    Notifier update(TextGridModel mode);
+    /**
+     * Provides the changed model.
+     *
+     * @return The changed model.
+     */
+    TextGridModel getModel()
+    {
+        return model;
+    }
 }

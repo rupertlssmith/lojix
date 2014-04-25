@@ -15,6 +15,8 @@
  */
 package com.thesett.text.api.model;
 
+import com.thesett.text.api.TextGridListener;
+
 /**
  * TextGridModel defines a model describing a buffer of text that is addressable as a 2d grid, by row and column
  * positions within the text. This is mainly intended for use with monospaced fonts, so that the text forms a regular 2d
@@ -96,4 +98,18 @@ public interface TextGridModel
      * @return A table within this grid.
      */
     TextTableModel createTable(int c, int r, int w, int h);
+
+    /**
+     * Adds a listener for updates to this model.
+     *
+     * @param listener The listener for updates to this model.
+     */
+    void addTextGridListener(TextGridListener listener);
+
+    /**
+     * Removes a listener for updates to this model.
+     *
+     * @param listener The listener to remove.
+     */
+    void removeTextGridListener(TextGridListener listener);
 }

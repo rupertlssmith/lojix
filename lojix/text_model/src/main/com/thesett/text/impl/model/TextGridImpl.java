@@ -15,7 +15,12 @@
  */
 package com.thesett.text.impl.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.thesett.common.util.doublemaps.HashMapXY;
+import com.thesett.text.api.TextGridEvent;
+import com.thesett.text.api.TextGridListener;
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -38,6 +43,9 @@ public class TextGridImpl implements TextGridModel
     /** Holds the grid data. */
     HashMapXY<Character> data = new HashMapXY<Character>(100);
 
+    /** Holds a set of listeners for updates to this model. */
+    Set<TextGridListener> listeners = new HashSet<TextGridListener>();
+
     /** {@inheritDoc} */
     public int getWidth()
     {
@@ -53,10 +61,8 @@ public class TextGridImpl implements TextGridModel
     /** {@inheritDoc} */
     public void insert(char character, int c, int r)
     {
-        width = (c > width) ? c : width;
-        height = (r > height) ? r : height;
-
-        data.put((long) c, (long) r, character);
+        internalInsert(character, c, r);
+        updateListeners();
     }
 
     /** {@inheritDoc} */
@@ -64,8 +70,10 @@ public class TextGridImpl implements TextGridModel
     {
         for (char character : string.toCharArray())
         {
-            insert(character, c++, r);
+            internalInsert(character, c++, r);
         }
+
+        updateListeners();
     }
 
     /** {@inheritDoc} */
@@ -93,5 +101,44 @@ public class TextGridImpl implements TextGridModel
     public TextTableModel createTable(int c, int r, int w, int h)
     {
         return new TextTableImpl();
+    }
+
+    /** {@inheritDoc} */
+    public void addTextGridListener(TextGridListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /** {@inheritDoc} */
+    public void removeTextGridListener(TextGridListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Inserts a single character into the grid at the specified location. This is a private insert method, that does
+     * not notify model listeners, so that the public insert methods can do that as a separate step.
+     *
+     * @param character The character to insert.
+     * @param c         The column position.
+     * @param r         The row position.
+     */
+    private void internalInsert(char character, int c, int r)
+    {
+        width = (c > width) ? c : width;
+        height = (r > height) ? r : height;
+
+        data.put((long) c, (long) r, character);
+    }
+
+    /** Notifies all interested listeners of an update to this model. */
+    private void updateListeners()
+    {
+        TextGridEvent event = new TextGridEvent(this);
+
+        for (TextGridListener listener : listeners)
+        {
+            listener.changedUpdate(event);
+        }
     }
 }
