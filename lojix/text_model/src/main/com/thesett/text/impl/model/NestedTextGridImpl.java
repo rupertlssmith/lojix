@@ -15,6 +15,7 @@
  */
 package com.thesett.text.impl.model;
 
+import com.thesett.text.api.TextGridListener;
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -93,5 +94,17 @@ public class NestedTextGridImpl implements TextGridModel
     public TextTableModel createTable(int c, int r, int w, int h)
     {
         return parent.createTable(c + column, r + row, w, h);
+    }
+
+    /** {@inheritDoc} */
+    public void addTextGridListener(TextGridListener listener)
+    {
+        parent.addTextGridListener(listener);
+    }
+
+    /** {@inheritDoc} */
+    public void removeTextGridListener(TextGridListener listener)
+    {
+        parent.removeTextGridListener(listener);
     }
 }
