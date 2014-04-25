@@ -16,10 +16,14 @@
 package com.thesett.text.impl.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.HashMapXY;
+import com.thesett.text.api.TextTableEvent;
+import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextTableModel;
 
 /**
@@ -46,6 +50,9 @@ public class TextTableImpl implements TextTableModel
 
     /** Holds a table with cell data to pretty print. */
     DoubleKeyedMap<Long, Long, String> grid = new HashMapXY<String>(10);
+
+    /** Holds any interested listeners for updates to the table model. */
+    private Set<TextTableListener> listeners = new HashSet<TextTableListener>();
 
     /**
      * Updates the maximum row count of the data table.
@@ -100,7 +107,11 @@ public class TextTableImpl implements TextTableModel
 
         updateMaxColumnWidth(col, value.length());
 
-        return grid.put((long) col, (long) row, value);
+        String result = grid.put((long) col, (long) row, value);
+
+        updateListeners();
+
+        return result;
     }
 
     /** {@inheritDoc} */
@@ -112,7 +123,11 @@ public class TextTableImpl implements TextTableModel
     /** {@inheritDoc} */
     public String remove(Integer col, Integer row)
     {
-        return grid.remove((long) col, (long) row);
+        String result = grid.remove((long) col, (long) row);
+
+        updateListeners();
+
+        return result;
     }
 
     /** {@inheritDoc} */
@@ -145,6 +160,18 @@ public class TextTableImpl implements TextTableModel
         return maxColumnSizes.get(col);
     }
 
+    /** {@inheritDoc} */
+    public void addTextGridListener(TextTableListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /** {@inheritDoc} */
+    public void removeTextGridListener(TextTableListener listener)
+    {
+        listeners.remove(listener);
+    }
+
     /**
      * Updates the maximum column width for a column of the data table.
      *
@@ -162,6 +189,17 @@ public class TextTableImpl implements TextTableModel
         else if (previousValue < width)
         {
             maxColumnSizes.put(column, width);
+        }
+    }
+
+    /** Notifies all interested listeners of an update to this model. */
+    private void updateListeners()
+    {
+        TextTableEvent event = new TextTableEvent(this);
+
+        for (TextTableListener listener : listeners)
+        {
+            listener.changedUpdate(event);
         }
     }
 }

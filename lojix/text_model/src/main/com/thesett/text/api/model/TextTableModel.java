@@ -16,6 +16,7 @@
 package com.thesett.text.api.model;
 
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
+import com.thesett.text.api.TextTableListener;
 
 /**
  * TextTableModel is a {@link TextGridModel} that additionally divides its grid area into addressable rows and columns.
@@ -51,4 +52,18 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
      * @return The maximum column width.
      */
     int getMaxColumnSize(int col);
+
+    /**
+     * Adds a listener for updates to this model.
+     *
+     * @param listener The listener for updates to this model.
+     */
+    void addTextGridListener(TextTableListener listener);
+
+    /**
+     * Removes a listener for updates to this model.
+     *
+     * @param listener The listener to remove.
+     */
+    void removeTextGridListener(TextTableListener listener);
 }

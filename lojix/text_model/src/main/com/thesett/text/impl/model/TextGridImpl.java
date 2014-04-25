@@ -21,6 +21,8 @@ import java.util.Set;
 import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
+import com.thesett.text.api.TextTableEvent;
+import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -100,7 +102,13 @@ public class TextGridImpl implements TextGridModel
     /** {@inheritDoc} */
     public TextTableModel createTable(int c, int r, int w, int h)
     {
-        return new TextTableImpl();
+        // Supply a text table, with this grid set up to listen for updates to the table, and to be re-rendered as the
+        // table changes.
+        TextTableImpl textTable = new TextTableImpl();
+
+        textTable.addTextGridListener(new TableListener());
+
+        return textTable;
     }
 
     /** {@inheritDoc} */
@@ -139,6 +147,18 @@ public class TextGridImpl implements TextGridModel
         for (TextGridListener listener : listeners)
         {
             listener.changedUpdate(event);
+        }
+    }
+
+    /**
+     * Re-renders a table into this grid, when the table changes.
+     */
+    private class TableListener implements TextTableListener
+    {
+        /** {@inheritDoc} */
+        public void changedUpdate(TextTableEvent event)
+        {
+            new TextTableGridRenderer(event.getModel(), TextGridImpl.this);
         }
     }
 }
