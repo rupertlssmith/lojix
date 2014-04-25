@@ -23,6 +23,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
+import com.thesett.text.api.TextGridEvent;
+import com.thesett.text.api.TextGridListener;
 import com.thesett.text.api.model.TextGridModel;
 
 /**
@@ -60,6 +62,8 @@ public class JTextGrid extends JComponent
     public void setModel(TextGridModel model)
     {
         this.model = model;
+
+        model.addTextGridListener(new ModelListener());
     }
 
     /**
@@ -100,5 +104,17 @@ public class JTextGrid extends JComponent
         }
 
         graphics2D.dispose();
+    }
+
+    /**
+     * Listens for changes to the model, and initiates a repaint.
+     */
+    private class ModelListener implements TextGridListener
+    {
+        /** {@inheritDoc} */
+        public void changedUpdate(TextGridEvent event)
+        {
+            JTextGrid.this.repaint();
+        }
     }
 }
