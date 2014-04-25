@@ -20,9 +20,16 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
 
 /**
+ * MachineMonitor is the top level DPI monitor implementation for the debugger. Its purpose is to link together child
+ * monitor components for different parts of the machine, that in turn update the user interface model in response to
+ * events on the machine.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Connect together the child monitor components. </td>
+ *     <td> {@link RegisterSetMonitor} </td></tr>
+ * <tr><td> Initiate the update of child monitor components in response to machine evens. </td>
+ *     <td> {@link RegisterSetMonitor} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -30,10 +37,15 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
 public class MachineMonitor implements WAMResolvingMachineDPIMonitor
 {
     /** Holds a copy of the internal registers and monitors them for changes. */
-    InternalRegisterBean internalRegisters;
+    private InternalRegisterBean internalRegisters;
 
     /** Holds the monitor to listen for changes to the register set. */
-    RegisterSetMonitor registerSetMonitor = new RegisterSetMonitor();
+    private final RegisterSetMonitor registerSetMonitor;
+
+    public MachineMonitor(RegisterSetMonitor registerSetMonitor)
+    {
+        this.registerSetMonitor = registerSetMonitor;
+    }
 
     /** {@inheritDoc} */
     public void onReset(WAMResolvingMachineDPI dpi)

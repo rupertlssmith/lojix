@@ -18,6 +18,8 @@ package com.thesett.aima.logic.fol.wam.debugger.monitor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import com.thesett.text.api.model.TextTableModel;
+
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -28,7 +30,26 @@ import java.beans.PropertyChangeListener;
  */
 public class RegisterSetMonitor implements PropertyChangeListener
 {
+    private final TextTableModel table;
+
+    public RegisterSetMonitor(TextTableModel table)
+    {
+        this.table = table;
+    }
+
     public void propertyChange(PropertyChangeEvent evt)
     {
+        System.out.println(evt);
+    }
+
+    public void initialize()
+    {
+        String[] registerNames = new String[] { "ip", "hp", "ep", "bp" };
+
+        for (int i = 0; i < registerNames.length; i++)
+        {
+            String registerName = registerNames[i];
+            table.put(0, i, registerName);
+        }
     }
 }
