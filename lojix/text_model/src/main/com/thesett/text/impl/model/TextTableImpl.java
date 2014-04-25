@@ -128,13 +128,13 @@ public class TextTableImpl implements TextTableModel
     }
 
     /** {@inheritDoc} */
-    public int getHeight()
+    public int getRowCount()
     {
         return maxRows + 1;
     }
 
     /** {@inheritDoc} */
-    public int getWidth()
+    public int getColumnCount()
     {
         return maxColumns + 1;
     }

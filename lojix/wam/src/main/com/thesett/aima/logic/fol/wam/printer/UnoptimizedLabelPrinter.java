@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * LabelPrinter prints labels for any bytecode instructions that are labelled.
@@ -48,7 +49,7 @@ public class UnoptimizedLabelPrinter extends BasePrinter
      */
     public UnoptimizedLabelPrinter(VariableAndFunctorInterner interner,
         SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-        PrintingTable table)
+        TextTableModel table)
     {
         super(interner, symbolTable, traverser, column, table);
     }

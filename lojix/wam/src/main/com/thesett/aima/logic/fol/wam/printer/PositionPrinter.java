@@ -21,6 +21,7 @@ import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STACK_ADDR;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * PositionPrinter prints some positional context information about functors and how they relate to their compiled form.
@@ -46,7 +47,7 @@ public class PositionPrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public PositionPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, PrintingTable table)
+        PositionalTermTraverser traverser, int column, TextTableModel table)
     {
         super(interner, symbolTable, traverser, column, table);
     }

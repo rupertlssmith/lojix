@@ -30,18 +30,18 @@ import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
 {
     /**
-     * Provides the offset of the last row with data in it.
+     * Provides the count of the number of rows in the table.
      *
-     * @return The offset of the last row with data in it.
+     * @return The count of the number of rows in the table.
      */
-    int getHeight();
+    int getRowCount();
 
     /**
-     * Provides the offset of the last column with data in it.
+     * Provides the count of the number of columns in the table.
      *
-     * @return The offset of the last column with data in it.
+     * @return The count of the number of columns in the table.
      */
-    int getWidth();
+    int getColumnCount();
 
     /**
      * Provides the maximum width of the specified column.

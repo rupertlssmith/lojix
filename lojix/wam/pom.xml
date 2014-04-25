@@ -43,6 +43,12 @@
 
         <dependency>
             <groupId>com.thesett</groupId>
+            <artifactId>text_model</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thesett</groupId>
             <artifactId>aima</artifactId>
             <classifier>tests</classifier>
             <version>0.3-SNAPSHOT</version>

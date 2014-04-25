@@ -29,6 +29,8 @@ import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.aima.logic.fol.wam.compiler.InstructionCompiler;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
+import com.thesett.text.impl.model.TextTableImpl;
 
 /**
  * WAMCompiledTermsPrintingVisitor assists with pretty printing queries and predicates compiled by the
@@ -63,7 +65,7 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
     /** Holds a list of all column printers to apply. */
     List<AllTermsVisitor> printers = new ArrayList<AllTermsVisitor>();
 
-    PrintingTable printTable = new PrintingTableImpl();
+    TextTableModel printTable = new TextTableImpl();
 
     /**
      * Creates a pretty printing visitor for clauses being compiled in WAM.

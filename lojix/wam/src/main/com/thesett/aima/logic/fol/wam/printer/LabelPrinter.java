@@ -24,6 +24,7 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * LabelPrinter prints labels for any bytecode instructions that are labelled.
@@ -47,7 +48,7 @@ public class LabelPrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public LabelPrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, PrintingTable table)
+        PositionalTermTraverser traverser, int column, TextTableModel table)
     {
         super(interner, symbolTable, traverser, column, table);
     }

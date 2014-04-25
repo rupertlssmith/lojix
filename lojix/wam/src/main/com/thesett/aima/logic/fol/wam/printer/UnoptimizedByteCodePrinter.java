@@ -23,6 +23,7 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * ByteCodePrinter prints the compiled bytecode in its unoptimzed state.
@@ -47,7 +48,7 @@ public class UnoptimizedByteCodePrinter extends BasePrinter
      */
     public UnoptimizedByteCodePrinter(VariableAndFunctorInterner interner,
         SymbolTable<Integer, String, Object> symbolTable, PositionalTermTraverser traverser, int column,
-        PrintingTable table)
+        TextTableModel table)
     {
         super(interner, symbolTable, traverser, column, table);
     }

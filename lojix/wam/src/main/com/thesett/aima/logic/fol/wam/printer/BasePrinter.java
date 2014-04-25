@@ -20,6 +20,7 @@ import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.TraceIndenter;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * BasePrinter is a base class for writing debug pretty printers for compiled clauses.
@@ -52,7 +53,7 @@ public class BasePrinter extends BasePositionalVisitor
     protected String indent = "";
 
     /** The grid of cells to output to. */
-    private PrintingTable table;
+    private TextTableModel table;
 
     /**
      * Creates a printer.
@@ -64,7 +65,7 @@ public class BasePrinter extends BasePositionalVisitor
      * @param table       The table to inform of cell sizes and positions.
      */
     public BasePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, PrintingTable table)
+        PositionalTermTraverser traverser, int column, TextTableModel table)
     {
         super(interner, symbolTable, traverser);
         this.currentColumn = column;

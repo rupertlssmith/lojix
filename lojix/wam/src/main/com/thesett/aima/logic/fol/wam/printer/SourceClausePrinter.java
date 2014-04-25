@@ -20,6 +20,7 @@ import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.compiler.PositionalTermTraverser;
 import com.thesett.common.util.doublemaps.SymbolTable;
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * SourceClausePrinter prints the source of a compiled clause in a vertically spread out way, so that each predicate
@@ -45,7 +46,7 @@ public class SourceClausePrinter extends BasePrinter
      * @param table       The table to inform of cell sizes and positions.
      */
     public SourceClausePrinter(VariableAndFunctorInterner interner, SymbolTable<Integer, String, Object> symbolTable,
-        PositionalTermTraverser traverser, int column, PrintingTable table)
+        PositionalTermTraverser traverser, int column, TextTableModel table)
     {
         super(interner, symbolTable, traverser, column, table);
     }
