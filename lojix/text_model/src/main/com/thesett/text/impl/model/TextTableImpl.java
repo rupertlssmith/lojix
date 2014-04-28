@@ -27,9 +27,15 @@ import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextTableModel;
 
 /**
+ * TextTableImpl provides an implementation of the {@link TextTableModel}.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Add or remove strings to table cells. </td></tr>
+ * <tr><td> Provide the table size. </td></tr>
+ * <tr><td> Monitor maximum text width of columns. </td></tr>
+ * <tr><td> Provide ability to register listeners for changes to the table. </td></tr>
+ * <tr><td> Allow table columns and rows to be labelled. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -53,6 +59,12 @@ public class TextTableImpl implements TextTableModel
 
     /** Holds any interested listeners for updates to the table model. */
     private Set<TextTableListener> listeners = new HashSet<TextTableListener>();
+
+    /** Holds any column labels. */
+    private Map<String, Integer> columnLabels = new HashMap<String, Integer>();
+
+    /** Holds any row labels. */
+    private Map<String, Integer> rowLabels = new HashMap<String, Integer>();
 
     /**
      * Updates the maximum row count of the data table.
@@ -172,6 +184,36 @@ public class TextTableImpl implements TextTableModel
         listeners.remove(listener);
     }
 
+    /** {@inheritDoc} */
+    public void labelColumn(String label, int column)
+    {
+        columnLabels.put(label, column);
+    }
+
+    /** {@inheritDoc} */
+    public void labelRow(String label, int row)
+    {
+        rowLabels.put(label, row);
+    }
+
+    /** {@inheritDoc} */
+    public DoubleKeyedMap<Integer, String, String> withColumnLabels()
+    {
+        return new ColumnLabelView();
+    }
+
+    /** {@inheritDoc} */
+    public DoubleKeyedMap<String, Integer, String> withRowLabels()
+    {
+        return new RowLabelView();
+    }
+
+    /** {@inheritDoc} */
+    public DoubleKeyedMap<String, String, String> withLabels()
+    {
+        return new RowAndColumnLabelView();
+    }
+
     /**
      * Updates the maximum column width for a column of the data table.
      *
@@ -200,6 +242,232 @@ public class TextTableImpl implements TextTableModel
         for (TextTableListener listener : listeners)
         {
             listener.changedUpdate(event);
+        }
+    }
+
+    /**
+     * Provides a base implementation for the label views.
+     */
+    public abstract class ViewBase
+    {
+        /** {@inheritDoc} */
+        public void clear()
+        {
+            TextTableImpl.this.clear();
+        }
+
+        /** {@inheritDoc} */
+        public int size()
+        {
+            return TextTableImpl.this.size();
+        }
+
+        /** {@inheritDoc} */
+        public boolean isEmpty()
+        {
+            return TextTableImpl.this.isEmpty();
+        }
+    }
+
+    /**
+     * Provides a view onto the table with labeled columns.
+     */
+    private class ColumnLabelView extends ViewBase implements DoubleKeyedMap<Integer, String, String>
+    {
+        /** {@inheritDoc} */
+        public boolean containsKey(Integer row, String label)
+        {
+            Integer col = columnLabels.get(label);
+
+            if (col == null)
+            {
+                return false;
+            }
+            else
+            {
+                return TextTableImpl.this.containsKey(row, col);
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String put(Integer row, String label, String value)
+        {
+            Integer col = columnLabels.get(label);
+
+            if (col != null)
+            {
+                return TextTableImpl.this.put(row, col, value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String get(Integer row, String label)
+        {
+            Integer col = columnLabels.get(label);
+
+            if (col != null)
+            {
+                return TextTableImpl.this.get(row, col);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String remove(Integer row, String label)
+        {
+            Integer col = columnLabels.get(label);
+
+            if (col != null)
+            {
+                return TextTableImpl.this.remove(row, col);
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Provides a view onto the table with labeled rows.
+     */
+    private class RowLabelView extends ViewBase implements DoubleKeyedMap<String, Integer, String>
+    {
+        /** {@inheritDoc} */
+        public boolean containsKey(String label, Integer col)
+        {
+            Integer row = rowLabels.get(label);
+
+            if (row == null)
+            {
+                return false;
+            }
+            else
+            {
+                return TextTableImpl.this.containsKey(row, col);
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String put(String label, Integer col, String value)
+        {
+            Integer row = rowLabels.get(label);
+
+            if (row != null)
+            {
+                return TextTableImpl.this.put(row, col, value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String get(String label, Integer col)
+        {
+            Integer row = rowLabels.get(label);
+
+            if (row != null)
+            {
+                return TextTableImpl.this.get(row, col);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String remove(String label, Integer col)
+        {
+            Integer row = rowLabels.get(label);
+
+            if (row != null)
+            {
+                return TextTableImpl.this.remove(row, col);
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Provides a view onto the table with labeled rows and columns.
+     */
+    private class RowAndColumnLabelView extends ViewBase implements DoubleKeyedMap<String, String, String>
+    {
+        /** {@inheritDoc} */
+        public boolean containsKey(String rowLabel, String colLabel)
+        {
+            Integer row = rowLabels.get(rowLabel);
+            Integer col = columnLabels.get(colLabel);
+
+            if ((row != null) && (col != null))
+            {
+                return TextTableImpl.this.containsKey(row, col);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String put(String rowLabel, String colLabel, String value)
+        {
+            Integer row = rowLabels.get(rowLabel);
+            Integer col = columnLabels.get(colLabel);
+
+            if ((row != null) && (col != null))
+            {
+                return TextTableImpl.this.put(row, col, value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String get(String rowLabel, String colLabel)
+        {
+            Integer row = rowLabels.get(rowLabel);
+            Integer col = columnLabels.get(colLabel);
+
+            if ((row != null) && (col != null))
+            {
+                return TextTableImpl.this.get(row, col);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String remove(String rowLabel, String colLabel)
+        {
+            Integer row = rowLabels.get(rowLabel);
+            Integer col = columnLabels.get(colLabel);
+
+            if ((row != null) && (col != null))
+            {
+                return TextTableImpl.this.remove(row, col);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

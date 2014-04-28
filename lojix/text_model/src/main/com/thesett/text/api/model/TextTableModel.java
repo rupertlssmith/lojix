@@ -23,7 +23,11 @@ import com.thesett.text.api.TextTableListener;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Add or remove strings to table cells. </td></tr>
+ * <tr><td> Provide the table size. </td></tr>
+ * <tr><td> Monitor maximum text width of columns. </td></tr>
+ * <tr><td> Provide ability to register listeners for changes to the table. </td></tr>
+ * <tr><td> Allow table columns and rows to be labelled. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -66,4 +70,41 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
      * @param listener The listener to remove.
      */
     void removeTextGridListener(TextTableListener listener);
+
+    /**
+     * Applies a label to a whole column.
+     *
+     * @param label  The label to apply.
+     * @param column The column to use the label with.
+     */
+    void labelColumn(String label, int column);
+
+    /**
+     * Applies a label to a whole row.
+     *
+     * @param label The label to apply.
+     * @param row   The row to use the label with.
+     */
+    void labelRow(String label, int row);
+
+    /**
+     * Provides a view onto this table, where the columns are labelled instead of referred to by offset.
+     *
+     * @return A view onto this table, where the columns are labelled.
+     */
+    DoubleKeyedMap<Integer, String, String> withColumnLabels();
+
+    /**
+     * Provides a view onto this table, where the rows are labelled instead of referred to by offset.
+     *
+     * @return A view onto this table, where the rows are labelled.
+     */
+    DoubleKeyedMap<String, Integer, String> withRowLabels();
+
+    /**
+     * Provides a view onto this table, where the rows and columns are labelled instead of referred to by offsets.
+     *
+     * @return A view onto this table, where the rows and columns are labelled.
+     */
+    DoubleKeyedMap<String, String, String> withLabels();
 }
