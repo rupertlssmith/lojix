@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
+import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.text.api.model.TextGridModel;
 
 /**
@@ -47,7 +48,7 @@ public interface ComponentFactory<C>
      *
      * @return An empty text grid model.
      */
-    TextGridModel createTextGrid();
+    EnhancedTextGrid createTextGrid();
 
     /**
      * Creates an non-editable text panel.

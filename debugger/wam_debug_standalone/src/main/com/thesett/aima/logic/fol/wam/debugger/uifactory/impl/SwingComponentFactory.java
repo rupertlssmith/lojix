@@ -27,6 +27,8 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
+import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.text.api.model.TextGridModel;
@@ -79,9 +81,9 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public TextGridModel createTextGrid()
+    public EnhancedTextGrid createTextGrid()
     {
-        return new TextGridImpl();
+        return new EnhancedTextGridImpl();
     }
 
     /** {@inheritDoc} */
