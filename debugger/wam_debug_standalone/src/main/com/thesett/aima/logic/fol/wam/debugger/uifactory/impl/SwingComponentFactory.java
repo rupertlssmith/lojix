@@ -18,6 +18,8 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -94,6 +96,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 12);
         textPane.setFont(font);
         textPane.setModel(model);
+        textPane.initializeStandardMouseHandling();
 
         return textPane;
     }

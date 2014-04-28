@@ -20,8 +20,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
@@ -45,6 +51,24 @@ public class JTextGrid extends JComponent
     /** The text grid model to render. */
     private TextGridModel model;
 
+    /** Indicates whether font metrics have been initialized. */
+    private boolean fontMetricsInitialized;
+
+    /** The monospaced character width. */
+    private int charWidth;
+
+    /** The monospaced character height. */
+    private int charHeight;
+
+    /** The monospaced character descent. */
+    private int descent;
+
+    /** Holds mouse event listeners, that will receive mouse events translated to text grid coordinates. */
+    private Set<MouseListener> textGridMouseListeners = new HashSet<MouseListener>();
+
+    /** Holds mouse motion event listeners, that will receive mouse events translated to text grid coordinates. */
+    private Set<MouseMotionListener> textGridMouseMotionListeners = new HashSet<MouseMotionListener>();
+
     /** {@inheritDoc} */
     public Dimension getPreferredSize()
     {
@@ -66,6 +90,36 @@ public class JTextGrid extends JComponent
         model.addTextGridListener(new ModelListener());
     }
 
+    /** Sets up standard mouse handling, to translate mouse events from screen coordinates to text grid coordinates. */
+    public void initializeStandardMouseHandling()
+    {
+        MouseHandler mouseHandler = new MouseHandler();
+        addMouseListener(mouseHandler);
+        addMouseMotionListener(mouseHandler);
+    }
+
+    /**
+     * Adds a mouse listener, that will receive translated mouse events in text grid coordinates, instead of screen
+     * coordinates.
+     *
+     * @param listener The mouse listener to add.
+     */
+    public synchronized void addTextGridMouseListener(MouseListener listener)
+    {
+        textGridMouseListeners.add(listener);
+    }
+
+    /**
+     * Adds a mouse motion listener, that will receive translated mouse events in text grid coordinates, instead of
+     * screen coordinates.
+     *
+     * @param listener The mouse listener to add.
+     */
+    public synchronized void addTextGridMouseMotionListener(MouseMotionListener listener)
+    {
+        textGridMouseMotionListeners.add(listener);
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -79,15 +133,13 @@ public class JTextGrid extends JComponent
         graphics2D.setColor(getBackground());
         graphics2D.fillRect(0, 0, getWidth(), getHeight());
 
+        initializeFontMetrics();
+
         if (useAntiAliasing)
         {
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         }
-
-        FontMetrics fontMetrics = getGraphics().getFontMetrics(getFont());
-        int charWidth = fontMetrics.charWidth(' ');
-        int charHeight = fontMetrics.getHeight();
 
         for (int row = 0; row <= model.getHeight(); row++)
         {
@@ -99,11 +151,31 @@ public class JTextGrid extends JComponent
                 graphics2D.fillRect(col * charWidth, row * charHeight, charWidth, charHeight);
                 graphics2D.setColor(getForeground());
                 graphics2D.drawString(Character.toString(character), col * charWidth,
-                    ((row + 1) * charHeight) - fontMetrics.getDescent());
+                    ((row + 1) * charHeight) - descent);
             }
         }
 
         graphics2D.dispose();
+    }
+
+    private void initializeFontMetrics()
+    {
+        if (!fontMetricsInitialized)
+        {
+            FontMetrics fontMetrics = getFontMetrics(getFont());
+            charWidth = fontMetrics.charWidth(' ');
+            charHeight = fontMetrics.getHeight();
+            descent = fontMetrics.getDescent();
+            fontMetricsInitialized = true;
+        }
+    }
+
+    private void fireTextGridMouseMotionEvent(MouseEvent e)
+    {
+        for (MouseMotionListener listener : textGridMouseMotionListeners)
+        {
+            listener.mouseMoved(e);
+        }
     }
 
     /**
@@ -115,6 +187,42 @@ public class JTextGrid extends JComponent
         public void changedUpdate(TextGridEvent event)
         {
             JTextGrid.this.repaint();
+        }
+    }
+
+    /**
+     * MouseHandler translates mouse events on the UI component, into row/column coordinates in the text grid space.
+     */
+    private class MouseHandler extends MouseInputAdapter
+    {
+        int curRow = -1;
+        int curCol = -1;
+
+        private MouseHandler()
+        {
+            JTextGrid.this.initializeFontMetrics();
+        }
+
+        /** {@inheritDoc} */
+        public void mouseMoved(MouseEvent e)
+        {
+            int x = e.getX();
+            int y = e.getY();
+
+            int col = x / charWidth;
+            int row = y / charHeight;
+
+            if ((curRow != row) || (curCol != col))
+            {
+                curRow = row;
+                curCol = col;
+
+                MouseEvent translatedEvent =
+                    new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), col, row,
+                        e.getClickCount(), e.isPopupTrigger(), e.getButton());
+
+                fireTextGridMouseMotionEvent(translatedEvent);
+            }
         }
     }
 }
