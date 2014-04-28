@@ -158,7 +158,8 @@ public class TextGridImpl implements TextGridModel
         /** {@inheritDoc} */
         public void changedUpdate(TextTableEvent event)
         {
-            new TextTableGridRenderer(event.getModel(), TextGridImpl.this);
+            TextTableGridRenderer renderer = new TextTableGridRenderer(event.getModel(), TextGridImpl.this);
+            renderer.renderTable();
         }
     }
 }
