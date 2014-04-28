@@ -197,13 +197,13 @@ public class TextTableImpl implements TextTableModel
     }
 
     /** {@inheritDoc} */
-    public DoubleKeyedMap<Integer, String, String> withColumnLabels()
+    public DoubleKeyedMap<String, Integer, String> withColumnLabels()
     {
         return new ColumnLabelView();
     }
 
     /** {@inheritDoc} */
-    public DoubleKeyedMap<String, Integer, String> withRowLabels()
+    public DoubleKeyedMap<Integer, String, String> withRowLabels()
     {
         return new RowLabelView();
     }
@@ -272,10 +272,10 @@ public class TextTableImpl implements TextTableModel
     /**
      * Provides a view onto the table with labeled columns.
      */
-    private class ColumnLabelView extends ViewBase implements DoubleKeyedMap<Integer, String, String>
+    private class ColumnLabelView extends ViewBase implements DoubleKeyedMap<String, Integer, String>
     {
         /** {@inheritDoc} */
-        public boolean containsKey(Integer row, String label)
+        public boolean containsKey(String label, Integer row)
         {
             Integer col = columnLabels.get(label);
 
@@ -285,18 +285,18 @@ public class TextTableImpl implements TextTableModel
             }
             else
             {
-                return TextTableImpl.this.containsKey(row, col);
+                return TextTableImpl.this.containsKey(col, row);
             }
         }
 
         /** {@inheritDoc} */
-        public String put(Integer row, String label, String value)
+        public String put(String label, Integer row, String value)
         {
             Integer col = columnLabels.get(label);
 
             if (col != null)
             {
-                return TextTableImpl.this.put(row, col, value);
+                return TextTableImpl.this.put(col, row, value);
             }
             else
             {
@@ -305,13 +305,13 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String get(Integer row, String label)
+        public String get(String label, Integer row)
         {
             Integer col = columnLabels.get(label);
 
             if (col != null)
             {
-                return TextTableImpl.this.get(row, col);
+                return TextTableImpl.this.get(col, row);
             }
             else
             {
@@ -320,13 +320,13 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String remove(Integer row, String label)
+        public String remove(String label, Integer row)
         {
             Integer col = columnLabels.get(label);
 
             if (col != null)
             {
-                return TextTableImpl.this.remove(row, col);
+                return TextTableImpl.this.remove(col, row);
             }
             else
             {
@@ -338,10 +338,10 @@ public class TextTableImpl implements TextTableModel
     /**
      * Provides a view onto the table with labeled rows.
      */
-    private class RowLabelView extends ViewBase implements DoubleKeyedMap<String, Integer, String>
+    private class RowLabelView extends ViewBase implements DoubleKeyedMap<Integer, String, String>
     {
         /** {@inheritDoc} */
-        public boolean containsKey(String label, Integer col)
+        public boolean containsKey(Integer col, String label)
         {
             Integer row = rowLabels.get(label);
 
@@ -351,18 +351,18 @@ public class TextTableImpl implements TextTableModel
             }
             else
             {
-                return TextTableImpl.this.containsKey(row, col);
+                return TextTableImpl.this.containsKey(col, row);
             }
         }
 
         /** {@inheritDoc} */
-        public String put(String label, Integer col, String value)
+        public String put(Integer col, String label, String value)
         {
             Integer row = rowLabels.get(label);
 
             if (row != null)
             {
-                return TextTableImpl.this.put(row, col, value);
+                return TextTableImpl.this.put(col, row, value);
             }
             else
             {
@@ -371,13 +371,13 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String get(String label, Integer col)
+        public String get(Integer col, String label)
         {
             Integer row = rowLabels.get(label);
 
             if (row != null)
             {
-                return TextTableImpl.this.get(row, col);
+                return TextTableImpl.this.get(col, row);
             }
             else
             {
@@ -386,13 +386,13 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String remove(String label, Integer col)
+        public String remove(Integer col, String label)
         {
             Integer row = rowLabels.get(label);
 
             if (row != null)
             {
-                return TextTableImpl.this.remove(row, col);
+                return TextTableImpl.this.remove(col, row);
             }
             else
             {
@@ -407,14 +407,14 @@ public class TextTableImpl implements TextTableModel
     private class RowAndColumnLabelView extends ViewBase implements DoubleKeyedMap<String, String, String>
     {
         /** {@inheritDoc} */
-        public boolean containsKey(String rowLabel, String colLabel)
+        public boolean containsKey(String colLabel, String rowLabel)
         {
             Integer row = rowLabels.get(rowLabel);
             Integer col = columnLabels.get(colLabel);
 
             if ((row != null) && (col != null))
             {
-                return TextTableImpl.this.containsKey(row, col);
+                return TextTableImpl.this.containsKey(col, row);
             }
             else
             {
@@ -423,14 +423,14 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String put(String rowLabel, String colLabel, String value)
+        public String put(String colLabel, String rowLabel, String value)
         {
             Integer row = rowLabels.get(rowLabel);
             Integer col = columnLabels.get(colLabel);
 
             if ((row != null) && (col != null))
             {
-                return TextTableImpl.this.put(row, col, value);
+                return TextTableImpl.this.put(col, row, value);
             }
             else
             {
@@ -439,14 +439,14 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String get(String rowLabel, String colLabel)
+        public String get(String colLabel, String rowLabel)
         {
             Integer row = rowLabels.get(rowLabel);
             Integer col = columnLabels.get(colLabel);
 
             if ((row != null) && (col != null))
             {
-                return TextTableImpl.this.get(row, col);
+                return TextTableImpl.this.get(col, row);
             }
             else
             {
@@ -455,14 +455,14 @@ public class TextTableImpl implements TextTableModel
         }
 
         /** {@inheritDoc} */
-        public String remove(String rowLabel, String colLabel)
+        public String remove(String colLabel, String rowLabel)
         {
             Integer row = rowLabels.get(rowLabel);
             Integer col = columnLabels.get(colLabel);
 
             if ((row != null) && (col != null))
             {
-                return TextTableImpl.this.remove(row, col);
+                return TextTableImpl.this.remove(col, row);
             }
             else
             {

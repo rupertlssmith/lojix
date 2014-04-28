@@ -92,14 +92,14 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
      *
      * @return A view onto this table, where the columns are labelled.
      */
-    DoubleKeyedMap<Integer, String, String> withColumnLabels();
+    DoubleKeyedMap<String, Integer, String> withColumnLabels();
 
     /**
      * Provides a view onto this table, where the rows are labelled instead of referred to by offset.
      *
      * @return A view onto this table, where the rows are labelled.
      */
-    DoubleKeyedMap<String, Integer, String> withRowLabels();
+    DoubleKeyedMap<Integer, String, String> withRowLabels();
 
     /**
      * Provides a view onto this table, where the rows and columns are labelled instead of referred to by offsets.
