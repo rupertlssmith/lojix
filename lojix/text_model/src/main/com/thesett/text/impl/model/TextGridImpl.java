@@ -123,6 +123,17 @@ public class TextGridImpl implements TextGridModel
         listeners.remove(listener);
     }
 
+    /** Notifies all interested listeners of an update to this model. */
+    protected void updateListeners()
+    {
+        TextGridEvent event = new TextGridEvent(this);
+
+        for (TextGridListener listener : listeners)
+        {
+            listener.changedUpdate(event);
+        }
+    }
+
     /**
      * Inserts a single character into the grid at the specified location. This is a private insert method, that does
      * not notify model listeners, so that the public insert methods can do that as a separate step.
@@ -137,17 +148,6 @@ public class TextGridImpl implements TextGridModel
         height = (r > height) ? r : height;
 
         data.put((long) c, (long) r, character);
-    }
-
-    /** Notifies all interested listeners of an update to this model. */
-    private void updateListeners()
-    {
-        TextGridEvent event = new TextGridEvent(this);
-
-        for (TextGridListener listener : listeners)
-        {
-            listener.changedUpdate(event);
-        }
     }
 
     /**
