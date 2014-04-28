@@ -69,7 +69,6 @@ public class TopLevelStandaloneController
         // Build a table model on the text grid, and construct a register monitor on the table.
         TextTableModel table = textGrid.createTable(0, 0, 20, 20);
         RegisterSetMonitor registerSetMonitor = new RegisterSetMonitor(table);
-        registerSetMonitor.initialize();
 
         // Build the top-level machine monitor.
         machineMonitor = new MachineMonitor(registerSetMonitor);
