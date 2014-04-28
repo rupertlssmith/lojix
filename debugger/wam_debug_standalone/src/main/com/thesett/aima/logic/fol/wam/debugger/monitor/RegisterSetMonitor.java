@@ -78,6 +78,7 @@ public class RegisterSetMonitor implements PropertyChangeListener
     /** {@inheritDoc} */
     public void propertyChange(PropertyChangeEvent evt)
     {
-        labeledTable.put(REG_VALUE_COL, evt.getPropertyName(), evt.getNewValue().toString());
+        String hex = String.format("%08X", evt.getNewValue());
+        labeledTable.put(REG_VALUE_COL, evt.getPropertyName(), hex);
     }
 }
