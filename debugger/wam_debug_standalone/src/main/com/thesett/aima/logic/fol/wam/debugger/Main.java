@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
+import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;

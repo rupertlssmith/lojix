@@ -27,6 +27,7 @@ import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
 import com.thesett.aima.logic.fol.wam.machine.WAMEngine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachine;

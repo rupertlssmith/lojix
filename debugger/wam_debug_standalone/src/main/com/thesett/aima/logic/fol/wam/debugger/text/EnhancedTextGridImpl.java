@@ -54,23 +54,103 @@ public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGr
     /** {@inheritDoc} */
     public void insertColumnAttribute(AttributeSet attributes, int c)
     {
-        columnAttributes.add(c, attributes);
+        setColumnAttributeWithPadding(attributes, c);
+        updateListeners();
     }
 
     /** {@inheritDoc} */
     public void insertRowAttribute(AttributeSet attributes, int r)
     {
-        rowAttributes.add(r, attributes);
+        setRowAttributeWithPadding(attributes, r);
+        updateListeners();
     }
 
     /** {@inheritDoc} */
     public AttributeSet getAttributeAt(int c, int r)
     {
         AttributeSet attributeSet = gridAttributes.get((long) c, (long) r);
-        attributeSet = (attributeSet == null) ? columnAttributes.get(c) : attributeSet;
-        attributeSet = (attributeSet == null) ? rowAttributes.get(r) : attributeSet;
+        attributeSet = (attributeSet == null) ? getColumnAttributeOrNull(c) : attributeSet;
+        attributeSet = (attributeSet == null) ? getRowAttributeOrNull(r) : attributeSet;
 
         return attributeSet;
+    }
+
+    /**
+     * Sets a column attribute, adding padding to the underlying array as necessary to ensure it is large enough to hold
+     * the attribute at the requested position.
+     *
+     * @param attributes The attribute to set.
+     * @param c          The column to set it on.
+     */
+    private void setColumnAttributeWithPadding(AttributeSet attributes, int c)
+    {
+        if (c >= columnAttributes.size())
+        {
+            for (int i = columnAttributes.size(); i <= c; i++)
+            {
+                columnAttributes.add(null);
+            }
+        }
+
+        columnAttributes.set(c, attributes);
+    }
+
+    /**
+     * Sets a row attribute, adding padding to the underlying array as necessary to ensure it is large enough to hold
+     * the attribute at the requested position.
+     *
+     * @param attributes The attribute to set.
+     * @param r          The row to set it on.
+     */
+    private void setRowAttributeWithPadding(AttributeSet attributes, int r)
+    {
+        if (r >= rowAttributes.size())
+        {
+            for (int i = rowAttributes.size(); i <= r; i++)
+            {
+                rowAttributes.add(null);
+            }
+        }
+
+        rowAttributes.set(r, attributes);
+    }
+
+    /**
+     * Gets a columns attribute if possible, without overflowing the underlying array.
+     *
+     * @param  c The column to get the attributes for.
+     *
+     * @return The column attributes or <tt>null</tt> if none are set.
+     */
+    private AttributeSet getColumnAttributeOrNull(int c)
+    {
+        if ((c >= 0) && (c < columnAttributes.size()))
+        {
+            return columnAttributes.get(c);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Gets a rows attribute if possible, without overflowing the underlying array.
+     *
+     * @param  r The row to get the attributes for.
+     *
+     * @return The row attributes or <tt>null</tt> if none are set.
+     */
+    private AttributeSet getRowAttributeOrNull(int r)
+    {
+        if ((r >= 0) && (r < rowAttributes.size()))
+        {
+            return rowAttributes.get(r);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**

@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger;
+package com.thesett.aima.logic.fol.wam.debugger.controller;
 
+import com.thesett.aima.logic.fol.wam.debugger.DarkColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
-import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
-import com.thesett.text.api.model.TextGridModel;
-import com.thesett.text.api.model.TextTableModel;
 
 /**
  * TopLevelStandaloneController is the top-level controller for the debugger UI. It is responsible for initializing the
@@ -53,6 +51,9 @@ public class TopLevelStandaloneController
     /** Holds the top-level machine monitor that is attached to the DPI of the machine being debugged. */
     private MachineMonitor machineMonitor;
 
+    /** Holds the controller for the register set monitor. */
+    private RegisterMonitorController registerMonitorController;
+
     /** Creates the debugger application from its components. */
     public void open()
     {
@@ -62,21 +63,18 @@ public class TopLevelStandaloneController
         // Blank out the centre panel for now.
         mainWindow.showCentrePane(componentFactory.createBlankPanel());
 
-        // Build a text grid panel in the left position.
-        TextGridModel textGrid = componentFactory.createTextGrid();
-        mainWindow.showLeftPane(componentFactory.createTextGridPanel(textGrid));
-
-        // Build a table model on the text grid, and construct a register monitor on the table.
-        TextTableModel table = textGrid.createTable(0, 0, 20, 20);
-        RegisterSetMonitor registerSetMonitor = new RegisterSetMonitor(table);
+        // Create and initialize the register monitor.
+        registerMonitorController = new RegisterMonitorController(componentFactory, mainWindow);
+        registerMonitorController.open();
 
         // Build the top-level machine monitor.
-        machineMonitor = new MachineMonitor(registerSetMonitor);
+        machineMonitor = new MachineMonitor(registerMonitorController.getRegisterMonitor());
     }
 
     /** Destroys the debugger application components. */
     public void close()
     {
+        registerMonitorController.close();
     }
 
     public MachineMonitor getMachineMonitor()

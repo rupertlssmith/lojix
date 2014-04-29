@@ -18,10 +18,9 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
@@ -32,7 +31,6 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.text.api.model.TextGridModel;
-import com.thesett.text.impl.model.TextGridImpl;
 
 /**
  * SwingComponentFactory implements a UI component factory that produces Swing components.
@@ -87,7 +85,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public Component createTextGridPanel(TextGridModel model)
+    public Component createTextGridPanel(EnhancedTextGrid model, MouseInputListener mouseHandler)
     {
         JTextGrid textPane = new JTextGrid();
 
@@ -99,6 +97,9 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         textPane.setFont(font);
         textPane.setModel(model);
         textPane.initializeStandardMouseHandling();
+
+        textPane.addTextGridMouseMotionListener(mouseHandler);
+        textPane.addTextGridMouseListener(mouseHandler);
 
         return textPane;
     }

@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.swing;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -28,7 +29,11 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.StyleConstants;
 
+import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.common.util.Function;
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
 import com.thesett.text.api.model.TextGridModel;
@@ -49,7 +54,7 @@ public class JTextGrid extends JComponent
     private boolean useAntiAliasing = true;
 
     /** The text grid model to render. */
-    private TextGridModel model;
+    private EnhancedTextGrid model;
 
     /** Indicates whether font metrics have been initialized. */
     private boolean fontMetricsInitialized;
@@ -83,7 +88,7 @@ public class JTextGrid extends JComponent
      *
      * @param model The text grid model.
      */
-    public void setModel(TextGridModel model)
+    public void setModel(EnhancedTextGrid model)
     {
         this.model = model;
 
@@ -147,7 +152,13 @@ public class JTextGrid extends JComponent
             {
                 char character = model.getCharAt(col, row);
 
-                graphics2D.setColor(getBackground());
+                AttributeSet attributes = model.getAttributeAt(col, row);
+
+                Color bgColor =
+                    (attributes != null) ? (Color) attributes.getAttribute(StyleConstants.Background) : null;
+                bgColor = (bgColor == null) ? getBackground() : bgColor;
+
+                graphics2D.setColor(bgColor);
                 graphics2D.fillRect(col * charWidth, row * charHeight, charWidth, charHeight);
                 graphics2D.setColor(getForeground());
                 graphics2D.drawString(Character.toString(character), col * charWidth,
@@ -170,11 +181,19 @@ public class JTextGrid extends JComponent
         }
     }
 
-    private void fireTextGridMouseMotionEvent(MouseEvent e)
+    private void fireTextGridMouseMotionEvent(Function<MouseMotionListener, Object> switchFunction)
     {
         for (MouseMotionListener listener : textGridMouseMotionListeners)
         {
-            listener.mouseMoved(e);
+            switchFunction.apply(listener);
+        }
+    }
+
+    private void fireTextGridMouseEvent(Function<MouseListener, Object> switchFunction)
+    {
+        for (MouseListener listener : textGridMouseListeners)
+        {
+            switchFunction.apply(listener);
         }
     }
 
@@ -206,23 +225,60 @@ public class JTextGrid extends JComponent
         /** {@inheritDoc} */
         public void mouseMoved(MouseEvent e)
         {
-            int x = e.getX();
-            int y = e.getY();
+            final MouseEvent translatedEvent = translateEvent(e);
 
-            int col = x / charWidth;
-            int row = y / charHeight;
+            int row = translatedEvent.getX();
+            int col = translatedEvent.getY();
 
             if ((curRow != row) || (curCol != col))
             {
                 curRow = row;
                 curCol = col;
 
-                MouseEvent translatedEvent =
-                    new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), col, row,
-                        e.getClickCount(), e.isPopupTrigger(), e.getButton());
+                fireTextGridMouseMotionEvent(new Function<MouseMotionListener, Object>()
+                    {
+                        public Object apply(MouseMotionListener mouseMotionListener)
+                        {
+                            mouseMotionListener.mouseMoved(translatedEvent);
 
-                fireTextGridMouseMotionEvent(translatedEvent);
+                            return null;
+                        }
+                    });
             }
+        }
+
+        /** {@inheritDoc} */
+        public void mousePressed(MouseEvent e)
+        {
+            final MouseEvent translatedEvent = translateEvent(e);
+            fireTextGridMouseEvent(new Function<MouseListener, Object>()
+                {
+                    public Object apply(MouseListener mouseListener)
+                    {
+                        mouseListener.mousePressed(translatedEvent);
+
+                        return null;
+                    }
+                });
+        }
+
+        /**
+         * Translates a mouse event from screen coordinates to text grid coordinates.
+         *
+         * @param  e The original mouse event.
+         *
+         * @return The same mouse event but with translated coordinates.
+         */
+        private MouseEvent translateEvent(MouseEvent e)
+        {
+            int x = e.getX();
+            int y = e.getY();
+
+            int transX = x / charWidth;
+            int transY = y / charHeight;
+
+            return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), transX, transY,
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
         }
     }
 }
