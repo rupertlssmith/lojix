@@ -159,10 +159,9 @@ public class JTextGrid extends JComponent
                 bgColor = (bgColor == null) ? getBackground() : bgColor;
 
                 graphics2D.setColor(bgColor);
-                graphics2D.fillRect(col * charWidth, row * charHeight, charWidth, charHeight);
+                graphics2D.fillRect(colToX(col), rowToY(row), charWidth, charHeight);
                 graphics2D.setColor(getForeground());
-                graphics2D.drawString(Character.toString(character), col * charWidth,
-                    ((row + 1) * charHeight) - descent);
+                graphics2D.drawString(Character.toString(character), colToX(col), (rowToY((row + 1))) - descent);
             }
         }
 
@@ -195,6 +194,26 @@ public class JTextGrid extends JComponent
         {
             switchFunction.apply(listener);
         }
+    }
+
+    private int colToX(int col)
+    {
+        return col * charWidth;
+    }
+
+    private int rowToY(int row)
+    {
+        return row * charHeight;
+    }
+
+    private int xToCol(int x)
+    {
+        return x / charWidth;
+    }
+
+    private int yToRow(int y)
+    {
+        return y / charHeight;
     }
 
     /**
@@ -271,14 +290,8 @@ public class JTextGrid extends JComponent
          */
         private MouseEvent translateEvent(MouseEvent e)
         {
-            int x = e.getX();
-            int y = e.getY();
-
-            int transX = x / charWidth;
-            int transY = y / charHeight;
-
-            return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), transX, transY,
-                e.getClickCount(), e.isPopupTrigger(), e.getButton());
+            return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), xToCol(e.getX()),
+                yToRow(e.getY()), e.getClickCount(), e.isPopupTrigger(), e.getButton());
         }
     }
 }
