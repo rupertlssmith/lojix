@@ -128,7 +128,9 @@ public class RegisterMonitorController
         {
             if (color.getRed() > 0)
             {
-                color = new Color(color.getRed() - 1, color.getGreen() - 1, color.getBlue() - 1);
+                color =
+                    new Color(color.getRed() - (color.getRed() / 2), color.getGreen() - (color.getGreen() / 2),
+                        color.getBlue() - (color.getBlue() / 2));
 
                 StyleContext sc = StyleContext.getDefaultStyleContext();
                 AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
