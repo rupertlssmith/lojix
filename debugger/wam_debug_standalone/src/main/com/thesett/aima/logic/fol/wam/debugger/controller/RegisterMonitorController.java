@@ -16,8 +16,11 @@
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -54,6 +57,9 @@ public class RegisterMonitorController
     private TextTableModel table;
     private RegisterSetMonitor monitor;
 
+    private int selectedRow = -1;
+    private Timer timer;
+
     public RegisterMonitorController(ComponentFactory componentFactory, MainWindow mainWindow)
     {
         this.componentFactory = componentFactory;
@@ -82,8 +88,6 @@ public class RegisterMonitorController
 
     private class MouseHandler extends MouseInputAdapter
     {
-        int selectedRow = -1;
-
         public void mousePressed(MouseEvent e)
         {
             int row = e.getY();
@@ -96,14 +100,41 @@ public class RegisterMonitorController
                 AttributeSet aset =
                     sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, Color.LIGHT_GRAY);
 
-                // Clear any previously selected row.
-                if (selectedRow != -1)
+                if (row < table.getRowCount())
                 {
-                    grid.insertRowAttribute(null, selectedRow);
-                }
+                    // Clear any previously selected row.
+                    if (selectedRow != -1)
+                    {
+                        grid.insertRowAttribute(null, selectedRow);
+                    }
 
-                selectedRow = row;
+                    selectedRow = row;
+                    grid.insertRowAttribute(aset, selectedRow);
+
+                    // Kick off the fade timer.
+                    timer = new Timer(100, new FadeHandler());
+                    timer.setInitialDelay(100);
+                    timer.start();
+                }
+            }
+        }
+    }
+
+    private class FadeHandler implements ActionListener
+    {
+        Color color = Color.LIGHT_GRAY;
+
+        public void actionPerformed(ActionEvent e)
+        {
+            if (color.getRed() > 0)
+            {
+                color = new Color(color.getRed() - 1, color.getGreen() - 1, color.getBlue() - 1);
+
+                StyleContext sc = StyleContext.getDefaultStyleContext();
+                AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
                 grid.insertRowAttribute(aset, selectedRow);
+
+                timer.restart();
             }
         }
     }

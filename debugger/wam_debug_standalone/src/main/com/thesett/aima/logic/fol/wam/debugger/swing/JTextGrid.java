@@ -146,9 +146,12 @@ public class JTextGrid extends JComponent
             graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         }
 
-        for (int row = 0; row <= model.getHeight(); row++)
+        int cols = xToCol(getWidth());
+        int rows = yToRow(getHeight());
+
+        for (int row = 0; row <= rows; row++)
         {
-            for (int col = 0; col <= model.getWidth(); col++)
+            for (int col = 0; col <= cols; col++)
             {
                 char character = model.getCharAt(col, row);
 
