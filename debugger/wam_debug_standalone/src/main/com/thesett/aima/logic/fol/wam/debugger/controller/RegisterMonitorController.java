@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
@@ -28,6 +29,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.swing.ColorInterpolator;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
@@ -56,9 +58,9 @@ public class RegisterMonitorController
     private EnhancedTextGrid grid;
     private TextTableModel table;
     private RegisterSetMonitor monitor;
+    private FadeHandler fadeHandler = new FadeHandler(Color.LIGHT_GRAY, Color.DARK_GRAY);
 
     private int selectedRow = -1;
-    private Timer timer;
 
     public RegisterMonitorController(ComponentFactory componentFactory, MainWindow mainWindow)
     {
@@ -111,10 +113,7 @@ public class RegisterMonitorController
                     selectedRow = row;
                     grid.insertRowAttribute(aset, selectedRow);
 
-                    // Kick off the fade timer.
-                    timer = new Timer(100, new FadeHandler());
-                    timer.setInitialDelay(100);
-                    timer.start();
+                    fadeHandler.doFade();
                 }
             }
         }
@@ -122,15 +121,23 @@ public class RegisterMonitorController
 
     private class FadeHandler implements ActionListener
     {
-        Color color = Color.LIGHT_GRAY;
+        private final Color startColor;
+        private final Color endColor;
+
+        private Timer timer;
+        private Iterator<Color> interpolator;
+
+        private FadeHandler(Color startColor, Color endColor)
+        {
+            this.startColor = startColor;
+            this.endColor = endColor;
+        }
 
         public void actionPerformed(ActionEvent e)
         {
-            if (color.getRed() > 0)
+            if (interpolator.hasNext())
             {
-                color =
-                    new Color(color.getRed() - (color.getRed() / 2), color.getGreen() - (color.getGreen() / 2),
-                        color.getBlue() - (color.getBlue() / 2));
+                Color color = interpolator.next();
 
                 StyleContext sc = StyleContext.getDefaultStyleContext();
                 AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
@@ -138,6 +145,23 @@ public class RegisterMonitorController
 
                 timer.restart();
             }
+        }
+
+        public void doFade()
+        {
+            // Kill any previous fade.
+            if (timer != null)
+            {
+                timer.stop();
+            }
+
+            // Set up the color interpolator.
+            interpolator = new ColorInterpolator(startColor, endColor, 8).iterator();
+
+            // Kick off the fade timer.
+            timer = new Timer(10, this);
+            timer.setInitialDelay(100);
+            timer.start();
         }
     }
 }
