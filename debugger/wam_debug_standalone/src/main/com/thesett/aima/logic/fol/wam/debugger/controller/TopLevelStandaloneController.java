@@ -19,6 +19,7 @@ import com.thesett.aima.logic.fol.wam.debugger.DarkColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
 
@@ -37,7 +38,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFact
  *
  * @author Rupert Smith
  */
-public class TopLevelStandaloneController
+public class TopLevelStandaloneController implements ControllerLifecycle
 {
     /** Defines the application colour scheme. */
     private ColorScheme colorScheme = new DarkColorScheme();
@@ -54,7 +55,11 @@ public class TopLevelStandaloneController
     /** Holds the controller for the register set monitor. */
     private RegisterMonitorController registerMonitorController;
 
-    /** Creates the debugger application from its components. */
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Creates the debugger application from its components.
+     */
     public void open()
     {
         // Build the main window frame.
@@ -71,7 +76,11 @@ public class TopLevelStandaloneController
         machineMonitor = new MachineMonitor(registerMonitorController.getRegisterMonitor());
     }
 
-    /** Destroys the debugger application components. */
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Destroys the debugger application components.
+     */
     public void close()
     {
         registerMonitorController.close();

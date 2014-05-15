@@ -28,6 +28,7 @@ import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.text.api.model.TextTableModel;
 
@@ -43,7 +44,7 @@ import com.thesett.text.api.model.TextTableModel;
  *
  * @author Rupert Smith
  */
-public class RegisterMonitorController implements ColorDelta
+public class RegisterMonitorController implements ControllerLifecycle
 {
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
