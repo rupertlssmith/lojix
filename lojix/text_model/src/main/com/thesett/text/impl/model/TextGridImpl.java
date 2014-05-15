@@ -106,7 +106,7 @@ public class TextGridImpl implements TextGridModel
         // table changes.
         TextTableImpl textTable = new TextTableImpl();
 
-        textTable.addTextGridListener(new TableListener());
+        textTable.addTextTableListener(new TableListener());
 
         return textTable;
     }

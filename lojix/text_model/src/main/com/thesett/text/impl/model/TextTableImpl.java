@@ -173,13 +173,13 @@ public class TextTableImpl implements TextTableModel
     }
 
     /** {@inheritDoc} */
-    public void addTextGridListener(TextTableListener listener)
+    public void addTextTableListener(TextTableListener listener)
     {
         listeners.add(listener);
     }
 
     /** {@inheritDoc} */
-    public void removeTextGridListener(TextTableListener listener)
+    public void removeTextTableListener(TextTableListener listener)
     {
         listeners.remove(listener);
     }

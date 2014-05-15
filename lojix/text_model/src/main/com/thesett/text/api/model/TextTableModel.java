@@ -62,14 +62,14 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
      *
      * @param listener The listener for updates to this model.
      */
-    void addTextGridListener(TextTableListener listener);
+    void addTextTableListener(TextTableListener listener);
 
     /**
      * Removes a listener for updates to this model.
      *
      * @param listener The listener to remove.
      */
-    void removeTextGridListener(TextTableListener listener);
+    void removeTextTableListener(TextTableListener listener);
 
     /**
      * Applies a label to a whole column.
