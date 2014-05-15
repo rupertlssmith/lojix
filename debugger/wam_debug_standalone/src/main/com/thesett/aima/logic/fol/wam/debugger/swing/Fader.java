@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.*;
 
@@ -51,7 +52,7 @@ public class Fader implements ActionListener
     private final Color endColor;
 
     /** The internal fade states by group name. */
-    private Map<String, FadeState> timers = new HashMap<String, FadeState>();
+    private Map<String, FadeState> timers = new ConcurrentHashMap<String, FadeState>();
 
     /**
      * Builds a color fader between two colors.
@@ -76,11 +77,8 @@ public class Fader implements ActionListener
             Color color = fadeState.interpolator.next();
 
             fadeState.target.changeColor(color);
+            fadeState.timer.setInitialDelay(0);
             fadeState.timer.restart();
-        }
-        else
-        {
-            timers.remove(groupName);
         }
     }
 
@@ -101,8 +99,8 @@ public class Fader implements ActionListener
         if (fadeState == null)
         {
             // Create a new fade state for the target group, and a timer to run it.
-            Timer timer = new Timer(10, this);
-            timer.setInitialDelay(100);
+            Timer timer = new Timer(20, this);
+            timer.setInitialDelay(60);
 
             fadeState = new FadeState(timer, target, interpolator);
             timers.put(groupName, fadeState);
