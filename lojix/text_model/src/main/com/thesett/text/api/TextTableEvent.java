@@ -32,6 +32,12 @@ public class TextTableEvent
     /** The changed model. */
     private final TextTableModel model;
 
+    /** The table row changed. <tt>-1</tt> means not relevant to this event. */
+    private final int rowChanged;
+
+    /** The table column changed. <tt>-1</tt> means not relevant to this event. */
+    private final int columnChanged;
+
     /**
      * Creates a text Table update event.
      *
@@ -40,6 +46,22 @@ public class TextTableEvent
     public TextTableEvent(TextTableModel model)
     {
         this.model = model;
+        rowChanged = -1;
+        columnChanged = -1;
+    }
+
+    /**
+     * Creates a text Table update event.
+     *
+     * @param model         The changed model.
+     * @param rowChanged    The row changed.
+     * @param columnChanged The column changed.
+     */
+    public TextTableEvent(TextTableModel model, int rowChanged, int columnChanged)
+    {
+        this.model = model;
+        this.rowChanged = rowChanged;
+        this.columnChanged = columnChanged;
     }
 
     /**
