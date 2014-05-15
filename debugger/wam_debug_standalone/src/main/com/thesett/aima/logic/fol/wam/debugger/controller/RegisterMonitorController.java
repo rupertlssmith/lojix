@@ -16,12 +16,8 @@
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 
-import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -29,7 +25,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorInterpolator;
+import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
@@ -47,7 +43,7 @@ import com.thesett.text.api.model.TextTableModel;
  *
  * @author Rupert Smith
  */
-public class RegisterMonitorController
+public class RegisterMonitorController implements ColorDelta
 {
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
@@ -58,7 +54,7 @@ public class RegisterMonitorController
     private EnhancedTextGrid grid;
     private TextTableModel table;
     private RegisterSetMonitor monitor;
-    private FadeHandler fadeHandler = new FadeHandler(Color.LIGHT_GRAY, Color.DARK_GRAY);
+    private Fader fader = new Fader(Color.LIGHT_GRAY, Color.DARK_GRAY);
 
     private int selectedRow = -1;
 
@@ -88,6 +84,18 @@ public class RegisterMonitorController
         return monitor;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Applies color changes to the background of the currently selected row.
+     */
+    public void changeColor(Color color)
+    {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
+        grid.insertRowAttribute(aset, selectedRow);
+    }
+
     private class MouseHandler extends MouseInputAdapter
     {
         public void mousePressed(MouseEvent e)
@@ -113,55 +121,9 @@ public class RegisterMonitorController
                     selectedRow = row;
                     grid.insertRowAttribute(aset, selectedRow);
 
-                    fadeHandler.doFade();
+                    fader.doFade(RegisterMonitorController.this, "DEFAULT");
                 }
             }
-        }
-    }
-
-    private class FadeHandler implements ActionListener
-    {
-        private final Color startColor;
-        private final Color endColor;
-
-        private Timer timer;
-        private Iterator<Color> interpolator;
-
-        private FadeHandler(Color startColor, Color endColor)
-        {
-            this.startColor = startColor;
-            this.endColor = endColor;
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            if (interpolator.hasNext())
-            {
-                Color color = interpolator.next();
-
-                StyleContext sc = StyleContext.getDefaultStyleContext();
-                AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
-                grid.insertRowAttribute(aset, selectedRow);
-
-                timer.restart();
-            }
-        }
-
-        public void doFade()
-        {
-            // Kill any previous fade.
-            if (timer != null)
-            {
-                timer.stop();
-            }
-
-            // Set up the color interpolator.
-            interpolator = new ColorInterpolator(startColor, endColor, 8).iterator();
-
-            // Kick off the fade timer.
-            timer = new Timer(10, this);
-            timer.setInitialDelay(100);
-            timer.start();
         }
     }
 }
