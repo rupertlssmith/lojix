@@ -73,4 +73,24 @@ public class TextTableEvent
     {
         return model;
     }
+
+    /**
+     * Provides the row updated.
+     *
+     * @return The table row changed. <tt>-1</tt> means not relevant to this event.
+     */
+    public int getRowChanged()
+    {
+        return rowChanged;
+    }
+
+    /**
+     * Provides the column updated.
+     *
+     * @return The table column changed. <tt>-1</tt> means not relevant to this event.
+     */
+    public int getColumnChanged()
+    {
+        return columnChanged;
+    }
 }
