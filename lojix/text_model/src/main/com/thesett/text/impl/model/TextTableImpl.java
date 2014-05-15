@@ -121,7 +121,7 @@ public class TextTableImpl implements TextTableModel
 
         String result = grid.put((long) col, (long) row, value);
 
-        updateListeners();
+        updateListeners(col, row);
 
         return result;
     }
@@ -137,7 +137,7 @@ public class TextTableImpl implements TextTableModel
     {
         String result = grid.remove((long) col, (long) row);
 
-        updateListeners();
+        updateListeners(col, row);
 
         return result;
     }
@@ -235,9 +235,9 @@ public class TextTableImpl implements TextTableModel
     }
 
     /** Notifies all interested listeners of an update to this model. */
-    private void updateListeners()
+    private void updateListeners(int col, int row)
     {
-        TextTableEvent event = new TextTableEvent(this);
+        TextTableEvent event = new TextTableEvent(this, row, col);
 
         for (TextTableListener listener : listeners)
         {
