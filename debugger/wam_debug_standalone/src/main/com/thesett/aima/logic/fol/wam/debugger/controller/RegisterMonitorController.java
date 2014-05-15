@@ -30,6 +30,8 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.text.api.TextTableEvent;
+import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextTableModel;
 
 /**
@@ -52,19 +54,38 @@ public class RegisterMonitorController implements ControllerLifecycle
     /** Holds the main application window frame. */
     private final MainWindow mainWindow;
 
+    /** The text grid model behind the UI component. */
     private EnhancedTextGrid grid;
+
+    /** A text table model that maps down onto the text grid. */
     private TextTableModel table;
+
+    /** The register set monitor that translates value changes on registers into updates to the table. */
     private RegisterSetMonitor monitor;
+
+    /** A color fader used to highlight register value changes. */
     private Fader fader = new Fader(Color.LIGHT_GRAY, Color.DARK_GRAY);
 
+    /** The current user selected table row. <tt>-1</tt> means no selected row. */
     private int selectedRow = -1;
 
+    /**
+     * Builds the UI controller for the register monitor.
+     *
+     * @param componentFactory The UI component factory.
+     * @param mainWindow       The main window to create the UI component within.
+     */
     public RegisterMonitorController(ComponentFactory componentFactory, MainWindow mainWindow)
     {
         this.componentFactory = componentFactory;
         this.mainWindow = mainWindow;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p/>Creates the register monitor component and hooks it up to the register set.
+     */
     public void open()
     {
         // Build a text grid panel in the left position.
@@ -74,31 +95,80 @@ public class RegisterMonitorController implements ControllerLifecycle
         // Build a table model on the text grid, and construct a register monitor on the table.
         table = grid.createTable(0, 0, 20, 20);
         monitor = new RegisterSetMonitor(table);
+
+        // Attach a listener for updates to the register table.
+        table.addTextTableListener(new TableUpdateHandler());
     }
 
+    /** {@inheritDoc} */
     public void close()
     {
     }
 
+    /**
+     * Provides access to the underlying register set monitor.
+     *
+     * @return The register set monitor.
+     */
     public RegisterSetMonitor getRegisterMonitor()
     {
         return monitor;
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * <p/>Applies color changes to the background of the currently selected row.
+     * Implements a color delta specific to a table row.
      */
-    public void changeColor(Color color)
+    private class RowColorDelta implements ColorDelta
     {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
-        grid.insertRowAttribute(aset, selectedRow);
+        /** The row to make color changes to. */
+        private final int row;
+
+        /**
+         * Creates a color delta for a table row.
+         *
+         * @param row The row to make color changes to.
+         */
+        public RowColorDelta(int row)
+        {
+            this.row = row;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * <p/>Applies color changes to the background of a row.
+         */
+        public void changeColor(Color color)
+        {
+            StyleContext sc = StyleContext.getDefaultStyleContext();
+            AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
+            grid.insertRowAttribute(aset, row);
+        }
     }
 
+    /**
+     * Triggers color fades on table row updates.
+     */
+    private class TableUpdateHandler implements TextTableListener
+    {
+        /** {@inheritDoc} */
+        public void changedUpdate(TextTableEvent event)
+        {
+            int row = event.getRowChanged();
+
+            if (row >= 0)
+            {
+                fader.doFade(new RowColorDelta(row), Integer.toString(row));
+            }
+        }
+    }
+
+    /**
+     * Triggers background color highlighting on user row selection.
+     */
     private class MouseHandler extends MouseInputAdapter
     {
+        /** {@inheritDoc} */
         public void mousePressed(MouseEvent e)
         {
             int row = e.getY();
@@ -121,8 +191,6 @@ public class RegisterMonitorController implements ControllerLifecycle
 
                     selectedRow = row;
                     grid.insertRowAttribute(aset, selectedRow);
-
-                    fader.doFade(RegisterMonitorController.this, "DEFAULT");
                 }
             }
         }
