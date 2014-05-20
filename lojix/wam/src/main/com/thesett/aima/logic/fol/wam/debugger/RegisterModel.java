@@ -68,5 +68,4 @@ public interface RegisterModel
      * @return The flags name.
      */
     public boolean getFlag(String name);
-
 }

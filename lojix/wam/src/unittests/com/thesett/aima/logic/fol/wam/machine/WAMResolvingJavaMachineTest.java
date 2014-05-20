@@ -32,6 +32,7 @@ import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
+import com.thesett.aima.logic.fol.wam.debugger.SimpleMonitor;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 import junit.framework.Test;
@@ -89,6 +90,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
 
         ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine =
             new WAMEngine(parser, machine, compiler, machine);
+
+        // Attach the debugger to the machine.
+        /*SimpleMonitor monitor = new SimpleMonitor();
+        machine.attachMonitor(monitor);*/
 
         // Add all tests defined in the BasicUnificationTestBase class
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(

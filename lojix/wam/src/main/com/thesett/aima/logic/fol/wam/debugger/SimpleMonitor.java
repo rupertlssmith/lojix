@@ -31,6 +31,9 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
  */
 public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyChangeListener
 {
+    /** Holds a copy of the memory layout registers and monitors them for changes. */
+    InternalMemeoryLayoutBean layoutRegisters;
+
     /** Holds a copy of the internal registers and monitors them for changes. */
     InternalRegisterBean internalRegisters;
 
@@ -38,6 +41,10 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     public void onReset(WAMResolvingMachineDPI dpi)
     {
         System.out.println("reset");
+
+        layoutRegisters = new InternalMemeoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        layoutRegisters.setPropertyChangeListener(this);
+        layoutRegisters.updateRegisters(layoutRegisters);
 
         internalRegisters = new InternalRegisterBean(0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         internalRegisters.setPropertyChangeListener(this);
@@ -48,6 +55,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     public void onExecute(WAMResolvingMachineDPI dpi)
     {
         System.out.println("execute");
+        layoutRegisters.updateRegisters(dpi.getMemoryLayout());
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
 
@@ -55,6 +63,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     public void onStep(WAMResolvingMachineDPI dpi)
     {
         System.out.println("step");
+        layoutRegisters.updateRegisters(dpi.getMemoryLayout());
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
 
