@@ -64,7 +64,7 @@ public class RegisterMonitorController implements ControllerLifecycle
     private RegisterSetMonitor monitor;
 
     /** A color fader used to highlight register value changes. */
-    private Fader fader = new Fader(Color.LIGHT_GRAY, Color.DARK_GRAY);
+    private Fader fader = new Fader(Color.DARK_GRAY, Color.BLACK);
 
     /** The current user selected table row. <tt>-1</tt> means no selected row. */
     private int selectedRow = -1;
@@ -156,7 +156,8 @@ public class RegisterMonitorController implements ControllerLifecycle
         {
             int row = event.getRowChanged();
 
-            if (row >= 0)
+            // Only trigger a fade if the row is valid and not the currently selected one.
+            if (row >= 0 && row != selectedRow)
             {
                 fader.doFade(new RowColorDelta(row), Integer.toString(row));
             }
