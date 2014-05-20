@@ -32,7 +32,7 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
 public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyChangeListener
 {
     /** Holds a copy of the memory layout registers and monitors them for changes. */
-    InternalMemeoryLayoutBean layoutRegisters;
+    InternalMemoryLayoutBean layoutRegisters;
 
     /** Holds a copy of the internal registers and monitors them for changes. */
     InternalRegisterBean internalRegisters;
@@ -42,7 +42,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     {
         System.out.println("reset");
 
-        layoutRegisters = new InternalMemeoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         layoutRegisters.setPropertyChangeListener(this);
         layoutRegisters.updateRegisters(layoutRegisters);
 
