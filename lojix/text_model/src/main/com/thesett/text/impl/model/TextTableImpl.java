@@ -15,11 +15,13 @@
  */
 package com.thesett.text.impl.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.thesett.common.util.Pair;
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.HashMapXY;
 import com.thesett.text.api.TextTableEvent;
@@ -65,6 +67,9 @@ public class TextTableImpl implements TextTableModel
 
     /** Holds any row labels. */
     private Map<String, Integer> rowLabels = new HashMap<String, Integer>();
+
+    /** Holds any individual cell labels. */
+    private Map<String, Pair<Integer, Integer>> cellLabels = new HashMap<String, Pair<Integer, Integer>>();
 
     /**
      * Updates the maximum row count of the data table.
@@ -197,6 +202,12 @@ public class TextTableImpl implements TextTableModel
     }
 
     /** {@inheritDoc} */
+    public void labelCell(String label, int col, int row)
+    {
+        cellLabels.put(label, new Pair<Integer, Integer>(col, row));
+    }
+
+    /** {@inheritDoc} */
     public DoubleKeyedMap<String, Integer, String> withColumnLabels()
     {
         return new ColumnLabelView();
@@ -212,6 +223,12 @@ public class TextTableImpl implements TextTableModel
     public DoubleKeyedMap<String, String, String> withLabels()
     {
         return new RowAndColumnLabelView();
+    }
+
+    /** {@inheritDoc} */
+    public Map<String, String> withCellLabels()
+    {
+        return null;
     }
 
     /**
@@ -468,6 +485,96 @@ public class TextTableImpl implements TextTableModel
             {
                 return null;
             }
+        }
+    }
+
+    /**
+     * Provides a view onto the table with individually labelled cells.
+     */
+    private class CellLabelView extends ViewBase implements Map<String, String>
+    {
+        /** {@inheritDoc} */
+        public boolean containsKey(Object key)
+        {
+            return cellLabels.containsKey(key);
+        }
+
+        /** {@inheritDoc} */
+        public boolean containsValue(Object value)
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        /** {@inheritDoc} */
+        public String get(Object key)
+        {
+            Pair<Integer, Integer> cell = cellLabels.get(key);
+
+            if (cell != null)
+            {
+                return TextTableImpl.this.get(cell.getFirst(), cell.getSecond());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String put(String key, String value)
+        {
+            Pair<Integer, Integer> cell = cellLabels.get(key);
+
+            if (cell != null)
+            {
+                return TextTableImpl.this.put(cell.getFirst(), cell.getSecond(), value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public String remove(Object key)
+        {
+            Pair<Integer, Integer> cell = cellLabels.get(key);
+
+            if (cell != null)
+            {
+                return TextTableImpl.this.remove(cell.getFirst(), cell.getSecond());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /** {@inheritDoc} */
+        public void putAll(Map<? extends String, ? extends String> m)
+        {
+            for (Map.Entry<? extends String, ? extends String> entry : m.entrySet())
+            {
+                put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        /** {@inheritDoc} */
+        public Set<String> keySet()
+        {
+            return cellLabels.keySet();
+        }
+
+        /** {@inheritDoc} */
+        public Collection<String> values()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        /** {@inheritDoc} */
+        public Set<Entry<String, String>> entrySet()
+        {
+            throw new UnsupportedOperationException();
         }
     }
 }

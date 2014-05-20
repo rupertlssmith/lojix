@@ -15,6 +15,8 @@
  */
 package com.thesett.text.api.model;
 
+import java.util.Map;
+
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.text.api.TextTableListener;
 
@@ -88,6 +90,15 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
     void labelRow(String label, int row);
 
     /**
+     * Applies a label to an individual cell.
+     *
+     * @param label The label to apply.
+     * @param col   The column of the cell to label.
+     * @param row   The row of the cell to label.
+     */
+    void labelCell(String label, int col, int row);
+
+    /**
      * Provides a view onto this table, where the columns are labelled instead of referred to by offset.
      *
      * @return A view onto this table, where the columns are labelled.
@@ -107,4 +118,11 @@ public interface TextTableModel extends DoubleKeyedMap<Integer, Integer, String>
      * @return A view onto this table, where the rows and columns are labelled.
      */
     DoubleKeyedMap<String, String, String> withLabels();
+
+    /**
+     * Provides a view onto this table, where individual cells are labelled instead of referred to by offsets.
+     *
+     * @return A view onto this table, where the individual cells are labelled.
+     */
+    Map<String, String> withCellLabels();
 }
