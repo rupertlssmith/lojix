@@ -30,7 +30,6 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
-import com.thesett.text.api.model.TextGridModel;
 
 /**
  * SwingComponentFactory implements a UI component factory that produces Swing components.
@@ -98,8 +97,11 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         textPane.setModel(model);
         textPane.initializeStandardMouseHandling();
 
-        textPane.addTextGridMouseMotionListener(mouseHandler);
-        textPane.addTextGridMouseListener(mouseHandler);
+        if (mouseHandler != null)
+        {
+            textPane.addTextGridMouseMotionListener(mouseHandler);
+            textPane.addTextGridMouseListener(mouseHandler);
+        }
 
         return textPane;
     }

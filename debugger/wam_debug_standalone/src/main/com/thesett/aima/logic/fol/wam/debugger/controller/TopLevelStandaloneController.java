@@ -55,6 +55,9 @@ public class TopLevelStandaloneController implements ControllerLifecycle
     /** Holds the controller for the register set monitor. */
     private RegisterMonitorController registerMonitorController;
 
+    /** Holds the controller for the memeory layout monitor. */
+    private MemoryLayoutMonitorController memoryLayoutMonitorController;
+
     /**
      * {@inheritDoc}
      *
@@ -72,8 +75,14 @@ public class TopLevelStandaloneController implements ControllerLifecycle
         registerMonitorController = new RegisterMonitorController(componentFactory, mainWindow);
         registerMonitorController.open();
 
+        // Create and initialize the memory layout monitor.
+        memoryLayoutMonitorController = new MemoryLayoutMonitorController(componentFactory, mainWindow);
+        memoryLayoutMonitorController.open();
+
         // Build the top-level machine monitor.
-        machineMonitor = new MachineMonitor(registerMonitorController.getRegisterMonitor());
+        machineMonitor =
+            new MachineMonitor(registerMonitorController.getRegisterMonitor(),
+                memoryLayoutMonitorController.getLayoutMonitor());
     }
 
     /**

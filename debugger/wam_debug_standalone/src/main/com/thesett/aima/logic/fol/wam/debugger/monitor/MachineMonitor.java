@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
+import com.thesett.aima.logic.fol.wam.debugger.InternalMemoryLayoutBean;
 import com.thesett.aima.logic.fol.wam.debugger.InternalRegisterBean;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
@@ -39,12 +40,25 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     /** Holds a copy of the internal registers and monitors them for changes. */
     private InternalRegisterBean internalRegisters;
 
+    /** Holds a copy of the memory layout registers and monitors them for changes. */
+    private InternalMemoryLayoutBean layoutRegisters;
+
     /** Holds the monitor to listen for changes to the register set. */
     private final RegisterSetMonitor registerSetMonitor;
 
-    public MachineMonitor(RegisterSetMonitor registerSetMonitor)
+    /** Holds the monitor to listen for changes to the memory layout. */
+    private final MemoryLayoutMonitor layoutMonitor;
+
+    /**
+     * Creates the machine monitor.
+     *
+     * @param registerSetMonitor The monitor to listen for changes to the register set.
+     * @param layoutMonitor      The monitor to listen for changes to the memory layout.
+     */
+    public MachineMonitor(RegisterSetMonitor registerSetMonitor, MemoryLayoutMonitor layoutMonitor)
     {
         this.registerSetMonitor = registerSetMonitor;
+        this.layoutMonitor = layoutMonitor;
     }
 
     /** {@inheritDoc} */
@@ -53,17 +67,23 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
         internalRegisters = new InternalRegisterBean(0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         internalRegisters.setPropertyChangeListener(registerSetMonitor);
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
+
+        layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        layoutRegisters.setPropertyChangeListener(layoutMonitor);
+        layoutRegisters.updateRegisters(dpi.getMemoryLayout());
     }
 
     /** {@inheritDoc} */
     public void onExecute(WAMResolvingMachineDPI dpi)
     {
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
+        layoutRegisters.updateRegisters(dpi.getMemoryLayout());
     }
 
     /** {@inheritDoc} */
     public void onStep(WAMResolvingMachineDPI dpi)
     {
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
+        layoutRegisters.updateRegisters(dpi.getMemoryLayout());
     }
 }
