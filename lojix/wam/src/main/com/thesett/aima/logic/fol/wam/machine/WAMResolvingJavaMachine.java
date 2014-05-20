@@ -301,45 +301,16 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     }
 
     /** {@inheritDoc} */
-    public int getRegBase()
-    {
-        return 0;
-    }
-
-    /** {@inheritDoc} */
-    public int getRegSize()
-    {
-        return REG_SIZE;
-    }
-
-    /** {@inheritDoc} */
-    public int getHeapBase()
-    {
-        return HEAP_BASE;
-    }
-
-    /** {@inheritDoc} */
-    public int getHeapSize()
-    {
-        return HEAP_SIZE;
-    }
-
-    /** {@inheritDoc} */
-    public int getStackBase()
-    {
-        return STACK_BASE;
-    }
-
-    /** {@inheritDoc} */
-    public int getStackSize()
-    {
-        return STACK_SIZE;
-    }
-
-    /** {@inheritDoc} */
     public WAMInternalRegisters getInternalRegisters()
     {
         return new WAMInternalRegisters(ip, hp, hbp, sp, up, ep, bp, b0, trp, writeMode);
+    }
+
+    /** {@inheritDoc} */
+    public WAMMemoryLayout getMemoryLayout()
+    {
+        return new WAMMemoryLayout(0, REG_SIZE, HEAP_BASE, HEAP_SIZE, STACK_BASE, STACK_SIZE, TRAIL_BASE, TRAIL_SIZE,
+            TOP - PDL_SIZE, PDL_SIZE);
     }
 
     /**

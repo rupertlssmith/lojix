@@ -54,51 +54,16 @@ public interface WAMResolvingMachineDPI
     IntBuffer getDataBuffer();
 
     /**
-     * Provides the base offset of the register array within the data area.
-     *
-     * @return The base offset of the register array within the data area.
-     */
-    int getRegBase();
-
-    /**
-     * Provides the size of the register array within the data area.
-     *
-     * @return The size of the register array within the data area.
-     */
-    int getRegSize();
-
-    /**
-     * Provides the base offset of the heap within the data area.
-     *
-     * @return The base offset of the heap within the data area.
-     */
-    int getHeapBase();
-
-    /**
-     * Provides the size of the heap within the data area.
-     *
-     * @return The size of the heap within the data area.
-     */
-    int getHeapSize();
-
-    /**
-     * Provides the base offset of the stack within the data area.
-     *
-     * @return The base offset of the stack within the data area.
-     */
-    int getStackBase();
-
-    /**
-     * Provides the size of the stack within the data area.
-     *
-     * @return The size of the stack within the data area.
-     */
-    int getStackSize();
-
-    /**
      * Provides the internal register file and flags for the machine.
      *
      * @return The internal register file and flags for the machine.
      */
     WAMInternalRegisters getInternalRegisters();
+
+    /**
+     * Provides the internal register set describing the memory layout of the machine.
+     *
+     * @return The internal register set describing the memory layout of the machine.
+     */
+    WAMMemoryLayout getMemoryLayout();
 }

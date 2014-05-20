@@ -23,6 +23,7 @@ import java.util.Set;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
 import com.thesett.aima.logic.fol.wam.machine.WAMInternalRegisters;
+import com.thesett.aima.logic.fol.wam.machine.WAMMemoryLayout;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.error.ImplementationUnavailableException;
 import com.thesett.common.error.NotImplementedException;
@@ -175,43 +176,13 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
     }
 
     /** {@inheritDoc} */
-    public int getRegBase()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public int getRegSize()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public int getHeapBase()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public int getHeapSize()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public int getStackBase()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
-    public int getStackSize()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /** {@inheritDoc} */
     public WAMInternalRegisters getInternalRegisters()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /** {@inheritDoc} */
+    public WAMMemoryLayout getMemoryLayout()
     {
         throw new UnsupportedOperationException();
     }
