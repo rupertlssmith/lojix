@@ -17,8 +17,8 @@ package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Map;
 
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.text.api.model.TextTableModel;
 
 /**
@@ -35,33 +35,27 @@ import com.thesett.text.api.model.TextTableModel;
  */
 public class MemoryLayoutMonitor implements PropertyChangeListener
 {
-    /** Label for the column providing the register names. */
-    public static final String REG_NAME_COL = "regName";
-
-    /** Label for the column holding the register values. */
-    public static final String REG_VALUE_COL = "regValue";
-
     /** The register names. */
-    public static final String[] REGISTER_NAMES =
-        new String[]
+    public static final String[][] REGISTER_NAMES_BY_COL =
+        new String[][]
         {
-            "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", "trailBase", "trailSize", "pdlBase",
-            "pdlSize"
+            { "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", },
+            { "trailBase", "trailSize", "pdlBase", "pdlSize" }
         };
 
     /** The register property names, used to label the table rows. */
-    public static final String[] REGISTER_LABELS =
-        new String[]
+    public static final String[][] REGISTER_LABELS_BY_COL =
+        new String[][]
         {
-            "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", "trailBase", "trailSize", "pdlBase",
-            "pdlSize"
+            { "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", },
+            { "trailBase", "trailSize", "pdlBase", "pdlSize" }
         };
 
     /** The table to store the registers in. */
     private final TextTableModel table;
 
     /** A labeled view onto the register table. */
-    private DoubleKeyedMap<String, String, String> labeledTable;
+    private Map<String, String> labeledTable;
 
     /**
      * Constructs a table model with labelled rows and columns to hold the register values.
@@ -71,15 +65,19 @@ public class MemoryLayoutMonitor implements PropertyChangeListener
     public MemoryLayoutMonitor(TextTableModel table)
     {
         this.table = table;
-        labeledTable = table.withLabels();
+        labeledTable = table.withCellLabels();
 
-        this.table.labelColumn(REG_NAME_COL, 0);
-        this.table.labelColumn(REG_VALUE_COL, 1);
-
-        for (int i = 0; i < REGISTER_NAMES.length; i++)
+        for (int j = 0; j < REGISTER_NAMES_BY_COL.length; j++)
         {
-            this.table.labelRow(REGISTER_LABELS[i], i);
-            labeledTable.put(REG_NAME_COL, REGISTER_LABELS[i], REGISTER_NAMES[i]);
+            String[] labelColumn = REGISTER_LABELS_BY_COL[j];
+
+            for (int i = 0; i < labelColumn.length; i++)
+            {
+                String label = labelColumn[i];
+                this.table.labelCell(label, j * 2 + 1, i);
+                this.table.put(j * 2, i, REGISTER_NAMES_BY_COL[j][i]);
+                this.table.put(j * 2 + 1, i, "        ");
+            }
         }
     }
 
@@ -87,6 +85,6 @@ public class MemoryLayoutMonitor implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent evt)
     {
         String hex = String.format("%08X", evt.getNewValue());
-        labeledTable.put(REG_VALUE_COL, evt.getPropertyName(), hex);
+        labeledTable.put(evt.getPropertyName(), hex);
     }
 }
