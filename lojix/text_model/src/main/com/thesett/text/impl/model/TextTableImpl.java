@@ -174,7 +174,9 @@ public class TextTableImpl implements TextTableModel
     /** {@inheritDoc} */
     public int getMaxColumnSize(int col)
     {
-        return maxColumnSizes.get(col);
+        Integer result = maxColumnSizes.get(col);
+
+        return (result == null) ? 0 : result;
     }
 
     /** {@inheritDoc} */
@@ -228,7 +230,7 @@ public class TextTableImpl implements TextTableModel
     /** {@inheritDoc} */
     public Map<String, String> withCellLabels()
     {
-        return null;
+        return new CellLabelView();
     }
 
     /**
