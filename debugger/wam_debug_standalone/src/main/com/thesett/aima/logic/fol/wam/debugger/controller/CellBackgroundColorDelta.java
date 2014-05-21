@@ -25,17 +25,20 @@ import javax.swing.text.StyleContext;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 
 /**
- * Implements a color delta that modifies the background color of a row of a text grid.
+ * Implements a color delta that modifies the background color of a cell in a text grid.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Apply a background color change to a row of a text grid. </td></tr>
+ * <tr><td> Apply a background color change to a cell in a text grid. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class RowBackgroundColorDelta implements ColorDelta
+public class CellBackgroundColorDelta implements ColorDelta
 {
+    /** The column to make color changes to. */
+    private final int col;
+
     /** The row to make color changes to. */
     private final int row;
 
@@ -45,11 +48,13 @@ public class RowBackgroundColorDelta implements ColorDelta
     /**
      * Creates a color delta for a table row.
      *
+     * @param col  The column to make color changes to.
      * @param row  The row to make color changes to.
      * @param grid The text grid model to alter the background color of.
      */
-    public RowBackgroundColorDelta(int row, EnhancedTextGrid grid)
+    public CellBackgroundColorDelta(int col, int row, EnhancedTextGrid grid)
     {
+        this.col = col;
         this.row = row;
         this.grid = grid;
     }
@@ -63,6 +68,6 @@ public class RowBackgroundColorDelta implements ColorDelta
     {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
-        grid.insertRowAttribute(aset, row);
+        grid.insertAttribute(aset, col, row);
     }
 }

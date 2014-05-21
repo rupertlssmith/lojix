@@ -28,7 +28,10 @@ import com.thesett.text.impl.model.TextGridImpl;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Insert text attributes into the grid. </td><td> {@link HashMapXY} </td></tr>
+ * <tr><td> Insert text attributes into grid cells. </td><td> {@link HashMapXY} </td></tr>
+ * <tr><td> Insert text attributes into grid columns. </td></tr>
+ * <tr><td> Insert text attributes into grid rows. </td></tr>
+ * <tr><td> Provide cascaded text attributes for grid cells. </td><td> {@link HashMapXY} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith

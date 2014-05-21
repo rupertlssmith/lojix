@@ -112,12 +112,13 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
         /** {@inheritDoc} */
         public void changedUpdate(TextTableEvent event)
         {
+            int col = event.getColumnChanged();
             int row = event.getRowChanged();
 
             // Only trigger a fade if the row is valid and not the currently selected one.
             if (row >= 0)
             {
-                fader.doFade(new RowBackgroundColorDelta(row, grid), Integer.toString(row));
+                fader.doFade(new CellBackgroundColorDelta(col, row, grid), Integer.toString(row));
             }
         }
     }
