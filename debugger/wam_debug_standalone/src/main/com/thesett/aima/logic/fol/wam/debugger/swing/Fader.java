@@ -100,7 +100,6 @@ public class Fader implements ActionListener
         {
             // Create a new fade state for the target group, and a timer to run it.
             Timer timer = new Timer(20, this);
-            timer.setInitialDelay(60);
 
             fadeState = new FadeState(timer, target, interpolator);
             timers.put(groupName, fadeState);
@@ -113,8 +112,13 @@ public class Fader implements ActionListener
             fadeState.interpolator = interpolator;
         }
 
+        // Iterate to the initial color.
+        Color firstColor = fadeState.interpolator.next();
+        fadeState.target.changeColor(firstColor);
+
         // Kick off the fade timer.
         fadeState.timer.setActionCommand(groupName);
+        fadeState.timer.setInitialDelay(400);
         fadeState.timer.start();
     }
 
