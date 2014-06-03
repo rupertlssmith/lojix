@@ -15,9 +15,9 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
-import com.thesett.text.api.model.TextTableModel;
-
 import javax.swing.text.AttributeSet;
+
+import com.thesett.text.api.model.TextTableModel;
 
 /**
  * EnhancedTextTable is an extension of the {@link TextTableModel} to support more richly decorated text. This decorator
@@ -33,10 +33,10 @@ import javax.swing.text.AttributeSet;
  *
  * @author Rupert Smith
  */
-public interface EnhancedTextTable extends TextTableModel
+public interface EnhancedTextTable extends TextTableModel, AttributeGrid
 {
     /**
-     * Inserts an attribute set into the grid at the specified location.
+     * Inserts an attribute set into the table at the specified location.
      *
      * @param attributes The attribute set to insert.
      * @param c          The column position.
@@ -45,7 +45,7 @@ public interface EnhancedTextTable extends TextTableModel
     void insertAttribute(AttributeSet attributes, int c, int r);
 
     /**
-     * Inserts an attribute set into the grid at the specified column.
+     * Inserts an attribute set into the table at the specified column.
      *
      * @param attributes The attribute set to insert.
      * @param c          The column position.
@@ -53,10 +53,20 @@ public interface EnhancedTextTable extends TextTableModel
     void insertColumnAttribute(AttributeSet attributes, int c);
 
     /**
-     * Inserts an attribute set into the grid at the specified row.
+     * Inserts an attribute set into the table at the specified row.
      *
      * @param attributes The attribute set to insert.
      * @param r          The row position.
      */
     void insertRowAttribute(AttributeSet attributes, int r);
+
+    /**
+     * Reads the attributes from the table at the specified location.
+     *
+     * @param  c The column position.
+     * @param  r The row position.
+     *
+     * @return The attributes at the specified location.
+     */
+    AttributeSet getAttributeAt(int c, int r);
 }

@@ -17,12 +17,8 @@ package com.thesett.aima.logic.fol.wam.debugger.text;
 
 import javax.swing.text.AttributeSet;
 
-import com.thesett.text.api.model.TextGridModel;
-
 /**
- * EnhancedTextGrid is an extension of the {@link TextGridModel} to support more richly decorated text. This decorator
- * support storing attributes in grid cells, or lines or rows. When fetching the attributes for a cell, a cascading
- * merge is used to arrive at the attributes of the cell.
+ * AttributeGrid defines an modifiable grid of attribute sets.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities
@@ -34,40 +30,17 @@ import com.thesett.text.api.model.TextGridModel;
  *
  * @author Rupert Smith
  */
-public interface EnhancedTextGrid extends TextGridModel, AttributeGrid
+public interface AttributeGrid
 {
-    /**
-     * Inserts an attribute set into the grid at the specified location.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     * @param r          The row position.
-     */
+    /** {@inheritDoc} */
     void insertAttribute(AttributeSet attributes, int c, int r);
 
-    /**
-     * Inserts an attribute set into the grid at the specified column.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     */
+    /** {@inheritDoc} */
     void insertColumnAttribute(AttributeSet attributes, int c);
 
-    /**
-     * Inserts an attribute set into the grid at the specified row.
-     *
-     * @param attributes The attribute set to insert.
-     * @param r          The row position.
-     */
+    /** {@inheritDoc} */
     void insertRowAttribute(AttributeSet attributes, int r);
 
-    /**
-     * Reads the attributes from the grid at the specified location.
-     *
-     * @param  c The column position.
-     * @param  r The row position.
-     *
-     * @return The attributes at the specified location.
-     */
+    /** {@inheritDoc} */
     AttributeSet getAttributeAt(int c, int r);
 }

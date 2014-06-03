@@ -22,7 +22,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.AttributeGrid;
 
 /**
  * Implements a color delta that modifies the background color of a cell in a text grid.
@@ -43,7 +43,7 @@ public class CellBackgroundColorDelta implements ColorDelta
     private final int row;
 
     /** The text grid model to alter the background color of. */
-    private final EnhancedTextGrid grid;
+    private final AttributeGrid grid;
 
     /**
      * Creates a color delta for a table row.
@@ -52,7 +52,7 @@ public class CellBackgroundColorDelta implements ColorDelta
      * @param row  The row to make color changes to.
      * @param grid The text grid model to alter the background color of.
      */
-    public CellBackgroundColorDelta(int col, int row, EnhancedTextGrid grid)
+    public CellBackgroundColorDelta(int col, int row, AttributeGrid grid)
     {
         this.col = col;
         this.row = row;

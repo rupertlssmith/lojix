@@ -17,8 +17,8 @@ package com.thesett.aima.logic.fol.wam.debugger.text;
 
 import javax.swing.text.AttributeSet;
 
-import com.thesett.common.util.doublemaps.DoubleKeyedMap;
-import com.thesett.common.util.doublemaps.HashMapXY;
+import com.thesett.text.api.TextTableEvent;
+import com.thesett.text.api.TextTableListener;
 import com.thesett.text.impl.model.TextTableImpl;
 
 /**
@@ -35,21 +35,44 @@ import com.thesett.text.impl.model.TextTableImpl;
  */
 public class EnhancedTextTableImpl extends TextTableImpl implements EnhancedTextTable
 {
-    /** Holds a table with cell attribute data for enhanced printing. */
-    DoubleKeyedMap<Long, Long, AttributeSet> attributeGrid = new HashMapXY<AttributeSet>(10);
+    /** The attributes arranged in a grid. */
+    AttributeGrid attributeGrid = new AttributeGridImpl();
 
     /** {@inheritDoc} */
     public void insertAttribute(AttributeSet attributes, int c, int r)
     {
+        attributeGrid.insertAttribute(attributes, c, r);
+        updateListenersOnAttributeChange(c, r);
     }
 
     /** {@inheritDoc} */
     public void insertColumnAttribute(AttributeSet attributes, int c)
     {
+        attributeGrid.insertColumnAttribute(attributes, c);
+        updateListenersOnAttributeChange(c, -1);
     }
 
     /** {@inheritDoc} */
     public void insertRowAttribute(AttributeSet attributes, int r)
     {
+        attributeGrid.insertRowAttribute(attributes, r);
+        updateListenersOnAttributeChange(-1, r);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeSet getAttributeAt(int c, int r)
+    {
+        return attributeGrid.getAttributeAt(c, r);
+    }
+
+    /** Notifies all interested listeners of an update to this model. */
+    protected void updateListenersOnAttributeChange(int col, int row)
+    {
+        TextTableEvent event = new TextTableEvent(this, row, col, true);
+
+        for (TextTableListener listener : listeners)
+        {
+            listener.changedUpdate(event);
+        }
     }
 }

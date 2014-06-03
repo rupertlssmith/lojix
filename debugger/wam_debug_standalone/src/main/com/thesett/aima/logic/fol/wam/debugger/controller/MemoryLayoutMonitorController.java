@@ -20,12 +20,12 @@ import java.awt.Color;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
-import com.thesett.text.api.model.TextTableModel;
 
 /**
  * MemoryLayoutMonitorController manages the memory layout monitor component. It creates this visual component and the
@@ -50,7 +50,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
     private EnhancedTextGrid grid;
 
     /** A text table model that maps down onto the text grid. */
-    private TextTableModel table;
+    private EnhancedTextTable table;
 
     /** Holds the memory layout monitor that translates value changes into changes to the table. */
     private MemoryLayoutMonitor monitor;
@@ -82,7 +82,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
         mainWindow.showConsole(componentFactory.createTextGridPanel(grid, null));
 
         // Build a table model on the text grid, and construct a register monitor on the table.
-        table = grid.createTable(0, 0, 20, 20);
+        table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);
         monitor = new MemoryLayoutMonitor(table);
 
         // Attach a listener for updates to the register table.
@@ -112,13 +112,18 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
         /** {@inheritDoc} */
         public void changedUpdate(TextTableEvent event)
         {
-            int col = event.getColumnChanged();
-            int row = event.getRowChanged();
-
-            // Only trigger a fade if the row is valid and not the currently selected one.
-            if (row >= 0)
+            // Ignore attribute only updates, as these could be events initiated by the fader itself, only trigger
+            // a fade on content changes.
+            if (!event.isAttributeChangeOnly())
             {
-                fader.doFade(new CellBackgroundColorDelta(col, row, grid), Integer.toString(row));
+                int col = event.getColumnChanged();
+                int row = event.getRowChanged();
+
+                // Only trigger a fade if the row is valid and not the currently selected one.
+                if (row >= 0)
+                {
+                    fader.doFade(new CellBackgroundColorDelta(col, row, table), Integer.toString(row));
+                }
             }
         }
     }
