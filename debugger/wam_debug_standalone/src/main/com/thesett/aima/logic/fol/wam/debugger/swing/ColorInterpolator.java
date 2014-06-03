@@ -19,9 +19,12 @@ import java.awt.Color;
 import java.util.Iterator;
 
 /**
+ * ColorInterpolator steps between two colors using linear interpolation. The resulting sequence
+ * of colors is provided as an iterator over colors.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> </td></tr>
+ * <tr><td> Provide an iterator that interpolates between two colors. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith

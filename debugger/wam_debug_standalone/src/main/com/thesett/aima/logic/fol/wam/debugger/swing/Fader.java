@@ -18,7 +18,6 @@ package com.thesett.aima.logic.fol.wam.debugger.swing;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +37,7 @@ import com.thesett.aima.logic.fol.wam.debugger.controller.ColorDelta;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> </td></tr>
+ * <tr><td> Apply a color fade between two colors. </td><td> {#link ColorDelta} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -127,8 +126,13 @@ public class Fader implements ActionListener
      */
     private static class FadeState
     {
+        /** The timer to time the next step in the fade. */
         Timer timer;
+
+        /** The target to apply the color change to. */
         ColorDelta target;
+
+        /** The color interpolator to provide the sequence of colors to apply. */
         Iterator<Color> interpolator;
 
         /**
