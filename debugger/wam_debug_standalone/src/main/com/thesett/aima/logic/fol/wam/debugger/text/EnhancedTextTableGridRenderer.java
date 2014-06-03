@@ -68,10 +68,14 @@ public class EnhancedTextTableGridRenderer extends TextTableGridRenderer
                 gridModel.insert(valueToPrint, colOffset, i);
 
                 AttributeSet attributes = tableModel.getAttributeAt(j, i);
+                int columnSize = tableModel.getMaxColumnSize(j);
 
                 if (attributes != null)
                 {
-                    gridModel.insertAttribute(attributes, colOffset, i);
+                    for (int k = 0; k < columnSize; k++)
+                    {
+                        gridModel.insertAttribute(attributes, colOffset + k, i);
+                    }
                 }
 
                 Integer maxColumnSize = tableModel.getMaxColumnSize(j);

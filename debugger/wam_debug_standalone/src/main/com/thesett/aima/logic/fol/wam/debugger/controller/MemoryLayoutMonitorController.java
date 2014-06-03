@@ -120,9 +120,10 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
                 int row = event.getRowChanged();
 
                 // Only trigger a fade if the row is valid and not the currently selected one.
-                if (row >= 0)
+                if ((row >= 0) && (col >= 0))
                 {
-                    fader.doFade(new CellBackgroundColorDelta(col, row, table), Integer.toString(row));
+                    fader.doFade(new CellBackgroundColorDelta(col, row, table),
+                        Integer.toString(row) + "/" + Integer.toString(col));
                 }
             }
         }
