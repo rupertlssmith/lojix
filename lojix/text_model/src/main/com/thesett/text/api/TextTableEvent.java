@@ -38,6 +38,9 @@ public class TextTableEvent
     /** The table column changed. <tt>-1</tt> means not relevant to this event. */
     private final int columnChanged;
 
+    /** <tt>true</tt> iff this change is to attributes only. */
+    private final boolean attributeChangeOnly;
+
     /**
      * Creates a text Table update event.
      *
@@ -48,6 +51,7 @@ public class TextTableEvent
         this.model = model;
         rowChanged = -1;
         columnChanged = -1;
+        attributeChangeOnly = false;
     }
 
     /**
@@ -62,6 +66,23 @@ public class TextTableEvent
         this.model = model;
         this.rowChanged = rowChanged;
         this.columnChanged = columnChanged;
+        attributeChangeOnly = false;
+    }
+
+    /**
+     * Creates a text Table update event for attribute changes.
+     *
+     * @param model               The changed model.
+     * @param rowChanged          The row changed.
+     * @param columnChanged       The column changed.
+     * @param attributeChangeOnly <tt>true</tt> iff this change is to attributes only.
+     */
+    public TextTableEvent(TextTableModel model, int rowChanged, int columnChanged, boolean attributeChangeOnly)
+    {
+        this.model = model;
+        this.rowChanged = rowChanged;
+        this.columnChanged = columnChanged;
+        this.attributeChangeOnly = attributeChangeOnly;
     }
 
     /**
@@ -92,5 +113,15 @@ public class TextTableEvent
     public int getColumnChanged()
     {
         return columnChanged;
+    }
+
+    /**
+     * Indicates that this update is an attribute change only.
+     *
+     * @return <tt>true</tt> iff this change is to attributes only.
+     */
+    public boolean isAttributeChangeOnly()
+    {
+        return attributeChangeOnly;
     }
 }
