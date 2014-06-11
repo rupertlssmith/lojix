@@ -69,4 +69,20 @@ public interface EnhancedTextTable extends TextTableModel, AttributeGrid
      * @return The attributes at the specified location.
      */
     AttributeSet getAttributeAt(int c, int r);
+
+    /**
+     * Inserts a horizontal separator into the grid, with the given height.
+     *
+     * @param r           The row to insert the separator before.
+     * @param pixelHeight The height in pixels.
+     */
+    void insertHorizontalSeparator(int r, int pixelHeight);
+
+    /**
+     * Inserts a vertical separator into the grid, with the given width.
+     *
+     * @param c          The column to insert the separator before.
+     * @param pixelWidth The width in pixels.
+     */
+    void insertVerticalSeparator(int c, int pixelWidth);
 }

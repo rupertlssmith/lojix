@@ -15,6 +15,9 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import javax.swing.text.AttributeSet;
 
 import com.thesett.common.util.doublemaps.HashMapXY;
@@ -39,7 +42,13 @@ import com.thesett.text.impl.model.TextTableGridRenderer;
 public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGrid
 {
     /** The attributes arranged in a grid. */
-    AttributeGrid attributeGrid = new AttributeGridImpl();
+    protected AttributeGrid attributeGrid = new AttributeGridImpl();
+
+    /** The horizontal separators sorted in ascending order. */
+    private SortedMap<Integer, Integer> horizontalSeparators = new TreeMap<Integer, Integer>();
+
+    /** The vertical separators sorted in ascending order. */
+    private SortedMap<Integer, Integer> verticalSeparators = new TreeMap<Integer, Integer>();
 
     /** {@inheritDoc} */
     public void insertAttribute(AttributeSet attributes, int c, int r)
@@ -66,6 +75,18 @@ public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGr
     public AttributeSet getAttributeAt(int c, int r)
     {
         return attributeGrid.getAttributeAt(c, r);
+    }
+
+    /** {@inheritDoc} */
+    public void insertHorizontalSeparator(int r, int pixelHeight)
+    {
+        horizontalSeparators.put(r, pixelHeight);
+    }
+
+    /** {@inheritDoc} */
+    public void insertVerticalSeparator(int c, int pixelWidth)
+    {
+        verticalSeparators.put(c, pixelWidth);
     }
 
     /**

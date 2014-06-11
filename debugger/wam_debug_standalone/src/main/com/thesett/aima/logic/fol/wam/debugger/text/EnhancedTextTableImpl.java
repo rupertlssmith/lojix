@@ -65,6 +65,16 @@ public class EnhancedTextTableImpl extends TextTableImpl implements EnhancedText
         return attributeGrid.getAttributeAt(c, r);
     }
 
+    /** {@inheritDoc} */
+    public void insertHorizontalSeparator(int r, int pixelHeight)
+    {
+    }
+
+    /** {@inheritDoc} */
+    public void insertVerticalSeparator(int c, int pixelWidth)
+    {
+    }
+
     /** Notifies all interested listeners of an update to this model. */
     protected void updateListenersOnAttributeChange(int col, int row)
     {

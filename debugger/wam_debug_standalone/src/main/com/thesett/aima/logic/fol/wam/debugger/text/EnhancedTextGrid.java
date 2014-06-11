@@ -20,9 +20,14 @@ import javax.swing.text.AttributeSet;
 import com.thesett.text.api.model.TextGridModel;
 
 /**
- * EnhancedTextGrid is an extension of the {@link TextGridModel} to support more richly decorated text. This decorator
- * support storing attributes in grid cells, or lines or rows. When fetching the attributes for a cell, a cascading
- * merge is used to arrive at the attributes of the cell.
+ * EnhancedTextGrid is an extension of the {@link TextGridModel} to support more richly decorated text.
+ *
+ * <p/>This decorator support storing attributes in grid cells, or lines or rows. When fetching the attributes for a
+ * cell, a cascading merge is used to arrive at the attributes of the cell.
+ *
+ * <p/>Horizontal and vertical separators can be inserted into the text grid, and these do not have to conform to the
+ * same grid cell size as the text within the grid. To keep the model simple, these separators are always considered to
+ * be infinitely wide or tall, otherwise the alignment of the grid would be lost.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities
@@ -64,10 +69,25 @@ public interface EnhancedTextGrid extends TextGridModel, AttributeGrid
     /**
      * Reads the attributes from the grid at the specified location.
      *
-     * @param  c The column position.
-     * @param  r The row position.
-     *
+     * @param c The column position.
+     * @param r The row position.
      * @return The attributes at the specified location.
      */
     AttributeSet getAttributeAt(int c, int r);
+
+    /**
+     * Inserts a horizontal separator into the grid, with the given height.
+     *
+     * @param r           The row to insert the separator before.
+     * @param pixelHeight The height in pixels.
+     */
+    void insertHorizontalSeparator(int r, int pixelHeight);
+
+    /**
+     * Inserts a vertical separator into the grid, with the given width.
+     *
+     * @param c          The column to insert the separator before.
+     * @param pixelWidth The width in pixels.
+     */
+    void insertVerticalSeparator(int c, int pixelWidth);
 }
