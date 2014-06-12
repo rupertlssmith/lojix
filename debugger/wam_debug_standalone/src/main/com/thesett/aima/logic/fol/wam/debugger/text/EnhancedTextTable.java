@@ -19,6 +19,8 @@ import javax.swing.text.AttributeSet;
 
 import com.thesett.text.api.model.TextTableModel;
 
+import java.util.SortedMap;
+
 /**
  * EnhancedTextTable is an extension of the {@link TextTableModel} to support more richly decorated text. This decorator
  * supports storing attributes against table cells, or lines or rows. When fetching the attributes for a cell, a
@@ -35,54 +37,4 @@ import com.thesett.text.api.model.TextTableModel;
  */
 public interface EnhancedTextTable extends TextTableModel, AttributeGrid
 {
-    /**
-     * Inserts an attribute set into the table at the specified location.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     * @param r          The row position.
-     */
-    void insertAttribute(AttributeSet attributes, int c, int r);
-
-    /**
-     * Inserts an attribute set into the table at the specified column.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     */
-    void insertColumnAttribute(AttributeSet attributes, int c);
-
-    /**
-     * Inserts an attribute set into the table at the specified row.
-     *
-     * @param attributes The attribute set to insert.
-     * @param r          The row position.
-     */
-    void insertRowAttribute(AttributeSet attributes, int r);
-
-    /**
-     * Reads the attributes from the table at the specified location.
-     *
-     * @param  c The column position.
-     * @param  r The row position.
-     *
-     * @return The attributes at the specified location.
-     */
-    AttributeSet getAttributeAt(int c, int r);
-
-    /**
-     * Inserts a horizontal separator into the grid, with the given height.
-     *
-     * @param r           The row to insert the separator before.
-     * @param pixelHeight The height in pixels.
-     */
-    void insertHorizontalSeparator(int r, int pixelHeight);
-
-    /**
-     * Inserts a vertical separator into the grid, with the given width.
-     *
-     * @param c          The column to insert the separator before.
-     * @param pixelWidth The width in pixels.
-     */
-    void insertVerticalSeparator(int c, int pixelWidth);
 }

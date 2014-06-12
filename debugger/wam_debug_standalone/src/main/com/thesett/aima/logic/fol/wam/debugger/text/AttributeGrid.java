@@ -32,15 +32,37 @@ import javax.swing.text.AttributeSet;
  */
 public interface AttributeGrid
 {
-    /** {@inheritDoc} */
+    /**
+     * Inserts an attribute set into the grid at the specified location.
+     *
+     * @param attributes The attribute set to insert.
+     * @param c          The column position.
+     * @param r          The row position.
+     */
     void insertAttribute(AttributeSet attributes, int c, int r);
 
-    /** {@inheritDoc} */
+    /**
+     * Inserts an attribute set into the grid at the specified column.
+     *
+     * @param attributes The attribute set to insert.
+     * @param c          The column position.
+     */
     void insertColumnAttribute(AttributeSet attributes, int c);
 
-    /** {@inheritDoc} */
+    /**
+     * Inserts an attribute set into the grid at the specified row.
+     *
+     * @param attributes The attribute set to insert.
+     * @param r          The row position.
+     */
     void insertRowAttribute(AttributeSet attributes, int r);
 
-    /** {@inheritDoc} */
+    /**
+     * Reads the attributes from the grid at the specified location.
+     *
+     * @param c The column position.
+     * @param r The row position.
+     * @return The attributes at the specified location.
+     */
     AttributeSet getAttributeAt(int c, int r);
 }

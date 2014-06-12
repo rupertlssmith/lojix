@@ -26,6 +26,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedMap;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
@@ -36,14 +37,13 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.common.util.Function;
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
-import com.thesett.text.api.model.TextGridModel;
 
 /**
- * JTextGrid is a Swing component that renders the text in a {@link TextGridModel}.
+ * JTextGrid is a Swing component that renders the text in an {@link EnhancedTextGrid}.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Render a text grid. </td><td> {@link TextGridModel} </td></tr>
+ * <tr><td> Render a text grid. </td><td> {@link EnhancedTextGrid} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -149,10 +149,42 @@ public class JTextGrid extends JComponent
         int cols = xToCol(getWidth());
         int rows = yToRow(getHeight());
 
+        SortedMap<Integer, Integer> hSeps = model.getHorizontalSeparators();
+        int hSepOffset = 0;
+
         for (int row = 0; row <= rows; row++)
         {
+            Integer hNextSep = null;
+
+            if (!hSeps.isEmpty())
+            {
+                hNextSep = hSeps.firstKey();
+            }
+
+            if ((hNextSep != null) && (hNextSep == row))
+            {
+                hSepOffset += hSeps.get(hNextSep);
+                hSeps.remove(hNextSep);
+            }
+
+            SortedMap<Integer, Integer> vSeps = model.getVerticalSeparators();
+            int vSepOffset = 0;
+
             for (int col = 0; col <= cols; col++)
             {
+                Integer vNextSep = null;
+
+                if (!vSeps.isEmpty())
+                {
+                    vNextSep = vSeps.firstKey();
+                }
+
+                if ((vNextSep != null) && (vNextSep == col))
+                {
+                    vSepOffset += vSeps.get(vNextSep);
+                    vSeps.remove(vNextSep);
+                }
+
                 char character = model.getCharAt(col, row);
 
                 AttributeSet attributes = model.getAttributeAt(col, row);
@@ -162,9 +194,11 @@ public class JTextGrid extends JComponent
                 bgColor = (bgColor == null) ? getBackground() : bgColor;
 
                 graphics2D.setColor(bgColor);
-                graphics2D.fillRect(colToX(col), rowToY(row), charWidth, charHeight);
+                graphics2D.fillRect(colToX(col) + vSepOffset, rowToY(row) + hSepOffset, charWidth, charHeight);
+
                 graphics2D.setColor(getForeground());
-                graphics2D.drawString(Character.toString(character), colToX(col), (rowToY((row + 1))) - descent);
+                graphics2D.drawString(Character.toString(character), colToX(col) + vSepOffset,
+                    (rowToY((row + 1))) - descent + hSepOffset);
             }
         }
 

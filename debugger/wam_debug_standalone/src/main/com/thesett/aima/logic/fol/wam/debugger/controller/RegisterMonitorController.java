@@ -94,6 +94,7 @@ public class RegisterMonitorController implements ControllerLifecycle
 
         // Build a table model on the text grid, and construct a register monitor on the table.
         table = grid.createTable(0, 0, 20, 20);
+        grid.insertVerticalSeparator(3, 10);
         monitor = new RegisterSetMonitor(table);
 
         // Attach a listener for updates to the register table.

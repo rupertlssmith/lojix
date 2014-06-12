@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
+import java.util.SortedMap;
+
 import javax.swing.text.AttributeSet;
 
 import com.thesett.text.api.TextTableEvent;
@@ -36,7 +38,10 @@ import com.thesett.text.impl.model.TextTableImpl;
 public class EnhancedTextTableImpl extends TextTableImpl implements EnhancedTextTable
 {
     /** The attributes arranged in a grid. */
-    AttributeGrid attributeGrid = new AttributeGridImpl();
+    protected AttributeGrid attributeGrid = new AttributeGridImpl();
+
+    /** The horizontal and vertical separators. */
+    protected XYGridSeparators separators = new XYGridSeparatorsImpl();
 
     /** {@inheritDoc} */
     public void insertAttribute(AttributeSet attributes, int c, int r)
@@ -68,11 +73,25 @@ public class EnhancedTextTableImpl extends TextTableImpl implements EnhancedText
     /** {@inheritDoc} */
     public void insertHorizontalSeparator(int r, int pixelHeight)
     {
+        separators.insertHorizontalSeparator(r, pixelHeight);
     }
 
     /** {@inheritDoc} */
     public void insertVerticalSeparator(int c, int pixelWidth)
     {
+        separators.insertVerticalSeparator(c, pixelWidth);
+    }
+
+    /** {@inheritDoc} */
+    public SortedMap<Integer, Integer> getHorizontalSeparators()
+    {
+        return separators.getHorizontalSeparators();
+    }
+
+    /** {@inheritDoc} */
+    public SortedMap<Integer, Integer> getVerticalSeparators()
+    {
+        return separators.getVerticalSeparators();
     }
 
     /** Notifies all interested listeners of an update to this model. */

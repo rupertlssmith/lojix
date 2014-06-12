@@ -15,8 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
-import javax.swing.text.AttributeSet;
-
 import com.thesett.text.api.model.TextGridModel;
 
 /**
@@ -39,55 +37,6 @@ import com.thesett.text.api.model.TextGridModel;
  *
  * @author Rupert Smith
  */
-public interface EnhancedTextGrid extends TextGridModel, AttributeGrid
+public interface EnhancedTextGrid extends TextGridModel, AttributeGrid, XYGridSeparators
 {
-    /**
-     * Inserts an attribute set into the grid at the specified location.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     * @param r          The row position.
-     */
-    void insertAttribute(AttributeSet attributes, int c, int r);
-
-    /**
-     * Inserts an attribute set into the grid at the specified column.
-     *
-     * @param attributes The attribute set to insert.
-     * @param c          The column position.
-     */
-    void insertColumnAttribute(AttributeSet attributes, int c);
-
-    /**
-     * Inserts an attribute set into the grid at the specified row.
-     *
-     * @param attributes The attribute set to insert.
-     * @param r          The row position.
-     */
-    void insertRowAttribute(AttributeSet attributes, int r);
-
-    /**
-     * Reads the attributes from the grid at the specified location.
-     *
-     * @param c The column position.
-     * @param r The row position.
-     * @return The attributes at the specified location.
-     */
-    AttributeSet getAttributeAt(int c, int r);
-
-    /**
-     * Inserts a horizontal separator into the grid, with the given height.
-     *
-     * @param r           The row to insert the separator before.
-     * @param pixelHeight The height in pixels.
-     */
-    void insertHorizontalSeparator(int r, int pixelHeight);
-
-    /**
-     * Inserts a vertical separator into the grid, with the given width.
-     *
-     * @param c          The column to insert the separator before.
-     * @param pixelWidth The width in pixels.
-     */
-    void insertVerticalSeparator(int c, int pixelWidth);
 }
