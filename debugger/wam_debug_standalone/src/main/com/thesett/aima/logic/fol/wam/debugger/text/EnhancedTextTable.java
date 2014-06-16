@@ -35,6 +35,6 @@ import java.util.SortedMap;
  *
  * @author Rupert Smith
  */
-public interface EnhancedTextTable extends TextTableModel, AttributeGrid
+public interface EnhancedTextTable extends TextTableModel, AttributeGrid, XYGridSeparators
 {
 }

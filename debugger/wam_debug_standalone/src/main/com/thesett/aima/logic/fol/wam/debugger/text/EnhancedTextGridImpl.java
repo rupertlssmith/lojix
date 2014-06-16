@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.SortedMap;
 
 import javax.swing.text.AttributeSet;

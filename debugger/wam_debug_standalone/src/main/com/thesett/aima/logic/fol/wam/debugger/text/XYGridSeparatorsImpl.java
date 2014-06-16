@@ -60,6 +60,12 @@ public class XYGridSeparatorsImpl implements XYGridSeparators
         return verticalSeparators.getSeparators();
     }
 
+    /** {@inheritDoc} */
+    public void add(XYGridSeparators separators)
+    {
+        throw new UnsupportedOperationException();
+    }
+
     private class Separators
     {
         /** A set of separators sorted in ascending order of position. */
