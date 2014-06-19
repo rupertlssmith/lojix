@@ -22,9 +22,14 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
 
 /**
+ * SimpleMonitor is a simple implementation of {@link WAMResolvingMachineDPIMonitor} that dumps all events on the target
+ * machine to the standard out.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td> Dump reset state to standard out. </td><td> {@link WAMResolvingMachineDPI} </td></tr>
+ * <tr><td> Dump stepped state to standard out. </td><td> {@link WAMResolvingMachineDPI} </td></tr>
+ * <tr><td> Dump code execution state to standard out. </td><td> {@link WAMResolvingMachineDPI} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -67,6 +72,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
 
+    /** {@inheritDoc} */
     public void propertyChange(PropertyChangeEvent evt)
     {
         System.out.println(evt.getPropertyName() + ", " + evt.getNewValue());

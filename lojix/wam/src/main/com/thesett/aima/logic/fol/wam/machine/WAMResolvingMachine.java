@@ -181,9 +181,14 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
     }
 
     /** {@inheritDoc} */
-    public ByteBuffer getCodeBuffer()
+    public ByteBuffer getCodeBuffer(int start, int end)
     {
-        return codeBuffer;
+        // Take a read only slice onto an appropriate section of the code buffer.
+        ByteBuffer readOnlyBuffer = codeBuffer.asReadOnlyBuffer();
+        readOnlyBuffer.position(start);
+        readOnlyBuffer.limit(end);
+
+        return readOnlyBuffer.slice();
     }
 
     /**

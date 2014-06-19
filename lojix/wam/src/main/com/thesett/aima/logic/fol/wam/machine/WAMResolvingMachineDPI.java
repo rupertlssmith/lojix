@@ -40,16 +40,19 @@ public interface WAMResolvingMachineDPI
     void attachMonitor(WAMResolvingMachineDPIMonitor monitor);
 
     /**
-     * Provides the machines bytecode buffer.
+     * Provides read access to the machines bytecode buffer.
      *
-     * @return The machines bytecode buffer.
+     * @param  start The start offset within the buffer to read.
+     * @param  end   Then end offset within the buffer to read.
+     *
+     * @return The requested portion of the machines bytecode buffer.
      */
-    ByteBuffer getCodeBuffer();
+    ByteBuffer getCodeBuffer(int start, int end);
 
     /**
-     * Provides the machines data area.
+     * Provides read access to the the machines data area.
      *
-     * @return The machines data area.
+     * @return The requested portion of the machines data area.
      */
     IntBuffer getDataBuffer();
 
