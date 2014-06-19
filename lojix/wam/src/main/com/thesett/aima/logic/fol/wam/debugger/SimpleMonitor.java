@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.debugger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.nio.ByteBuffer;
 
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
@@ -57,8 +58,11 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     }
 
     /** {@inheritDoc} */
-    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int end)
+    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int length)
     {
+        System.out.println("Coded updated, " + length + " bytes at " + start + ".");
+
+        ByteBuffer code = dpi.getCodeBuffer(start, length);
     }
 
     /** {@inheritDoc} */

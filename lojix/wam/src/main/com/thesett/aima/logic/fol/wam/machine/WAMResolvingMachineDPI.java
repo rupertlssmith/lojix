@@ -42,12 +42,12 @@ public interface WAMResolvingMachineDPI
     /**
      * Provides read access to the machines bytecode buffer.
      *
-     * @param  start The start offset within the buffer to read.
-     * @param  end   Then end offset within the buffer to read.
+     * @param  start  The start offset within the buffer to read.
+     * @param  length Then length within the buffer to read.
      *
      * @return The requested portion of the machines bytecode buffer.
      */
-    ByteBuffer getCodeBuffer(int start, int end);
+    ByteBuffer getCodeBuffer(int start, int length);
 
     /**
      * Provides read access to the the machines data area.

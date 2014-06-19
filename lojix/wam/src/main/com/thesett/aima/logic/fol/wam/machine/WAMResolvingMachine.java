@@ -99,6 +99,12 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
 
         // Notify the native machine of the addition of new code.
         codeAdded(codeBuffer, entryPoint, length);
+
+        // Notify any attached DPI monitor of the addition of new code.
+        if (monitor != null)
+        {
+            monitor.onCodeUpdate(this, entryPoint, length);
+        }
     }
 
     /** {@inheritDoc} */
@@ -116,6 +122,12 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
 
         // Notify the native machine of the addition of new code.
         codeAdded(codeBuffer, entryPoint, length);
+
+        // Notify any attached DPI monitor of the addition of new code.
+        if (monitor != null)
+        {
+            monitor.onCodeUpdate(this, entryPoint, length);
+        }
     }
 
     /**
@@ -181,12 +193,12 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
     }
 
     /** {@inheritDoc} */
-    public ByteBuffer getCodeBuffer(int start, int end)
+    public ByteBuffer getCodeBuffer(int start, int length)
     {
         // Take a read only slice onto an appropriate section of the code buffer.
         ByteBuffer readOnlyBuffer = codeBuffer.asReadOnlyBuffer();
         readOnlyBuffer.position(start);
-        readOnlyBuffer.limit(end);
+        readOnlyBuffer.limit(start + length);
 
         return readOnlyBuffer.slice();
     }
