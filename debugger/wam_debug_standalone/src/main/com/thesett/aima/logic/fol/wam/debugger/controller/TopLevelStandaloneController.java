@@ -16,7 +16,11 @@
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import com.thesett.aima.logic.fol.wam.debugger.DarkColorScheme;
+import com.thesett.aima.logic.fol.wam.debugger.monitor.BreakpointMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.monitor.ByteCodeMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
@@ -55,8 +59,11 @@ public class TopLevelStandaloneController implements ControllerLifecycle
     /** Holds the controller for the register set monitor. */
     private RegisterMonitorController registerMonitorController;
 
-    /** Holds the controller for the memeory layout monitor. */
+    /** Holds the controller for the memory layout monitor. */
     private MemoryLayoutMonitorController memoryLayoutMonitorController;
+
+    /** Holds the controller for the byte code view and breakpoint monitor. */
+    private CodeStepController codeStepController;
 
     /**
      * {@inheritDoc}
@@ -79,10 +86,17 @@ public class TopLevelStandaloneController implements ControllerLifecycle
         memoryLayoutMonitorController = new MemoryLayoutMonitorController(componentFactory, mainWindow);
         memoryLayoutMonitorController.open();
 
-        // Build the top-level machine monitor.
-        machineMonitor =
-            new MachineMonitor(registerMonitorController.getRegisterMonitor(),
-                memoryLayoutMonitorController.getLayoutMonitor());
+        // Create and initialize the byte code view and breakpoint monitor.
+        codeStepController = new CodeStepController(componentFactory, mainWindow);
+        codeStepController.open();
+
+        // Build the top-level machine monitor, hooking it up to the child components.
+        RegisterSetMonitor registerMonitor = registerMonitorController.getRegisterMonitor();
+        MemoryLayoutMonitor layoutMonitor = memoryLayoutMonitorController.getLayoutMonitor();
+        BreakpointMonitor breakpointMonitor = codeStepController.getBreakpointMonitor();
+        ByteCodeMonitor byteCodeMonitor = codeStepController.getByteCodeMonitor();
+
+        machineMonitor = new MachineMonitor(registerMonitor, layoutMonitor, breakpointMonitor, byteCodeMonitor);
     }
 
     /**

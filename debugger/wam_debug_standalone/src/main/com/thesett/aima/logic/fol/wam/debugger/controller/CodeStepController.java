@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.BreakpointMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.monitor.ByteCodeMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
@@ -51,7 +52,10 @@ public class CodeStepController implements ControllerLifecycle
     private EnhancedTextTable table;
 
     /** Provides the current break-point. */
-    private BreakpointMonitor monitor;
+    private BreakpointMonitor breakpointMonitor;
+
+    /** Provides the current byte code loaded in the target machine. */
+    private ByteCodeMonitor byteCodeMonitor;
 
     /**
      * Builds the UI controller for the register monitor.
@@ -74,11 +78,13 @@ public class CodeStepController implements ControllerLifecycle
     {
         // Build a text grid panel in the left position.
         grid = componentFactory.createTextGrid();
-        mainWindow.showConsole(componentFactory.createTextGridPanel(grid, null));
+        mainWindow.showCentrePane(componentFactory.createTextGridPanel(grid, null));
 
         // Build a table model on the text grid, to display the code in.
         table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);
-        monitor = new BreakpointMonitor();
+
+        breakpointMonitor = new BreakpointMonitor();
+        byteCodeMonitor = new ByteCodeMonitor(table);
     }
 
     /** {@inheritDoc} */
@@ -93,6 +99,16 @@ public class CodeStepController implements ControllerLifecycle
      */
     public BreakpointMonitor getBreakpointMonitor()
     {
-        return monitor;
+        return breakpointMonitor;
+    }
+
+    /**
+     * Provides access to the underlying byte code monitor.
+     *
+     * @return The byte code monitor.
+     */
+    public ByteCodeMonitor getByteCodeMonitor()
+    {
+        return byteCodeMonitor;
     }
 }

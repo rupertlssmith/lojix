@@ -28,9 +28,11 @@ import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Connect together the child monitor components. </td>
- *     <td> {@link RegisterSetMonitor} </td></tr>
+ *     <td> {@link RegisterSetMonitor}, {@link MemoryLayoutMonitor},
+ *          {@link BreakpointMonitor}, {@link ByteCodeMonitor} </td></tr>
  * <tr><td> Initiate the update of child monitor components in response to machine evens. </td>
- *     <td> {@link RegisterSetMonitor} </td></tr>
+ *     <td> {@link RegisterSetMonitor}, {@link MemoryLayoutMonitor},
+ *          {@link BreakpointMonitor}, {@link ByteCodeMonitor} </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -49,16 +51,27 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     /** Holds the monitor to listen for changes to the memory layout. */
     private final MemoryLayoutMonitor layoutMonitor;
 
+    /** The monitor to listen for breakpoints. */
+    private final BreakpointMonitor breakpointMonitor;
+
+    /** The monitor to listen for bytecode changes on the machine. */
+    private final ByteCodeMonitor byteCodeMonitor;
+
     /**
      * Creates the machine monitor.
      *
      * @param registerSetMonitor The monitor to listen for changes to the register set.
      * @param layoutMonitor      The monitor to listen for changes to the memory layout.
+     * @param breakpointMonitor  The monitor to listen for breakpoints.
+     * @param byteCodeMonitor    The monitor to listen for bytecode changes on the machine.
      */
-    public MachineMonitor(RegisterSetMonitor registerSetMonitor, MemoryLayoutMonitor layoutMonitor)
+    public MachineMonitor(RegisterSetMonitor registerSetMonitor, MemoryLayoutMonitor layoutMonitor,
+        BreakpointMonitor breakpointMonitor, ByteCodeMonitor byteCodeMonitor)
     {
         this.registerSetMonitor = registerSetMonitor;
         this.layoutMonitor = layoutMonitor;
+        this.breakpointMonitor = breakpointMonitor;
+        this.byteCodeMonitor = byteCodeMonitor;
     }
 
     /** {@inheritDoc} */
