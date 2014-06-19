@@ -57,6 +57,11 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     }
 
     /** {@inheritDoc} */
+    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int end)
+    {
+    }
+
+    /** {@inheritDoc} */
     public void onExecute(WAMResolvingMachineDPI dpi)
     {
         System.out.println("execute");

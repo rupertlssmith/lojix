@@ -87,6 +87,11 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     }
 
     /** {@inheritDoc} */
+    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int end)
+    {
+    }
+
+    /** {@inheritDoc} */
     public void onExecute(WAMResolvingMachineDPI dpi)
     {
         internalRegisters.updateRegisters(dpi.getInternalRegisters());

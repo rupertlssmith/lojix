@@ -30,12 +30,33 @@ package com.thesett.aima.logic.fol.wam.machine;
  */
 public interface WAMResolvingMachineDPIMonitor
 {
-    /** Accepts notification that the machine has been reset. */
+    /**
+     * Accepts notification that the machine has been reset.
+     *
+     * @param dpi The machines DPI
+     */
     void onReset(WAMResolvingMachineDPI dpi);
 
-    /** Accepts notification that the machine is starting a code execution. */
+    /**
+     * Accepts notification of changes to byte code loaded into the machine.
+     *
+     * @param dpi   The machines DPI.
+     * @param start The start offset of the changed byte code within the machines code buffer.
+     * @param end   The end offset of the changed byte code within the machines code buffer.
+     */
+    void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int end);
+
+    /**
+     * Accepts notification that the machine is starting a code execution.
+     *
+     * @param dpi The machines DPI
+     */
     void onExecute(WAMResolvingMachineDPI dpi);
 
-    /** Accepts notification that the machine has been stepped by one instruction. */
+    /**
+     * Accepts notification that the machine has been stepped by one instruction.
+     *
+     * @param dpi The machines DPI
+     */
     void onStep(WAMResolvingMachineDPI dpi);
 }
