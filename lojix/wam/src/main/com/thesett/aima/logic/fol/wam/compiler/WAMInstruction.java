@@ -206,9 +206,9 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
-                disassembleReg1Fn(codeBuf, ip, instruction, machine);
+                disassembleReg1Fn(codeBuf, ip, instruction, interner);
             }
 
             /** {@inheritDoc} */
@@ -238,9 +238,9 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
-                disassembleReg1Fn(codeBuf, ip, instruction, machine);
+                disassembleReg1Fn(codeBuf, ip, instruction, interner);
             }
 
             /** {@inheritDoc} */
@@ -270,7 +270,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 disassembleReg1Reg2(codeBuf, ip, instruction);
             }
@@ -293,7 +293,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 disassembleReg1Reg2(codeBuf, ip, instruction);
             }
@@ -334,7 +334,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 disassembleReg1Reg2(codeBuf, ip, instruction);
             }
@@ -357,7 +357,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 disassembleReg1Reg2(codeBuf, ip, instruction);
             }
@@ -488,11 +488,11 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 int fn = codeBuf.getInt(ip + 5);
-                int f = fn >> 8;
-                instruction.fn = machine.getDeinternedFunctorName(f);
+                int f = fn & 0x00ffffff;
+                instruction.fn = interner.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -567,7 +567,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 // Do nothing as this instruction takes no arguments.
             }
@@ -590,7 +590,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 // Do nothing as this instruction takes no arguments.
             }
@@ -630,7 +630,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 // Do nothing as this instruction takes no arguments.
             }
@@ -653,11 +653,8 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
-                int fn = codeBuf.getInt(ip + 5);
-                int f = fn >> 8;
-                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -688,11 +685,8 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
-                int fn = codeBuf.getInt(ip + 5);
-                int f = fn >> 8;
-                instruction.fn = machine.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -727,7 +721,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 // Do nothing as this instruction takes no arguments.
             }
@@ -1052,7 +1046,7 @@ public class WAMInstruction implements Sizeable
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-                VariableAndFunctorInterner machine)
+                VariableAndFunctorInterner interner)
             {
                 // Do nothing as this instruction takes no arguments.
             }
@@ -1173,10 +1167,10 @@ public class WAMInstruction implements Sizeable
          * @param instruction The instruction, including its arguments.
          * @param ip          The start of the instruction within the buffer.
          * @param codeBuf     The code buffer.
-         * @param machine     The binary machine to disassemble from.
+         * @param interner    The interner to look up function and variable names against.
          */
         protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
-            VariableAndFunctorInterner machine)
+            VariableAndFunctorInterner interner)
         {
             disassembleReg1(codeBuf, ip, instruction);
         }
@@ -1328,16 +1322,16 @@ public class WAMInstruction implements Sizeable
          * @param codeBuf     The code buffer to disassemble from.
          * @param ip          The instruction pointer within the code buffer.
          * @param instruction The instruction to store the disassembles arguments in.
-         * @param machine     The binary machine to disassemble from.
+         * @param interner    The interner to look up function and variable names against.
          */
         private static void disassembleReg1Fn(ByteBuffer codeBuf, int ip, WAMInstruction instruction,
-            VariableAndFunctorInterner machine)
+            VariableAndFunctorInterner interner)
         {
             instruction.reg1 = codeBuf.get(ip + 1);
 
             int fn = codeBuf.getInt(ip + 2);
-            int f = fn >> 8;
-            instruction.fn = machine.getDeinternedFunctorName(f);
+            int f = fn & 0x00ffffff;
+            instruction.fn = interner.getDeinternedFunctorName(f);
         }
 
         /**
@@ -1585,7 +1579,7 @@ public class WAMInstruction implements Sizeable
         SizeableList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         int ip = start;
 
-        while (ip < (ip + length))
+        while (ip < (start + length))
         {
             byte iCode = codeBuf.get(ip);
 
