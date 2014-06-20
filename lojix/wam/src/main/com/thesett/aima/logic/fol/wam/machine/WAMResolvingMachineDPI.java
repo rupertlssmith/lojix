@@ -18,6 +18,8 @@ package com.thesett.aima.logic.fol.wam.machine;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+
 /**
  * WAMResolvingMachineDPI is a debug and profiling interface for a {@link WAMResolvingMachine}.
  *
@@ -69,4 +71,11 @@ public interface WAMResolvingMachineDPI
      * @return The internal register set describing the memory layout of the machine.
      */
     WAMMemoryLayout getMemoryLayout();
+
+    /**
+     * Provides an interner for translating interned names against the underlying machine.
+     *
+     * @return An interner for translating interned names against the underlying machine.
+     */
+    VariableAndFunctorInterner getVariableAndFunctorInterner();
 }

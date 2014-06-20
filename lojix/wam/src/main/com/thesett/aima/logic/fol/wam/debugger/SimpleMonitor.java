@@ -19,8 +19,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.nio.ByteBuffer;
 
+import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
+import com.thesett.common.util.SizeableList;
 
 /**
  * SimpleMonitor is a simple implementation of {@link WAMResolvingMachineDPIMonitor} that dumps all events on the target
@@ -63,6 +65,14 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
         System.out.println("Coded updated, " + length + " bytes at " + start + ".");
 
         ByteBuffer code = dpi.getCodeBuffer(start, length);
+
+        SizeableList<WAMInstruction> instructions =
+            WAMInstruction.disassemble(0, code.limit(), code, dpi.getVariableAndFunctorInterner());
+
+        for (WAMInstruction instruction : instructions)
+        {
+            System.out.println(instruction);
+        }
     }
 
     /** {@inheritDoc} */

@@ -28,6 +28,7 @@ import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Resolver;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
@@ -201,6 +202,12 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
         readOnlyBuffer.limit(start + length);
 
         return readOnlyBuffer.slice();
+    }
+
+    /** {@inheritDoc} */
+    public VariableAndFunctorInterner getVariableAndFunctorInterner()
+    {
+        return this;
     }
 
     /**
