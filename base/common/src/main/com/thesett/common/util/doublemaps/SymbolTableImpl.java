@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.thesett.common.util.maps.CircularArrayMap;
 import com.thesett.common.util.maps.SequentialCuckooFunction;
+import com.thesett.common.util.maps.SequentialFunction;
 
 /**
  * SymbolTableImpl is a hash map, that against the primary key, stores a set of fields indexed by the secondary key.
@@ -69,7 +70,7 @@ public class SymbolTableImpl<K, L, E> implements SymbolTable<K, L, E>
     private Map<L, CircularArrayMap<E>> fieldMap;
 
     /** Holds the symbol to array offset hashing function. */
-    private SequentialCuckooFunction<CompositeKey<K>> hashFunction;
+    private SequentialFunction<CompositeKey<K>> hashFunction;
 
     /** Holds the parent lexical scope. */
     private SymbolTableImpl<K, L, E> parentScope;
@@ -104,7 +105,7 @@ public class SymbolTableImpl<K, L, E> implements SymbolTable<K, L, E>
      * @param parentSequenceKey The base key path that leads to this scope.
      */
     private SymbolTableImpl(SymbolTableImpl<K, L, E> parentScope, Map<L, CircularArrayMap<E>> fieldMap,
-        SequentialCuckooFunction<CompositeKey<K>> hashFunction, int depth, int parentSequenceKey)
+        SequentialFunction<CompositeKey<K>> hashFunction, int depth, int parentSequenceKey)
     {
         this.fieldMap = fieldMap;
         this.hashFunction = hashFunction;
