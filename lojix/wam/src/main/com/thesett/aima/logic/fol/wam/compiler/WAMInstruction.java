@@ -492,7 +492,7 @@ public class WAMInstruction implements Sizeable
             {
                 int fn = codeBuf.getInt(ip + 5);
                 int f = fn & 0x00ffffff;
-                instruction.fn = interner.getDeinternedFunctorName(f);
+                //instruction.fn = interner.getDeinternedFunctorName(f);
             }
 
             /** {@inheritDoc} */
@@ -1331,7 +1331,7 @@ public class WAMInstruction implements Sizeable
 
             int fn = codeBuf.getInt(ip + 2);
             int f = fn & 0x00ffffff;
-            instruction.fn = interner.getDeinternedFunctorName(f);
+            //instruction.fn = interner.getDeinternedFunctorName(f);
         }
 
         /**
