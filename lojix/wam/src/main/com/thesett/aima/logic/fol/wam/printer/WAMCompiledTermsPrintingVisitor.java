@@ -65,6 +65,7 @@ public abstract class WAMCompiledTermsPrintingVisitor extends DelegatingAllTerms
     /** Holds a list of all column printers to apply. */
     List<AllTermsVisitor> printers = new ArrayList<AllTermsVisitor>();
 
+    /** Holds the table model to render the output to. */
     TextTableModel printTable = new TextTableImpl();
 
     /**

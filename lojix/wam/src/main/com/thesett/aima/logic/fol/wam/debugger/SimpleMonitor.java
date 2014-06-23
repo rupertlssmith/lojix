@@ -62,7 +62,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     /** {@inheritDoc} */
     public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int length)
     {
-        System.out.println("Coded updated, " + length + " bytes at " + start + ".");
+        System.out.println("Code updated, " + length + " bytes at " + start + ".");
 
         ByteBuffer code = dpi.getCodeBuffer(start, length);
 
@@ -71,6 +71,11 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
 
         for (WAMInstruction instruction : instructions)
         {
+            if (instruction.getLabel() != null)
+            {
+                System.out.println(instruction.getLabel().toPrettyString() + ":");
+            }
+
             System.out.println(instruction);
         }
     }
@@ -78,7 +83,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     /** {@inheritDoc} */
     public void onExecute(WAMResolvingMachineDPI dpi)
     {
-        System.out.println("execute");
+        /*System.out.println("execute");*/
         layoutRegisters.updateRegisters(dpi.getMemoryLayout());
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
@@ -86,7 +91,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     /** {@inheritDoc} */
     public void onStep(WAMResolvingMachineDPI dpi)
     {
-        System.out.println("step");
+        /*System.out.println("step");*/
         layoutRegisters.updateRegisters(dpi.getMemoryLayout());
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
@@ -94,6 +99,6 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     /** {@inheritDoc} */
     public void propertyChange(PropertyChangeEvent evt)
     {
-        System.out.println(evt.getPropertyName() + ", " + evt.getNewValue());
+        /*System.out.println(evt.getPropertyName() + ", " + evt.getNewValue());*/
     }
 }

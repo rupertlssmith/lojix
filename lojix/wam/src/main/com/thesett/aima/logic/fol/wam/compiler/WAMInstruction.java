@@ -1730,20 +1730,24 @@ public class WAMInstruction implements Sizeable
 
         while (ip < (start + length))
         {
+            // Decode the instruction and its arguments.
             byte iCode = codeBuf.get(ip);
-
-            Integer internedName = codeView.getNameForAddress(ip);
-
-            if (internedName != null)
-            {
-                System.out.print("At " + ip + ", got functor or label location: ");
-
-                FunctorName functorName = interner.getDeinternedFunctorName(internedName);
-                System.out.println(functorName);
-            }
 
             WAMInstruction instruction = new WAMInstruction(iCode);
             instruction.mnemonic.disassembleArguments(instruction, ip, codeBuf, interner);
+
+            // Restore any label on the instruction.
+            Integer label = codeView.getNameForAddress(ip);
+
+            if (label != null)
+            {
+                FunctorName name = interner.getDeinternedFunctorName(label);
+
+                if (name instanceof WAMLabel)
+                {
+                    instruction.label = (WAMLabel) name;
+                }
+            }
 
             result.add(instruction);
 
