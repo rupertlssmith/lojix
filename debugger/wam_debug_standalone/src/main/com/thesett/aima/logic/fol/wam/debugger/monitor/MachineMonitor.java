@@ -15,6 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
+import java.nio.ByteBuffer;
+
 import com.thesett.aima.logic.fol.wam.debugger.InternalMemoryLayoutBean;
 import com.thesett.aima.logic.fol.wam.debugger.InternalRegisterBean;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
@@ -87,8 +89,10 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     }
 
     /** {@inheritDoc} */
-    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int end)
+    public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int length)
     {
+        ByteBuffer codeBuffer = dpi.getCodeBuffer(start, length);
+        byteCodeMonitor.onCodeUpdate(codeBuffer, start, length, dpi.getVariableAndFunctorInterner(), dpi);
     }
 
     /** {@inheritDoc} */
