@@ -23,6 +23,8 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPI;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachineDPIMonitor;
 import com.thesett.common.util.SizeableList;
+import com.thesett.text.api.model.TextTableModel;
+import com.thesett.text.impl.model.TextTableImpl;
 
 /**
  * SimpleMonitor is a simple implementation of {@link WAMResolvingMachineDPIMonitor} that dumps all events on the target
@@ -45,10 +47,14 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     /** Holds a copy of the internal registers and monitors them for changes. */
     InternalRegisterBean internalRegisters;
 
+    /** Holds a printing table to render output to. */
+    TextTableModel tableModel = new TextTableImpl();
+
     /** {@inheritDoc} */
     public void onReset(WAMResolvingMachineDPI dpi)
     {
         System.out.println("reset");
+        tableModel = new TextTableImpl();
 
         layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         layoutRegisters.setPropertyChangeListener(this);
@@ -63,21 +69,27 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     public void onCodeUpdate(WAMResolvingMachineDPI dpi, int start, int length)
     {
         System.out.println("Code updated, " + length + " bytes at " + start + ".");
+        tableModel = new TextTableImpl();
 
         ByteBuffer code = dpi.getCodeBuffer(start, length);
 
         SizeableList<WAMInstruction> instructions =
             WAMInstruction.disassemble(start, length, code, dpi.getVariableAndFunctorInterner(), dpi);
 
+        int row = 0;
+
         for (WAMInstruction instruction : instructions)
         {
             if (instruction.getLabel() != null)
             {
-                System.out.println(instruction.getLabel().toPrettyString() + ":");
+                tableModel.put(0, row, instruction.getLabel().toPrettyString());
             }
 
-            System.out.println(instruction);
+            tableModel.put(1, row, instruction.toString());
+            row++;
         }
+
+        printTable(tableModel);
     }
 
     /** {@inheritDoc} */
@@ -100,5 +112,35 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
     public void propertyChange(PropertyChangeEvent evt)
     {
         /*System.out.println(evt.getPropertyName() + ", " + evt.getNewValue());*/
+    }
+
+    /** Renders the table. */
+    protected void printTable(TextTableModel printTable)
+    {
+        for (int i = 0; i < printTable.getRowCount(); i++)
+        {
+            StringBuffer result = new StringBuffer();
+
+            for (int j = 0; j < printTable.getColumnCount(); j++)
+            {
+                String valueToPrint = printTable.get(j, i);
+                valueToPrint = (valueToPrint == null) ? "" : valueToPrint;
+                result.append(valueToPrint);
+
+                Integer maxColumnSize = printTable.getMaxColumnSize(j);
+                int padding = ((maxColumnSize == null) ? 0 : maxColumnSize) - valueToPrint.length();
+                padding = (padding < 0) ? 0 : padding;
+
+                for (int s = 0; s < padding; s++)
+                {
+                    result.append(" ");
+                }
+
+                result.append(" % ");
+            }
+
+            result.append("\n");
+            System.out.print(result);
+        }
     }
 }
