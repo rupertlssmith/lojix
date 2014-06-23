@@ -1145,7 +1145,6 @@ public class WAMInstruction implements Sizeable
             }
 
             /** {@inheritDoc} */
-
             public String toString(WAMInstruction instruction)
             {
                 return pretty;
