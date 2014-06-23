@@ -67,7 +67,7 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
         ByteBuffer code = dpi.getCodeBuffer(start, length);
 
         SizeableList<WAMInstruction> instructions =
-            WAMInstruction.disassemble(0, code.limit(), code, dpi.getVariableAndFunctorInterner());
+            WAMInstruction.disassemble(start, length, code, dpi.getVariableAndFunctorInterner(), dpi);
 
         for (WAMInstruction instruction : instructions)
         {

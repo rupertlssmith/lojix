@@ -201,7 +201,7 @@ public abstract class WAMResolvingMachine extends WAMBaseMachine
         readOnlyBuffer.position(start);
         readOnlyBuffer.limit(start + length);
 
-        return readOnlyBuffer.slice();
+        return readOnlyBuffer;
     }
 
     /** {@inheritDoc} */

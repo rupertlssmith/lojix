@@ -39,7 +39,7 @@ import com.thesett.common.util.doublemaps.SymbolTable;
  *
  * @author Rupert Smith
  */
-public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl implements WAMMachine
+public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl implements WAMMachine, WAMCodeView
 {
     /** Used for debugging. */
     /* private static final Logger log = Logger.getLogger(WAMBaseMachine.class.getName()); */

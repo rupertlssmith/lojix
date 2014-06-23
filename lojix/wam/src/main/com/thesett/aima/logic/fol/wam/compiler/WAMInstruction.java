@@ -26,6 +26,7 @@ import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.wam.machine.WAMCodeView;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.common.util.Pair;
 import com.thesett.common.util.Sizeable;
@@ -1713,15 +1714,16 @@ public class WAMInstruction implements Sizeable
      * the functor names encountered in the instruction buffer must also be supplied, in order to look up the functor
      * names by encoded value.
      *
-     * @param  start   The start offset into the buffer to disassemble.
-     * @param  length  The length of data in the buffer to disassemble.
-     * @param  codeBuf The code buffer.
-     * @param  machine The binary machine to disassemble from.
+     * @param  start    The start offset into the buffer to disassemble.
+     * @param  length   The length of data in the buffer to disassemble.
+     * @param  codeBuf  The code buffer.
+     * @param  interner The interner to look up interned names with.
+     * @param  codeView A view onto the machines code buffer.
      *
      * @return A list of instructions disassembles from the code buffer.
      */
     public static SizeableList<WAMInstruction> disassemble(int start, int length, ByteBuffer codeBuf,
-        VariableAndFunctorInterner machine)
+        VariableAndFunctorInterner interner, WAMCodeView codeView)
     {
         SizeableList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
         int ip = start;
@@ -1730,8 +1732,18 @@ public class WAMInstruction implements Sizeable
         {
             byte iCode = codeBuf.get(ip);
 
+            Integer internedName = codeView.getNameForAddress(ip);
+
+            if (internedName != null)
+            {
+                System.out.print("At " + ip + ", got functor or label location: ");
+
+                FunctorName functorName = interner.getDeinternedFunctorName(internedName);
+                System.out.println(functorName);
+            }
+
             WAMInstruction instruction = new WAMInstruction(iCode);
-            instruction.mnemonic.disassembleArguments(instruction, ip, codeBuf, machine);
+            instruction.mnemonic.disassembleArguments(instruction, ip, codeBuf, interner);
 
             result.add(instruction);
 

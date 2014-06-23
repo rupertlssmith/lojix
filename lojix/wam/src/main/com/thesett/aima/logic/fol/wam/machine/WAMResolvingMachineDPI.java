@@ -32,7 +32,7 @@ import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
  *
  * @author Rupert Smith
  */
-public interface WAMResolvingMachineDPI
+public interface WAMResolvingMachineDPI extends WAMCodeView
 {
     /**
      * Attaches a monitor to the abstract machine.
@@ -40,16 +40,6 @@ public interface WAMResolvingMachineDPI
      * @param monitor The machine monitor.
      */
     void attachMonitor(WAMResolvingMachineDPIMonitor monitor);
-
-    /**
-     * Provides read access to the machines bytecode buffer.
-     *
-     * @param  start  The start offset within the buffer to read.
-     * @param  length Then length within the buffer to read.
-     *
-     * @return The requested portion of the machines bytecode buffer.
-     */
-    ByteBuffer getCodeBuffer(int start, int length);
 
     /**
      * Provides read access to the the machines data area.
