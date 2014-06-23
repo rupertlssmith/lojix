@@ -15,6 +15,9 @@
  */
 package com.thesett.aima.logic.fol.wam.machine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.thesett.aima.logic.fol.LinkageException;
 import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCallPoint;
@@ -45,7 +48,10 @@ public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl impl
     protected static final String SYMKEY_CALLPOINTS = "call_points";
 
     /** Holds the symbol table. */
-    SymbolTable<Integer, String, Object> symbolTable;
+    protected SymbolTable<Integer, String, Object> symbolTable;
+
+    /** Holds the reverse symbol table to look up names by addresses. */
+    protected Map<Integer, Integer> reverseTable = new HashMap<Integer, Integer>();
 
     /**
      * Creates the base machine, providing variable and functor symbol tables.
@@ -133,6 +139,15 @@ public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl impl
         {
             emmitCode(offset, label.entryPoint);
         }
+
+        // Keep a reverse lookup from address to label name.
+        reverseTable.put(address, labelName);
+    }
+
+    /** {@inheritDoc} */
+    public Integer getNameForAddress(int address)
+    {
+        return reverseTable.get(address);
     }
 
     /**
@@ -143,6 +158,7 @@ public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl impl
     {
         // Clear the entire symbol table.
         symbolTable.clear();
+        reverseTable.clear();
     }
 
     /**
@@ -158,6 +174,9 @@ public abstract class WAMBaseMachine extends VariableAndFunctorInternerImpl impl
     {
         WAMCallPoint entry = new WAMCallPoint(offset, length, functorName);
         symbolTable.put(functorName, SYMKEY_CALLPOINTS, entry);
+
+        // Keep a reverse lookup from address to functor name.
+        reverseTable.put(offset, functorName);
 
         return entry;
     }

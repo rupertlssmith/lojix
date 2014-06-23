@@ -68,6 +68,15 @@ public interface WAMMachine extends VariableAndFunctorInterner
     void resolveLabelPoint(int labelName, int address);
 
     /**
+     * Attempts to find a label or functor name for a given address within the code area of the machine.
+     *
+     * @param  address The address to look up.
+     *
+     * @return The label or functor name matching the address, or <tt>null</tt> if none is set at that address.
+     */
+    Integer getNameForAddress(int address);
+
+    /**
      * Adds compiled byte code to the code area of the machine.
      *
      * @param  predicate The compiled predicate to add byte code to the machine for.
