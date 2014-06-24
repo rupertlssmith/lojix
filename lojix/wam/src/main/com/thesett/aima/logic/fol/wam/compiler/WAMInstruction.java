@@ -203,7 +203,7 @@ public class WAMInstruction implements Sizeable
     public enum WAMInstructionSet
     {
         /** Instruction to write out a struc onto the heap. */
-        PutStruc(PUT_STRUC, "put_struc", 7)
+        PutStruc(PUT_STRUC, "put_struc", 7, 0xb)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -226,16 +226,16 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to set a register as a variable. */
-        SetVar(SET_VAR, "set_var", 3),
+        SetVar(SET_VAR, "set_var", 3, 0x3),
 
         /** The instruction to set a register to a heap location. */
-        SetVal(SET_VAL, "set_val", 3),
+        SetVal(SET_VAL, "set_val", 3, 0x3),
 
         /** The instruction to set a register, ensuring the stack variable it references is globalized. */
-        SetLocalVal(SET_LOCAL_VAL, "set_local_val", 3),
+        SetLocalVal(SET_LOCAL_VAL, "set_local_val", 3, 0x3),
 
         /** The instruction to compare a register to a structure on the heap. */
-        GetStruc(GET_STRUC, "get_struc", 7)
+        GetStruc(GET_STRUC, "get_struc", 7, 0xb)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -258,16 +258,16 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to unify a register with a variable. */
-        UnifyVar(UNIFY_VAR, "unify_var", 3),
+        UnifyVar(UNIFY_VAR, "unify_var", 3, 0x3),
 
         /** The instruction to unify a register with a location on the heap. */
-        UnifyVal(UNIFY_VAL, "unify_val", 3),
+        UnifyVal(UNIFY_VAL, "unify_val", 3, 0x3),
 
         /** The instruction to unify a register, ensuring any stack variable it references is globalized. */
-        UnifyLocalVal(UNIFY_LOCAL_VAL, "unify_local_val", 3),
+        UnifyLocalVal(UNIFY_LOCAL_VAL, "unify_local_val", 3, 0x3),
 
         /** The instruction to copy a heap location into an argument register. */
-        PutVar(PUT_VAR, "put_var", 4)
+        PutVar(PUT_VAR, "put_var", 4, 0x7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -290,7 +290,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to copy a register into an argument register. */
-        PutVal(PUT_VAL, "put_val", 4)
+        PutVal(PUT_VAL, "put_val", 4, 0x7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -315,7 +315,7 @@ public class WAMInstruction implements Sizeable
         /**
          * The instruction to initialize an argument register, ensuring the stack variable it references is globalized.
          */
-        PutUnsafeVal(PUT_UNSAFE_VAL, "put_unsafe_val", 4)
+        PutUnsafeVal(PUT_UNSAFE_VAL, "put_unsafe_val", 4, 0x7)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -331,7 +331,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to unify an argument register with a variable. */
-        GetVar(GET_VAR, "get_var", 4)
+        GetVar(GET_VAR, "get_var", 4, 0x7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -354,7 +354,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to unify a register with a location on the heap. */
-        GetVal(GET_VAL, "get_val", 4)
+        GetVal(GET_VAL, "get_val", 4, 0x7)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -377,7 +377,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to copy a constant into an argument register. */
-        PutConstant(PUT_CONST, "put_const", 7)
+        PutConstant(PUT_CONST, "put_const", 7, 0xb)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -401,7 +401,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to compare or bind a reference from a register to a constant. */
-        GetConstant(GET_CONST, "get_const", 7)
+        GetConstant(GET_CONST, "get_const", 7, 0xb)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -425,7 +425,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to write a constant onto the heap. */
-        SetConstant(SET_CONST, "set_const", 5)
+        SetConstant(SET_CONST, "set_const", 5, 0x8)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -449,7 +449,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to unify the heap with a constant. */
-        UnifyConstant(UNIFY_CONST, "unify_const", 5)
+        UnifyConstant(UNIFY_CONST, "unify_const", 5, 0x8)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -473,13 +473,13 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to copy a list pointer into an argument register. */
-        PutList(PUT_LIST, "put_list", 3),
+        PutList(PUT_LIST, "put_list", 3, 0x3),
 
         /** The instruction to compare or bind a reference from a register to a list pointer. */
-        GetList(GET_LIST, "get_list", 3),
+        GetList(GET_LIST, "get_list", 3, 0x3),
 
         /** The instruction to write an anonymous variable onto the heap. */
-        SetVoid(SET_VOID, "set_void", 2)
+        SetVoid(SET_VOID, "set_void", 2, 0x2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -502,7 +502,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to unify with anonymous variables on the heap. */
-        UnifyVoid(UNIFY_VOID, "unify_void", 2)
+        UnifyVoid(UNIFY_VOID, "unify_void", 2, 0x2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -525,7 +525,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to call a predicate. */
-        Call(CALL, "call", 7)
+        Call(CALL, "call", 7, 0xa)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -570,7 +570,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to tail call a predicate. */
-        Execute(EXECUTE, "execute", 6)
+        Execute(EXECUTE, "execute", 6, 0x8)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -612,7 +612,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The instruction to return from a called predicate. */
-        Proceed(PROCEED, "proceed", 1)
+        Proceed(PROCEED, "proceed", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -635,7 +635,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The stack frame allocation instruction. */
-        Allocate(ALLOCATE, "allocate", 1)
+        Allocate(ALLOCATE, "allocate", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -658,7 +658,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The stack frame allocation instruction for queries. */
-        AllocateN(ALLOCATE_N, "allocate_n", 2)
+        AllocateN(ALLOCATE_N, "allocate_n", 2, 0x2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -681,7 +681,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The stack frame deallocation instruction. */
-        Deallocate(DEALLOCATE, "deallocate", 1)
+        Deallocate(DEALLOCATE, "deallocate", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -704,7 +704,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The first clause try instruction. */
-        TryMeElse(TRY_ME_ELSE, "try_me_else", 5)
+        TryMeElse(TRY_ME_ELSE, "try_me_else", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -737,7 +737,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The middle clause retry instruction. */
-        RetryMeElse(RETRY_ME_ELSE, "retry_me_else", 5)
+        RetryMeElse(RETRY_ME_ELSE, "retry_me_else", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -774,7 +774,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The final clause trust or fail instruction. */
-        TrustMe(TRUST_ME, "trust_me", 1)
+        TrustMe(TRUST_ME, "trust_me", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -803,7 +803,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The first clause indexing try instruction. */
-        Try(TRY, "try", 5)
+        Try(TRY, "try", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -843,7 +843,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The middle clause indexing retry instruction. */
-        Retry(RETRY, "retry", 5)
+        Retry(RETRY, "retry", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -883,7 +883,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The final clause indexing trust or fail instruction. */
-        Trust(TRUST, "trust", 5)
+        Trust(TRUST, "trust", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -920,7 +920,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The second level indexing instruction. */
-        SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 17)
+        SwitchOnTerm(SWITCH_ON_TERM, "switch_on_term", 17, 0x0)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -958,7 +958,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The third level indexing instruction for constants. */
-        SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 9)
+        SwitchOnConst(SWITCH_ON_CONST, "switch_on_const", 9, 0x0)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -989,7 +989,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The third level indexing instruction for structures. */
-        SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 9)
+        SwitchOnStruc(SWITCH_ON_STRUC, "switch_on_struc", 9, 0x0)
         {
             /** {@inheritDoc} */
             public void emmitCode(WAMInstruction instruction, ByteBuffer codeBuf, WAMMachine machine)
@@ -1020,7 +1020,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The simpler neck-cut instruction. */
-        NeckCut(NECK_CUT, "neck_cut", 1)
+        NeckCut(NECK_CUT, "neck_cut", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1044,7 +1044,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The get level instruction for cuts. */
-        GetLevel(GET_LEVEL, "get_level", 2)
+        GetLevel(GET_LEVEL, "get_level", 2, 0x2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1067,7 +1067,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The full deep cut instruction. */
-        Cut(CUT, "cut", 2)
+        Cut(CUT, "cut", 2, 0x2)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1090,7 +1090,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The continue instruction for inline choice points. */
-        Continue(CONTINUE, "continue", 5)
+        Continue(CONTINUE, "continue", 5, 0x10)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1123,7 +1123,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The no-op instruction, useful for inserting labels into the code. */
-        NoOp(NO_OP, "no_op", 1)
+        NoOp(NO_OP, "no_op", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1152,7 +1152,7 @@ public class WAMInstruction implements Sizeable
         },
 
         /** The suspend on success instruction. */
-        Suspend(SUSPEND, "suspend", 1)
+        Suspend(SUSPEND, "suspend", 1, 0x0)
         {
             /** {@inheritDoc} */
             protected void disassembleArguments(WAMInstruction instruction, int ip, ByteBuffer codeBuf,
@@ -1195,17 +1195,33 @@ public class WAMInstruction implements Sizeable
         protected int length;
 
         /**
+         * Holds a bit mask defining which argument fields this op-code uses. The correspondence between bits and fields
+         * is:
+         *
+         * <pre><p/><table><caption>Bits to Fields</caption>
+         * <tr><th> Bit <th> Field
+         * <tr><td>  0  <td> {@link WAMInstruction#mode1}
+         * <tr><td>  1  <td> {@link WAMInstruction#reg1}
+         * <tr><td>  2  <td> {@link WAMInstruction#reg2}
+         * <tr><td>  3  <td> {@link WAMInstruction#fn}
+         * <tr><td>  4  <td> {@link WAMInstruction#target1}
+         * </table></pre>
+         */
+        protected int fieldMask;
+
+        /**
          * Creates a new L0 instruction with the specified byte code.
          *
          * @param i      The byte code for the instruction.
          * @param pretty The human readable form of the instruction.
          * @param length The length of the instruction plus arguments in bytes.
          */
-        private WAMInstructionSet(byte i, String pretty, int length)
+        private WAMInstructionSet(byte i, String pretty, int length, int fieldMask)
         {
             this.code = i;
             this.pretty = pretty;
             this.length = length;
+            this.fieldMask = fieldMask;
         }
 
         /**
@@ -1527,12 +1543,6 @@ public class WAMInstruction implements Sizeable
     /** Holds the functor argument to the instruction. */
     protected FunctorName fn;
 
-    /** Holds the symbol key of the argument that is held in the first register of this instruction. */
-    private SymbolKey symbolKeyReg1;
-
-    /** Holds the functor name of the argument that is assigned to the first register of this instruction. */
-    private Integer functorNameReg1;
-
     /** An optional target address label. */
     protected WAMLabel target1;
 
@@ -1544,6 +1554,12 @@ public class WAMInstruction implements Sizeable
 
     /** An optional target address label. */
     protected WAMLabel target4;
+
+    /** Holds the symbol key of the argument that is held in the first register of this instruction. */
+    private SymbolKey symbolKeyReg1;
+
+    /** Holds the functor name of the argument that is assigned to the first register of this instruction. */
+    private Integer functorNameReg1;
 
     /** An optional list of entries for an indexing table. */
     protected List<Pair<Integer, WAMLabel>> indexTable;
