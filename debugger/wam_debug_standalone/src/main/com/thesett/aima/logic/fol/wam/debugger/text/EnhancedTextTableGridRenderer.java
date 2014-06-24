@@ -78,8 +78,16 @@ public class EnhancedTextTableGridRenderer extends TextTableGridRenderer
                     }
                 }
 
-                Integer maxColumnSize = tableModel.getMaxColumnSize(j);
-                colOffset += maxColumnSize;
+                // Pad spaces up to the column width if the contents are shorter.
+                int spaces = columnSize - valueToPrint.length();
+
+                while (spaces > 0)
+                {
+                    gridModel.insert(" ", colOffset + valueToPrint.length() + spaces-- - 1, i);
+                }
+
+                // Shift to the next column.
+                colOffset += columnSize;
             }
         }
     }

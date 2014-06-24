@@ -75,9 +75,6 @@ public class TopLevelStandaloneController implements ControllerLifecycle
         // Build the main window frame.
         mainWindow.showMainWindow();
 
-        // Blank out the centre panel for now.
-        mainWindow.showCentrePane(componentFactory.createBlankPanel());
-
         // Create and initialize the register monitor.
         registerMonitorController = new RegisterMonitorController(componentFactory, mainWindow);
         registerMonitorController.open();

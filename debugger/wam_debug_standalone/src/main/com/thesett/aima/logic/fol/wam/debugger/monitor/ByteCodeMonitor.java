@@ -59,6 +59,9 @@ public class ByteCodeMonitor
     /** A column labeled view onto the register table. */
     private DoubleKeyedMap<String, Integer, String> labeledTable;
 
+    private int row = 0;
+    private int address = 0;
+
     /**
      * Constructs a table model with labelled columns to hold byte code.
      *
@@ -90,9 +93,6 @@ public class ByteCodeMonitor
     {
         SizeableList<WAMInstruction> instructions =
             WAMInstruction.disassemble(start, length, codeBuffer, interner, codeView);
-
-        int address = 0;
-        int row = 0;
 
         for (WAMInstruction instruction : instructions)
         {
