@@ -57,11 +57,21 @@ public class TextTableGridRenderer
 
             for (int j = 0; j < tableModel.getColumnCount(); j++)
             {
+                // Print the contents of the table cell.
                 String valueToPrint = tableModel.get(j, i);
                 valueToPrint = (valueToPrint == null) ? "" : valueToPrint;
                 gridModel.insert(valueToPrint, colOffset, i);
 
+                // Pad spaces up to the column width if the contents are shorted.
                 Integer maxColumnSize = tableModel.getMaxColumnSize(j);
+                int spaces = maxColumnSize - valueToPrint.length();
+
+                while (spaces > 0)
+                {
+                    gridModel.insert(" ", colOffset + valueToPrint.length() + spaces-- - 1, i);
+                }
+
+                // Shift to the next column.
                 colOffset += maxColumnSize;
             }
         }
