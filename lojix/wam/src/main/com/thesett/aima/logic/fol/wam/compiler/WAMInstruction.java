@@ -1253,6 +1253,16 @@ public class WAMInstruction implements Sizeable
         }
 
         /**
+         * Provides the field mask describing which argument fields this instruction uses.
+         *
+         * @return The field mask describing which argument fields this instruction uses.
+         */
+        public int getFieldMask()
+        {
+            return fieldMask;
+        }
+
+        /**
          * Prints the human readable form of the instruction for debugging purposes.
          *
          * @param  instruction The instruction, including its arguments.
