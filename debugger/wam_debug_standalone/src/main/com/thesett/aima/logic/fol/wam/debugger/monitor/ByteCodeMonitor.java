@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
 import java.nio.ByteBuffer;
 
+import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import com.thesett.aima.logic.fol.wam.compiler.WAMLabel;
@@ -47,11 +48,14 @@ public class ByteCodeMonitor
     /** Defines the label for the instruction mnemonic column. */
     public static final String MNEMONIC = "mnemonic";
 
-    /** Defines the label for the instruction arguments column. */
-    public static final String ARGS = "args";
+    /** Defines the label for the first instruction arguments column. */
+    public static final String ARG_1 = "arg_1";
+
+    /** Defines the label for the second instruction arguments column. */
+    public static final String ARG_2 = "arg_2";
 
     /** Column labels for the code table. */
-    public static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARGS };
+    public static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARG_1, ARG_2 };
 
     /** The table to output the byte code to. */
     private final TextTableModel table;
@@ -101,7 +105,51 @@ public class ByteCodeMonitor
             labeledTable.put(ADDRESS, row, String.format("%08X", address));
             labeledTable.put(LABEL, row, (label == null) ? "" : (label.toPrettyString() + ":"));
             labeledTable.put(MNEMONIC, row, instruction.getMnemonic().name());
-            labeledTable.put(ARGS, row, instruction.toString());
+
+            int fieldMask = instruction.getMnemonic().getFieldMask();
+            int labelOffset = 3;
+
+            for (int i = 2; i < 32; i = i * 2)
+            {
+                if ((fieldMask & i) != 0)
+                {
+                    switch (i)
+                    {
+                    case 2:
+                        labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
+                            Integer.toString(instruction.getReg1()));
+                        break;
+
+                    case 4:
+                        labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
+                            Integer.toString(instruction.getReg2()));
+                        break;
+
+                    case 8:
+
+                        FunctorName fn = instruction.getFn();
+                        if (fn != null)
+                        {
+                            labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
+                                fn.getName() + "/" + fn.getArity());
+                        }
+
+                        break;
+
+                    case 16:
+
+                        WAMLabel target1 = instruction.getTarget1();
+                        if (target1 != null)
+                        {
+                            labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
+                                target1.getName() + "/" + target1.getArity() + "_" + target1.getId());
+                        }
+
+                        break;
+                    }
+
+                }
+            }
 
             row++;
             address += instruction.sizeof();
