@@ -233,6 +233,17 @@ public class TextTableImpl implements TextTableModel
         return new CellLabelView();
     }
 
+    /** Notifies all interested listeners of an update to this model. */
+    protected void updateListeners(int col, int row)
+    {
+        TextTableEvent event = new TextTableEvent(this, row, col);
+
+        for (TextTableListener listener : listeners)
+        {
+            listener.changedUpdate(event);
+        }
+    }
+
     /**
      * Updates the maximum column width for a column of the data table.
      *
@@ -250,17 +261,6 @@ public class TextTableImpl implements TextTableModel
         else if (previousValue < width)
         {
             maxColumnSizes.put(column, width);
-        }
-    }
-
-    /** Notifies all interested listeners of an update to this model. */
-    protected void updateListeners(int col, int row)
-    {
-        TextTableEvent event = new TextTableEvent(this, row, col);
-
-        for (TextTableListener listener : listeners)
-        {
-            listener.changedUpdate(event);
         }
     }
 
