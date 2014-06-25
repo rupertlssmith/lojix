@@ -1275,6 +1275,16 @@ public class WAMInstruction implements Sizeable
         }
 
         /**
+         * Provides the human readable form of the instruction.
+         *
+         * @return The human readable form of the instruction.
+         */
+        public String getPretty()
+        {
+            return pretty;
+        }
+
+        /**
          * Prints the human readable form of the instruction for debugging purposes.
          *
          * @param  instruction The instruction, including its arguments.
