@@ -55,7 +55,7 @@ public class ByteCodeMonitor
     public static final String ARG_2 = "arg_2";
 
     /** Column labels for the code table. */
-    public static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARG_1, ARG_2 };
+    public static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARG_1 };
 
     /** The table to output the byte code to. */
     private final TextTableModel table;
@@ -104,25 +104,29 @@ public class ByteCodeMonitor
 
             labeledTable.put(ADDRESS, row, String.format("%08X", address));
             labeledTable.put(LABEL, row, (label == null) ? "" : (label.toPrettyString() + ":"));
-            labeledTable.put(MNEMONIC, row, instruction.getMnemonic().name());
+            labeledTable.put(MNEMONIC, row, instruction.getMnemonic().getPretty());
 
             int fieldMask = instruction.getMnemonic().getFieldMask();
-            int labelOffset = 3;
+
+            String arg = "";
 
             for (int i = 2; i < 32; i = i * 2)
             {
                 if ((fieldMask & i) != 0)
                 {
+                    if (!"".equals(arg))
+                    {
+                        arg += ", ";
+                    }
+
                     switch (i)
                     {
                     case 2:
-                        labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
-                            Integer.toString(instruction.getReg1()));
+                        arg += Integer.toString(instruction.getReg1());
                         break;
 
                     case 4:
-                        labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
-                            Integer.toString(instruction.getReg2()));
+                        arg += Integer.toString(instruction.getReg2());
                         break;
 
                     case 8:
@@ -130,8 +134,7 @@ public class ByteCodeMonitor
                         FunctorName fn = instruction.getFn();
                         if (fn != null)
                         {
-                            labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
-                                fn.getName() + "/" + fn.getArity());
+                            arg += fn.getName() + "/" + fn.getArity();
                         }
 
                         break;
@@ -141,15 +144,15 @@ public class ByteCodeMonitor
                         WAMLabel target1 = instruction.getTarget1();
                         if (target1 != null)
                         {
-                            labeledTable.put(BYTE_CODE_COL_LABELS[labelOffset++], row,
-                                target1.getName() + "/" + target1.getArity() + "_" + target1.getId());
+                            arg += target1.getName() + "/" + target1.getArity() + "_" + target1.getId();
                         }
 
                         break;
                     }
-
                 }
             }
+
+            labeledTable.put(ARG_1, row, arg);
 
             row++;
             address += instruction.sizeof();

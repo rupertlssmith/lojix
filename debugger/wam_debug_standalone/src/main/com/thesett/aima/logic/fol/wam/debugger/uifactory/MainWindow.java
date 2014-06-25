@@ -44,6 +44,13 @@ public interface MainWindow<C>
     void showCentrePane(C component);
 
     /**
+     * Provides the pane controller for the centre pane.
+     *
+     * @return The pane controller for the centre pane.
+     */
+    PaneController getCentrePaneController();
+
+    /**
      * Displays a component in the console position.
      *
      * @param component The component to display.

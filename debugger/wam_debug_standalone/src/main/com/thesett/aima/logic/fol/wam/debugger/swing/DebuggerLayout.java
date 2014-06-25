@@ -21,7 +21,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * DebuggerLayout is a custom LayoutManager for a set of debugger window panels. It divides the window up in a fairly
@@ -74,11 +76,20 @@ public class DebuggerLayout implements LayoutManager
     /** Defines the default vertical grip-bar width. */
     public static final int DEFAULT_VBAR_WIDTH = 3;
 
+    /** Defines the default scroll bar width in pixels. */
+    public static final int DEFAULT_SCROLL_BAR_SIZE = 25;
+
     /** Map of all components in the layout by position label. */
     private final Map<String, Component> componentMap = new HashMap<String, Component>();
 
     /** Map from components to position label, in order to identify position when presented with a component. */
     private final Map<Component, String> reverseMap = new HashMap<Component, String>();
+
+    /** Flags indicating which components in the layout have vertical scroll bars. */
+    private final Set<String> verticalScrollBars = new HashSet<String>();
+
+    /** Flags indicating which components in the layout have horizontal scroll bars. */
+    private final Set<String> horizontalScrollBars = new HashSet<String>();
 
     /** The current console height. */
     private int consoleHeight = DEFAULT_CONSOLE_HEIGHT;
@@ -249,6 +260,26 @@ public class DebuggerLayout implements LayoutManager
 
             component.setBounds(left, top, width, height);
         }
+    }
+
+    /**
+     * Adds a vertical scroll bar to the named component.
+     *
+     * @param name The component name to add the scroll bar to.
+     */
+    public void addVerticalScrollBar(String name)
+    {
+        verticalScrollBars.add(name);
+    }
+
+    /**
+     * Adds a horizontal scroll bar to the named component.
+     *
+     * @param name The component name to add the scroll bar to.
+     */
+    public void addHorizontalScrollBar(String name)
+    {
+        horizontalScrollBars.add(name);
     }
 
     /** Keeps the set of flags indicating which window components are present, up-to-date. */

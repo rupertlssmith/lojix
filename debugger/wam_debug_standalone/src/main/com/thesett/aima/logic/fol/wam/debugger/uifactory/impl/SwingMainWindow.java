@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
 
 /**
  * SwingMainWindow implements the main debugger application window as a stand-alone Swing application.
@@ -76,6 +77,12 @@ public class SwingMainWindow implements MainWindow<Component>
     {
         frame.getContentPane().add(component, DebuggerLayout.CENTER);
         frame.pack();
+    }
+
+    /** {@inheritDoc} */
+    public PaneController getCentrePaneController()
+    {
+        return new SwingPaneController(layout, DebuggerLayout.CENTER);
     }
 
     /** {@inheritDoc} */

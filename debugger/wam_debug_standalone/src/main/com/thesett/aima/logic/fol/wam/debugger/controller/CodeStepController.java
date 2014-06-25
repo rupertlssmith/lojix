@@ -80,6 +80,7 @@ public class CodeStepController implements ControllerLifecycle
         grid = componentFactory.createTextGrid();
         grid.insert("test", 1, 1);
         mainWindow.showCentrePane(componentFactory.createTextGridPanel(grid, null));
+        mainWindow.getCentrePaneController().showVerticalScrollBar();
 
         // Build a table model on the text grid, to display the code in.
         table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);
