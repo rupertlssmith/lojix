@@ -92,8 +92,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
             new WAMEngine(parser, machine, compiler, machine);
 
         // Attach the debugger to the machine.
-        /*SimpleMonitor monitor = new SimpleMonitor();
-        machine.attachMonitor(monitor);*/
+        SimpleMonitor monitor = new SimpleMonitor();
+        machine.attachMonitor(monitor);
 
         // Add all tests defined in the BasicUnificationTestBase class
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(

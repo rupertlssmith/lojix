@@ -15,7 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.machine;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
