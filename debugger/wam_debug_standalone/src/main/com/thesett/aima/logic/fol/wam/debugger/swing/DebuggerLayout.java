@@ -262,26 +262,6 @@ public class DebuggerLayout implements LayoutManager
         }
     }
 
-    /**
-     * Adds a vertical scroll bar to the named component.
-     *
-     * @param name The component name to add the scroll bar to.
-     */
-    public void addVerticalScrollBar(String name)
-    {
-        verticalScrollBars.add(name);
-    }
-
-    /**
-     * Adds a horizontal scroll bar to the named component.
-     *
-     * @param name The component name to add the scroll bar to.
-     */
-    public void addHorizontalScrollBar(String name)
-    {
-        horizontalScrollBars.add(name);
-    }
-
     /** Keeps the set of flags indicating which window components are present, up-to-date. */
     private void updatePresentComponentFlags()
     {

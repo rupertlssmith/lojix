@@ -19,10 +19,14 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.MouseInputListener;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
+import com.thesett.aima.logic.fol.wam.debugger.swing.DiscreetScrollBarUI;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
@@ -103,7 +107,14 @@ public class SwingComponentFactory implements ComponentFactory<Component>
             textPane.addTextGridMouseListener(mouseHandler);
         }
 
-        return textPane;
+        JScrollPane scrollPane =
+            new JScrollPane(textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        return scrollPane;
     }
 
     /** {@inheritDoc} */

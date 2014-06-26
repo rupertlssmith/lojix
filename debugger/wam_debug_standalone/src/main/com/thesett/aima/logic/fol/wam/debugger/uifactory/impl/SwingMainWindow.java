@@ -48,6 +48,18 @@ public class SwingMainWindow implements MainWindow<Component>
     /** The component factory used to build UI elements. */
     private final ComponentFactory<Component> factory;
 
+    /** The centre component. */
+    private Component centreComponent;
+
+    /** The console component. */
+    private Component consoleComponent;
+
+    /** The left component. */
+    private Component leftComponent;
+
+    /** The right component. */
+    private Component rightComponent;
+
     /**
      * Creates the main debugger window, implement as a standalone Swing application window.
      *
@@ -77,12 +89,14 @@ public class SwingMainWindow implements MainWindow<Component>
     {
         frame.getContentPane().add(component, DebuggerLayout.CENTER);
         frame.pack();
+
+        centreComponent = component;
     }
 
     /** {@inheritDoc} */
-    public PaneController getCentrePaneController()
+    public PaneController getCentreController()
     {
-        return new SwingPaneController(layout, DebuggerLayout.CENTER);
+        return new SwingPaneController(centreComponent);
     }
 
     /** {@inheritDoc} */
@@ -91,6 +105,8 @@ public class SwingMainWindow implements MainWindow<Component>
         showHorizontalBar();
         frame.getContentPane().add(component, DebuggerLayout.CONSOLE);
         frame.pack();
+
+        consoleComponent = component;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +115,8 @@ public class SwingMainWindow implements MainWindow<Component>
         showLeftBar();
         frame.getContentPane().add(component, DebuggerLayout.LEFT_PANE);
         frame.pack();
+
+        leftComponent = component;
     }
 
     /** {@inheritDoc} */
@@ -107,6 +125,8 @@ public class SwingMainWindow implements MainWindow<Component>
         showRightBar();
         frame.getContentPane().add(component, DebuggerLayout.RIGHT_PANE);
         frame.pack();
+
+        rightComponent = component;
     }
 
     /** Creates a horizontal grip-able bar for adjusting the console height. */

@@ -15,7 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
-import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
+import java.awt.Component;
+
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
 
 /**
@@ -30,30 +34,34 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
  */
 public class SwingPaneController implements PaneController
 {
-    private final DebuggerLayout debuggerLayout;
-    private final String layout;
+    /** Holds the component this is a controller for. */
+    private final Component component;
+
+    /** Holds the component scroll pane, if it is of the scroll pane type. */
+    private final JScrollPane scrollPane;
 
     /**
      * Creates a child pane controller for Swing components.
      *
-     * @param debuggerLayout The layout manager,
-     * @param layout         The layout position.
+     * @param component
      */
-    public SwingPaneController(DebuggerLayout debuggerLayout, String layout)
+    public SwingPaneController(Component component)
     {
-        this.debuggerLayout = debuggerLayout;
-        this.layout = layout;
+        this.component = component;
+        scrollPane = (component instanceof JScrollPane) ? (JScrollPane) component : null;
     }
 
     /** {@inheritDoc} */
     public void showVerticalScrollBar()
     {
-        debuggerLayout.addVerticalScrollBar(layout);
+        if (scrollPane != null)
+        {
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        }
     }
 
     /** {@inheritDoc} */
     public void showHorizontalScrollBar()
     {
-        debuggerLayout.addHorizontalScrollBar(layout);
     }
 }
