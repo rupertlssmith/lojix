@@ -138,13 +138,13 @@ public class JTextGrid extends JComponent implements Scrollable
     /** {@inheritDoc} */
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
     {
-        return 10;
+        return charHeight;
     }
 
     /** {@inheritDoc} */
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction)
     {
-        return 10;
+        return charHeight * 4;
     }
 
     /** {@inheritDoc} */

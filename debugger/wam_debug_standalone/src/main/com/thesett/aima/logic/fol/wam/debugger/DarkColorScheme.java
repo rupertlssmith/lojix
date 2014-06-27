@@ -68,14 +68,20 @@ public class DarkColorScheme implements ColorScheme
     }
 
     /** {@inheritDoc} */
-    public Color getActiveBackground()
+    public Color getUserWorkingBackground()
     {
         return Color.BLACK;
     }
 
     /** {@inheritDoc} */
-    public Color getInactiveBackground()
+    public Color getToolingBackground()
     {
         return Color.DARK_GRAY;
+    }
+
+    /** {@inheritDoc} */
+    public Color getToolingActiveBackground()
+    {
+        return Color.LIGHT_GRAY;
     }
 }

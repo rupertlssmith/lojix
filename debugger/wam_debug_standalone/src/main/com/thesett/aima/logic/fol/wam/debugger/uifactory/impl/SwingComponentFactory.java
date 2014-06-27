@@ -25,8 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.MouseInputListener;
 
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.DiscreetScrollBarUI;
+import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
@@ -92,7 +92,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     {
         JTextGrid textPane = new JTextGrid();
 
-        textPane.setBackground(colorScheme.getActiveBackground());
+        textPane.setBackground(colorScheme.getUserWorkingBackground());
         textPane.setForeground(colorScheme.getMainText());
         textPane.setAutoscrolls(true);
 
@@ -110,9 +110,10 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         JScrollPane scrollPane =
             new JScrollPane(textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        //scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
-        //scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(colorScheme.getUserWorkingBackground());
 
         return scrollPane;
     }
@@ -121,7 +122,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     public Component createGripPanel(MotionDelta motionDelta, boolean vertical)
     {
         JPanel vbar = new JPanel();
-        vbar.setBackground(colorScheme.getInactiveBackground());
+        vbar.setBackground(colorScheme.getToolingBackground());
 
         GripComponentMouseMover resizer =
             new GripComponentMouseMover(vbar, motionDelta, vertical ? VERTICAL_RESIZE_CURSOR : HORIZONTAL_RESIZE_CURSOR,
@@ -136,7 +137,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     public Component createBlankPanel()
     {
         JPanel vbar = new JPanel();
-        vbar.setBackground(colorScheme.getActiveBackground());
+        vbar.setBackground(colorScheme.getUserWorkingBackground());
         vbar.setForeground(colorScheme.getDisabledText());
 
         return vbar;

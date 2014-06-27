@@ -76,12 +76,19 @@ public interface ColorScheme
      *
      * @return A background color for active screen areas.
      */
-    Color getActiveBackground();
+    Color getUserWorkingBackground();
 
     /**
-     * Provides a background color for inactive screen areas.
+     * Provides a background color for tooling screen areas.
      *
-     * @return A background color for inactive screen areas.
+     * @return A background color for tooling screen areas.
      */
-    Color getInactiveBackground();
+    Color getToolingBackground();
+
+    /**
+     * Provides a background color for tooling active screen areas.
+     *
+     * @return A background color for tooling active screen areas.
+     */
+    Color getToolingActiveBackground();
 }

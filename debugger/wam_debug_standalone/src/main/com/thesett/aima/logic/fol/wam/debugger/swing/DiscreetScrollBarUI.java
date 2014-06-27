@@ -15,12 +15,12 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.swing;
 
-import java.awt.Container;
+import java.awt.Adjustable;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.Rectangle;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
@@ -31,73 +31,177 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Render scroll bar track. </td></tr>
- * <tr><td> Render scroll bad position indicator. </td></tr>
+ * <tr><td> Render scroll bar position indicator. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public class DiscreetScrollBarUI extends BasicScrollBarUI
 {
+    /** The thickness of the scroll bar. */
+    public static final int TICKNESS = 12;
+
+    /** Provides the colors. */
     private final ColorScheme colorScheme;
 
+    /**
+     * Creates a discreet scroll bar renderer.
+     *
+     * @param colorScheme The color scheme to use.
+     */
     public DiscreetScrollBarUI(ColorScheme colorScheme)
     {
         this.colorScheme = colorScheme;
+
     }
 
     /** {@inheritDoc} */
-    public void layoutContainer(Container parent)
+    public void installUI(JComponent c)
     {
-        Dimension sbSize = parent.getSize();
-        Insets sbInsets = parent.getInsets();
-
-        int x = sbInsets.left;
-        int y = sbInsets.top;
-        int width = sbSize.width - (sbInsets.right + sbInsets.left);
-        int height = sbSize.height - (sbInsets.top + sbInsets.bottom);
-
-        trackRect.setBounds(x, y, width, height);
+        super.installUI(c);
+        scrollbar.setFocusable(false);
     }
 
     /** {@inheritDoc} */
-    protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds)
+    public Dimension getMaximumSize(JComponent c)
     {
-        g.setColor(colorScheme.getInactiveBackground());
-        g.fillRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height);
+        int thickness = TICKNESS;
 
-        /*if (this.trackHighlight == BasicScrollBarUI.DECREASE_HIGHLIGHT)
-        {
-            this.paintDecreaseHighlight(g);
-        }
-        else if (this.trackHighlight == BasicScrollBarUI.INCREASE_HIGHLIGHT)
-        {
-            this.paintIncreaseHighlight(g);
-        }*/
+        return new Dimension(thickness, thickness);
+    }
+
+    /** {@inheritDoc} */
+    public Dimension getMinimumSize(JComponent c)
+    {
+        return getMaximumSize(c);
+    }
+
+    /** {@inheritDoc} */
+    public Dimension getPreferredSize(JComponent c)
+    {
+        return getMaximumSize(c);
+    }
+
+    /** {@inheritDoc} */
+    public boolean getSupportsAbsolutePositioning()
+    {
+        return true;
+    }
+
+    /** {@inheritDoc} */
+    protected void installListeners()
+    {
+        super.installListeners();
+    }
+
+    /** {@inheritDoc} */
+    protected void uninstallListeners()
+    {
+        super.uninstallListeners();
+    }
+
+    /** {@inheritDoc} */
+    protected void paintTrack(Graphics g, JComponent c, Rectangle bounds)
+    {
+        g.setColor(colorScheme.getToolingBackground());
+        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /** {@inheritDoc} */
     protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds)
     {
-        if (thumbBounds.isEmpty() || !this.scrollbar.isEnabled())
+        if (thumbBounds.isEmpty() || !scrollbar.isEnabled())
         {
             return;
         }
 
         g.translate(thumbBounds.x, thumbBounds.y);
-        g.setColor(this.thumbDarkShadowColor);
-        g.drawOval(2, 0, 14, 14);
-        g.setColor(this.thumbColor);
-        g.fillOval(2, 0, 14, 14);
-        g.setColor(this.thumbHighlightColor);
-        g.setColor(this.thumbLightShadowColor);
+
+        final boolean vertical = isVertical();
+        int hgap = vertical ? 2 : 1;
+        int vgap = vertical ? 1 : 2;
+
+        int w = thumbBounds.width - (hgap * 2);
+        int h = thumbBounds.height - (vgap * 2);
+
+        // leave one pixel between thumb and right or bottom edge
+        if (vertical)
+        {
+            h -= 1;
+        }
+        else
+        {
+            w -= 1;
+        }
+
+        g.setColor(colorScheme.getToolingActiveBackground());
+        g.fillRect(hgap + 1, vgap + 1, w - 1, h - 1);
+
+        g.setColor(colorScheme.getToolingActiveBackground());
+        g.drawRoundRect(hgap, vgap, w, h, 3, 3);
         g.translate(-thumbBounds.x, -thumbBounds.y);
     }
 
-    protected void installComponents()
+    /** {@inheritDoc} */
+    protected Dimension getMinimumThumbSize()
     {
+        final int thickness = TICKNESS;
+
+        return isVertical() ? new Dimension(thickness, thickness * 2) : new Dimension(thickness * 2, thickness);
     }
 
-    protected void uninstallComponents()
+    /** {@inheritDoc} */
+    protected JButton createIncreaseButton(int orientation)
     {
+        return new InvisibleButton();
+    }
+
+    /** {@inheritDoc} */
+    protected JButton createDecreaseButton(int orientation)
+    {
+        return new InvisibleButton();
+    }
+
+    /**
+     * Checks if the scroll bar is a vertical one.
+     *
+     * @return <tt>true</tt> iff the scroll bar is vertical.
+     */
+    private boolean isVertical()
+    {
+        return scrollbar.getOrientation() == Adjustable.VERTICAL;
+    }
+
+    /**
+     * InvisibleButton is a button with zero size. It is used because the {@link BasicScrollBarUI} component expects to
+     * have up and down buttons. Replacing these with zero sized buttons allows the layout algorithm to be re-used from
+     * there without having to restructure it.
+     */
+    private static class InvisibleButton extends JButton
+    {
+        /** Creates an invisible button. */
+        private InvisibleButton()
+        {
+            setFocusable(false);
+            setRequestFocusEnabled(false);
+        }
+
+        /** {@inheritDoc} */
+        public Dimension getMaximumSize()
+        {
+            return new Dimension(0, 0);
+        }
+
+        /** {@inheritDoc} */
+        public Dimension getPreferredSize()
+        {
+            return getMaximumSize();
+        }
+
+        /** {@inheritDoc} */
+        public Dimension getMinimumSize()
+        {
+            return getMaximumSize();
+        }
     }
 }
