@@ -20,6 +20,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.SortedMap;
 
 import javax.swing.JComponent;
+import javax.swing.Scrollable;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.StyleConstants;
@@ -48,7 +50,7 @@ import com.thesett.text.api.TextGridListener;
  *
  * @author Rupert Smith
  */
-public class JTextGrid extends JComponent
+public class JTextGrid extends JComponent implements Scrollable
 {
     /** Flag to indicate that anti-aliasing and quality rendering should be used. */
     private boolean useAntiAliasing = true;
@@ -77,10 +79,12 @@ public class JTextGrid extends JComponent
     /** {@inheritDoc} */
     public Dimension getPreferredSize()
     {
-        Dimension d = super.getPreferredSize();
+        /*Dimension d = super.getPreferredSize();
         d = (d == null) ? new Dimension(400, 400) : d;
 
-        return d;
+        return d;*/
+
+        return computeGridSize();
     }
 
     /**
@@ -125,6 +129,36 @@ public class JTextGrid extends JComponent
         textGridMouseMotionListeners.add(listener);
     }
 
+    /** {@inheritDoc} */
+    public Dimension getPreferredScrollableViewportSize()
+    {
+        return getPreferredSize();
+    }
+
+    /** {@inheritDoc} */
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
+    {
+        return 10;
+    }
+
+    /** {@inheritDoc} */
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction)
+    {
+        return 10;
+    }
+
+    /** {@inheritDoc} */
+    public boolean getScrollableTracksViewportWidth()
+    {
+        return false;
+    }
+
+    /** {@inheritDoc} */
+    public boolean getScrollableTracksViewportHeight()
+    {
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -133,10 +167,17 @@ public class JTextGrid extends JComponent
     protected void paintComponent(Graphics g)
     {
         Graphics2D graphics2D = (Graphics2D) g.create();
+        Rectangle clipRect = (Rectangle) g.getClip();
+
+        // Work out the area to be painted in grid coordinates against the clipping rectangle.
+        int startCol = xToCol(clipRect.x);
+        int startRow = yToRow(clipRect.y);
+        int cols = xToCol(clipRect.x + clipRect.width);
+        int rows = yToRow(clipRect.y + clipRect.height);
 
         graphics2D.setFont(getFont());
         graphics2D.setColor(getBackground());
-        graphics2D.fillRect(0, 0, getWidth(), getHeight());
+        graphics2D.fillRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
 
         initializeFontMetrics();
 
@@ -145,9 +186,6 @@ public class JTextGrid extends JComponent
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         }
-
-        int cols = xToCol(getWidth());
-        int rows = yToRow(getHeight());
 
         SortedMap<Integer, Integer> hSeps = model.getHorizontalSeparators();
         int hSepOffset = 0;
@@ -185,24 +223,55 @@ public class JTextGrid extends JComponent
                     vSeps.remove(vNextSep);
                 }
 
-                char character = model.getCharAt(col, row);
+                // Only render if within the clip rectangle
+                if ((col >= startCol) && (row >= startRow))
+                {
+                    char character = model.getCharAt(col, row);
 
-                AttributeSet attributes = model.getAttributeAt(col, row);
+                    AttributeSet attributes = model.getAttributeAt(col, row);
 
-                Color bgColor =
-                    (attributes != null) ? (Color) attributes.getAttribute(StyleConstants.Background) : null;
-                bgColor = (bgColor == null) ? getBackground() : bgColor;
+                    Color bgColor =
+                        (attributes != null) ? (Color) attributes.getAttribute(StyleConstants.Background) : null;
+                    bgColor = (bgColor == null) ? getBackground() : bgColor;
 
-                graphics2D.setColor(bgColor);
-                graphics2D.fillRect(colToX(col) + vSepOffset, rowToY(row) + hSepOffset, charWidth, charHeight);
+                    graphics2D.setColor(bgColor);
+                    graphics2D.fillRect(colToX(col) + vSepOffset, rowToY(row) + hSepOffset, charWidth, charHeight);
 
-                graphics2D.setColor(getForeground());
-                graphics2D.drawString(Character.toString(character), colToX(col) + vSepOffset,
-                    (rowToY((row + 1))) - descent + hSepOffset);
+                    graphics2D.setColor(getForeground());
+                    graphics2D.drawString(Character.toString(character), colToX(col) + vSepOffset,
+                        (rowToY((row + 1))) - descent + hSepOffset);
+                }
             }
         }
 
         graphics2D.dispose();
+    }
+
+    /**
+     * Computes the rendered dimensions of the text grid model, on screen. Used for sizing this component.
+     *
+     * @return The on-screen dimensions of the rendered text grid model.
+     */
+    protected Dimension computeGridSize()
+    {
+        int cols = model.getWidth();
+        int rows = model.getHeight();
+
+        int horizSeparatorSize = 0;
+
+        for (int size : model.getHorizontalSeparators().values())
+        {
+            horizSeparatorSize += size;
+        }
+
+        int vertSeparatorSize = 0;
+
+        for (int size : model.getVerticalSeparators().values())
+        {
+            vertSeparatorSize += size;
+        }
+
+        return new Dimension(vertSeparatorSize + colToX(cols), horizSeparatorSize + rowToY(rows));
     }
 
     private void initializeFontMetrics()
@@ -254,13 +323,16 @@ public class JTextGrid extends JComponent
     }
 
     /**
-     * Listens for changes to the model, and initiates a repaint.
+     * Listens for changes to the model, and initiates a revalidate and repaint. Revalidate is needed because the size
+     * of the table may change, which will change the components preferred size. Repaint is needed to force re-rendering
+     * the tables contents.
      */
     private class ModelListener implements TextGridListener
     {
         /** {@inheritDoc} */
         public void changedUpdate(TextGridEvent event)
         {
+            JTextGrid.this.revalidate();
             JTextGrid.this.repaint();
         }
     }

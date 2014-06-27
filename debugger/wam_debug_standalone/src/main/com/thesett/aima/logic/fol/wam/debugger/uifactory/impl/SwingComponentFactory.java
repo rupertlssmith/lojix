@@ -110,8 +110,8 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         JScrollPane scrollPane =
             new JScrollPane(textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
-        scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        //scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        //scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         return scrollPane;
