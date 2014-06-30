@@ -274,6 +274,11 @@ public class JTextGrid extends JComponent implements Scrollable
         return new Dimension(vertSeparatorSize + colToX(cols), horizSeparatorSize + rowToY(rows));
     }
 
+    /**
+     * Sets up metrics relating to the size of the font used to display the text grid. This only needs to be done once
+     * but this method can be called many times as it is guarded by an initialization flag to prevent these being
+     * calculated many times.
+     */
     private void initializeFontMetrics()
     {
         if (!fontMetricsInitialized)
@@ -286,6 +291,11 @@ public class JTextGrid extends JComponent implements Scrollable
         }
     }
 
+    /**
+     * Notifies event listeners attached to the text grid of a mouse motion event on the grid.
+     *
+     * @param switchFunction A function to apply to mouse listeners to effect the notification against them.
+     */
     private void fireTextGridMouseMotionEvent(Function<MouseMotionListener, Object> switchFunction)
     {
         for (MouseMotionListener listener : textGridMouseMotionListeners)
@@ -294,6 +304,11 @@ public class JTextGrid extends JComponent implements Scrollable
         }
     }
 
+    /**
+     * Notifies event listeners attached to the text grid of a mouse event on the grid.
+     *
+     * @param switchFunction A function to apply to mouse listeners to effect the notification against them.
+     */
     private void fireTextGridMouseEvent(Function<MouseListener, Object> switchFunction)
     {
         for (MouseListener listener : textGridMouseListeners)
@@ -302,21 +317,49 @@ public class JTextGrid extends JComponent implements Scrollable
         }
     }
 
+    /**
+     * Converts a column within the text grid space to an x coordinate within the component space.
+     *
+     * @param  col The column to convert to an x coordinate.
+     *
+     * @return The corresponding x coordinate within the component space.
+     */
     private int colToX(int col)
     {
         return col * charWidth;
     }
 
+    /**
+     * Converts a row within the text grid space to an y coordinate within the component space.
+     *
+     * @param  row The row to convert to an y coordinate.
+     *
+     * @return The corresponding y coordinate within the component space.
+     */
     private int rowToY(int row)
     {
         return row * charHeight;
     }
 
+    /**
+     * Converts an x coordinate within the component space to a column within the text grid space.
+     *
+     * @param  x The x coordinate to convert to a column.
+     *
+     * @return The corresponding column in the text grid space.
+     */
     private int xToCol(int x)
     {
         return x / charWidth;
     }
 
+    /**
+     * Converts a y coordinate within the component space to a row within the text grid space.
+     *
+     * @param  y The y coordinate to convert to a row.
+     *
+     * @return The corresponding row in the text grid space.
+     */
     private int yToRow(int y)
     {
         return y / charHeight;
@@ -342,9 +385,13 @@ public class JTextGrid extends JComponent implements Scrollable
      */
     private class MouseHandler extends MouseInputAdapter
     {
+        /** The current row that the mouse has moved to. */
         int curRow = -1;
+
+        /** The current column that the mouse has moved to. */
         int curCol = -1;
 
+        /** Creates the mouse handler for mouse activity within the text grid. */
         private MouseHandler()
         {
             JTextGrid.this.initializeFontMetrics();

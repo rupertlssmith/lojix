@@ -19,8 +19,8 @@ import java.awt.Color;
 import java.util.Iterator;
 
 /**
- * ColorInterpolator steps between two colors using linear interpolation. The resulting sequence
- * of colors is provided as an iterator over colors.
+ * ColorInterpolator steps between two colors using linear interpolation. The resulting sequence of colors is provided
+ * as an iterator over colors.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -80,6 +80,7 @@ public class ColorInterpolator implements Iterable<Color>
      */
     private class ColorIterator implements Iterator<Color>
     {
+        /** The color components for the current iteration. */
         private float[] rgbComponents = new float[4];
 
         /** {@inheritDoc} */

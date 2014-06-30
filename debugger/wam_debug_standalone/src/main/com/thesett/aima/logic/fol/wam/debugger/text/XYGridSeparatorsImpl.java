@@ -21,9 +21,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
+ * XYGridSeparatorsImpl implements a set of horizontal and vertical separators by position within a grid.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> </td></tr>
+ * <tr><td> Allow horizontal and vertical separators to be inserted into a grid. </td></tr>
+ * <tr><td> Provide horizontal and vertical separator positions within the grid. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -66,23 +69,34 @@ public class XYGridSeparatorsImpl implements XYGridSeparators
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Separators implements a set of separators without regard to whether they are horizontal or vertical, as the same
+     * logic is used in both instances.
+     */
     private class Separators
     {
         /** A set of separators sorted in ascending order of position. */
         private Map<Integer, Integer> separators = new HashMap<Integer, Integer>();
 
+        /**
+         * Adds a new separator.
+         *
+         * @param position  The position to add the separator.
+         * @param pixelSize The pixel size of the separator.
+         */
         public void insertSeparator(int position, int pixelSize)
         {
             separators.put(position, pixelSize);
         }
 
+        /**
+         * Provides a listing of all of the separators in increasing order of position.
+         *
+         * @return A listing of all of the separators in increasing order of position.
+         */
         public SortedMap<Integer, Integer> getSeparators()
         {
             return new TreeMap<Integer, Integer>(separators);
-        }
-
-        public void mergeIn(SortedMap<Integer, Integer> separators)
-        {
         }
     }
 }

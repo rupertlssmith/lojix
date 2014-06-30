@@ -19,7 +19,6 @@ import javax.swing.event.MouseInputListener;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
-import com.thesett.text.api.model.TextGridModel;
 
 /**
  * ComponentFactory builds UI components that are compatible with other elements of the UI.
@@ -56,7 +55,7 @@ public interface ComponentFactory<C>
      * Creates an non-editable text panel.
      *
      * @param  model        The underlying document data model.
-     * @param  mouseHandler
+     * @param  mouseHandler A mount input handler.
      *
      * @return An editor panel.
      */

@@ -63,7 +63,10 @@ public class ByteCodeMonitor
     /** A column labeled view onto the register table. */
     private DoubleKeyedMap<String, Integer, String> labeledTable;
 
+    /** The current table row being updated. */
     private int row = 0;
+
+    /** The current code address being rendered. */
     private int address = 0;
 
     /**

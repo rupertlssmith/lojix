@@ -39,7 +39,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public class DiscreetScrollBarUI extends BasicScrollBarUI
 {
     /** The thickness of the scroll bar. */
-    public static final int TICKNESS = 12;
+    public static final int THICKNESS = 12;
 
     /** Provides the colors. */
     private final ColorScheme colorScheme;
@@ -65,7 +65,7 @@ public class DiscreetScrollBarUI extends BasicScrollBarUI
     /** {@inheritDoc} */
     public Dimension getMaximumSize(JComponent c)
     {
-        int thickness = TICKNESS;
+        int thickness = THICKNESS;
 
         return new Dimension(thickness, thickness);
     }
@@ -145,7 +145,7 @@ public class DiscreetScrollBarUI extends BasicScrollBarUI
     /** {@inheritDoc} */
     protected Dimension getMinimumThumbSize()
     {
-        final int thickness = TICKNESS;
+        final int thickness = THICKNESS;
 
         return isVertical() ? new Dimension(thickness, thickness * 2) : new Dimension(thickness * 2, thickness);
     }

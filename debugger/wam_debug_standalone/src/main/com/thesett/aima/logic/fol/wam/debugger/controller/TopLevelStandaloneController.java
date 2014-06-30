@@ -106,6 +106,11 @@ public class TopLevelStandaloneController implements ControllerLifecycle
         registerMonitorController.close();
     }
 
+    /**
+     * Provides the underlying DPI monitor that this controller is built around.
+     *
+     * @return The underlying DPI monitor for the machine being debugged.
+     */
     public MachineMonitor getMachineMonitor()
     {
         return machineMonitor;

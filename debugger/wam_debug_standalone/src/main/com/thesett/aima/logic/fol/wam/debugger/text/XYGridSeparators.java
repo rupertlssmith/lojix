@@ -49,12 +49,16 @@ public interface XYGridSeparators
     /**
      * Provides a sorted map of the positions and sizes of the horizontal separators in the grid. This will also include
      * any separators inserted by child grids or tables.
+     *
+     * @return A listing of the horizontal separators by increasing order of position.
      */
     SortedMap<Integer, Integer> getHorizontalSeparators();
 
     /**
      * Provides a sorted map of the positions and sizes of the vertical separators in the grid. This will also include
      * any separators inserted by child grids or tables.
+     *
+     * @return A listing of the vertical separators by increasing order of position.
      */
     SortedMap<Integer, Integer> getVerticalSeparators();
 }

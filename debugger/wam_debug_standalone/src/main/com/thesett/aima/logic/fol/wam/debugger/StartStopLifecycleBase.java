@@ -24,35 +24,63 @@ import com.thesett.common.util.concurrent.ShutdownHookable;
 import com.thesett.common.util.concurrent.StartStopLifecycle;
 
 /**
+ * StartStopLifecycleBase provides a base implementation of {@link StartStopLifecycle}, for controlling the run
+ * lifecycle of threaded resources.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td>
+ * <tr><td>Start the resource running.
+ * <tr><td>Cleanly shut-down the resource once all its work is finished.
+ * <tr><td>Immediately shut-down the resource without completing all of its work.
+ * <tr><td>Check if a resource has been requested to shut-down.
+ * <tr><td>Check if a resource has completely stopped running.
+ * <tr><td>Wait for a resource to completely stop running.
+ * <tr><td>Make transitions between lifecycle states.
+ * <tr><td>Provide a shutdown hook, to shut down the resource.
  * </table></pre>
  *
  * @author Rupert Smith
  */
 public abstract class StartStopLifecycleBase implements StartStopLifecycle, ShutdownHookable
 {
+    /** Defines the possible lifecycle states. */
     public enum State
     {
-        Initial, Running, Shutdown, Terminated
+        /** Resource created, not yet running. */
+        Initial,
+
+        /** Resource running. */
+        Running,
+
+        /** Resource requested to shut down. */
+        Shutdown,
+
+        /** Resource terminated. */
+        Terminated
     }
 
+    /** The current lifecycle state. */
     protected volatile State state = State.Initial;
 
+    /** Lock used to ensure threads are well-behaved around state changes. */
     protected ReadWriteLock stateLock = new ReentrantReadWriteLock();
+
+    /** Condition used to signal changes of state. */
     protected Condition stateChange = stateLock.writeLock().newCondition();
 
+    /** {@inheritDoc} */
     public void shutdown()
     {
         terminated();
     }
 
+    /** {@inheritDoc} */
     public void shutdownNow()
     {
         terminated();
     }
 
+    /** {@inheritDoc} */
     public Thread getShutdownHook()
     {
         return new Thread(new Runnable()
@@ -64,6 +92,10 @@ public abstract class StartStopLifecycleBase implements StartStopLifecycle, Shut
             });
     }
 
+    /**
+     * Makes a transaction from the Initial state to the Running state, or no transition if the current state is not
+     * Initial.
+     */
     public void running()
     {
         try
@@ -83,6 +115,10 @@ public abstract class StartStopLifecycleBase implements StartStopLifecycle, Shut
 
     }
 
+    /**
+     * Makes a transaction from the Running state to the Shutdown state, or no transition if the current state is not
+     * Running.
+     */
     public void terminating()
     {
         try
@@ -102,6 +138,10 @@ public abstract class StartStopLifecycleBase implements StartStopLifecycle, Shut
 
     }
 
+    /**
+     * Makes a transaction from the Running or Shutdown state to the Terminated state, or no transition if the current
+     * state is not Running or Shutdown.
+     */
     public void terminated()
     {
         try
@@ -121,16 +161,19 @@ public abstract class StartStopLifecycleBase implements StartStopLifecycle, Shut
 
     }
 
+    /** {@inheritDoc} */
     public boolean isShutdown()
     {
         return ((state == State.Shutdown) || (state == State.Terminated));
     }
 
+    /** {@inheritDoc} */
     public boolean isTerminated()
     {
         return state == State.Terminated;
     }
 
+    /** {@inheritDoc} */
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
     {
         try

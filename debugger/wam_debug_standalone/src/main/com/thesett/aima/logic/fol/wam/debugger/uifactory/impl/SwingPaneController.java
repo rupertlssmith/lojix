@@ -43,7 +43,7 @@ public class SwingPaneController implements PaneController
     /**
      * Creates a child pane controller for Swing components.
      *
-     * @param component
+     * @param component The component that his is a controller for.
      */
     public SwingPaneController(Component component)
     {
@@ -63,5 +63,9 @@ public class SwingPaneController implements PaneController
     /** {@inheritDoc} */
     public void showHorizontalScrollBar()
     {
+        if (scrollPane != null)
+        {
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        }
     }
 }

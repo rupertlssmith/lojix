@@ -94,7 +94,12 @@ public class EnhancedTextTableImpl extends TextTableImpl implements EnhancedText
         return separators.getVerticalSeparators();
     }
 
-    /** Notifies all interested listeners of an update to this model. */
+    /**
+     * Notifies all interested listeners of an update to this model.
+     *
+     * @param col The column that changed, or <tt>-1</tt> if change not applicable to columns.
+     * @param row The row that changed, or <tt>-1</tt> if change not applicable to rows.
+     */
     protected void updateListenersOnAttributeChange(int col, int row)
     {
         TextTableEvent event = new TextTableEvent(this, row, col, true);
