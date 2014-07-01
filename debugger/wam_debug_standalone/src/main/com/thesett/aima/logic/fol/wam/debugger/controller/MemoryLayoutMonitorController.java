@@ -18,6 +18,7 @@ package com.thesett.aima.logic.fol.wam.debugger.controller;
 import java.awt.Color;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.swing.CellBackgroundColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;

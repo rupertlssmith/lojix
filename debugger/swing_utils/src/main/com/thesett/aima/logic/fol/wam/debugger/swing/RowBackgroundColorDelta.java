@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.controller;
+package com.thesett.aima.logic.fol.wam.debugger.swing;
 
 import java.awt.Color;
 
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 

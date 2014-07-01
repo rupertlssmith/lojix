@@ -22,6 +22,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
+import com.thesett.aima.logic.fol.wam.debugger.swing.RowBackgroundColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
