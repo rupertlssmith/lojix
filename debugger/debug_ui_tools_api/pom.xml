@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.thesett</groupId>
-    <artifactId>wam_debug_standalone</artifactId>
-    <name>wam_debug_standalone</name>
+    <artifactId>debug_ui_tools_api</artifactId>
+    <name>debug_ui_tools_api</name>
     <version>0.3-SNAPSHOT</version>
 
     <description>Standalone WAM debugger tool.</description>
