@@ -17,24 +17,24 @@ package com.thesett.aima.logic.fol.wam.debugger.text;
 
 import java.util.EventListener;
 
-import com.thesett.text.api.TextTableEvent;
+import com.thesett.text.api.TextGridEvent;
 
 /**
- * TextTableSelectionListener defines a callback to respond to selection events within a text table.
+ * TextGridSelectionListener defines a callback to respond to selection events within a text grid.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities
- * <tr><td> Accept notification that a row or column in a table has been selected. </td></tr>
+ * <tr><td> Accept notification that a row or column in a grid has been selected. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface TextTableSelectionListener extends EventListener
+public interface TextGridSelectionListener extends EventListener
 {
     /**
-     * Accepts notification that part of a text table model has been selected.
+     * Accepts notification that part of a text grid model has been selected.
      *
-     * @param event An event describing the part of text table model selected.
+     * @param event An event describing the part of text grid model selected.
      */
-    void select(TextTableEvent event);
+    void select(TextGridEvent event);
 }

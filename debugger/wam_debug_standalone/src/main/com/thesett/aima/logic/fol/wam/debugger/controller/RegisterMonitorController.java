@@ -20,12 +20,13 @@ import java.awt.Color;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
-import com.thesett.aima.logic.fol.wam.debugger.text.TextTableSelectionListener;
+import com.thesett.aima.logic.fol.wam.debugger.text.TextGridSelectionListener;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.RowBackgroundColorDelta;
+import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextTableModel;
@@ -135,16 +136,16 @@ public class RegisterMonitorController implements ControllerLifecycle
     /**
      * Triggers background color highlighting on user row selection.
      */
-    private class SelectionHandler implements TextTableSelectionListener
+    private class SelectionHandler implements TextGridSelectionListener
     {
         /** {@inheritDoc} */
-        public void select(TextTableEvent e)
+        public void select(TextGridEvent e)
         {
-            int row = e.getRowChanged();
+            int row = e.getRow();
 
             if (row != selectedRow)
             {
-                System.out.println("New mouse selection at : " + e.getColumnChanged() + ", " + row);
+                System.out.println("New mouse selection at : " + e.getColumn() + ", " + row);
 
                 AttributeSet aset = new AttributeSet();
                 aset.put(AttributeSet.BACKGROUND_COLOR, Color.LIGHT_GRAY);

@@ -32,6 +32,12 @@ public class TextGridEvent
     /** The changed model. */
     private final TextGridModel model;
 
+    /** The row affected by this event, or <tt>-1</tt> if not applicable. */
+    private final int row;
+
+    /** The column affected by this event, or <tt>-1</tt> if not applicable. */
+    private final int column;
+
     /**
      * Creates a text grid update event.
      *
@@ -40,6 +46,42 @@ public class TextGridEvent
     public TextGridEvent(TextGridModel model)
     {
         this.model = model;
+        row = -1;
+        column = -1;
+    }
+
+    /**
+     * Creates a text grid update event.
+     *
+     * @param model  The changed model.
+     * @param row    The affected row.
+     * @param column The affected column.
+     */
+    public TextGridEvent(TextGridModel model, int row, int column)
+    {
+        this.model = model;
+        this.row = row;
+        this.column = column;
+    }
+
+    /**
+     * Provides the row affected by this event.
+     *
+     * @return The row affected by this event, or <tt>-1</tt> if not applicable.
+     */
+    public int getRow()
+    {
+        return row;
+    }
+
+    /**
+     * Provides the column affected by this event.
+     *
+     * @return The column affected by this event, or <tt>-1</tt> if not applicable.
+     */
+    public int getColumn()
+    {
+        return column;
     }
 
     /**

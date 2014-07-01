@@ -23,8 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -35,6 +33,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.TextGridSelectionListener;
 import com.thesett.common.util.Function;
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
@@ -69,11 +68,8 @@ public class JTextGrid extends JComponent implements Scrollable
     /** The monospaced character descent. */
     private int descent;
 
-    /** Holds mouse event listeners, that will receive mouse events translated to text grid coordinates. */
-    private Set<MouseListener> textGridMouseListeners = new HashSet<MouseListener>();
-
-    /** Holds mouse motion event listeners, that will receive mouse events translated to text grid coordinates. */
-    private Set<MouseMotionListener> textGridMouseMotionListeners = new HashSet<MouseMotionListener>();
+    /** Holds selection listeners, that will receive mouse events translated to table coordinates. */
+    private Set<TextGridSelectionListener> textGridMouseListeners = new HashSet<TextGridSelectionListener>();
 
     /** {@inheritDoc} */
     public Dimension getPreferredSize()
@@ -102,25 +98,14 @@ public class JTextGrid extends JComponent implements Scrollable
     }
 
     /**
-     * Adds a mouse listener, that will receive translated mouse events in text grid coordinates, instead of screen
+     * Adds a selection listener, that will receive translated mouse events in text grid coordinates, instead of screen
      * coordinates.
      *
-     * @param listener The mouse listener to add.
+     * @param listener The selection listener to add.
      */
-    public synchronized void addTextGridMouseListener(MouseListener listener)
+    public synchronized void addTextTableSelectionListener(TextGridSelectionListener listener)
     {
         textGridMouseListeners.add(listener);
-    }
-
-    /**
-     * Adds a mouse motion listener, that will receive translated mouse events in text grid coordinates, instead of
-     * screen coordinates.
-     *
-     * @param listener The mouse listener to add.
-     */
-    public synchronized void addTextGridMouseMotionListener(MouseMotionListener listener)
-    {
-        textGridMouseMotionListeners.add(listener);
     }
 
     /** {@inheritDoc} */
@@ -224,8 +209,7 @@ public class JTextGrid extends JComponent implements Scrollable
 
                     AttributeSet attributes = model.getAttributeAt(col, row);
 
-                    Color bgColor =
-                        (attributes != null) ? (Color) attributes.get(AttributeSet.BACKGROUND_COLOR) : null;
+                    Color bgColor = (attributes != null) ? (Color) attributes.get(AttributeSet.BACKGROUND_COLOR) : null;
                     bgColor = (bgColor == null) ? getBackground() : bgColor;
 
                     graphics2D.setColor(bgColor);
@@ -286,26 +270,13 @@ public class JTextGrid extends JComponent implements Scrollable
     }
 
     /**
-     * Notifies event listeners attached to the text grid of a mouse motion event on the grid.
-     *
-     * @param switchFunction A function to apply to mouse listeners to effect the notification against them.
-     */
-    private void fireTextGridMouseMotionEvent(Function<MouseMotionListener, Object> switchFunction)
-    {
-        for (MouseMotionListener listener : textGridMouseMotionListeners)
-        {
-            switchFunction.apply(listener);
-        }
-    }
-
-    /**
      * Notifies event listeners attached to the text grid of a mouse event on the grid.
      *
      * @param switchFunction A function to apply to mouse listeners to effect the notification against them.
      */
-    private void fireTextGridMouseEvent(Function<MouseListener, Object> switchFunction)
+    private void fireTextGridMouseEvent(Function<TextGridSelectionListener, Object> switchFunction)
     {
-        for (MouseListener listener : textGridMouseListeners)
+        for (TextGridSelectionListener listener : textGridMouseListeners)
         {
             switchFunction.apply(listener);
         }
@@ -392,39 +363,15 @@ public class JTextGrid extends JComponent implements Scrollable
         }
 
         /** {@inheritDoc} */
-        public void mouseMoved(MouseEvent e)
-        {
-            final MouseEvent translatedEvent = translateEvent(e);
-
-            int row = translatedEvent.getX();
-            int col = translatedEvent.getY();
-
-            if ((curRow != row) || (curCol != col))
-            {
-                curRow = row;
-                curCol = col;
-
-                fireTextGridMouseMotionEvent(new Function<MouseMotionListener, Object>()
-                    {
-                        public Object apply(MouseMotionListener mouseMotionListener)
-                        {
-                            mouseMotionListener.mouseMoved(translatedEvent);
-
-                            return null;
-                        }
-                    });
-            }
-        }
-
-        /** {@inheritDoc} */
         public void mousePressed(MouseEvent e)
         {
-            final MouseEvent translatedEvent = translateEvent(e);
-            fireTextGridMouseEvent(new Function<MouseListener, Object>()
+            final TextGridEvent translatedEvent = translateEvent(e);
+
+            fireTextGridMouseEvent(new Function<TextGridSelectionListener, Object>()
                 {
-                    public Object apply(MouseListener mouseListener)
+                    public Object apply(TextGridSelectionListener selectionListener)
                     {
-                        mouseListener.mousePressed(translatedEvent);
+                        selectionListener.select(translatedEvent);
 
                         return null;
                     }
@@ -436,12 +383,11 @@ public class JTextGrid extends JComponent implements Scrollable
          *
          * @param  e The original mouse event.
          *
-         * @return The same mouse event but with translated coordinates.
+         * @return The same event but with translated coordinates and translated to a text table event.
          */
-        private MouseEvent translateEvent(MouseEvent e)
+        private TextGridEvent translateEvent(MouseEvent e)
         {
-            return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), xToCol(e.getX()),
-                yToRow(e.getY()), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+            return new TextGridEvent(model, yToRow(e.getY()), xToCol(e.getX()));
         }
     }
 }
