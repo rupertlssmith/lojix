@@ -88,7 +88,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     }
 
     /** {@inheritDoc} */
-    public Component createTextGridPanel(EnhancedTextGrid model, MouseInputListener mouseHandler)
+    public Component createTextGridPanel(EnhancedTextGrid model)
     {
         JTextGrid textPane = new JTextGrid();
 
@@ -100,12 +100,6 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         textPane.setFont(font);
         textPane.setModel(model);
         textPane.initializeStandardMouseHandling();
-
-        if (mouseHandler != null)
-        {
-            textPane.addTextGridMouseMotionListener(mouseHandler);
-            textPane.addTextGridMouseListener(mouseHandler);
-        }
 
         JScrollPane scrollPane =
             new JScrollPane(textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,

@@ -27,6 +27,12 @@
             <groupId>com.thesett</groupId>
             <artifactId>debug_ui_tools_api</artifactId>
             <version>0.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thesett</groupId>
+            <artifactId>swing_utils</artifactId>
+            <version>0.3-SNAPSHOT</version>
         </dependency>        
     </dependencies>
 

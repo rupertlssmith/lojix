@@ -15,9 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
-import javax.swing.event.MouseInputListener;
-
-import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 
 /**
@@ -54,22 +51,11 @@ public interface ComponentFactory<C>
     /**
      * Creates an non-editable text panel.
      *
-     * @param  model        The underlying document data model.
-     * @param  mouseHandler A mount input handler.
+     * @param  model The underlying document data model.
      *
      * @return An editor panel.
      */
-    C createTextGridPanel(EnhancedTextGrid model, MouseInputListener mouseHandler);
-
-    /**
-     * Creates a grip-able panel for adjusting the screen layout.
-     *
-     * @param  motionDelta The motion controller to attach to the grip-able panel.
-     * @param  vertical    <tt>true</tt> iff the grip-panel is vertically oriented, horizontal otherwise.
-     *
-     * @return A grip-able panel.
-     */
-    C createGripPanel(MotionDelta motionDelta, boolean vertical);
+    C createTextGridPanel(EnhancedTextGrid model);
 
     /**
      * Creates a blank panel for filling empty space.

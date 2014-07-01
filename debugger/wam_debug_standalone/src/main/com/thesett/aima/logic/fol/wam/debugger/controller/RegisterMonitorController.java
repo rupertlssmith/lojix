@@ -92,7 +92,7 @@ public class RegisterMonitorController implements ControllerLifecycle
         grid = componentFactory.createTextGrid();
         grid.insertVerticalSeparator(3, 10);
 
-        mainWindow.showLeftPane(componentFactory.createTextGridPanel(grid, new MouseHandler()));
+        mainWindow.showLeftPane(componentFactory.createTextGridPanel(grid));
 
         // Build a table model on the text grid, and construct a register monitor on the table.
         table = grid.createTable(0, 0, 20, 20);

@@ -46,7 +46,7 @@ public class SwingMainWindow implements MainWindow<Component>
     private DebuggerLayout layout;
 
     /** The component factory used to build UI elements. */
-    private final ComponentFactory<Component> factory;
+    private final SwingComponentFactory factory;
 
     /** The centre component. */
     private Component centreComponent;
@@ -65,7 +65,7 @@ public class SwingMainWindow implements MainWindow<Component>
      *
      * @param factory The component factory used to build UI elements.
      */
-    public SwingMainWindow(ComponentFactory<Component> factory)
+    public SwingMainWindow(SwingComponentFactory factory)
     {
         this.factory = factory;
     }

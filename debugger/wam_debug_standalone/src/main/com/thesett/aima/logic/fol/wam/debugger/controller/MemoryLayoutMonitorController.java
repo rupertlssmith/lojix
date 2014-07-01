@@ -83,7 +83,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
         grid.insertVerticalSeparator(17, 10);
         grid.insertVerticalSeparator(26, 10);
 
-        mainWindow.showConsole(componentFactory.createTextGridPanel(grid, null));
+        mainWindow.showConsole(componentFactory.createTextGridPanel(grid));
 
         // Build a table model on the text grid, and construct a register monitor on the table.
         table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);

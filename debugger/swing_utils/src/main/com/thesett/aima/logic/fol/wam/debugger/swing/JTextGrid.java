@@ -79,11 +79,6 @@ public class JTextGrid extends JComponent implements Scrollable
     /** {@inheritDoc} */
     public Dimension getPreferredSize()
     {
-        /*Dimension d = super.getPreferredSize();
-        d = (d == null) ? new Dimension(400, 400) : d;
-
-        return d;*/
-
         return computeGridSize();
     }
 
