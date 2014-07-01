@@ -28,18 +28,19 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
  * <tr><td> Create a black panel for filling in unused areas of the screen. </td></tr>
  * </table></pre>
  *
- * @param  <C> The type of ui components this factory produces.
+ * @param  <Comp> The type of ui components this factory produces.
+ * @param  <Col>  The type of colors this factory uses.
  *
  * @author Rupert Smith
  */
-public interface ComponentFactory<C>
+public interface ComponentFactory<Comp, Col>
 {
     /**
      * Creates the main debugger window.
      *
      * @return The main debugger window.
      */
-    MainWindow<C> createMainWindow();
+    MainWindow<Comp> createMainWindow();
 
     /**
      * Creates an empty text grid model, that is compatible with this UI factory.
@@ -55,12 +56,19 @@ public interface ComponentFactory<C>
      *
      * @return An editor panel.
      */
-    C createTextGridPanel(EnhancedTextGrid model);
+    Comp createTextGridPanel(EnhancedTextGrid model);
 
     /**
      * Creates a blank panel for filling empty space.
      *
      * @return A blank panel for filling empty space.
      */
-    C createBlankPanel();
+    Comp createBlankPanel();
+
+    /**
+     * Provides a color factory compatible with the components.
+     *
+     * @return The color factory.
+     */
+    ColorFactory<Col> getColorFactory();
 }

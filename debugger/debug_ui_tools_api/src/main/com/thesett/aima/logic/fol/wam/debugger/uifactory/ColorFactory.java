@@ -60,4 +60,14 @@ public interface ColorFactory<C>
      * @return A color.
      */
     C createColor(float red, float green, float blue);
+
+    /**
+     * Creates a new color fader.
+     *
+     * @param  startColor The color to start fading from.
+     * @param  endColor   The color to fade to.
+     *
+     * @return A new color fader.
+     */
+    Fader<C> createFader(C startColor, C endColor);
 }

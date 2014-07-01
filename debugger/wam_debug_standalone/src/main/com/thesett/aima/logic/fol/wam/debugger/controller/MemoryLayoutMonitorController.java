@@ -18,12 +18,12 @@ package com.thesett.aima.logic.fol.wam.debugger.controller;
 import java.awt.Color;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
-import com.thesett.aima.logic.fol.wam.debugger.swing.CellBackgroundColorDelta;
-import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.CellBackgroundColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
@@ -57,7 +57,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
     private MemoryLayoutMonitor monitor;
 
     /** A color fader used to highlight layout value changes. */
-    private Fader fader = new Fader(Color.DARK_GRAY, Color.BLACK);
+    private final Fader fader;
 
     /**
      * Builds the UI controller for the register monitor.
@@ -69,6 +69,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
     {
         this.componentFactory = componentFactory;
         this.mainWindow = mainWindow;
+        this.fader = componentFactory.getColorFactory().createFader(Color.DARK_GRAY, Color.BLACK);
     }
 
     /**

@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.swing;
-
-import java.awt.Color;
+package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 /**
  * ColorDelta provide an interface through which a controller can communicate a color change event. This could be a one
@@ -26,14 +24,16 @@ import java.awt.Color;
  * <tr><td> Accept a color change. </td></tr>
  * </table></pre>
  *
+ * @param  <C> The type of colors used.
+ *
  * @author Rupert Smith
  */
-public interface ColorDelta
+public interface ColorDelta<C>
 {
     /**
      * Accepts an updated color.
      *
      * @param color The new color.
      */
-    void changeColor(Color color);
+    void changeColor(C color);
 }

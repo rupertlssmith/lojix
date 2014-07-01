@@ -32,6 +32,7 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
 import com.thesett.aima.logic.fol.wam.debugger.swing.ToolingColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
@@ -49,7 +50,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
  *
  * @author Rupert Smith
  */
-public class SwingComponentFactory implements ComponentFactory<Component>
+public class SwingComponentFactory implements ComponentFactory<Component, Color>
 {
     /** The default cursor appearance. */
     private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -66,18 +67,22 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     /** The color scheme to apply to user areas within components. */
     private final ColorScheme<Color> colorScheme;
 
-    private final ToolingColorScheme toolingColorScheme = new ToolingColorScheme()
-    {
-        public Color getToolingBackground()
-        {
-            return Color.DARK_GRAY;
-        }
+    /** The color factory. */
+    private final SwingColorFactory colorFactory = new SwingColorFactory();
 
-        public Color getToolingActiveBackground()
+    private final ToolingColorScheme toolingColorScheme =
+        new ToolingColorScheme()
         {
-            return Color.LIGHT_GRAY;
-        }
-    };
+            public Color getToolingBackground()
+            {
+                return Color.DARK_GRAY;
+            }
+
+            public Color getToolingActiveBackground()
+            {
+                return Color.LIGHT_GRAY;
+            }
+        };
 
     /**
      * Creates a component factory that produces Swing components.
@@ -149,5 +154,11 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         vbar.setForeground(colorScheme.getDisabledText());
 
         return vbar;
+    }
+
+    /** {@inheritDoc} */
+    public ColorFactory<Color> getColorFactory()
+    {
+        return colorFactory;
     }
 }

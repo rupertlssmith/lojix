@@ -18,6 +18,7 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 import java.awt.Color;
 
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
 
 /**
  * SwingColorFactory provides a color factory that produces colors that work with AWT and Swing.
@@ -47,5 +48,11 @@ public class SwingColorFactory implements ColorFactory<Color>
     public Color createColor(float red, float green, float blue)
     {
         return new Color(red, green, blue);
+    }
+
+    /** {@inheritDoc} */
+    public Fader<Color> createFader(Color startColor, Color endColor)
+    {
+        return new FaderImpl(startColor, endColor);
     }
 }

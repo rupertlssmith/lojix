@@ -21,13 +21,13 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
-import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
-import com.thesett.aima.logic.fol.wam.debugger.swing.RowBackgroundColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.RowBackgroundColorDelta;
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
 import com.thesett.text.api.model.TextTableModel;
@@ -62,7 +62,7 @@ public class RegisterMonitorController implements ControllerLifecycle
     private RegisterSetMonitor monitor;
 
     /** A color fader used to highlight register value changes. */
-    private Fader fader = new Fader(Color.DARK_GRAY, Color.BLACK);
+    private Fader fader;
 
     /** The current user selected table row. <tt>-1</tt> means no selected row. */
     private int selectedRow = -1;
@@ -77,6 +77,7 @@ public class RegisterMonitorController implements ControllerLifecycle
     {
         this.componentFactory = componentFactory;
         this.mainWindow = mainWindow;
+        fader = componentFactory.getColorFactory().createFader(Color.DARK_GRAY, Color.BLACK);
     }
 
     /**

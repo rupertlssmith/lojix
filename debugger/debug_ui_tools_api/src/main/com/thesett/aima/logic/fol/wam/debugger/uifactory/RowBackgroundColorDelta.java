@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.swing;
-
-import java.awt.Color;
+package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 
 /**
- * Implements a color delta that modifies the background color of a cell in a text grid.
+ * Implements a color delta that modifies the background color of a row of a text grid.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Apply a background color change to a cell in a text grid. </td></tr>
+ * <tr><td> Apply a background color change to a row of a text grid. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public class CellBackgroundColorDelta implements ColorDelta
+public class RowBackgroundColorDelta<C> implements ColorDelta<C>
 {
-    /** The column to make color changes to. */
-    private final int col;
-
     /** The row to make color changes to. */
     private final int row;
 
@@ -44,13 +39,11 @@ public class CellBackgroundColorDelta implements ColorDelta
     /**
      * Creates a color delta for a table row.
      *
-     * @param col  The column to make color changes to.
      * @param row  The row to make color changes to.
      * @param grid The text grid model to alter the background color of.
      */
-    public CellBackgroundColorDelta(int col, int row, AttributeGrid grid)
+    public RowBackgroundColorDelta(int row, AttributeGrid grid)
     {
-        this.col = col;
         this.row = row;
         this.grid = grid;
     }
@@ -60,10 +53,10 @@ public class CellBackgroundColorDelta implements ColorDelta
      *
      * <p/>Applies color changes to the background of a row.
      */
-    public void changeColor(Color color)
+    public void changeColor(C color)
     {
         AttributeSet aset = new AttributeSet();
         aset.put(AttributeSet.BACKGROUND_COLOR, color);
-        grid.insertAttribute(aset, col, row);
+        grid.insertRowAttribute(aset, row);
     }
 }
