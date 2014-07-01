@@ -16,13 +16,11 @@
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-
-import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.TextTableSelectionListener;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
@@ -137,16 +135,16 @@ public class RegisterMonitorController implements ControllerLifecycle
     /**
      * Triggers background color highlighting on user row selection.
      */
-    private class MouseHandler extends MouseInputAdapter
+    private class SelectionHandler implements TextTableSelectionListener
     {
         /** {@inheritDoc} */
-        public void mousePressed(MouseEvent e)
+        public void select(TextTableEvent e)
         {
-            int row = e.getY();
+            int row = e.getRowChanged();
 
             if (row != selectedRow)
             {
-                System.out.println("New mouse selection at : " + e.getX() + ", " + row);
+                System.out.println("New mouse selection at : " + e.getColumnChanged() + ", " + row);
 
                 AttributeSet aset = new AttributeSet();
                 aset.put(AttributeSet.BACKGROUND_COLOR, Color.LIGHT_GRAY);
