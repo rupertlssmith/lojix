@@ -15,8 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
-import javax.swing.text.AttributeSet;
-
 import com.thesett.text.api.model.TextGridModel;
 import com.thesett.text.api.model.TextTableModel;
 import com.thesett.text.impl.model.TextTableGridRenderer;

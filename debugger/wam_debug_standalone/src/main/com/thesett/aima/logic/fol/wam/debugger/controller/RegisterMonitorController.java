@@ -19,13 +19,10 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.swing.Fader;
+import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
@@ -149,9 +146,8 @@ public class RegisterMonitorController implements ControllerLifecycle
             {
                 System.out.println("New mouse selection at : " + e.getX() + ", " + row);
 
-                StyleContext sc = StyleContext.getDefaultStyleContext();
-                AttributeSet aset =
-                    sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, Color.LIGHT_GRAY);
+                AttributeSet aset = new AttributeSet();
+                aset.put(AttributeSet.BACKGROUND_COLOR, Color.LIGHT_GRAY);
 
                 if (row < table.getRowCount())
                 {

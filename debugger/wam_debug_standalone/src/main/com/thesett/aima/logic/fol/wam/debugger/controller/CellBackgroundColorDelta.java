@@ -17,13 +17,9 @@ package com.thesett.aima.logic.fol.wam.debugger.controller;
 
 import java.awt.Color;
 
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-
 import com.thesett.aima.logic.fol.wam.debugger.swing.ColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeGrid;
+import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 
 /**
  * Implements a color delta that modifies the background color of a cell in a text grid.
@@ -67,8 +63,8 @@ public class CellBackgroundColorDelta implements ColorDelta
      */
     public void changeColor(Color color)
     {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Background, color);
+        AttributeSet aset = new AttributeSet();
+        aset.put(AttributeSet.BACKGROUND_COLOR, color);
         grid.insertAttribute(aset, col, row);
     }
 }

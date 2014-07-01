@@ -15,22 +15,19 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
-import com.thesett.text.api.model.TextTableModel;
+import java.util.HashMap;
 
 /**
- * EnhancedTextTable is an extension of the {@link TextTableModel} to support more richly decorated text. This decorator
- * supports storing attributes against table cells, or lines or rows. When fetching the attributes for a cell, a
- * cascading merge is used to arrive at the attributes of the cell.
+ * AttributeSet implements a set of named attributes that can be applied to text renderings.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
- * <tr><th> Responsibilities
- * <tr><td> Insert text attributes into table cells. </td></tr>
- * <tr><td> Insert text attributes into table columns. </td></tr>
- * <tr><td> Insert text attributes into table rows. </td></tr>
+ * <tr><th> Responsibilities <th> Collaborations
+ * <tr><td> Map named attributes to object. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface EnhancedTextTable extends TextTableModel, AttributeGrid, XYGridSeparators
+public class AttributeSet extends HashMap<String, Object>
 {
+    public static String BACKGROUND_COLOR = "background_color";
 }

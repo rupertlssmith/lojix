@@ -18,8 +18,6 @@ package com.thesett.aima.logic.fol.wam.debugger.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.AttributeSet;
-
 import com.thesett.common.util.doublemaps.DoubleKeyedMap;
 import com.thesett.common.util.doublemaps.HashMapXY;
 

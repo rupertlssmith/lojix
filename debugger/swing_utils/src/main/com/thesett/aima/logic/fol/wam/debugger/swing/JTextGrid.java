@@ -32,9 +32,8 @@ import java.util.SortedMap;
 import javax.swing.JComponent;
 import javax.swing.Scrollable;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.StyleConstants;
 
+import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.common.util.Function;
 import com.thesett.text.api.TextGridEvent;
@@ -226,7 +225,7 @@ public class JTextGrid extends JComponent implements Scrollable
                     AttributeSet attributes = model.getAttributeAt(col, row);
 
                     Color bgColor =
-                        (attributes != null) ? (Color) attributes.getAttribute(StyleConstants.Background) : null;
+                        (attributes != null) ? (Color) attributes.get(AttributeSet.BACKGROUND_COLOR) : null;
                     bgColor = (bgColor == null) ? getBackground() : bgColor;
 
                     graphics2D.setColor(bgColor);

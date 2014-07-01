@@ -15,8 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
-import javax.swing.text.AttributeSet;
-
 /**
  * AttributeGrid defines an modifiable grid of attribute sets.
  *

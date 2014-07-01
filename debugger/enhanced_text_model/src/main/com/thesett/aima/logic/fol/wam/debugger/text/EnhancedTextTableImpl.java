@@ -17,8 +17,6 @@ package com.thesett.aima.logic.fol.wam.debugger.text;
 
 import java.util.SortedMap;
 
-import javax.swing.text.AttributeSet;
-
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
 import com.thesett.text.impl.model.TextTableImpl;
