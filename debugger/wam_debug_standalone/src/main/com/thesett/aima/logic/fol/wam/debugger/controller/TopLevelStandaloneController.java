@@ -21,10 +21,11 @@ import com.thesett.aima.logic.fol.wam.debugger.monitor.ByteCodeMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingColorFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
 
 /**
@@ -45,7 +46,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFact
 public class TopLevelStandaloneController implements ControllerLifecycle
 {
     /** Defines the application colour scheme. */
-    private ColorScheme colorScheme = new DarkColorScheme();
+    private ColorScheme colorScheme = new DarkColorScheme(new SwingColorFactory());
 
     /** Holds the component factory used to build the application components. */
     private ComponentFactory componentFactory = new SwingComponentFactory(colorScheme);

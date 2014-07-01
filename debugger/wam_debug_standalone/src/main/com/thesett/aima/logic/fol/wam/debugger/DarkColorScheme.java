@@ -15,9 +15,8 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
-import java.awt.Color;
-
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 
 /**
  * Provides a dark color scheme.
@@ -29,59 +28,78 @@ import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
  *
  * @author Rupert Smith
  */
-public class DarkColorScheme implements ColorScheme
+public class DarkColorScheme<C> implements ColorScheme<C>
 {
-    /** {@inheritDoc} */
-    public Color getMainText()
+    private static final int[] WHITE = new int[] { 255, 255, 255 };
+    private static final int[] CYAN = new int[] { 0, 255, 255 };
+    private static final int[] LIGHT_GRAY = new int[] { 192, 192, 192 };
+    private static final int[] DARK_GRAY = new int[] { 64, 64, 64 };
+    private static final int[] BLACK = new int[] { 0, 0, 0 };
+
+    /** Holds the color factory used to create the colors. */
+    private final ColorFactory<C> colorFactory;
+
+    /**
+     * Creates a dark color scheme using the supplied factory to create the colors.
+     *
+     * @param colorFactory The color factory.
+     */
+    public DarkColorScheme(ColorFactory<C> colorFactory)
     {
-        return Color.WHITE;
+        this.colorFactory = colorFactory;
     }
 
     /** {@inheritDoc} */
-    public Color getDisabledText()
+    public C getMainText()
     {
-        return Color.LIGHT_GRAY;
+        return colorFactory.createColor(WHITE);
     }
 
     /** {@inheritDoc} */
-    public Color getHighlight1()
+    public C getDisabledText()
     {
-        return Color.CYAN;
+        return colorFactory.createColor(LIGHT_GRAY);
     }
 
     /** {@inheritDoc} */
-    public Color getHighlight2()
+    public C getHighlight1()
     {
-        return Color.CYAN;
+        return colorFactory.createColor(CYAN);
     }
 
     /** {@inheritDoc} */
-    public Color getHighlight3()
+    public C getHighlight2()
     {
-        return Color.CYAN;
+        return colorFactory.createColor(CYAN);
     }
 
     /** {@inheritDoc} */
-    public Color getHighlight4()
+    public C getHighlight3()
     {
-        return Color.CYAN;
+        return colorFactory.createColor(CYAN);
     }
 
     /** {@inheritDoc} */
-    public Color getUserWorkingBackground()
+    public C getHighlight4()
     {
-        return Color.BLACK;
+        return colorFactory.createColor(CYAN);
     }
 
     /** {@inheritDoc} */
-    public Color getToolingBackground()
+    public C getUserWorkingBackground()
     {
-        return Color.DARK_GRAY;
+        return colorFactory.createColor(BLACK);
     }
 
     /** {@inheritDoc} */
-    public Color getToolingActiveBackground()
+    public C getToolingBackground()
     {
-        return Color.LIGHT_GRAY;
+        return colorFactory.createColor(DARK_GRAY);
+    }
+
+    /** {@inheritDoc} */
+    public C getToolingActiveBackground()
+    {
+        return colorFactory.createColor(LIGHT_GRAY);
     }
 }

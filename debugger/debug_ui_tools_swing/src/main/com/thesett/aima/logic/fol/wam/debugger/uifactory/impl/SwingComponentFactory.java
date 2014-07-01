@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -23,15 +24,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.event.MouseInputListener;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.DiscreetScrollBarUI;
-import com.thesett.aima.logic.fol.wam.debugger.swing.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
+import com.thesett.aima.logic.fol.wam.debugger.swing.ToolingColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 
@@ -62,15 +63,28 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     /** The grip cursor appearance to use when moving components. */
     private static final Cursor GRIP_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
 
-    /** The color scheme to apply to components. */
-    private final ColorScheme colorScheme;
+    /** The color scheme to apply to user areas within components. */
+    private final ColorScheme<Color> colorScheme;
+
+    private final ToolingColorScheme toolingColorScheme = new ToolingColorScheme()
+    {
+        public Color getToolingBackground()
+        {
+            return Color.DARK_GRAY;
+        }
+
+        public Color getToolingActiveBackground()
+        {
+            return Color.LIGHT_GRAY;
+        }
+    };
 
     /**
      * Creates a component factory that produces Swing components.
      *
      * @param colorScheme The color scheme to use.
      */
-    public SwingComponentFactory(ColorScheme colorScheme)
+    public SwingComponentFactory(ColorScheme<Color> colorScheme)
     {
         this.colorScheme = colorScheme;
     }
@@ -104,8 +118,8 @@ public class SwingComponentFactory implements ComponentFactory<Component>
         JScrollPane scrollPane =
             new JScrollPane(textPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
-        scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(colorScheme));
+        scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
+        scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(colorScheme.getUserWorkingBackground());
 
@@ -116,7 +130,7 @@ public class SwingComponentFactory implements ComponentFactory<Component>
     public Component createGripPanel(MotionDelta motionDelta, boolean vertical)
     {
         JPanel vbar = new JPanel();
-        vbar.setBackground(colorScheme.getToolingBackground());
+        vbar.setBackground(toolingColorScheme.getToolingBackground());
 
         GripComponentMouseMover resizer =
             new GripComponentMouseMover(vbar, motionDelta, vertical ? VERTICAL_RESIZE_CURSOR : HORIZONTAL_RESIZE_CURSOR,

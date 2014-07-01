@@ -42,14 +42,14 @@ public class DiscreetScrollBarUI extends BasicScrollBarUI
     public static final int THICKNESS = 12;
 
     /** Provides the colors. */
-    private final ColorScheme colorScheme;
+    private final ToolingColorScheme colorScheme;
 
     /**
      * Creates a discreet scroll bar renderer.
      *
      * @param colorScheme The color scheme to use.
      */
-    public DiscreetScrollBarUI(ColorScheme colorScheme)
+    public DiscreetScrollBarUI(ToolingColorScheme colorScheme)
     {
         this.colorScheme = colorScheme;
 

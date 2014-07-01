@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.swing;
-
-import java.awt.Color;
+package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 /**
- * ColorScheme defines an abstract color scheme with a limited palette.
+ * CScheme defines an abstract color scheme with a limited palette.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -27,68 +25,54 @@ import java.awt.Color;
  *
  * @author Rupert Smith
  */
-public interface ColorScheme
+public interface ColorScheme<C>
 {
     /**
      * Provides the main text color.
      *
      * @return The main text color.
      */
-    Color getMainText();
+    C getMainText();
 
     /**
      * Provides the disabled text color.
      *
      * @return The disabled text color.
      */
-    Color getDisabledText();
+    C getDisabledText();
 
     /**
      * Provides a highlight color.
      *
      * @return A highlight color.
      */
-    Color getHighlight1();
+    C getHighlight1();
 
     /**
      * Provides a highlight color.
      *
      * @return A highlight color.
      */
-    Color getHighlight2();
+    C getHighlight2();
 
     /**
      * Provides a highlight color.
      *
      * @return A highlight color.
      */
-    Color getHighlight3();
+    C getHighlight3();
 
     /**
      * Provides a highlight color.
      *
      * @return A highlight color.
      */
-    Color getHighlight4();
+    C getHighlight4();
 
     /**
      * Provides a background color for active screen areas.
      *
      * @return A background color for active screen areas.
      */
-    Color getUserWorkingBackground();
-
-    /**
-     * Provides a background color for tooling screen areas.
-     *
-     * @return A background color for tooling screen areas.
-     */
-    Color getToolingBackground();
-
-    /**
-     * Provides a background color for tooling active screen areas.
-     *
-     * @return A background color for tooling active screen areas.
-     */
-    Color getToolingActiveBackground();
+    C getUserWorkingBackground();
 }
