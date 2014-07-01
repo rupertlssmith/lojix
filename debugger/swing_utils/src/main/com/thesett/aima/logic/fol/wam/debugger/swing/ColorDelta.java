@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.controller;
+package com.thesett.aima.logic.fol.wam.debugger.swing;
 
 import java.awt.Color;
 
 /**
- * MotionDelta provide an interface through which a controller can communicate a color change event. This could be a one
+ * ColorDelta provide an interface through which a controller can communicate a color change event. This could be a one
  * off change, or it could be used to animate a fade for example.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>

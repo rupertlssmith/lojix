@@ -24,8 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.*;
 
-import com.thesett.aima.logic.fol.wam.debugger.controller.ColorDelta;
-
 /**
  * Fader animates color fades by feeding color changes to a {@link ColorDelta} that is under the control of a timer. A
  * Fader is setup up to fade between two colors, and can then be invoked against a target to apply a timed fade.

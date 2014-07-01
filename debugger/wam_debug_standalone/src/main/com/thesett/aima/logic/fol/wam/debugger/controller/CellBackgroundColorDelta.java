@@ -22,6 +22,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
+import com.thesett.aima.logic.fol.wam.debugger.swing.ColorDelta;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeGrid;
 
 /**

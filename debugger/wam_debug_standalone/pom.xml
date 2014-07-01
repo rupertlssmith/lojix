@@ -25,61 +25,35 @@
     <dependencies>
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>debug_ui_tools_api</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>text_model</artifactId>
+            <artifactId>debug_ui_tools_swing</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>aima</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>wam</artifactId>
+            <artifactId>swing_utils</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
         
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>interpreter</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.thesett</groupId>
             <artifactId>wam</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>aima</artifactId>
-            <classifier>tests</classifier>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Test only dependencies. -->
+        <!-- Test dependencies. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>base</artifactId>
-            <version>0.3-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-
+        
     </dependencies>
 
     <build>
