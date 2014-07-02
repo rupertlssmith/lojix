@@ -131,11 +131,11 @@
     </distributionManagement>
 
     <modules>
+        <module>enhanced_text_model</module>        
         <module>swing_utils</module>
         <module>debug_ui_tools_api</module>
         <module>debug_ui_tools_swing</module>
-        <module>wam_debug_standalone</module>
-        <module>enhanced_text_model</module>
+        <module>wam_debugger</module>
     </modules>
 
     <dependencyManagement>
