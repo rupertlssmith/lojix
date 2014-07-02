@@ -23,8 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.SortedMap;
 
 import javax.swing.JComponent;
@@ -33,8 +31,6 @@ import javax.swing.event.MouseInputAdapter;
 
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
-import com.thesett.aima.logic.fol.wam.debugger.text.TextGridSelectionListener;
-import com.thesett.common.util.Function;
 import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextGridListener;
 
@@ -68,9 +64,6 @@ public class JTextGrid extends JComponent implements Scrollable
     /** The monospaced character descent. */
     private int descent;
 
-    /** Holds selection listeners, that will receive mouse events translated to table coordinates. */
-    private Set<TextGridSelectionListener> textGridMouseListeners = new HashSet<TextGridSelectionListener>();
-
     /** {@inheritDoc} */
     public Dimension getPreferredSize()
     {
@@ -95,17 +88,6 @@ public class JTextGrid extends JComponent implements Scrollable
         MouseHandler mouseHandler = new MouseHandler();
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
-    }
-
-    /**
-     * Adds a selection listener, that will receive translated mouse events in text grid coordinates, instead of screen
-     * coordinates.
-     *
-     * @param listener The selection listener to add.
-     */
-    public synchronized void addTextTableSelectionListener(TextGridSelectionListener listener)
-    {
-        textGridMouseListeners.add(listener);
     }
 
     /** {@inheritDoc} */
@@ -270,19 +252,6 @@ public class JTextGrid extends JComponent implements Scrollable
     }
 
     /**
-     * Notifies event listeners attached to the text grid of a mouse event on the grid.
-     *
-     * @param switchFunction A function to apply to mouse listeners to effect the notification against them.
-     */
-    private void fireTextGridMouseEvent(Function<TextGridSelectionListener, Object> switchFunction)
-    {
-        for (TextGridSelectionListener listener : textGridMouseListeners)
-        {
-            switchFunction.apply(listener);
-        }
-    }
-
-    /**
      * Converts a column within the text grid space to an x coordinate within the component space.
      *
      * @param  col The column to convert to an x coordinate.
@@ -365,29 +334,7 @@ public class JTextGrid extends JComponent implements Scrollable
         /** {@inheritDoc} */
         public void mousePressed(MouseEvent e)
         {
-            final TextGridEvent translatedEvent = translateEvent(e);
-
-            fireTextGridMouseEvent(new Function<TextGridSelectionListener, Object>()
-                {
-                    public Object apply(TextGridSelectionListener selectionListener)
-                    {
-                        selectionListener.select(translatedEvent);
-
-                        return null;
-                    }
-                });
-        }
-
-        /**
-         * Translates a mouse event from screen coordinates to text grid coordinates.
-         *
-         * @param  e The original mouse event.
-         *
-         * @return The same event but with translated coordinates and translated to a text table event.
-         */
-        private TextGridEvent translateEvent(MouseEvent e)
-        {
-            return new TextGridEvent(model, yToRow(e.getY()), xToCol(e.getX()));
+            model.select(yToRow(e.getY()), xToCol(e.getX()));
         }
     }
 }

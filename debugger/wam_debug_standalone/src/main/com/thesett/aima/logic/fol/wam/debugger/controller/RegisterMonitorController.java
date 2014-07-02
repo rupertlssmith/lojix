@@ -98,6 +98,7 @@ public class RegisterMonitorController implements ControllerLifecycle
 
         // Attach a listener for updates to the register table.
         table.addTextTableListener(new TableUpdateHandler());
+        grid.addTextGridSelectionListener(new SelectionHandler());
     }
 
     /** {@inheritDoc} */

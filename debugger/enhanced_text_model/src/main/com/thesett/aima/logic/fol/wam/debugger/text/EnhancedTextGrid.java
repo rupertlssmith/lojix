@@ -39,4 +39,25 @@ import com.thesett.text.api.model.TextGridModel;
  */
 public interface EnhancedTextGrid extends TextGridModel, AttributeGrid, XYGridSeparators
 {
+    /**
+     * Selects a cell within the grid. Selection listners will be notified of this.
+     *
+     * @param row The row selected.
+     * @param col The column selected.
+     */
+    void select(int row, int col);
+
+    /**
+     * Adds a selection listener for selection events on this model.
+     *
+     * @param listener The listener for selection events on this model.
+     */
+    void addTextGridSelectionListener(TextGridSelectionListener listener);
+
+    /**
+     * Removes a listener for selection events on this model.
+     *
+     * @param listener The listener to remove.
+     */
+    void removeTextGridSelectionListener(TextGridSelectionListener listener);
 }

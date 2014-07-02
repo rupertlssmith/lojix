@@ -15,9 +15,12 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedMap;
 
 import com.thesett.common.util.doublemaps.HashMapXY;
+import com.thesett.text.api.TextGridEvent;
 import com.thesett.text.api.TextTableEvent;
 import com.thesett.text.api.TextTableListener;
 import com.thesett.text.impl.model.TextGridImpl;
@@ -39,10 +42,13 @@ import com.thesett.text.impl.model.TextTableGridRenderer;
 public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGrid
 {
     /** The attributes arranged in a grid. */
-    protected AttributeGrid attributeGrid = new AttributeGridImpl();
+    protected final AttributeGrid attributeGrid = new AttributeGridImpl();
 
     /** The horizontal and vertical separators. */
-    protected XYGridSeparators separators = new XYGridSeparatorsImpl();
+    protected final XYGridSeparators separators = new XYGridSeparatorsImpl();
+
+    /** Holds selection listeners, that will receive mouse events translated to table coordinates. */
+    private final Set<TextGridSelectionListener> textGridSelectionListeners = new HashSet<TextGridSelectionListener>();
 
     /** {@inheritDoc} */
     public void insertAttribute(AttributeSet attributes, int c, int r)
@@ -93,6 +99,27 @@ public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGr
     public SortedMap<Integer, Integer> getVerticalSeparators()
     {
         return separators.getVerticalSeparators();
+    }
+
+    /** {@inheritDoc} */
+    public void select(int row, int col)
+    {
+        for (TextGridSelectionListener listener : textGridSelectionListeners)
+        {
+            listener.select(new TextGridEvent(this, row, col));
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void addTextGridSelectionListener(TextGridSelectionListener listener)
+    {
+        textGridSelectionListeners.add(listener);
+    }
+
+    /** {@inheritDoc} */
+    public void removeTextGridSelectionListener(TextGridSelectionListener listener)
+    {
+        textGridSelectionListeners.remove(listener);
     }
 
     /**
