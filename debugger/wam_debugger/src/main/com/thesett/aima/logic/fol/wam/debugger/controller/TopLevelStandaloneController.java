@@ -22,7 +22,6 @@ import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactoryBuilder;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 
@@ -44,11 +43,10 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 public class TopLevelStandaloneController implements ControllerLifecycle
 {
     /** Holds the component factory used to build the application components. */
-    private ComponentFactory componentFactory =
-        ComponentFactoryBuilder.createComponentFactory(ComponentFactoryBuilder.SWING_FACTORY);
+    private final ComponentFactory componentFactory;
 
     /** Holds the main application window frame. */
-    private MainWindow mainWindow = componentFactory.createMainWindow();
+    private MainWindow mainWindow;
 
     /** Holds the top-level machine monitor that is attached to the DPI of the machine being debugged. */
     private MachineMonitor machineMonitor;
@@ -63,6 +61,16 @@ public class TopLevelStandaloneController implements ControllerLifecycle
     private CodeStepController codeStepController;
 
     /**
+     * Creates a standalone debugger application using the supplied UI component factory.
+     *
+     * @param componentFactory The UI component factory to create the application UI with.
+     */
+    public TopLevelStandaloneController(ComponentFactory componentFactory)
+    {
+        this.componentFactory = componentFactory;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * <p/>Creates the debugger application from its components.
@@ -73,6 +81,7 @@ public class TopLevelStandaloneController implements ControllerLifecycle
         componentFactory.setColorScheme(new DarkColorScheme(componentFactory.getColorFactory()));
 
         // Build the main window frame.
+        mainWindow = componentFactory.createMainWindow();
         mainWindow.showMainWindow();
 
         // Create and initialize the register monitor.

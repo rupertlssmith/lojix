@@ -136,6 +136,7 @@
         <module>debug_ui_tools_api</module>
         <module>debug_ui_tools_swing</module>
         <module>wam_debugger</module>
+        <module>wam_debugger_swing</module>
     </modules>
 
     <dependencyManagement>

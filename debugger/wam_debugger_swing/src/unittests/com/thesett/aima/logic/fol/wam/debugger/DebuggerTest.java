@@ -29,6 +29,7 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
 import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactoryBuilder;
 import com.thesett.aima.logic.fol.wam.machine.WAMEngine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
@@ -73,7 +74,9 @@ public class DebuggerTest extends TestCase
             new WAMEngine(parser, machine, compiler, machine);
 
         // Attach the debugger to the machine.
-        final TopLevelStandaloneController controller = new TopLevelStandaloneController();
+        final TopLevelStandaloneController controller =
+            new TopLevelStandaloneController(ComponentFactoryBuilder.createComponentFactory(
+                    ComponentFactoryBuilder.SWING_FACTORY));
         controller.open();
 
         MachineMonitor monitor = controller.getMachineMonitor();

@@ -18,6 +18,7 @@ package com.thesett.aima.logic.fol.wam.debugger;
 import java.util.concurrent.TimeUnit;
 
 import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactoryBuilder;
 
 /**
  * Implements the main method for the debugger stand-alone application.
@@ -33,7 +34,9 @@ import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneCont
 public class Main extends StartStopLifecycleBase
 {
     /** The top-level UI controller for the application. */
-    TopLevelStandaloneController controller = new TopLevelStandaloneController();
+    TopLevelStandaloneController controller =
+        new TopLevelStandaloneController(ComponentFactoryBuilder.createComponentFactory(
+                ComponentFactoryBuilder.SWING_FACTORY));
 
     /**
      * Launches the debugger as a stand-alone Swing application.
