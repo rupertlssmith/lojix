@@ -15,11 +15,9 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger;
 
-import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
-
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.SwingUtilities;
+import com.thesett.aima.logic.fol.wam.debugger.controller.TopLevelStandaloneController;
 
 /**
  * Implements the main method for the debugger stand-alone application.
@@ -48,13 +46,7 @@ public class Main extends StartStopLifecycleBase
         {
             final Main main = new Main();
 
-            SwingUtilities.invokeLater(new Runnable()
-                {
-                    public void run()
-                    {
-                        main.start();
-                    }
-                });
+            main.start();
 
             Runtime.getRuntime().addShutdownHook(main.getShutdownHook());
 

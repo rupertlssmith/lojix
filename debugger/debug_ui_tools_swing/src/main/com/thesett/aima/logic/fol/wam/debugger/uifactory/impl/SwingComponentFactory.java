@@ -65,7 +65,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
     private static final Cursor GRIP_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
 
     /** The color scheme to apply to user areas within components. */
-    private final ColorScheme<Color> colorScheme;
+    private ColorScheme<Color> colorScheme;
 
     /** The color factory. */
     private final SwingColorFactory colorFactory = new SwingColorFactory();
@@ -84,14 +84,10 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
             }
         };
 
-    /**
-     * Creates a component factory that produces Swing components.
-     *
-     * @param colorScheme The color scheme to use.
-     */
-    public SwingComponentFactory(ColorScheme<Color> colorScheme)
+    /** Creates a component factory that produces Swing components. */
+    public SwingComponentFactory()
     {
-        this.colorScheme = colorScheme;
+        colorScheme = new DefaultColorScheme(colorFactory);
     }
 
     /** {@inheritDoc} */
@@ -111,7 +107,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
     {
         JTextGrid textPane = new JTextGrid();
 
-        textPane.setBackground(colorScheme.getUserWorkingBackground());
+        textPane.setBackground(colorScheme.getBackground());
         textPane.setForeground(colorScheme.getMainText());
         textPane.setAutoscrolls(true);
 
@@ -126,7 +122,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
         scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
         scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(colorScheme.getUserWorkingBackground());
+        scrollPane.getViewport().setBackground(colorScheme.getBackground());
 
         return scrollPane;
     }
@@ -150,10 +146,22 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
     public Component createBlankPanel()
     {
         JPanel vbar = new JPanel();
-        vbar.setBackground(colorScheme.getUserWorkingBackground());
+        vbar.setBackground(colorScheme.getBackground());
         vbar.setForeground(colorScheme.getDisabledText());
 
         return vbar;
+    }
+
+    /** {@inheritDoc} */
+    public void setColorScheme(ColorScheme<Color> colorScheme)
+    {
+        this.colorScheme = colorScheme;
+    }
+
+    /** {@inheritDoc} */
+    public ColorScheme<Color> getColorScheme()
+    {
+        return colorScheme;
     }
 
     /** {@inheritDoc} */

@@ -66,6 +66,20 @@ public interface ComponentFactory<Comp, Col>
     Comp createBlankPanel();
 
     /**
+     * Establishes the color scheme used to render all factory UI components with.
+     *
+     * @param colorScheme The color scheme to use.
+     */
+    void setColorScheme(ColorScheme<Col> colorScheme);
+
+    /**
+     * Provides the current color scheme.
+     *
+     * @return The current color scheme.
+     */
+    ColorScheme<Col> getColorScheme();
+
+    /**
      * Provides a color factory compatible with the components.
      *
      * @return The color factory.

@@ -15,12 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
-import java.awt.Color;
-
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.TextGridSelectionListener;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
@@ -76,7 +75,9 @@ public class RegisterMonitorController implements ControllerLifecycle
     {
         this.componentFactory = componentFactory;
         this.mainWindow = mainWindow;
-        fader = componentFactory.getColorFactory().createFader(Color.DARK_GRAY, Color.BLACK);
+
+        ColorScheme colorScheme = componentFactory.getColorScheme();
+        fader = componentFactory.getColorFactory().createFader(colorScheme.getLowLight(), colorScheme.getBackground());
     }
 
     /**
@@ -149,7 +150,7 @@ public class RegisterMonitorController implements ControllerLifecycle
                 System.out.println("New mouse selection at : " + e.getColumn() + ", " + row);
 
                 AttributeSet aset = new AttributeSet();
-                aset.put(AttributeSet.BACKGROUND_COLOR, Color.LIGHT_GRAY);
+                aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
 
                 if (row < table.getRowCount())
                 {

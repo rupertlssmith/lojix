@@ -15,12 +15,11 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
-import java.awt.Color;
-
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.CellBackgroundColorDelta;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.Fader;
@@ -69,7 +68,9 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
     {
         this.componentFactory = componentFactory;
         this.mainWindow = mainWindow;
-        this.fader = componentFactory.getColorFactory().createFader(Color.DARK_GRAY, Color.BLACK);
+
+        ColorScheme colorScheme = componentFactory.getColorScheme();
+        fader = componentFactory.getColorFactory().createFader(colorScheme.getLowLight(), colorScheme.getBackground());
     }
 
     /**

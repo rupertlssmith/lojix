@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger;
+package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.ColorSchemeBase;
 
 /**
- * Provides a dark color scheme.
+ * Provides a default white on black color scheme.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -30,16 +29,14 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.ColorSchemeBase;
  *
  * @author Rupert Smith
  */
-public class DarkColorScheme<C> extends ColorSchemeBase<C>
+public class DefaultColorScheme<C> extends ColorSchemeBase<C>
 {
-    private static final int[] CYAN = new int[] { 0, 255, 255 };
-
     /**
-     * Creates a dark color scheme using the supplied factory to create the colors.
+     * Creates a default white on balck color scheme.
      *
-     * @param colorFactory The color factory.
+     * @param colorFactory The color factory to use.
      */
-    public DarkColorScheme(ColorFactory<C> colorFactory)
+    public DefaultColorScheme(ColorFactory<C> colorFactory)
     {
         super(colorFactory);
     }
@@ -47,7 +44,7 @@ public class DarkColorScheme<C> extends ColorSchemeBase<C>
     /** {@inheritDoc} */
     public C getMainText()
     {
-        return color(WHITE);
+        return color(BLACK);
     }
 
     /** {@inheritDoc} */
@@ -59,42 +56,42 @@ public class DarkColorScheme<C> extends ColorSchemeBase<C>
     /** {@inheritDoc} */
     public C getHighlight1()
     {
-        return color(CYAN);
+        return color(BLACK);
     }
 
     /** {@inheritDoc} */
     public C getHighlight2()
     {
-        return color(CYAN);
+        return color(BLACK);
     }
 
     /** {@inheritDoc} */
     public C getHighlight3()
     {
-        return color(CYAN);
+        return color(BLACK);
     }
 
     /** {@inheritDoc} */
     public C getHighlight4()
     {
-        return color(CYAN);
+        return color(BLACK);
     }
 
     /** {@inheritDoc} */
     public C getBackground()
     {
-        return color(BLACK);
+        return color(WHITE);
     }
 
     /** {@inheritDoc} */
     public C getSelectionBackground()
     {
-        return color(LIGHT_GRAY);
+        return color(DARK_GRAY);
     }
 
     /** {@inheritDoc} */
     public C getLowLight()
     {
-        return color(DARK_GRAY);
+        return color(LIGHT_GRAY);
     }
 }

@@ -74,5 +74,19 @@ public interface ColorScheme<C>
      *
      * @return A background color for active screen areas.
      */
-    C getUserWorkingBackground();
+    C getBackground();
+
+    /**
+     * Provides a background color for user selected screen areas.
+     *
+     * @return A background color for user selected screen areas.
+     */
+    C getSelectionBackground();
+
+    /**
+     * Provides a lowlight color for background marking of screen areas.
+     *
+     * @return A lowlight color for background marking of screen areas.
+     */
+    C getLowLight();
 }
