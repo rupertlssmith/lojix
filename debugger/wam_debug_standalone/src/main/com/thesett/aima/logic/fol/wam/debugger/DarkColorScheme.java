@@ -16,7 +16,7 @@
 package com.thesett.aima.logic.fol.wam.debugger;
 
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.ColorSchemeBase;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorSchemeBase;
 
 /**
  * Provides a dark color scheme.

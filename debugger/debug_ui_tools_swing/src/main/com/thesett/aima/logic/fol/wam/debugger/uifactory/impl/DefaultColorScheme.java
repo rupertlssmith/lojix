@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorSchemeBase;
 
 /**
  * Provides a default white on black color scheme.

@@ -22,9 +22,9 @@ import com.thesett.aima.logic.fol.wam.debugger.monitor.MachineMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.MemoryLayoutMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.RegisterSetMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactoryBuilder;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFactory;
 
 /**
  * TopLevelStandaloneController is the top-level controller for the debugger UI. It is responsible for initializing the
@@ -44,7 +44,8 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.impl.SwingComponentFact
 public class TopLevelStandaloneController implements ControllerLifecycle
 {
     /** Holds the component factory used to build the application components. */
-    private ComponentFactory componentFactory = new SwingComponentFactory();
+    private ComponentFactory componentFactory =
+        ComponentFactoryBuilder.createComponentFactory(ComponentFactoryBuilder.SWING_FACTORY);
 
     /** Holds the main application window frame. */
     private MainWindow mainWindow = componentFactory.createMainWindow();

@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
-
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
-import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
+package com.thesett.aima.logic.fol.wam.debugger.uifactory;
 
 /**
  * ColorSchemeBase provides a base implementation for deriving color schemes.

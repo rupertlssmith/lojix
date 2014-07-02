@@ -31,18 +31,6 @@
 
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>debug_ui_tools_swing</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>swing_utils</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.thesett</groupId>
             <artifactId>wam</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
