@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.DiscreetScrollBarUI;
+import com.thesett.aima.logic.fol.wam.debugger.swing.FillViewportLayout;
 import com.thesett.aima.logic.fol.wam.debugger.swing.GripComponentMouseMover;
 import com.thesett.aima.logic.fol.wam.debugger.swing.JTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.swing.MotionDelta;
@@ -122,7 +123,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
         scrollPane.getVerticalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
         scrollPane.getHorizontalScrollBar().setUI(new DiscreetScrollBarUI(toolingColorScheme));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(colorScheme.getBackground());
+        scrollPane.getViewport().setLayout(new FillViewportLayout());
 
         return scrollPane;
     }
