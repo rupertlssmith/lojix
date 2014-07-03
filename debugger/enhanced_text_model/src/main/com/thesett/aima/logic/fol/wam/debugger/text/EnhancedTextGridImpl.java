@@ -78,6 +78,18 @@ public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGr
     }
 
     /** {@inheritDoc} */
+    public AttributeSet getColumnAttribute(int c)
+    {
+        return attributeGrid.getColumnAttribute(c);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeSet getRowAttribute(int r)
+    {
+        return attributeGrid.getRowAttribute(r);
+    }
+
+    /** {@inheritDoc} */
     public void insertHorizontalSeparator(int r, int pixelHeight)
     {
         separators.insertHorizontalSeparator(r, pixelHeight);

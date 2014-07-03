@@ -73,6 +73,18 @@ public class AttributeGridImpl implements AttributeGrid
         return attributeSet;
     }
 
+    /** {@inheritDoc} */
+    public AttributeSet getColumnAttribute(int c)
+    {
+        return getColumnAttributeOrNull(c);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeSet getRowAttribute(int r)
+    {
+        return getRowAttributeOrNull(r);
+    }
+
     /**
      * Sets a column attribute, adding padding to the underlying array as necessary to ensure it is large enough to hold
      * the attribute at the requested position.

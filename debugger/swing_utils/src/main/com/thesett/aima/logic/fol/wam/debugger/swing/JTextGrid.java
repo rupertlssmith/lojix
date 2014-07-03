@@ -180,8 +180,20 @@ public class JTextGrid extends JComponent implements Scrollable
 
                 if ((vNextSep != null) && (vNextSep == col))
                 {
-                    vSepOffset += vSeps.get(vNextSep);
+                    int vSepWidth = vSeps.get(vNextSep);
+                    vSepOffset += vSepWidth;
                     vSeps.remove(vNextSep);
+
+                    // If adding a vertical separator row attributes should be rendered within it to fill the space
+                    // left by the separator.
+                    AttributeSet attributes = model.getRowAttribute(row);
+
+                    Color bgColor = (attributes != null) ? (Color) attributes.get(AttributeSet.BACKGROUND_COLOR) : null;
+                    bgColor = (bgColor == null) ? getBackground() : bgColor;
+
+                    graphics2D.setColor(bgColor);
+                    graphics2D.fillRect(colToX(col) + vSepOffset - vSepWidth, rowToY(row) + hSepOffset,
+                        colToX(col) + vSepOffset, charHeight);
                 }
 
                 // Only render if within the clip rectangle

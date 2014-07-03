@@ -56,11 +56,32 @@ public interface AttributeGrid
     void insertRowAttribute(AttributeSet attributes, int r);
 
     /**
-     * Reads the attributes from the grid at the specified location.
+     * Reads the attributes from the grid at the specified location. This will provide the attributes set on a specific
+     * cell, combined with attributes set on the cells column, then row, if the cell has attributes specified in more
+     * than one way.
      *
-     * @param c The column position.
-     * @param r The row position.
+     * @param  c The column position.
+     * @param  r The row position.
+     *
      * @return The attributes at the specified location.
      */
     AttributeSet getAttributeAt(int c, int r);
+
+    /**
+     * Reads attributes set on a specified column.
+     *
+     * @param  c The column position.
+     *
+     * @return The attributes at the specified location.
+     */
+    AttributeSet getColumnAttribute(int c);
+
+    /**
+     * Reads attributes set on a specified row.
+     *
+     * @param  r The row position.
+     *
+     * @return The attributes at the specified location.
+     */
+    AttributeSet getRowAttribute(int r);
 }
