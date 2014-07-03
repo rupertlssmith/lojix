@@ -23,7 +23,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorSchemeBase;
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
- * <tr><td> Provide dark colors.
+ * <tr><td> Provide default colors.
  * </table></pre>
  *
  * @param  <C> The color implementation type.

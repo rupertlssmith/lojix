@@ -30,10 +30,11 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
  *
  * @param  <Comp> The type of ui components this factory produces.
  * @param  <Col>  The type of colors this factory uses.
+ * @param  <K>    The type key combinations this factory uses for shortcuts.
  *
  * @author Rupert Smith
  */
-public interface ComponentFactory<Comp, Col>
+public interface ComponentFactory<Comp, Col, K>
 {
     /**
      * Creates the main debugger window.
@@ -85,4 +86,25 @@ public interface ComponentFactory<Comp, Col>
      * @return The color factory.
      */
     ColorFactory<Col> getColorFactory();
+
+    /**
+     * Provides a key combination factory compatible with the components.
+     *
+     * @return The key combination factory.
+     */
+    KeyCombinationBuilder<K> getKeyCombinationBuilder();
+
+    /**
+     * Establishes the keyboard short cut map to use accross all UI components.
+     *
+     * @param shortcutMap The keyboard shortcut map to use.
+     */
+    void setKeyShortcutMap(KeyShortcutMap<K> shortcutMap);
+
+    /**
+     * Provides the current keyboard short cut map.
+     *
+     * @return The current keyboard short cut map.
+     */
+    KeyShortcutMap<K> getKeyShortcupMap();
 }

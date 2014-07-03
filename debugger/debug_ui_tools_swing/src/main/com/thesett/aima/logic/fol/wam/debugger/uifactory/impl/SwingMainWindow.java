@@ -17,8 +17,9 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
@@ -82,6 +83,9 @@ public class SwingMainWindow implements MainWindow<Component>
         frame.getContentPane().setLayout(layout);
 
         frame.setVisible(true);
+
+        JRootPane rootPane = frame.getRootPane();
+        rootPane.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "pressed");
     }
 
     /** {@inheritDoc} */

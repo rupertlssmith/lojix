@@ -20,10 +20,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.DiscreetScrollBarUI;
 import com.thesett.aima.logic.fol.wam.debugger.swing.FillViewportLayout;
@@ -36,6 +33,8 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGridImpl;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorScheme;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.KeyCombinationBuilder;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.KeyShortcutMap;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 
 /**
@@ -51,7 +50,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
  *
  * @author Rupert Smith
  */
-public class SwingComponentFactory implements ComponentFactory<Component, Color>
+public class SwingComponentFactory implements ComponentFactory<Component, Color, KeyStroke>
 {
     /** The default cursor appearance. */
     private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -65,11 +64,17 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
     /** The grip cursor appearance to use when moving components. */
     private static final Cursor GRIP_CURSOR = new Cursor(Cursor.MOVE_CURSOR);
 
+    /** The color factory. */
+    private final SwingColorFactory colorFactory = new SwingColorFactory();
+
     /** The color scheme to apply to user areas within components. */
     private ColorScheme<Color> colorScheme;
 
-    /** The color factory. */
-    private final SwingColorFactory colorFactory = new SwingColorFactory();
+    /** The key combination builder. */
+    private final SwingKeyCombinationBuilder keyCombinationBuilder = new SwingKeyCombinationBuilder();
+
+    /** The keyboard short cut map to use across the components. */
+    private KeyShortcutMap<KeyStroke> keyShortcutMap = new DefaultKeyShortcutMap<KeyStroke>(keyCombinationBuilder);
 
     private final ToolingColorScheme toolingColorScheme =
         new ToolingColorScheme()
@@ -169,5 +174,23 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color>
     public ColorFactory<Color> getColorFactory()
     {
         return colorFactory;
+    }
+
+    /** {@inheritDoc} */
+    public KeyCombinationBuilder getKeyCombinationBuilder()
+    {
+        return keyCombinationBuilder;
+    }
+
+    /** {@inheritDoc} */
+    public void setKeyShortcutMap(KeyShortcutMap shortcutMap)
+    {
+        this.keyShortcutMap = shortcutMap;
+    }
+
+    /** {@inheritDoc} */
+    public KeyShortcutMap getKeyShortcupMap()
+    {
+        return keyShortcutMap;
     }
 }
