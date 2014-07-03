@@ -36,11 +36,11 @@ import com.thesett.text.api.model.TextTableModel;
  */
 public class TextGridImpl implements TextGridModel
 {
-    /** Width of this child grid. */
-    protected int width;
+    /** Maximum occupied column of this child grid. */
+    protected int maxColumn;
 
-    /** Height of this child grid. */
-    protected int height;
+    /** Maximum occupied row of this child grid. */
+    protected int maxRow;
 
     /** Holds the grid data. */
     HashMapXY<Character> data = new HashMapXY<Character>(100);
@@ -51,13 +51,13 @@ public class TextGridImpl implements TextGridModel
     /** {@inheritDoc} */
     public int getWidth()
     {
-        return width;
+        return maxColumn + 1;
     }
 
     /** {@inheritDoc} */
     public int getHeight()
     {
-        return height;
+        return maxRow + 1;
     }
 
     /** {@inheritDoc} */
@@ -144,8 +144,8 @@ public class TextGridImpl implements TextGridModel
      */
     private void internalInsert(char character, int c, int r)
     {
-        width = (c > width) ? c : width;
-        height = (r > height) ? r : height;
+        maxColumn = (c > maxColumn) ? c : maxColumn;
+        maxRow = (r > maxRow) ? r : maxRow;
 
         data.put((long) c, (long) r, character);
     }
