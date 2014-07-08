@@ -16,6 +16,9 @@
 package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.thesett.aima.logic.fol.FunctorName;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
@@ -60,7 +63,7 @@ public class ByteCodeMonitor
     /** The table to output the byte code to. */
     private final TextTableModel table;
 
-    /** A column labeled view onto the register table. */
+    /** A column labeled view onto the code table. */
     private DoubleKeyedMap<String, Integer, String> labeledTable;
 
     /** The current table row being updated. */
@@ -68,6 +71,15 @@ public class ByteCodeMonitor
 
     /** The current code address being rendered. */
     private int address = 0;
+
+    /** A mapping from code table rows to code addresses. */
+    private List<Integer> rowToAddress = new ArrayList<Integer>();
+
+    /** A mapping from code addresses to code table rows. */
+    private ConcurrentSkipListMap<Integer, Integer> addressToRow = new ConcurrentSkipListMap<Integer, Integer>();
+
+    /** A copy of the code buffer, with code update deltas merged into it. */
+    private ByteBuffer codeBuffer = ByteBuffer.allocate(1024);
 
     /**
      * Constructs a table model with labelled columns to hold byte code.
@@ -98,9 +110,49 @@ public class ByteCodeMonitor
     public void onCodeUpdate(ByteBuffer codeBuffer, int start, int length, VariableAndFunctorInterner interner,
         WAMCodeView codeView)
     {
-        SizeableList<WAMInstruction> instructions =
-            WAMInstruction.disassemble(start, length, codeBuffer, interner, codeView);
+        // Take a copy of the new bytecode.
+        copyAndResizeCodeBuffer(codeBuffer, start, length);
 
+        // Disassemble the new area of byte code.
+        SizeableList<WAMInstruction> instructions =
+            WAMInstruction.disassemble(start, length, this.codeBuffer, interner, codeView);
+
+        // Render the instructions into the table to be displayed.
+        renderInstructions(instructions, row, start);
+    }
+
+    /**
+     * Copies code from the specified code buffer, into the internal one, resizing the internal code buffer if necessary
+     * to make enough room.
+     *
+     * @param codeBuffer The code buffer to copy from.
+     * @param start      The start offset within the buffer of the new code.
+     * @param length     The length of the new code.
+     */
+    private void copyAndResizeCodeBuffer(ByteBuffer codeBuffer, int start, int length)
+    {
+        // Check the internal code buffer is large enough or resize it, then copy in the new instructions.
+        int max = start + length;
+
+        if (this.codeBuffer.limit() <= max)
+        {
+            ByteBuffer newCodeBuffer = ByteBuffer.allocate(max * 2);
+            newCodeBuffer.put(this.codeBuffer.array(), 0, this.codeBuffer.limit());
+        }
+
+        codeBuffer.position(start);
+        codeBuffer.get(this.codeBuffer.array(), start, length);
+    }
+
+    /**
+     * Renders disassembled instructions into the code table, starting at the specified row and instruction address.
+     *
+     * @param instructions A list of instructions to render into the table.
+     * @param row          The table row to start at.
+     * @param address      The code address to start at.
+     */
+    private void renderInstructions(SizeableList<WAMInstruction> instructions, int row, int address)
+    {
         for (WAMInstruction instruction : instructions)
         {
             WAMLabel label = instruction.getLabel();
