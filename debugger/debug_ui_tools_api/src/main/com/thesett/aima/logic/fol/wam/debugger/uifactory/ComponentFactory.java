@@ -41,7 +41,7 @@ public interface ComponentFactory<Comp, Col, K>
      *
      * @return The main debugger window.
      */
-    MainWindow<Comp> createMainWindow();
+    MainWindow<Comp, K> createMainWindow();
 
     /**
      * Creates an empty text grid model, that is compatible with this UI factory.
@@ -106,5 +106,5 @@ public interface ComponentFactory<Comp, Col, K>
      *
      * @return The current keyboard short cut map.
      */
-    KeyShortcutMap<K> getKeyShortcupMap();
+    KeyShortcutMap<K> getKeyShortcutMap();
 }

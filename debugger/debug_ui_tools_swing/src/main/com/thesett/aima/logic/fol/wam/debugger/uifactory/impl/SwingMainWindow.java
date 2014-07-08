@@ -17,7 +17,6 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
@@ -38,7 +37,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
  *
  * @author Rupert Smith
  */
-public class SwingMainWindow implements MainWindow<Component>
+public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
 {
     /** The application window frame. */
     private JFrame frame;
@@ -50,16 +49,16 @@ public class SwingMainWindow implements MainWindow<Component>
     private final SwingComponentFactory factory;
 
     /** The centre component. */
-    private Component centreComponent;
+    private JComponent centreComponent;
 
     /** The console component. */
-    private Component consoleComponent;
+    private JComponent consoleComponent;
 
     /** The left component. */
-    private Component leftComponent;
+    private JComponent leftComponent;
 
     /** The right component. */
-    private Component rightComponent;
+    private JComponent rightComponent;
 
     /**
      * Creates the main debugger window, implement as a standalone Swing application window.
@@ -89,7 +88,7 @@ public class SwingMainWindow implements MainWindow<Component>
     }
 
     /** {@inheritDoc} */
-    public void showCentrePane(Component component)
+    public void showCentrePane(JComponent component)
     {
         frame.getContentPane().add(component, DebuggerLayout.CENTER);
         frame.pack();
@@ -98,13 +97,13 @@ public class SwingMainWindow implements MainWindow<Component>
     }
 
     /** {@inheritDoc} */
-    public PaneController getCentreController()
+    public PaneController<KeyStroke> getCentreController()
     {
         return new SwingPaneController(centreComponent);
     }
 
     /** {@inheritDoc} */
-    public void showConsole(Component component)
+    public void showConsole(JComponent component)
     {
         showHorizontalBar();
         frame.getContentPane().add(component, DebuggerLayout.CONSOLE);
@@ -114,7 +113,7 @@ public class SwingMainWindow implements MainWindow<Component>
     }
 
     /** {@inheritDoc} */
-    public void showLeftPane(Component component)
+    public void showLeftPane(JComponent component)
     {
         showLeftBar();
         frame.getContentPane().add(component, DebuggerLayout.LEFT_PANE);
@@ -124,13 +123,20 @@ public class SwingMainWindow implements MainWindow<Component>
     }
 
     /** {@inheritDoc} */
-    public void showRightPane(Component component)
+    public void showRightPane(JComponent component)
     {
         showRightBar();
         frame.getContentPane().add(component, DebuggerLayout.RIGHT_PANE);
         frame.pack();
 
         rightComponent = component;
+    }
+
+    /** {@inheritDoc} */
+    public void setKeyShortcut(KeyStroke keyCombination, String actionName, Runnable action)
+    {
+        frame.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyCombination, actionName);
+        frame.getRootPane().getActionMap().put(actionName, new RunnableAction(action));
     }
 
     /** Creates a horizontal grip-able bar for adjusting the console height. */

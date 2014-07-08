@@ -28,10 +28,11 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory;
  * </table></pre>
  *
  * @param  <C> The type of UI component this window works with.
+ * @param  <K> The type of key combination representations used.
  *
  * @author Rupert Smith
  */
-public interface MainWindow<C>
+public interface MainWindow<C, K>
 {
     /** Makes the main window visible. */
     void showMainWindow();
@@ -48,7 +49,7 @@ public interface MainWindow<C>
      *
      * @return The pane controller for the centre pane.
      */
-    PaneController getCentreController();
+    PaneController<K> getCentreController();
 
     /**
      * Displays a component in the console position.
@@ -70,4 +71,13 @@ public interface MainWindow<C>
      * @param component The component to display.
      */
     void showRightPane(C component);
+
+    /**
+     * Establishes a keyboard shortcut, that works globally accross all components.
+     *
+     * @param keyCombination The key combination for the shortcut.
+     * @param actionName     A unique name for the action.
+     * @param action         The action to invoke.
+     */
+    void setKeyShortcut(K keyCombination, String actionName, Runnable action);
 }

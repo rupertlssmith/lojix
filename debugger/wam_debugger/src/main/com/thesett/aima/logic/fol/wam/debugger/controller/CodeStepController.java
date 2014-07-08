@@ -21,7 +21,9 @@ import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.KeyShortcutMap;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
 
 /**
  * CodeStepController is the UI controller for the code debugging window. It is responsible for displaying the code
@@ -76,17 +78,25 @@ public class CodeStepController implements ControllerLifecycle
      */
     public void open()
     {
-        // Build a text grid panel in the left position.
+        // Build a text grid panel in the central position.
         grid = componentFactory.createTextGrid();
         grid.insert("test", 1, 1);
         mainWindow.showCentrePane(componentFactory.createTextGridPanel(grid));
-        mainWindow.getCentreController().showVerticalScrollBar();
+
+        PaneController paneController = mainWindow.getCentreController();
+        paneController.showVerticalScrollBar();
 
         // Build a table model on the text grid, to display the code in.
         table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);
 
         breakpointMonitor = new BreakpointMonitor();
         byteCodeMonitor = new ByteCodeMonitor(table);
+
+        // Register some keyboard shortcuts to control the code stepping.
+        KeyShortcutMap shortcutMap = componentFactory.getKeyShortcutMap();
+        mainWindow.setKeyShortcut(shortcutMap.getStep(), "step", new Step());
+        mainWindow.setKeyShortcut(shortcutMap.getStepOver(), "step_over", new StepOver());
+        mainWindow.setKeyShortcut(shortcutMap.getResume(), "resume", new Resume());
     }
 
     /** {@inheritDoc} */
@@ -112,5 +122,29 @@ public class CodeStepController implements ControllerLifecycle
     public ByteCodeMonitor getByteCodeMonitor()
     {
         return byteCodeMonitor;
+    }
+
+    private static class Step implements Runnable
+    {
+        public void run()
+        {
+            System.out.println("Step");
+        }
+    }
+
+    private static class StepOver implements Runnable
+    {
+        public void run()
+        {
+            System.out.println("StepOver");
+        }
+    }
+
+    private static class Resume implements Runnable
+    {
+        public void run()
+        {
+            System.out.println("Resume");
+        }
     }
 }

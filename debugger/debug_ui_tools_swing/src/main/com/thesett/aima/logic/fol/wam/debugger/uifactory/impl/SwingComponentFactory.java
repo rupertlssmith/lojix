@@ -16,7 +16,6 @@
 package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 
@@ -50,7 +49,7 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
  *
  * @author Rupert Smith
  */
-public class SwingComponentFactory implements ComponentFactory<Component, Color, KeyStroke>
+public class SwingComponentFactory implements ComponentFactory<JComponent, Color, KeyStroke>
 {
     /** The default cursor appearance. */
     private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -97,7 +96,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color,
     }
 
     /** {@inheritDoc} */
-    public MainWindow<Component> createMainWindow()
+    public MainWindow<JComponent, KeyStroke> createMainWindow()
     {
         return new SwingMainWindow(this);
     }
@@ -109,7 +108,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color,
     }
 
     /** {@inheritDoc} */
-    public Component createTextGridPanel(EnhancedTextGrid model)
+    public JComponent createTextGridPanel(EnhancedTextGrid model)
     {
         JTextGrid textPane = new JTextGrid();
 
@@ -134,7 +133,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color,
     }
 
     /** {@inheritDoc} */
-    public Component createGripPanel(MotionDelta motionDelta, boolean vertical)
+    public JComponent createGripPanel(MotionDelta motionDelta, boolean vertical)
     {
         JPanel vbar = new JPanel();
         vbar.setBackground(toolingColorScheme.getToolingBackground());
@@ -149,7 +148,7 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color,
     }
 
     /** {@inheritDoc} */
-    public Component createBlankPanel()
+    public JComponent createBlankPanel()
     {
         JPanel vbar = new JPanel();
         vbar.setBackground(colorScheme.getBackground());
@@ -177,19 +176,19 @@ public class SwingComponentFactory implements ComponentFactory<Component, Color,
     }
 
     /** {@inheritDoc} */
-    public KeyCombinationBuilder getKeyCombinationBuilder()
+    public KeyCombinationBuilder<KeyStroke> getKeyCombinationBuilder()
     {
         return keyCombinationBuilder;
     }
 
     /** {@inheritDoc} */
-    public void setKeyShortcutMap(KeyShortcutMap shortcutMap)
+    public void setKeyShortcutMap(KeyShortcutMap<KeyStroke> shortcutMap)
     {
         this.keyShortcutMap = shortcutMap;
     }
 
     /** {@inheritDoc} */
-    public KeyShortcutMap getKeyShortcupMap()
+    public KeyShortcutMap<KeyStroke> getKeyShortcutMap()
     {
         return keyShortcutMap;
     }

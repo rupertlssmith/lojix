@@ -21,15 +21,27 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory;
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities
  * <tr><td> Add scroll bars to child panes. </td></tr>
+ * <tr><td> Add keyboard short cuts to child panes. </td></tr>
  * </table></pre>
+ *
+ * @param  <K> The type of key combination representations used.
  *
  * @author Rupert Smith
  */
-public interface PaneController
+public interface PaneController<K>
 {
     /** Displays a vertical scroll bar in the child pane. */
     void showVerticalScrollBar();
 
     /** Displays a horizontal scroll bar in the child pane. */
     void showHorizontalScrollBar();
+
+    /**
+     * Establishes a keyboard shortcut, that is triggered when the child pane has focus.
+     *
+     * @param keyCombination The key combination for the shortcut.
+     * @param actionName     A unique name for the action.
+     * @param action         The action to invoke.
+     */
+    void setKeyShortcut(K keyCombination, String actionName, Runnable action);
 }
