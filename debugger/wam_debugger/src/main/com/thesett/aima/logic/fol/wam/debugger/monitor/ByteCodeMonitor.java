@@ -18,6 +18,7 @@ package com.thesett.aima.logic.fol.wam.debugger.monitor;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.thesett.aima.logic.fol.FunctorName;
@@ -33,9 +34,15 @@ import com.thesett.text.api.model.TextTableModel;
  * ByteCodeMonitor responds to changes in the byte code loaded into the target machine. Byte-code is disassembled and
  * inserted into a {@link TextTableModel}.
  *
+ * <p/>The instructions vary in size, so mapping between addresses in the code, and rows in the table model is not
+ * straightforward. This monitor maintains this mapping, and provides the methods {@link #getAddressForRow(int)} and
+ * {@link #getRowForAddress(int)} to access it. This can be used to work out which instruction has been selected in the
+ * table, or which row in the table to highlight when a particular address is being stepped, and so on.
+ *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
  * <tr><td> Maintain a table model containing disassembled byte-code. </td></tr>
+ * <tr><td> Maintain a mapping between code addresses and table rows. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
@@ -70,12 +77,6 @@ public class ByteCodeMonitor
     /** A column labeled view onto the code table. */
     private DoubleKeyedMap<String, Integer, String> labeledTable;
 
-    /** The current table row being updated. */
-    private int row = 0;
-
-    /** The current code address being rendered. */
-    private int address = 0;
-
     /** A mapping from code table rows to code addresses. */
     private List<Integer> rowToAddress = new ArrayList<Integer>();
 
@@ -103,6 +104,30 @@ public class ByteCodeMonitor
     }
 
     /**
+     * Provides the code address corresponding to a table row.
+     *
+     * @param  row The table row.
+     *
+     * @return The corresponding code address.
+     */
+    public int getAddressForRow(int row)
+    {
+        return rowToAddress.get(row);
+    }
+
+    /**
+     * Provides the table row for a code address.
+     *
+     * @param  address The code address.
+     *
+     * @return The corresponding table row.
+     */
+    public int getRowForAddress(int address)
+    {
+        return addressToRow.get(address);
+    }
+
+    /**
      * Should be notified every time byte-code is added to the machine.
      *
      * @param codeBuffer A buffer containing the byte-code.
@@ -124,8 +149,25 @@ public class ByteCodeMonitor
         SizeableList<WAMInstruction> instructions =
             WAMInstruction.disassemble(start, length, this.codeBuffer, interner, codeView);
 
+        // Figure out where to start writing the disassembled code into the table.
+        Map.Entry<Integer, Integer> entry = addressToRow.floorEntry(start);
+        int firstRow = (entry == null) ? 0 : (entry.getValue() + 1);
+
+        int address = start;
+        int row = firstRow;
+
+        // Build the mapping between addresses and rows.
+        for (WAMInstruction instruction : instructions)
+        {
+            addressToRow.put(address, row);
+            rowToAddress.add(row, address);
+
+            row++;
+            address += instruction.sizeof();
+        }
+
         // Render the instructions into the table to be displayed.
-        renderInstructions(instructions, row, start);
+        renderInstructions(instructions, firstRow, start);
     }
 
     /**
@@ -145,6 +187,8 @@ public class ByteCodeMonitor
         {
             ByteBuffer newCodeBuffer = ByteBuffer.allocate(max * 2);
             newCodeBuffer.put(this.codeBuffer.array(), 0, this.codeBuffer.limit());
+
+            log.fine("Re-sized code buffer to " + (max * 2));
         }
 
         codeBuffer.position(start);

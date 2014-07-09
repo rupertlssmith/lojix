@@ -15,15 +15,20 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.controller;
 
+import java.beans.PropertyChangeEvent;
+
 import com.thesett.aima.logic.fol.wam.debugger.monitor.BreakpointMonitor;
 import com.thesett.aima.logic.fol.wam.debugger.monitor.ByteCodeMonitor;
+import com.thesett.aima.logic.fol.wam.debugger.text.AttributeSet;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextGrid;
 import com.thesett.aima.logic.fol.wam.debugger.text.EnhancedTextTable;
+import com.thesett.aima.logic.fol.wam.debugger.text.TextGridSelectionListener;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ControllerLifecycle;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.KeyShortcutMap;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
+import com.thesett.text.api.TextGridEvent;
 
 /**
  * CodeStepController is the UI controller for the code debugging window. It is responsible for displaying the code
@@ -59,6 +64,12 @@ public class CodeStepController implements ControllerLifecycle
     /** Provides the current byte code loaded in the target machine. */
     private ByteCodeMonitor byteCodeMonitor;
 
+    /** The current row corresponding to the instruction currently being stepped. <tt>-1</tt> means no stepped row. */
+    private int steppedRow = -1;
+
+    /** The current user selected table row. <tt>-1</tt> means no selected row. */
+    private int selectedRow = -1;
+
     /**
      * Builds the UI controller for the register monitor.
      *
@@ -89,8 +100,11 @@ public class CodeStepController implements ControllerLifecycle
         // Build a table model on the text grid, to display the code in.
         table = (EnhancedTextTable) grid.createTable(0, 0, 20, 20);
 
-        breakpointMonitor = new BreakpointMonitor();
+        breakpointMonitor = new BreakpointMonitorImpl();
         byteCodeMonitor = new ByteCodeMonitor(table);
+
+        // Attach listeners for user events on the table.
+        grid.addTextGridSelectionListener(new SelectionHandler());
 
         // Register some keyboard shortcuts to control the code stepping.
         KeyShortcutMap shortcutMap = componentFactory.getKeyShortcutMap();
@@ -145,6 +159,81 @@ public class CodeStepController implements ControllerLifecycle
         public void run()
         {
             System.out.println("Resume");
+        }
+    }
+
+    /**
+     * Triggers background color highlighting on user row selection.
+     */
+    private class SelectionHandler implements TextGridSelectionListener
+    {
+        /** {@inheritDoc} */
+        public void select(TextGridEvent e)
+        {
+            int row = e.getRow();
+
+            if (row != selectedRow)
+            {
+                System.out.println("New mouse selection at : " + e.getColumn() + ", " + row);
+
+                AttributeSet aset = new AttributeSet();
+                aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
+
+                if (row < table.getRowCount())
+                {
+                    // Clear any previously selected row.
+                    if (selectedRow != -1)
+                    {
+                        grid.insertRowAttribute(null, selectedRow);
+                    }
+
+                    selectedRow = row;
+                    grid.insertRowAttribute(aset, selectedRow);
+                }
+            }
+        }
+    }
+
+    /**
+     * Triggers background color highlighting on currently stepped row.
+     */
+    public class BreakpointMonitorImpl implements BreakpointMonitor
+    {
+        /** The IP register at the current break point. */
+        private int ip;
+
+        /** {@inheritDoc} */
+        public void propertyChange(PropertyChangeEvent evt)
+        {
+            String propertyName = evt.getPropertyName();
+
+            if ("IP".equals(propertyName))
+            {
+                ip = (Integer) evt.getNewValue();
+                highlightSteppedRow(byteCodeMonitor.getRowForAddress(ip));
+            }
+        }
+
+        /** {@inheritDoc} */
+        public void highlightSteppedRow(int row)
+        {
+            if (row != steppedRow)
+            {
+                AttributeSet aset = new AttributeSet();
+                aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
+
+                if (row < table.getRowCount())
+                {
+                    // Clear any previously selected row.
+                    if (steppedRow != -1)
+                    {
+                        grid.insertRowAttribute(null, steppedRow);
+                    }
+
+                    steppedRow = row;
+                    grid.insertRowAttribute(aset, steppedRow);
+                }
+            }
         }
     }
 }

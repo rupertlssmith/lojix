@@ -81,6 +81,7 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     {
         internalRegisters = new InternalRegisterBean(0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         internalRegisters.setPropertyChangeListener(registerSetMonitor);
+        internalRegisters.setPropertyChangeListener(breakpointMonitor);
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
 
         layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);

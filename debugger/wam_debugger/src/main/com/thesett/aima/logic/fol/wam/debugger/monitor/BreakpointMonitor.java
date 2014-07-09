@@ -15,7 +15,6 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.monitor;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
@@ -29,30 +28,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Rupert Smith
  */
-public class BreakpointMonitor implements PropertyChangeListener
+public interface BreakpointMonitor extends PropertyChangeListener
 {
-    /** The IP register at the current break point. */
-    private int ip;
-
-    /** {@inheritDoc} */
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        String propertyName = evt.getPropertyName();
-
-        if ("IP".equals(propertyName))
-        {
-            String hex = String.format("%08X", evt.getNewValue());
-            ip = (Integer) evt.getNewValue();
-        }
-    }
-
-    /**
-     * Provides the IP register at the current break point.
-     *
-     * @return The IP register at the current break point.
-     */
-    public int getIp()
-    {
-        return ip;
-    }
 }
