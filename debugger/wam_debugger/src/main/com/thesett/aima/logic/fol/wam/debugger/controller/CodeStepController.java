@@ -237,6 +237,7 @@ public class CodeStepController implements ControllerLifecycle
         public void highlightSteppedRow(int row)
         {
             log.fine("Stepping highlight at : " + row);
+            log.fine("table has " + table.getRowCount() + " rows.");
 
             if (row != steppedRow)
             {
