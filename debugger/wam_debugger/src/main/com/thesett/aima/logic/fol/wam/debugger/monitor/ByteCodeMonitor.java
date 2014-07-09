@@ -42,6 +42,10 @@ import com.thesett.text.api.model.TextTableModel;
  */
 public class ByteCodeMonitor
 {
+    /** Used for debugging. */
+    private static final java.util.logging.Logger log =
+        java.util.logging.Logger.getLogger(ByteCodeMonitor.class.getName());
+
     /** Defines the label for the code address column. */
     public static final String ADDRESS = "address";
 
@@ -110,6 +114,9 @@ public class ByteCodeMonitor
     public void onCodeUpdate(ByteBuffer codeBuffer, int start, int length, VariableAndFunctorInterner interner,
         WAMCodeView codeView)
     {
+        log.fine("public void onCodeUpdate(ByteBuffer codeBuffer, int start = " + start + ", int length = " + length +
+            ", VariableAndFunctorInterner interner, WAMCodeView codeView): called");
+
         // Take a copy of the new bytecode.
         copyAndResizeCodeBuffer(codeBuffer, start, length);
 
