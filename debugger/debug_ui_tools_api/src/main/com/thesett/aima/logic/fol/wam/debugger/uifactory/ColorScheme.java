@@ -84,9 +84,16 @@ public interface ColorScheme<C>
     C getSelectionBackground();
 
     /**
-     * Provides a lowlight color for background marking of screen areas.
+     * Provides a low-light color for background marking of screen areas.
      *
-     * @return A lowlight color for background marking of screen areas.
+     * @return A low-light color for background marking of screen areas.
      */
-    C getLowLight();
+    C getLowlightBackground();
+
+    /**
+     * Provides a highlight color for background marking of screen areas.
+     *
+     * @return A highlight color for background marking of screen areas.
+     */
+    C getHighlightBackground();
 }

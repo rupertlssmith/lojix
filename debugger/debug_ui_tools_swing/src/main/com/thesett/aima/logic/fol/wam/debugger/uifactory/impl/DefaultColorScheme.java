@@ -91,7 +91,13 @@ public class DefaultColorScheme<C> extends ColorSchemeBase<C>
     }
 
     /** {@inheritDoc} */
-    public C getLowLight()
+    public C getLowlightBackground()
+    {
+        return color(LIGHT_GRAY);
+    }
+
+    /** {@inheritDoc} */
+    public C getHighlightBackground()
     {
         return color(LIGHT_GRAY);
     }

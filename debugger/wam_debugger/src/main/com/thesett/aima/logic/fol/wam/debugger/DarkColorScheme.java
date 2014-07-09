@@ -32,7 +32,11 @@ import com.thesett.aima.logic.fol.wam.debugger.uifactory.ColorSchemeBase;
  */
 public class DarkColorScheme<C> extends ColorSchemeBase<C>
 {
+    /** RGB for cyan. */
     private static final int[] CYAN = new int[] { 0, 255, 255 };
+
+    /** RGB for a dull blue. */
+    private static final int[] DUSTY_BLUE = new int[] { 0, 0x66, 0xCC };
 
     /**
      * Creates a dark color scheme using the supplied factory to create the colors.
@@ -93,8 +97,14 @@ public class DarkColorScheme<C> extends ColorSchemeBase<C>
     }
 
     /** {@inheritDoc} */
-    public C getLowLight()
+    public C getLowlightBackground()
     {
         return color(DARK_GRAY);
+    }
+
+    /** {@inheritDoc} */
+    public C getHighlightBackground()
+    {
+        return color(DUSTY_BLUE);
     }
 }

@@ -47,7 +47,8 @@ import com.thesett.text.api.TextGridEvent;
 public class CodeStepController implements ControllerLifecycle
 {
     /** Used for debugging. */
-    /* private static final Logger log = Logger.getLogger(CodeStepController.class.getName()); */
+    private static final java.util.logging.Logger log =
+        java.util.logging.Logger.getLogger(CodeStepController.class.getName());
 
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
@@ -145,7 +146,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            /*log.fine("Step");*/
+            log.fine("Step");
         }
     }
 
@@ -153,7 +154,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            /*log.fine("StepOver");*/
+            log.fine("StepOver");
         }
     }
 
@@ -161,7 +162,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            /*log.fine("Resume");*/
+            log.fine("Resume");
         }
     }
 
@@ -177,10 +178,7 @@ public class CodeStepController implements ControllerLifecycle
 
             if (row != selectedRow)
             {
-                /*log.fine("New mouse selection at : " + e.getColumn() + ", " + row);*/
-
-                AttributeSet aset = new AttributeSet();
-                aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
+                log.fine("New mouse selection at : " + e.getColumn() + ", " + row);
 
                 if (row < table.getRowCount())
                 {
@@ -188,9 +186,21 @@ public class CodeStepController implements ControllerLifecycle
                     if (selectedRow != -1)
                     {
                         grid.insertRowAttribute(null, selectedRow);
+
+                        // Restore stepping highlight if needed.
+                        if (selectedRow == steppedRow)
+                        {
+                            AttributeSet aset = new AttributeSet();
+                            aset.put(AttributeSet.BACKGROUND_COLOR,
+                                componentFactory.getColorScheme().getLowlightBackground());
+                            grid.insertRowAttribute(aset, selectedRow);
+                        }
                     }
 
                     selectedRow = row;
+
+                    AttributeSet aset = new AttributeSet();
+                    aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
                     grid.insertRowAttribute(aset, selectedRow);
                 }
             }
@@ -213,6 +223,9 @@ public class CodeStepController implements ControllerLifecycle
             if ("IP".equals(propertyName))
             {
                 ip = (Integer) evt.getNewValue();
+
+                log.fine("New IP : " + ip);
+
                 highlightSteppedRow(byteCodeMonitor.getRowForAddress(ip));
             }
         }
@@ -220,20 +233,31 @@ public class CodeStepController implements ControllerLifecycle
         /** {@inheritDoc} */
         public void highlightSteppedRow(int row)
         {
+            log.fine("Stepping highlight at : " + row);
+
             if (row != steppedRow)
             {
-                AttributeSet aset = new AttributeSet();
-                aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
-
                 if (row < table.getRowCount())
                 {
                     // Clear any previously selected row.
                     if (steppedRow != -1)
                     {
                         grid.insertRowAttribute(null, steppedRow);
+
+                        // Restore selection highlight if needed.
+                        if (selectedRow == steppedRow)
+                        {
+                            AttributeSet aset = new AttributeSet();
+                            aset.put(AttributeSet.BACKGROUND_COLOR,
+                                componentFactory.getColorScheme().getSelectionBackground());
+                            grid.insertRowAttribute(aset, selectedRow);
+                        }
                     }
 
                     steppedRow = row;
+
+                    AttributeSet aset = new AttributeSet();
+                    aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getHighlightBackground());
                     grid.insertRowAttribute(aset, steppedRow);
                 }
             }

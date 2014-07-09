@@ -70,7 +70,7 @@ public class MemoryLayoutMonitorController implements ControllerLifecycle
         this.mainWindow = mainWindow;
 
         ColorScheme colorScheme = componentFactory.getColorScheme();
-        fader = componentFactory.getColorFactory().createFader(colorScheme.getLowLight(), colorScheme.getBackground());
+        fader = componentFactory.getColorFactory().createFader(colorScheme.getLowlightBackground(), colorScheme.getBackground());
     }
 
     /**
