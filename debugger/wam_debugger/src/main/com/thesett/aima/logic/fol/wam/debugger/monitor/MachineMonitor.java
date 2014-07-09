@@ -108,5 +108,7 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     {
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
         layoutRegisters.updateRegisters(dpi.getMemoryLayout());
+
+        breakpointMonitor.pause();
     }
 }

@@ -142,26 +142,29 @@ public class CodeStepController implements ControllerLifecycle
         return byteCodeMonitor;
     }
 
-    private static class Step implements Runnable
+    private class Step implements Runnable
     {
         public void run()
         {
+            breakpointMonitor.release();
             log.fine("Step");
         }
     }
 
-    private static class StepOver implements Runnable
+    private class StepOver implements Runnable
     {
         public void run()
         {
+            breakpointMonitor.release();
             log.fine("StepOver");
         }
     }
 
-    private static class Resume implements Runnable
+    private class Resume implements Runnable
     {
         public void run()
         {
+            breakpointMonitor.release();
             log.fine("Resume");
         }
     }
@@ -210,7 +213,7 @@ public class CodeStepController implements ControllerLifecycle
     /**
      * Triggers background color highlighting on currently stepped row.
      */
-    public class BreakpointMonitorImpl implements BreakpointMonitor
+    public class BreakpointMonitorImpl extends BreakpointMonitor
     {
         /** The IP register at the current break point. */
         private int ip;
