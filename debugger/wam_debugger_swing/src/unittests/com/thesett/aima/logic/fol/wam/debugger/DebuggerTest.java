@@ -17,8 +17,8 @@ package com.thesett.aima.logic.fol.wam.debugger;
 
 import java.io.IOException;
 
-import com.thesett.aima.logic.fol.BasicUnificationUnitTestBase;
 import com.thesett.aima.logic.fol.Clause;
+import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
@@ -102,9 +102,8 @@ public class DebuggerTest extends TestCase
         // Build a new test suite.
         TestSuite suite = new TestSuite("WAMResolvingJavaMachine Tests");
 
-        // Add all tests defined in the BasicUnificationTestBase class
-        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testAtomsUnifyOk", engine));
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingFalse", engine));
 
         return suite;
     }
