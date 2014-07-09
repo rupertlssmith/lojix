@@ -44,6 +44,9 @@ import com.thesett.text.api.model.TextTableModel;
  */
 public class RegisterMonitorController implements ControllerLifecycle
 {
+    /** Used for debugging. */
+    /* private static final Logger log = Logger.getLogger(RegisterMonitorController.class.getName()); */
+
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
 
@@ -147,7 +150,7 @@ public class RegisterMonitorController implements ControllerLifecycle
 
             if (row != selectedRow)
             {
-                System.out.println("New mouse selection at : " + e.getColumn() + ", " + row);
+                /*log.fine("New mouse selection at : " + e.getColumn() + ", " + row);*/
 
                 AttributeSet aset = new AttributeSet();
                 aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());

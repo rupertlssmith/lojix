@@ -50,8 +50,7 @@ import com.thesett.text.api.model.TextTableModel;
 public class ByteCodeMonitor
 {
     /** Used for debugging. */
-    private static final java.util.logging.Logger log =
-        java.util.logging.Logger.getLogger(ByteCodeMonitor.class.getName());
+    /* private static final Logger log = Logger.getLogger(ByteCodeMonitor.class.getName()); */
 
     /** Defines the label for the code address column. */
     public static final String ADDRESS = "address";
@@ -139,8 +138,8 @@ public class ByteCodeMonitor
     public void onCodeUpdate(ByteBuffer codeBuffer, int start, int length, VariableAndFunctorInterner interner,
         WAMCodeView codeView)
     {
-        log.fine("public void onCodeUpdate(ByteBuffer codeBuffer, int start = " + start + ", int length = " + length +
-            ", VariableAndFunctorInterner interner, WAMCodeView codeView): called");
+        /*log.fine("public void onCodeUpdate(ByteBuffer codeBuffer, int start = " + start + ", int length = " + length +
+            ", VariableAndFunctorInterner interner, WAMCodeView codeView): called");*/
 
         // Take a copy of the new bytecode.
         copyAndResizeCodeBuffer(codeBuffer, start, length);
@@ -188,7 +187,7 @@ public class ByteCodeMonitor
             ByteBuffer newCodeBuffer = ByteBuffer.allocate(max * 2);
             newCodeBuffer.put(this.codeBuffer.array(), 0, this.codeBuffer.limit());
 
-            log.fine("Re-sized code buffer to " + (max * 2));
+            /*log.fine("Re-sized code buffer to " + (max * 2));*/
         }
 
         codeBuffer.position(start);

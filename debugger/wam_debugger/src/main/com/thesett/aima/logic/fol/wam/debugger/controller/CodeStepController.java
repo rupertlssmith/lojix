@@ -46,6 +46,9 @@ import com.thesett.text.api.TextGridEvent;
  */
 public class CodeStepController implements ControllerLifecycle
 {
+    /** Used for debugging. */
+    /* private static final Logger log = Logger.getLogger(CodeStepController.class.getName()); */
+
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
 
@@ -142,7 +145,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            System.out.println("Step");
+            /*log.fine("Step");*/
         }
     }
 
@@ -150,7 +153,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            System.out.println("StepOver");
+            /*log.fine("StepOver");*/
         }
     }
 
@@ -158,7 +161,7 @@ public class CodeStepController implements ControllerLifecycle
     {
         public void run()
         {
-            System.out.println("Resume");
+            /*log.fine("Resume");*/
         }
     }
 
@@ -174,7 +177,7 @@ public class CodeStepController implements ControllerLifecycle
 
             if (row != selectedRow)
             {
-                System.out.println("New mouse selection at : " + e.getColumn() + ", " + row);
+                /*log.fine("New mouse selection at : " + e.getColumn() + ", " + row);*/
 
                 AttributeSet aset = new AttributeSet();
                 aset.put(AttributeSet.BACKGROUND_COLOR, componentFactory.getColorScheme().getSelectionBackground());
