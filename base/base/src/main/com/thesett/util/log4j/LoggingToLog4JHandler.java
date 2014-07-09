@@ -49,7 +49,11 @@ public class LoggingToLog4JHandler extends Handler
     {
         org.apache.log4j.Logger log4j = getTargetLogger(record.getLoggerName());
         Priority priority = toLog4j(record.getLevel());
-        log4j.log(priority, toLog4jMessage(record), record.getThrown());
+
+        if (!priority.equals(org.apache.log4j.Level.OFF))
+        {
+            log4j.log(priority, toLog4jMessage(record), record.getThrown());
+        }
     }
 
     /** {@inheritDoc} */
