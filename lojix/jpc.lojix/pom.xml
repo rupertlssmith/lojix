@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.thesett</groupId>
+    <artifactId>jpc_lojix</artifactId>
+    <name>jpc_lojix</name>
+    <version>0.3-SNAPSHOT</version>
+
+    <description>Implementation of the JPC interface for LoJiX Prolog.</description>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <topdir>${basedir}/..</topdir>
+    </properties>
+
+    <parent>
+        <groupId>com.thesett</groupId>
+        <artifactId>lojixbuild</artifactId>
+        <version>0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.thesett</groupId>
+            <artifactId>wam</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+			<groupId>com.github.java-prolog-connectivity</groupId>
+			<artifactId>jpc</artifactId>
+			<version>0.0.1-alpha-SNAPSHOT</version>
+		</dependency> 
+		
+ 		 <dependency>
+			<groupId>com.github.java-prolog-connectivity</groupId>
+			<artifactId>jpc</artifactId>
+			<version>0.0.1-alpha-SNAPSHOT</version>
+			 <type>test-jar</type>
+			<scope>test</scope>
+		</dependency> 
+		
+		<dependency>
+			<groupId>com.github.java-prolog-connectivity</groupId>
+			<artifactId>jpc-examples</artifactId>
+			<version>0.0.1-alpha-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		 
+ 		<dependency>
+			<groupId>com.github.java-prolog-connectivity</groupId>
+			<artifactId>jpc-examples</artifactId>
+			<version>0.0.1-alpha-SNAPSHOT</version>
+			 <type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jpl</groupId>
+			<artifactId>jpl</artifactId>
+			<version>3.1.4-alpha</version>
+		</dependency>
+
+        <!-- Test only dependencies. -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

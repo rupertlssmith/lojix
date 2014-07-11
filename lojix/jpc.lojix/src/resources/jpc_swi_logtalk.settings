@@ -1,0 +1,11 @@
+{
+engines: [
+  {
+    "id": "swi_logtalk",
+    "categoryNames": [""],
+    "factoryClass": "org.jpc.engine.jpl.JplSwiDriver",
+    "%factoryMethod": "createMTPrologEngine",
+    "profileClass": "org.jpc.engine.profile.LogtalkEngineProfile"
+  }
+]
+}

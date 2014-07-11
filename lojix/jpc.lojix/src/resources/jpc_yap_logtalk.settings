@@ -1,0 +1,11 @@
+{
+engines: [
+  {
+    "id": "yap_logtalk",
+    "categoryNames": [""],
+    "factoryClass": "org.jpc.engine.jpl.JplYapDriver",
+    "%factoryMethod": "createMTPrologEngine",
+    "profileClass": "org.jpc.engine.profile.LogtalkEngineProfile"
+  }
+]
+}

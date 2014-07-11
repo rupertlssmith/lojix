@@ -1,0 +1,10 @@
+{
+engines: [
+  {
+    "id": "swi",
+    "categoryNames": [""],
+    "factoryClass": "org.jpc.engine.jpl.JplSwiDriver",
+    "%factoryMethod": "createMTPrologEngine"
+  }
+]
+}
