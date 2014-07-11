@@ -7,6 +7,6 @@ public class LojixTermBuilder extends TermBuilder<com.thesett.aima.logic.fol.Ter
 {
     public Term build()
     {
-        return getFunctor();
+        return null;
     }
 }

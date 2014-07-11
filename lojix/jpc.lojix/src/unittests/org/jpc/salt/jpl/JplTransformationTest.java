@@ -5,8 +5,6 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import org.jpc.salt.JpcTermWriter;
-import org.jpc.salt.jpl.JplTermReader;
-import org.jpc.salt.jpl.JplTermWriter;
 import org.jpc.term.Atom;
 import org.jpc.term.Compound;
 import org.jpc.term.FloatTerm;
@@ -22,21 +20,21 @@ public class JplTransformationTest {
 	
 	@Test
 	public void testJplToJpl() {
-		JplTermWriter termWriter = new JplTermWriter();
-		new JplTermReader(t1Jpl, termWriter).read();
+		LojixTermWriter termWriter = new LojixTermWriter();
+		new LojixTermReader(t1Jpl, termWriter).read();
 		assertEquals(t1Jpl, termWriter.getFirst());
 	}
 	
 	@Test
 	public void testJplToJpc() {
 		JpcTermWriter jpcTermWriter = new JpcTermWriter();
-		new JplTermReader(t1Jpl, jpcTermWriter).read();
+		new LojixTermReader(t1Jpl, jpcTermWriter).read();
 		assertEquals(t1Jpc, jpcTermWriter.getFirst());
 	}
 	
 	@Test
 	public void testJpcToJpl() {
-		JplTermWriter jplTermWriter = new JplTermWriter();
+		LojixTermWriter jplTermWriter = new LojixTermWriter();
 		t1Jpc.read(jplTermWriter);
 		assertEquals(t1Jpl, jplTermWriter.getFirst());
 	}
