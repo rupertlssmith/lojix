@@ -77,6 +77,6 @@ public class LojixTermWriter extends TermWriter<com.thesett.aima.logic.fol.Term>
     /** {@inheritDoc} */
     protected TermBuilder<com.thesett.aima.logic.fol.Term> createCompoundBuilder()
     {
-        return new LojixTermBuilder();
+        return new LojixTermBuilder(interner);
     }
 }

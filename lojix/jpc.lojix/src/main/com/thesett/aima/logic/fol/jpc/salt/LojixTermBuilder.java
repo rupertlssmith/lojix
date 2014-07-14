@@ -15,14 +15,48 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt;
 
+import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Term;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import org.jpc.salt.TermBuilder;
 
-public class LojixTermBuilder extends TermBuilder<com.thesett.aima.logic.fol.Term>
+import java.util.List;
+
+public class LojixTermBuilder extends TermBuilder<Term>
 {
+    /**
+     * The interner used to look up and construct all names.
+     */
+    private final VariableAndFunctorInterner interner;
+
+    /**
+     * Creates a term builder with the specified interner to look up and construct interned names with.
+     *
+     * @param interner The interner used to look up and construct all names.
+     */
+    public LojixTermBuilder(VariableAndFunctorInterner interner)
+    {
+        this.interner = interner;
+    }
+
     public Term build()
     {
-        return null;
+        Term result;
+
+        if (!isCompound())
+            result = getFunctor();
+        else {
+            if (getFunctor().isAtom()) {
+                List<Term> args = getArgs();
+                int arity = args.size();
+                Functor functor = (Functor) getFunctor();
+                int name = interner.internFunctorName(interner.getFunctorName(functor.getName()), arity);
+                result = new Functor(name, args.toArray(new Term[arity]));
+            } else
+                throw new RuntimeException("Invalid functor type.");
+        }
+
+        return result;
     }
 }
