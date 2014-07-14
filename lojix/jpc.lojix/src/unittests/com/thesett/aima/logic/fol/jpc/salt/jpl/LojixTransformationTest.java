@@ -17,6 +17,9 @@ package com.thesett.aima.logic.fol.jpc.salt.jpl;
 
 import static java.util.Arrays.asList;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
+
 import org.jpc.salt.JpcTermWriter;
 import org.jpc.term.Atom;
 import org.jpc.term.Compound;
@@ -27,19 +30,34 @@ import org.jpc.term.Var;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
+/**
+ * LojixTransformationTest checks that the term translators can map equivalent terms in Lojix and JPC into each other.
+ *
+ * <p/>The Prolog term to be translated is:
+ *
+ * <pre>
+ * id(name2(atom1, -10, 10.5, A, _A))
+ * </pre>
+ */
 public class LojixTransformationTest
 {
-    jpl.Term t1Jpl =
-        new jpl.Compound("id",
-            new jpl.Term[]
+    VariableAndFunctorInterner interner = new VariableAndFunctorInternerImpl("vars", "functors");
+
+    com.thesett.aima.logic.fol.Term t1Jpl =
+        new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("id", 1),
+            new com.thesett.aima.logic.fol.Term[]
             {
-                new jpl.Compound("name2",
-                    new jpl.Term[]
+                new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("name2", 5),
+                    new com.thesett.aima.logic.fol.Term[]
                     {
-                        new jpl.Atom("atom1"), new jpl.Integer(-10), new jpl.Float(10.5), new jpl.Variable("A"),
-                        new jpl.Variable("_A")
+                        new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("atom1", 0), null),
+                        new com.thesett.aima.logic.fol.IntLiteral(-10),
+                        new com.thesett.aima.logic.fol.FloatLiteral(10.5f),
+                        new com.thesett.aima.logic.fol.Variable(interner.internVariableName("A"), null, false),
+                        new com.thesett.aima.logic.fol.Variable(interner.internVariableName("_A"), null, true)
                     })
             });
+
     Term t1Jpc =
         new Compound("id",
             asList(
@@ -51,7 +69,7 @@ public class LojixTransformationTest
     public void testJplToJpl()
     {
         LojixTermWriter termWriter = new LojixTermWriter();
-        //new LojixTermReader(t1Jpl, termWriter).read();
+        new LojixTermReader(t1Jpl, termWriter).read();
         assertEquals(t1Jpl, termWriter.getFirst());
     }
 
@@ -59,7 +77,7 @@ public class LojixTransformationTest
     public void testJplToJpc()
     {
         JpcTermWriter jpcTermWriter = new JpcTermWriter();
-        //new LojixTermReader(t1Jpl, jpcTermWriter).read();
+        new LojixTermReader(t1Jpl, jpcTermWriter).read();
         assertEquals(t1Jpc, jpcTermWriter.getFirst());
     }
 
