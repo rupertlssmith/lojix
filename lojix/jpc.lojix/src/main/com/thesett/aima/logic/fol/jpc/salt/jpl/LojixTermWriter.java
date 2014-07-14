@@ -15,39 +15,68 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt.jpl;
 
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+
 import org.jpc.salt.TermBuilder;
 import org.jpc.salt.TermContentHandler;
 import org.jpc.salt.TermWriter;
 
 public class LojixTermWriter extends TermWriter<com.thesett.aima.logic.fol.Term>
 {
+    /** The interner used to intern all names. */
+    private final VariableAndFunctorInterner interner;
+
+    /** A term builder to assist term construction. */
+    private final com.thesett.aima.logic.fol.builder.TermBuilder tb;
+
+    public LojixTermWriter(VariableAndFunctorInterner interner)
+    {
+        this.interner = interner;
+        tb = new com.thesett.aima.logic.fol.builder.TermBuilder(interner);
+
+    }
+
+    /** {@inheritDoc} */
     public TermContentHandler startIntegerTerm(long value)
     {
+        process(tb.integer((int) value));
+
         return this;
     }
 
+    /** {@inheritDoc} */
     public TermContentHandler startFloatTerm(double value)
     {
+        process(tb.real((float) value));
+
         return this;
     }
 
+    /** {@inheritDoc} */
     public TermContentHandler startVariable(String name)
     {
+        process(tb.var(name));
+
         return this;
     }
 
+    /** {@inheritDoc} */
     public TermContentHandler startAtom(String name)
     {
+        process(tb.atom(name));
+
         return this;
     }
 
+    /** {@inheritDoc} */
     public TermContentHandler startJRef(Object ref)
     {
         throw new UnsupportedOperationException();
     }
 
+    /** {@inheritDoc} */
     protected TermBuilder<com.thesett.aima.logic.fol.Term> createCompoundBuilder()
     {
-        return null;
+        return new LojixTermBuilder();
     }
 }

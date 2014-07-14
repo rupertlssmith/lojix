@@ -15,44 +15,80 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt.jpl;
 
+import com.thesett.aima.logic.fol.FloatLiteral;
+import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.IntLiteral;
+import com.thesett.aima.logic.fol.NumericType;
+import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+
 import org.jpc.salt.TermContentHandler;
 import org.jpc.salt.TermReader;
 
 public class LojixTermReader extends TermReader
 {
-    private com.thesett.aima.logic.fol.Term jplTerm;
+    /** The interner used to de-intern all names. */
+    private final VariableAndFunctorInterner interner;
 
-    public LojixTermReader(com.thesett.aima.logic.fol.Term jplTerm, TermContentHandler contentHandler)
+    /** The Lojix term to be translated to a JPC term. */
+    private Term lojixTerm;
+
+    public LojixTermReader(Term jplTerm, TermContentHandler contentHandler, VariableAndFunctorInterner interner)
     {
         super(contentHandler);
-        this.jplTerm = jplTerm;
+        this.lojixTerm = jplTerm;
+        this.interner = interner;
     }
 
     public void read()
     {
-        read(jplTerm);
+        read(lojixTerm);
     }
 
-    private void read(com.thesett.aima.logic.fol.Term term)
+    private void read(Term term)
     {
-        /*if (term.isInteger()) {
-            com.thesett.aima.logic.fol.Integer jplInteger = (com.thesett.aima.logic.fol.Integer) term;
-            getContentHandler().startIntegerTerm(jplInteger.longValue());
-        } else if (term.isFloat()) {
-            com.thesett.aima.logic.fol.Float jplFloat = (com.thesett.aima.logic.fol.Float) term;
-            getContentHandler().startFloatTerm(jplFloat.doubleValue());
-        } else if (term.isVar()) {
-            getContentHandler().startVariable(term.name());
-        } else if (term.isAtom()) {
-            getContentHandler().startAtom(term.name());
-        } else if (term.isCompound()) {
+        if (term.isNumber())
+        {
+            NumericType numericType = (NumericType) term;
+
+            if (numericType.isInteger())
+            {
+                IntLiteral jplInteger = (IntLiteral) term;
+                getContentHandler().startIntegerTerm(jplInteger.longValue());
+            }
+            else if (numericType.isFloat())
+            {
+                FloatLiteral jplFloat = (FloatLiteral) term;
+                getContentHandler().startFloatTerm(jplFloat.doubleValue());
+            }
+        }
+        else if (term.isVar())
+        {
+            Variable var = (Variable) term;
+            getContentHandler().startVariable(interner.getVariableName(var.getName()));
+        }
+        else if (term.isAtom())
+        {
+            Functor atom = (Functor) term;
+            getContentHandler().startAtom(interner.getFunctorName(atom.getName()));
+        }
+        else if (term.isCompound())
+        {
+            Functor functor = (Functor) term;
             getContentHandler().startCompound();
-            getContentHandler().startAtom(term.name());
-            for (com.thesett.aima.logic.fol.Term child : term.args()) {
+            getContentHandler().startAtom(interner.getFunctorName(functor.getName()));
+
+            for (com.thesett.aima.logic.fol.Term child : functor.getArguments())
+            {
                 read(child);
             }
+
             getContentHandler().endCompound();
-        } else
-            throw new RuntimeException("Unrecognized JPL term: " + term);*/
+        }
+        else
+        {
+            throw new RuntimeException("Unrecognized Lojix term: " + term);
+        }
     }
 }
