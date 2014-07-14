@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.jpc.jpl;
+package com.thesett.aima.logic.fol.jpc.engine;
 
-import com.thesett.aima.logic.fol.jpc.salt.jpl.LojixTransformationTest;
+import com.thesett.aima.logic.fol.jpc.salt.LojixTransformationTest;
 import org.jpc.engine.prolog.PrologEngineTestSuite;
 import org.jpc.examples.PrologExamplesTestSuite;
 import org.jpc.util.config.EngineConfigurationManager;

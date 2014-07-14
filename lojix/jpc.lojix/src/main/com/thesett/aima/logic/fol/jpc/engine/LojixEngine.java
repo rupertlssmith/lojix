@@ -13,15 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.jpc.salt.jpl;
+package com.thesett.aima.logic.fol.jpc.engine;
 
-import com.thesett.aima.logic.fol.Term;
+import org.jpc.Jpc;
+import org.jpc.engine.prolog.AbstractPrologEngine;
+import org.jpc.engine.prolog.ThreadModel;
+import org.jpc.query.Query;
+import org.jpc.term.Term;
 
-import org.jpc.salt.TermBuilder;
-
-public class LojixTermBuilder extends TermBuilder<com.thesett.aima.logic.fol.Term>
+public class LojixEngine extends AbstractPrologEngine
 {
-    public Term build()
+    public void close()
+    {
+    }
+
+    public boolean isCloseable()
+    {
+        return false;
+    }
+
+    public ThreadModel threadModel()
+    {
+        return null;
+    }
+
+    public Query basicQuery(Term term, boolean errorHandledQuery, Jpc context)
+    {
+        return null;
+    }
+
+    public Term asTerm(String termString, Jpc context)
     {
         return null;
     }

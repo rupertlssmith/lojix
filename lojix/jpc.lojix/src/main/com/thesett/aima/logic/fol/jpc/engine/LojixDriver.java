@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.jpc.engine.jpl;
+package com.thesett.aima.logic.fol.jpc.engine;
 
 import org.jpc.engine.prolog.driver.AbstractPrologEngineDriver;
 import org.jpc.engine.prolog.driver.PrologEngineFactory;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.jpc.salt.jpl;
+package com.thesett.aima.logic.fol.jpc.salt;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 

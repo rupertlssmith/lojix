@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.jpc.examples.metro.jpl;
+package com.thesett.aima.logic.fol.jpc.examples.metro;
 
 import org.jpc.examples.metro.MetroExample;
 import org.jpc.examples.metro.StressTest;
