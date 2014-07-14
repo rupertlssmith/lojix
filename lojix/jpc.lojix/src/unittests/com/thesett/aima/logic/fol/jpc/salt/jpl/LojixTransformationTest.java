@@ -19,6 +19,7 @@ import static java.util.Arrays.asList;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
+import com.thesett.aima.logic.fol.builder.TermBuilder;
 
 import org.jpc.salt.JpcTermWriter;
 import org.jpc.term.Atom;
@@ -41,24 +42,18 @@ import org.junit.Test;
  */
 public class LojixTransformationTest
 {
+    /** An interner used to intern variable and functor names. */
     VariableAndFunctorInterner interner = new VariableAndFunctorInternerImpl("vars", "functors");
 
-    com.thesett.aima.logic.fol.Term t1Jpl =
-        new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("id", 1),
-            new com.thesett.aima.logic.fol.Term[]
-            {
-                new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("name2", 5),
-                    new com.thesett.aima.logic.fol.Term[]
-                    {
-                        new com.thesett.aima.logic.fol.Functor(interner.internFunctorName("atom1", 0), null),
-                        new com.thesett.aima.logic.fol.IntLiteral(-10),
-                        new com.thesett.aima.logic.fol.FloatLiteral(10.5f),
-                        new com.thesett.aima.logic.fol.Variable(interner.internVariableName("A"), null, false),
-                        new com.thesett.aima.logic.fol.Variable(interner.internVariableName("_A"), null, true)
-                    })
-            });
+    /** A term builder. */
+    TermBuilder tb = new TermBuilder(interner);
 
-    Term t1Jpc =
+    /** The term in Lojix. */
+    com.thesett.aima.logic.fol.Term lojixTerm =
+        tb.functor("id", tb.functor("atom1", tb.integer(-10), tb.real(10.5f), tb.var("A"), tb.var("_A")));
+
+    /** The term in JPC. */
+    Term jpcTerm =
         new Compound("id",
             asList(
                 new Compound("name2",
@@ -69,23 +64,23 @@ public class LojixTransformationTest
     public void testJplToJpl()
     {
         LojixTermWriter termWriter = new LojixTermWriter();
-        new LojixTermReader(t1Jpl, termWriter).read();
-        assertEquals(t1Jpl, termWriter.getFirst());
+        new LojixTermReader(lojixTerm, termWriter).read();
+        assertEquals(lojixTerm, termWriter.getFirst());
     }
 
     @Test
     public void testJplToJpc()
     {
         JpcTermWriter jpcTermWriter = new JpcTermWriter();
-        new LojixTermReader(t1Jpl, jpcTermWriter).read();
-        assertEquals(t1Jpc, jpcTermWriter.getFirst());
+        new LojixTermReader(lojixTerm, jpcTermWriter).read();
+        assertEquals(jpcTerm, jpcTermWriter.getFirst());
     }
 
     @Test
     public void testJpcToJpl()
     {
         LojixTermWriter jplTermWriter = new LojixTermWriter();
-        t1Jpc.read(jplTermWriter);
-        assertEquals(t1Jpl, jplTermWriter.getFirst());
+        jpcTerm.read(jplTermWriter);
+        assertEquals(lojixTerm, jplTermWriter.getFirst());
     }
 }
