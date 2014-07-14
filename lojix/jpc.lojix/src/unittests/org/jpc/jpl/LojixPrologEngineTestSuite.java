@@ -15,16 +15,29 @@
  */
 package org.jpc.jpl;
 
+import org.jpc.engine.prolog.PrologEngineTestSuite;
+import org.jpc.examples.PrologExamplesTestSuite;
+import org.jpc.salt.jpl.LojixTransformationTest;
 import org.jpc.util.config.EngineConfigurationManager;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-public class JplYapLogtalkEngineTestSuite extends JplLogtalkEngineTestSuite
+/**
+ * All the non-Logtalk tests the logic engine should pass
+ *
+ * @author sergioc
+ */
+@RunWith(Suite.class)
+@SuiteClasses({ PrologEngineTestSuite.class, PrologExamplesTestSuite.class, LojixTransformationTest.class })
+public class LojixPrologEngineTestSuite
 {
     @BeforeClass
     public static void setUp()
     {
         EngineConfigurationManager engineConfigurationManager =
-            EngineConfigurationManager.createFromFile("jpc_yap_logtalk.settings");
+                EngineConfigurationManager.createFromFile("jpc_swi.settings");
         EngineConfigurationManager.setDefault(engineConfigurationManager);
     }
 }

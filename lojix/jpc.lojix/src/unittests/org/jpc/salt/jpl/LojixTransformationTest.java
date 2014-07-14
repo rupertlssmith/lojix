@@ -27,7 +27,7 @@ import org.jpc.term.Var;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class JplTransformationTest
+public class LojixTransformationTest
 {
     jpl.Term t1Jpl =
         new jpl.Compound("id",

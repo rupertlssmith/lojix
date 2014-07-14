@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.jpl;
+package org.jpc.examples.metro.jpl;
 
+import org.jpc.examples.metro.MetroExample;
+import org.jpc.examples.metro.StressTest;
 import org.jpc.util.config.EngineConfigurationManager;
 import org.junit.BeforeClass;
 
-public class JplSwiPrologEngineTestSuite extends JplPrologEngineTestSuite
+public class StressTestLojix extends StressTest
 {
     @BeforeClass
-    public static void setUp()
+    public static void oneTimeSetUp()
     {
         EngineConfigurationManager engineConfigurationManager =
-            EngineConfigurationManager.createFromFile("jpc_swi.settings");
+            EngineConfigurationManager.createFromFile("jpc_yap_logtalk.settings");
         EngineConfigurationManager.setDefault(engineConfigurationManager);
+        MetroExample.loadAll();
     }
 }
