@@ -13,36 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.engine.jpl;
+package com.thesett.aima.logic.fol.jpc.engine.jpl;
 
-import org.jpc.Jpc;
-import org.jpc.engine.prolog.AbstractPrologEngine;
-import org.jpc.engine.prolog.ThreadModel;
-import org.jpc.query.Query;
-import org.jpc.term.Term;
+import org.jpc.engine.prolog.driver.AbstractPrologEngineDriver;
+import org.jpc.engine.prolog.driver.PrologEngineFactory;
+import org.jpc.util.JpcPreferences;
+import org.jpc.util.engine.supported.EngineDescription;
 
-public class LojixEngine extends AbstractPrologEngine
+public abstract class LojixDriver extends AbstractPrologEngineDriver<LojixEngine>
 {
-    public void close()
+    protected LojixDriver(EngineDescription engineDescription)
     {
+        super(engineDescription);
     }
 
-    public boolean isCloseable()
+    protected LojixDriver(EngineDescription engineDescription, JpcPreferences preferences)
     {
-        return false;
+        super(engineDescription, preferences);
     }
 
-    public ThreadModel threadModel()
-    {
-        return null;
-    }
-
-    public Query basicQuery(Term term, boolean errorHandledQuery, Jpc context)
+    public String getLibraryName()
     {
         return null;
     }
 
-    public Term asTerm(String termString, Jpc context)
+    protected PrologEngineFactory<LojixEngine> defaultBasicFactory()
     {
         return null;
     }

@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.examples.metro.jpl;
+package com.thesett.aima.logic.fol.jpc.jpl;
 
-import org.jpc.examples.metro.MetroTestSuite;
+import com.thesett.aima.logic.fol.jpc.salt.jpl.LojixTransformationTest;
+import org.jpc.engine.prolog.PrologEngineTestSuite;
+import org.jpc.examples.PrologExamplesTestSuite;
+import org.jpc.util.config.EngineConfigurationManager;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * This test suit exists only for testing individually the metro example for the jpl implementation. It will be deleted
- * soon...
+ * All the non-Logtalk tests the logic engine should pass
  *
  * @author sergioc
  */
 @RunWith(Suite.class)
-@SuiteClasses({ MetroTestSuite.class })
-public class MetroLojixTestSuite
+@SuiteClasses({ PrologEngineTestSuite.class, PrologExamplesTestSuite.class, LojixTransformationTest.class })
+public class LojixPrologEngineTestSuite
 {
     @BeforeClass
-    public static void oneTimeSetUp()
+    public static void setUp()
     {
-        //ThreadLocalPrologEngine.setPrologEngine(new DefaultJplYapConfiguration().getEngine());
-        //ThreadLocalPrologEngine.setPrologEngine(new DefaultJplSwiConfiguration().getEngine());
+        EngineConfigurationManager engineConfigurationManager =
+                EngineConfigurationManager.createFromFile("jpc_swi.settings");
+        EngineConfigurationManager.setDefault(engineConfigurationManager);
     }
 }

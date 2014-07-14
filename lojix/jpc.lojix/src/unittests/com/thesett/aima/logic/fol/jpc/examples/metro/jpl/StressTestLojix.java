@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.salt.jpl;
+package com.thesett.aima.logic.fol.jpc.examples.metro.jpl;
 
-import com.thesett.aima.logic.fol.Term;
+import org.jpc.examples.metro.MetroExample;
+import org.jpc.examples.metro.StressTest;
+import org.jpc.util.config.EngineConfigurationManager;
+import org.junit.BeforeClass;
 
-import org.jpc.salt.TermBuilder;
-
-public class LojixTermBuilder extends TermBuilder<com.thesett.aima.logic.fol.Term>
+public class StressTestLojix extends StressTest
 {
-    public Term build()
+    @BeforeClass
+    public static void oneTimeSetUp()
     {
-        return null;
+        EngineConfigurationManager engineConfigurationManager =
+            EngineConfigurationManager.createFromFile("jpc_yap_logtalk.settings");
+        EngineConfigurationManager.setDefault(engineConfigurationManager);
+        MetroExample.loadAll();
     }
 }

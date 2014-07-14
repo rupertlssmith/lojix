@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.examples.metro.jpl;
+package com.thesett.aima.logic.fol.jpc.examples.metro.jpl;
 
-import org.jpc.examples.metro.MetroExample;
-import org.jpc.examples.metro.StressTest;
-import org.jpc.util.config.EngineConfigurationManager;
+import org.jpc.examples.metro.MetroTestSuite;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-public class StressTestLojix extends StressTest
+/**
+ * This test suit exists only for testing individually the metro example for the jpl implementation. It will be deleted
+ * soon...
+ *
+ * @author sergioc
+ */
+@RunWith(Suite.class)
+@SuiteClasses({ MetroTestSuite.class })
+public class MetroLojixTestSuite
 {
     @BeforeClass
     public static void oneTimeSetUp()
     {
-        EngineConfigurationManager engineConfigurationManager =
-            EngineConfigurationManager.createFromFile("jpc_yap_logtalk.settings");
-        EngineConfigurationManager.setDefault(engineConfigurationManager);
-        MetroExample.loadAll();
+        //ThreadLocalPrologEngine.setPrologEngine(new DefaultJplYapConfiguration().getEngine());
+        //ThreadLocalPrologEngine.setPrologEngine(new DefaultJplSwiConfiguration().getEngine());
     }
 }

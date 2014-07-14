@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.engine.jpl;
+package com.thesett.aima.logic.fol.jpc.engine.jpl;
 
 import org.jpc.term.Term;
 

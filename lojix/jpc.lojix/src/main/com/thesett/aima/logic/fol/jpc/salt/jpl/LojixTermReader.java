@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.salt.jpl;
+package com.thesett.aima.logic.fol.jpc.salt.jpl;
 
 import org.jpc.salt.TermContentHandler;
 import org.jpc.salt.TermReader;

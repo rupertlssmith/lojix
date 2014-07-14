@@ -13,41 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jpc.engine.jpl;
-
-import java.util.function.Consumer;
+package com.thesett.aima.logic.fol.jpc.engine.jpl;
 
 import org.jpc.Jpc;
-import org.jpc.engine.prolog.PrologEngine;
-import org.jpc.query.PrologQuery;
-import org.jpc.query.Solution;
+import org.jpc.engine.prolog.AbstractPrologEngine;
+import org.jpc.engine.prolog.ThreadModel;
+import org.jpc.query.Query;
 import org.jpc.term.Term;
 
-public class SingleThreadedLojixQuery extends PrologQuery
+public class LojixEngine extends AbstractPrologEngine
 {
-    public SingleThreadedLojixQuery(PrologEngine prologEngine, Term goal, boolean errorHandledQuery, Jpc context)
+    public void close()
     {
-        super(prologEngine, goal, errorHandledQuery, context);
     }
 
-    public boolean isAbortable()
+    public boolean isCloseable()
     {
         return false;
     }
 
-    public void forEachRemaining(Consumer<? super Solution> action)
+    public ThreadModel threadModel()
     {
+        return null;
     }
 
-    protected void basicAbort()
+    public Query basicQuery(Term term, boolean errorHandledQuery, Jpc context)
     {
+        return null;
     }
 
-    protected void basicClose()
-    {
-    }
-
-    protected Solution basicNext()
+    public Term asTerm(String termString, Jpc context)
     {
         return null;
     }
