@@ -51,7 +51,7 @@ public class JplTransformationTest
     public void testJplToJpl()
     {
         LojixTermWriter termWriter = new LojixTermWriter();
-        new LojixTermReader(t1Jpl, termWriter).read();
+        //new LojixTermReader(t1Jpl, termWriter).read();
         assertEquals(t1Jpl, termWriter.getFirst());
     }
 
@@ -59,7 +59,7 @@ public class JplTransformationTest
     public void testJplToJpc()
     {
         JpcTermWriter jpcTermWriter = new JpcTermWriter();
-        new LojixTermReader(t1Jpl, jpcTermWriter).read();
+        //new LojixTermReader(t1Jpl, jpcTermWriter).read();
         assertEquals(t1Jpc, jpcTermWriter.getFirst());
     }
 
@@ -70,5 +70,4 @@ public class JplTransformationTest
         t1Jpc.read(jplTermWriter);
         assertEquals(t1Jpl, jplTermWriter.getFirst());
     }
-
 }
