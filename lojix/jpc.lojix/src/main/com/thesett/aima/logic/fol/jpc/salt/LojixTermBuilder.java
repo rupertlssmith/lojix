@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2009.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,18 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt;
 
-import com.thesett.aima.logic.fol.Functor;
-import com.thesett.aima.logic.fol.Term;
+import java.util.List;
+import java.util.logging.Logger;
 
-import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import org.jpc.salt.TermBuilder;
 
-import java.util.List;
+import com.thesett.aima.logic.fol.Functor;
+import com.thesett.aima.logic.fol.Term;
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 
 public class LojixTermBuilder extends TermBuilder<Term>
 {
-    /**
-     * The interner used to look up and construct all names.
-     */
+    /** The interner used to look up and construct all names. */
     private final VariableAndFunctorInterner interner;
 
     /**
@@ -40,21 +39,29 @@ public class LojixTermBuilder extends TermBuilder<Term>
         this.interner = interner;
     }
 
+    /** {@inheritDoc} */
     public Term build()
     {
         Term result;
 
         if (!isCompound())
+        {
             result = getFunctor();
-        else {
-            if (getFunctor().isAtom()) {
+        }
+        else
+        {
+            if (getFunctor().isAtom())
+            {
                 List<Term> args = getArgs();
                 int arity = args.size();
                 Functor functor = (Functor) getFunctor();
                 int name = interner.internFunctorName(interner.getFunctorName(functor.getName()), arity);
                 result = new Functor(name, args.toArray(new Term[arity]));
-            } else
+            }
+            else
+            {
                 throw new RuntimeException("Invalid functor type.");
+            }
         }
 
         return result;

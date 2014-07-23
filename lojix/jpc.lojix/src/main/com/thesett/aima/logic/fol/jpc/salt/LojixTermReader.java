@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2009.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt;
 
+import org.jpc.salt.TermContentHandler;
+import org.jpc.salt.TermReader;
+
 import com.thesett.aima.logic.fol.FloatLiteral;
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.IntLiteral;
@@ -23,29 +26,50 @@ import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 
-import org.jpc.salt.TermContentHandler;
-import org.jpc.salt.TermReader;
-
+/**
+ * LojixTermReader is a {@link TermReader} for Lojix terms. It reads a Lojix term and describes its contents and
+ * structure to a {@link TermContentHandler}.
+ *
+ * <pre><p/><table id="crc"><caption>CRC Card</caption>
+ * <tr><th> Responsibilities </th><th> Collaborations </th>
+ * <tr><td> Read Lojix terms and describe their structure/content to a content handler. </td>
+ *     <td> {@link TermContentHandler} </td></tr>
+ * </table></pre>
+ */
 public class LojixTermReader extends TermReader
 {
     /** The interner used to de-intern all names. */
     private final VariableAndFunctorInterner interner;
 
     /** The Lojix term to be translated to a JPC term. */
-    private Term lojixTerm;
+    private Term readTerm;
 
-    public LojixTermReader(Term jplTerm, TermContentHandler contentHandler, VariableAndFunctorInterner interner)
+    /**
+     * Creates a Lojix term read.
+     *
+     * @param readTerm       The Lojix term to read.
+     * @param contentHandler The content handler to visit the term with.
+     * @param interner       The Lojix name interner to de-intern names with.
+     */
+    public LojixTermReader(Term readTerm, TermContentHandler contentHandler, VariableAndFunctorInterner interner)
     {
         super(contentHandler);
-        this.lojixTerm = jplTerm;
+        this.readTerm = readTerm;
         this.interner = interner;
     }
 
+    /** {@inheritDoc} */
     public void read()
     {
-        read(lojixTerm);
+        read(readTerm);
     }
 
+    /**
+     * Reads a Lojix term and invoked appropriate methods on the content handler to describe its structure and contents
+     * to it.
+     *
+     * @param term The Lojix term to read.
+     */
     private void read(Term term)
     {
         if (term.isNumber())
