@@ -11,10 +11,6 @@
 
     <packaging>dll</packaging>
 
-    <scm>
-        <connection>scm:svn:http://rupert@www.thebadgerset.co.uk/svn/projects/aima-native/win32</connection>
-    </scm>
-
     <properties>
         <topdir>${basedir}/../..</topdir>
     </properties>

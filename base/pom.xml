@@ -66,7 +66,6 @@
         <taglist.maven.plugin.version>2.2</taglist.maven.plugin.version>
         <maven.surefire.report.plugin.version>2.4.3</maven.surefire.report.plugin.version>
         <javancss.maven.plugin.version>2.0-beta-2</javancss.maven.plugin.version>
-        <!--<simian.maven.plugin.version>1.6.1</simian.maven.plugin.version>-->
         <maven.build.helper.plugin.version>1.3</maven.build.helper.plugin.version>
         <jacoco.maven.plugin.version>0.6.4.201312101107</jacoco.maven.plugin.version>
         
@@ -541,22 +540,6 @@
               <artifactId>maven-dashboard-plugin</artifactId>
               <version>${maven.dashboard.plugin.version}</version>
             </plugin>
-
-            <!--
-                <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>simian-maven-plugin</artifactId>
-                <version>${simian.maven.plugin.version}</version>
-                <configuration>
-                <ignoreCharacterCase>true</ignoreCharacterCase>
-                <ignoreCurlyBraces>true</ignoreCurlyBraces>
-                <ignoreIdentifierCase>true</ignoreIdentifierCase>
-                <ignoreModifiers>true</ignoreModifiers>
-                <ignoreStringCase>true</ignoreStringCase>
-                <threshold>8</threshold>
-                </configuration>
-                </plugin>
-            -->
 
         </plugins>
     </reporting>

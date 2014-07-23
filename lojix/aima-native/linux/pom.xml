@@ -11,10 +11,6 @@
 
     <packaging>so</packaging>
 
-    <scm>
-        <connection>scm:svn:http://rupert@www.thebadgerset.co.uk/svn/projects/aima-native/linux</connection>
-    </scm>
-
     <properties>
         <topdir>${basedir}/../..</topdir>
     </properties>
