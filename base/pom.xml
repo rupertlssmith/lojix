@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>basebuild</artifactId>
     <name>projects</name>
-    <version>0.3-SNAPSHOT</version><!-- base.version -->
+    <version>0.9-SNAPSHOT</version><!-- base.version -->
 
     <packaging>pom</packaging>
 
