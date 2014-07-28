@@ -8,7 +8,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>lojixbuild</artifactId>
     <name>LoJiX</name>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version><!-- lojix.version -->
 
     <packaging>pom</packaging>
 
