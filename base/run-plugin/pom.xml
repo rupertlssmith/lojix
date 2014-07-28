@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>maven-run-plugin</artifactId>
     <name>maven-run-plugin</name>
-    <version>0.1</version>
+    <version>0.3-SNAPSHOT</version><!-- base.version -->
 
     <description>
 	Maven plugin for running main methods of projects from the command line. This plugin generates the
