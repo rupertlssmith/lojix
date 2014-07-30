@@ -16,6 +16,7 @@
 package com.thesett.aima.state.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -79,6 +80,11 @@ public class DynaComponent extends BaseType implements ComponentType
     public Type getPropertyType(String name)
     {
         return typeMap.get(name);
+    }
+
+    /** {@inheritDoc} */
+    public Set<String> getNaturalKeyFieldNames() {
+        return new HashSet<String>();
     }
 
     /** {@inheritDoc} */
