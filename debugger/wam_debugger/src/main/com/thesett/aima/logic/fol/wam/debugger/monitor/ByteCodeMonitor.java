@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,8 @@ import com.thesett.text.api.model.TextTableModel;
 public class ByteCodeMonitor
 {
     /** Used for debugging. */
-    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(ByteCodeMonitor.class.getName());
+    private static final java.util.logging.Logger log =
+        java.util.logging.Logger.getLogger(ByteCodeMonitor.class.getName());
 
     /** Defines the label for the code address column. */
     public static final String ADDRESS = "address";

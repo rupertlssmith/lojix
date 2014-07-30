@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package com.thesett.aima.state;
 
-import com.thesett.aima.state.impl.TestExtendableBean;
-
 import junit.framework.TestCase;
 
 import org.apache.log4j.NDC;
+
+import com.thesett.aima.state.impl.TestExtendableBean;
 
 /**
  * <pre><p/><table id="crc"><caption>CRC Card</caption>

@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,12 @@
 package com.thesett.aima.logic.fol.wam.debugger;
 
 import java.io.IOException;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.apache.log4j.NDC;
 
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
@@ -34,12 +40,6 @@ import com.thesett.aima.logic.fol.wam.machine.WAMEngine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachine;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.apache.log4j.NDC;
 
 public class DebuggerTest extends TestCase
 {

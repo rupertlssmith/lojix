@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Queue;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.apache.log4j.NDC;
+
 import com.thesett.aima.search.BlankFilter;
 import com.thesett.aima.search.GoalState;
 import com.thesett.aima.search.InstrumentedSearchNode;
@@ -27,12 +33,6 @@ import com.thesett.aima.search.SearchNode;
 import com.thesett.aima.search.SearchNotExhaustiveException;
 import com.thesett.aima.search.TestSearch;
 import com.thesett.aima.search.TestTraversableState;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.apache.log4j.NDC;
 
 /**
  * BaseQueueSearchTest is a pure unit test class for the {@link BaseQueueSearch} class.

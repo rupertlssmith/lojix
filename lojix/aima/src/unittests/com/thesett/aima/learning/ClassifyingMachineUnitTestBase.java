@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ package com.thesett.aima.learning;
 
 import java.util.Map;
 
-import com.thesett.aima.state.OrdinalAttribute;
-import com.thesett.aima.state.State;
-
 import junit.framework.TestCase;
 
 import org.apache.log4j.NDC;
+
+import com.thesett.aima.state.OrdinalAttribute;
+import com.thesett.aima.state.State;
 
 /**
  * ClassifyingMachineUnitTestBase is a pure unit test base class for deriving test classes for implementations of the

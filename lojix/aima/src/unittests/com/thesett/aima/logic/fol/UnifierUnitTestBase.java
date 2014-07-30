@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ package com.thesett.aima.logic.fol;
 
 import java.util.List;
 
-import com.thesett.aima.logic.fol.isoprologparser.Token;
-import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
-import com.thesett.common.parsing.SourceCodeException;
-
 import junit.framework.TestCase;
 
 import org.apache.log4j.NDC;
+
+import com.thesett.aima.logic.fol.isoprologparser.Token;
+import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
+import com.thesett.common.parsing.SourceCodeException;
 
 /**
  * Performs some basic unification tests over standard equality in first order logic enhanced with arithmetic. Terms to

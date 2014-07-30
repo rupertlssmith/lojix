@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import jline.ConsoleReader;
+
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Sentence;
@@ -33,8 +35,6 @@ import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.parsing.SourceCodePosition;
 import com.thesett.common.util.Sink;
 import com.thesett.common.util.Source;
-
-import jline.ConsoleReader;
 
 /**
  * ResolutionInterpreter implements an interactive Prolog like interpreter, built on top of a {@link ResolutionEngine}.

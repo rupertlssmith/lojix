@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,9 +74,9 @@ public class MemoryLayoutMonitor implements PropertyChangeListener
             for (int i = 0; i < labelColumn.length; i++)
             {
                 String label = labelColumn[i];
-                this.table.labelCell(label, j * 2 + 1, i);
+                this.table.labelCell(label, (j * 2) + 1, i);
                 this.table.put(j * 2, i, REGISTER_NAMES_BY_COL[j][i]);
-                this.table.put(j * 2 + 1, i, "        ");
+                this.table.put((j * 2) + 1, i, "        ");
             }
         }
     }

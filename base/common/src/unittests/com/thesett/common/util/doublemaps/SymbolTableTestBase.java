@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ package com.thesett.common.util.doublemaps;
 import java.util.LinkedList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import com.thesett.common.util.maps.Dictionary;
 import com.thesett.common.util.maps.DictionaryTestBase;
-
-import junit.framework.TestCase;
 
 /**
  * Tests that symbol tables with nested scopes work as associative maps. Each nested scope combined with a field in the

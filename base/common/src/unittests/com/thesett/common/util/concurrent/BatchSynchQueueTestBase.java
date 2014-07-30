@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 package com.thesett.common.util.concurrent;
 
 import junit.framework.TestCase;
-import com.thesett.common.util.concurrent.BatchSynchQueue;
 
 /**
  * BatchSynchQueueTestBase tests the synchronizing and synchronous error handling abilities of {@link BatchSynchQueue}
- * implementations, and their auxiliary interfaces {@link com.thesett.common.util.concurrent.SynchRef} and {@link com.thesett.common.util.concurrent.SynchRecord}.
+ * implementations, and their auxiliary interfaces {@link com.thesett.common.util.concurrent.SynchRef} and
+ * {@link com.thesett.common.util.concurrent.SynchRecord}.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th>Responsibilities<th>Collaborations

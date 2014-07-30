@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.thesett.aima.logic.fol.*;
+import com.thesett.aima.logic.fol.BasicResolverUnitTestBase;
+import com.thesett.aima.logic.fol.BasicUnificationUnitTestBase;
+import com.thesett.aima.logic.fol.Clause;
+import com.thesett.aima.logic.fol.ConjunctionResolverUnitTestBase;
+import com.thesett.aima.logic.fol.LogicCompiler;
+import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;

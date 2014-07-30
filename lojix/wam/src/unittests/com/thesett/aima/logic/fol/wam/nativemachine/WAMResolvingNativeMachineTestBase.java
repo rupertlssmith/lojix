@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 package com.thesett.aima.logic.fol.wam.nativemachine;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.apache.log4j.NDC;
 
 import com.thesett.aima.logic.fol.BacktrackingResolverUnitTestBase;
 import com.thesett.aima.logic.fol.BasicResolverUnitTestBase;
@@ -31,12 +37,6 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingJavaMachineTest;
 import com.thesett.aima.logic.fol.wam.machine.WAMResolvingMachine;
 import com.thesett.common.util.doublemaps.SymbolTableImpl;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.apache.log4j.NDC;
 
 /**
  * WAMResolvingJavaMachineTest tests resolution and unification over a range of terms in first order logic, in order to

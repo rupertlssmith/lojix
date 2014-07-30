@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import com.thesett.aima.search.QueueBasedSearchMethod;
 import com.thesett.aima.search.util.Searches;
 import com.thesett.aima.search.util.uninformed.BreadthFirstSearch;
@@ -26,8 +28,6 @@ import com.thesett.aima.search.util.uninformed.DepthFirstSearch;
 import com.thesett.aima.search.util.uninformed.PostFixSearch;
 import com.thesett.common.util.Comparisons;
 import com.thesett.common.util.Function;
-
-import junit.framework.TestCase;
 
 /**
  * TermTest provides test for {@link Term} and its sub-classes defined in the fol package.

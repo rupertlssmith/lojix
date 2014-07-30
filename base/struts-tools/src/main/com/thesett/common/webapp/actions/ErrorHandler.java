@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import java.io.Writer;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
-import com.thesett.common.error.UserReadableError;
-
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
+
+import com.thesett.common.error.UserReadableError;
 
 /**
  * ErrorHandler is a top-level error handler for struts based web applications. It defines a single static method for

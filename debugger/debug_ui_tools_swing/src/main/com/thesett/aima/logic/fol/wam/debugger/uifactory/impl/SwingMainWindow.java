@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,10 @@ package com.thesett.aima.logic.fol.wam.debugger.uifactory.impl;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;

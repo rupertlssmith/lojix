@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,8 @@ import com.thesett.text.api.model.TextTableModel;
 public class RegisterMonitorController implements ControllerLifecycle
 {
     /** Used for debugging. */
-    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(RegisterMonitorController.class.getName());
+    private static final java.util.logging.Logger log =
+        java.util.logging.Logger.getLogger(RegisterMonitorController.class.getName());
 
     /** Holds the component factory used to build the application components. */
     private final ComponentFactory componentFactory;
@@ -80,7 +81,9 @@ public class RegisterMonitorController implements ControllerLifecycle
         this.mainWindow = mainWindow;
 
         ColorScheme colorScheme = componentFactory.getColorScheme();
-        fader = componentFactory.getColorFactory().createFader(colorScheme.getLowlightBackground(), colorScheme.getBackground());
+        fader =
+            componentFactory.getColorFactory().createFader(colorScheme.getLowlightBackground(),
+                colorScheme.getBackground());
     }
 
     /**

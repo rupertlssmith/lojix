@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package com.thesett.aima.logic.fol.jpc.salt;
 
-import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-
 import org.jpc.salt.TermBuilder;
 import org.jpc.salt.TermContentHandler;
 import org.jpc.salt.TermWriter;
+
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 
 public class LojixTermWriter extends TermWriter<com.thesett.aima.logic.fol.Term>
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@ package com.thesett.aima.logic.fol.jpc.salt;
 
 import static java.util.Arrays.asList;
 
-import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
-import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
-import com.thesett.aima.logic.fol.builder.TermBuilder;
-
 import org.jpc.salt.JpcTermWriter;
 import org.jpc.term.Atom;
 import org.jpc.term.Compound;
@@ -30,6 +26,10 @@ import org.jpc.term.Term;
 import org.jpc.term.Var;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
+import com.thesett.aima.logic.fol.builder.TermBuilder;
 
 /**
  * LojixTransformationTest checks that the term translators can map equivalent terms in Lojix and JPC into each other.

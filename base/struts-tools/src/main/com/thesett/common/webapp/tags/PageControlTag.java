@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ import java.net.MalformedURLException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import com.thesett.common.util.PagedList;
-
 import org.apache.struts.taglib.TagUtils;
+
+import com.thesett.common.util.PagedList;
 
 /**
  * PageControlTag renders a paging control for navigating amongst multiple pages. The information to be split into pages

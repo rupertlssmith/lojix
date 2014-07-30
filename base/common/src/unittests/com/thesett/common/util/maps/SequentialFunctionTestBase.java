@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import com.thesett.common.util.Function;
-import com.thesett.common.util.maps.SequentialCuckooFunction;
-import com.thesett.common.util.maps.SequentialFunction;
 
 /**
  * Tests that sequential mapping functions always produce sequences, and correctly map keys onto them.

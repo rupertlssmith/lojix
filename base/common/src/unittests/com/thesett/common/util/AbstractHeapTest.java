@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.log4j.NDC;
-import com.thesett.common.util.Queue;
 
 /**
- * AbstractHeapTest is a pure unit test class for the {@link com.thesett.common.util.AbstractHeap} class. It
- * cannot be run directly on this class as it is abstract and cannot therefore be instantiated but it provides a
- * constructor to pass instantiations of classes that extend AbstractHeap to be tested.
+ * AbstractHeapTest is a pure unit test class for the {@link com.thesett.common.util.AbstractHeap} class. It cannot be
+ * run directly on this class as it is abstract and cannot therefore be instantiated but it provides a constructor to
+ * pass instantiations of classes that extend AbstractHeap to be tested.
  *
  * <p>There is a default constructor for this test class that runs the tests on a java.util.PriorityQueue (which is a
  * binary heap). This tests the sanity of the tests that this class provides.

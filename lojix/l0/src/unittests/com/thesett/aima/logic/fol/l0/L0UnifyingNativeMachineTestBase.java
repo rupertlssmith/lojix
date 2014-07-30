@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package com.thesett.aima.logic.fol.l0;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.UnifierUnitTestBase;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * L0UnifyingJavaMachineTest tests unification over a range of terms in first order logic, in order to test all success

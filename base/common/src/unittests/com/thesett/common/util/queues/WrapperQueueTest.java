@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,10 @@ import com.thesett.common.tx.SessionFactory;
 import com.thesett.common.tx.SessionFactoryImpl;
 import com.thesett.common.tx.TxManager;
 import com.thesett.common.tx.TxSession;
-import com.thesett.common.util.queues.Queues;
-import com.thesett.common.util.queues.WrapperQueue;
-import com.thesett.common.util.ReQueue;
 import com.thesett.common.util.Queue;
-import com.thesett.common.util.SizeableQueue;
+import com.thesett.common.util.ReQueue;
 import com.thesett.common.util.Sizeable;
+import com.thesett.common.util.SizeableQueue;
 import com.thesett.common.util.StackQueue;
 
 /**

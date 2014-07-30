@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2009.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@ public interface SourceCodePosition
 
     /**
      * By default source code positions are reported offset from line 1, column 1, as this convention is how positions
-     * are identified to users in text editors. This returns a zero offset version of the position, which is more
-     * useful from a coding stand point.
+     * are identified to users in text editors. This returns a zero offset version of the position, which is more useful
+     * from a coding stand point.
      *
      * @return The zero offset source code position.
      */

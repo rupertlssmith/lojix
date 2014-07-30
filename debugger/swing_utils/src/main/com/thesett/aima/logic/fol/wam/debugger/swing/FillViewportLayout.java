@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.swing;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
 
-import javax.swing.*;
+import javax.swing.JViewport;
+import javax.swing.ViewportLayout;
 
 /**
  * FillViewportLayout is a modified ViewportLayout to ensure that the child components within a view-port always fill

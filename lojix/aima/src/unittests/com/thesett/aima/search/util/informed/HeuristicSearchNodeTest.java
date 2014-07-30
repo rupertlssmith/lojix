@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd.
+ * Copyright The Sett Ltd, 2005 to 2014.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 package com.thesett.aima.search.util.informed;
 
-import com.thesett.aima.search.SearchNodeTest;
-import com.thesett.aima.search.Successor;
-import com.thesett.aima.search.TestTraversableState;
-import com.thesett.aima.search.util.OperatorImpl;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.log4j.NDC;
+
+import com.thesett.aima.search.SearchNodeTest;
+import com.thesett.aima.search.Successor;
+import com.thesett.aima.search.TestTraversableState;
+import com.thesett.aima.search.util.OperatorImpl;
 
 /**
  * HeuristicSearchNodeTest is a pure unit test class for the {@link HeuristicSearchNode} class. HeuristicSearchNode
