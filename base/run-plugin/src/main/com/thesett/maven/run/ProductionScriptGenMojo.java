@@ -1,4 +1,4 @@
-package uk.co.thebadgerset.maven.run;
+package com.thesett.maven.run;
 
 import java.util.Iterator;
 

@@ -29,8 +29,8 @@
     <!-- ====================================== -->
 
     <!-- With the quick and silently failing socket appender. -->
-    <appender name="SOCKET" class="uk.co.thebadgerset.logging.SilentFailSocketAppender">
-        <errorHandler class="uk.co.thebadgerset.logging.SilentErrorHandler"/>
+    <appender name="SOCKET" class="com.thesett.util.log4j.SilentFailSocketAppender">
+        <errorHandler class="com.thesett.util.log4j.SilentErrorHandler"/>
         <param name="RemoteHost" value="localhost"/>
         <param name="Port" value="8181"/>
         <param name="Threshold" value="DEBUG"/>
@@ -70,18 +70,6 @@
 
     <category name="org.hibernate.SQL">
         <priority value="DEBUG"/>
-    </category>
-
-    <category name="uk.co.thebadgerset.aima.logic.fol.isoprologparser.PrologParser">
-        <priority value="INFO"/>
-    </category>
-
-    <category name="uk.co.thebadgerset.aima.logic.fol.isoprologparser.DynamicOperatorParser">
-        <priority value="INFO"/>
-    </category>
-
-    <category name="uk.co.thebadgerset.aima.logic.fol.prolog">
-        <priority value="FATAL"/>
     </category>
 
     <!-- ======================= -->

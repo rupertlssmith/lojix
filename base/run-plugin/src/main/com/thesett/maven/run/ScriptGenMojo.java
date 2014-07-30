@@ -1,4 +1,4 @@
-package uk.co.thebadgerset.maven.run;
+package com.thesett.maven.run;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -191,10 +191,7 @@ public class ScriptGenMojo extends AbstractMojo
         }
 
         commandLine += "-cp ";
-
         commandLine = appendClasspath(commandLine, false);
-
-        //+ testJar + " uk.co.thebadgerset.junit.extensions.TKTestRunner "
         commandLine += " " + ((testOptions != null) ? testOptions : "") + " %*";
 
         log.info("Generating Script for command: " + commandName);
@@ -258,10 +255,7 @@ public class ScriptGenMojo extends AbstractMojo
         }
 
         commandLine += "${JAVA_OPTS} -cp ";
-
         commandLine = appendClasspath(commandLine, true);
-
-        //+ testJar + " uk.co.thebadgerset.junit.extensions.TKTestRunner "
         commandLine += " " + ((testOptions != null) ? testOptions : "") + " ${ARGS}";
 
         log.info("Generating Script for command: " + commandName);
