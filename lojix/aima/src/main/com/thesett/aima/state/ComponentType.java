@@ -85,6 +85,14 @@ public interface ComponentType extends Type, Serializable
     Set<String> getAllPropertyNames();
 
     /**
+     * Provides the set of fields by name, that form the natural key of the component. This set may be empty if the
+     * component has no natural key.
+     *
+     * @return The set of natural key fields by name.
+     */
+    Set<String> getNaturalKeyFieldNames();
+
+    /**
      * Provides the immediate set of {@link ComponentType}s that this component type is a sub-type of. This component
      * type may transitively be a sub-type of further views, but only its immediate ancestors will be returned by this
      * method.
