@@ -268,7 +268,7 @@
                 -->
                 <plugin>
                     <groupId>com.thesett</groupId>
-                    <artifactId>maven-run-plugin</artifactId>
+                    <artifactId>run-maven-plugin</artifactId>
                     <version>${maven.run.plugin.version}</version>
                     <configuration>
                         <scriptOutDirectory>target</scriptOutDirectory>

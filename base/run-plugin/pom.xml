@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.thesett</groupId>
-    <artifactId>maven-run-plugin</artifactId>
-    <name>maven-run-plugin</name>
+    <artifactId>run-maven-plugin</artifactId>
+    <name>run-maven-plugin</name>
     <version>0.8-M1</version><!-- base.version -->
 
     <description>

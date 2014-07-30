@@ -96,7 +96,7 @@
             <!-- Set up the run plugin to generate command line scripts. -->
             <plugin>
                 <groupId>com.thesett</groupId>
-                <artifactId>maven-run-plugin</artifactId>
+                <artifactId>run-maven-plugin</artifactId>
 
                 <configuration>
                     <scriptOutDirectory>target</scriptOutDirectory>

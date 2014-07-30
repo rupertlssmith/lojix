@@ -9,26 +9,49 @@
     <name>projects</name>
     <version>0.8-M1</version><!-- base.version -->
 
+    <description>Base is a set of base libraries and util code for LoJiX and other OSS projects.</description>
+    <url>https://github.com/rupertlssmith/lojix</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
     <packaging>pom</packaging>
 
-    <prerequisites>
-        <maven>2.0.8</maven>
-    </prerequisites>
+    <scm>
+        <connection>scm:git:https://github.com/rupertlssmith/lojix.git</connection>
+        <url>https://github.com/rupertlssmith/lojix</url>
+    </scm>
 
-    <mailingLists>
-    </mailingLists>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
 
-    <organization>
-        <name>The Sett ltd.</name>
-        <url>http://localhost/projects/</url>
-    </organization>
+        <!-- Set up for locally generated site. -->
+        <site>
+            <id>All_Projects_Site</id>
+            <name>All Projects Site</name>
+            <url>file:/var/www/build_reports/base</url>
+        </site>
+    </distributionManagement>    
 
     <developers>
         <developer>
             <name>Rupert Smith</name>
             <id>rupert</id>
-            <email>rupertlssmith (contactable on g-m-a-i-l)</email>
-            <organization />
+            <email>rupertgithub@badgerhouse.freeserve.co.uk</email>
+            <organization>The Sett Ltd.</organization>
+            <organizationUrl>http://www.thesett.com/</organizationUrl>
         </developer>
     </developers>
 
@@ -91,48 +114,6 @@
 
     </properties>
 
-    <pluginRepositories>
-
-        <!-- For the Xebia dashboard plugin. -->
-        <!--
-            <pluginRepository>
-            <id>xebia-mojo-repo</id>
-            <name>Xebia MOJO Repository</name>
-            <url>http://mojo.os.xebia.com/repository/</url>
-            </pluginRepository>
-        -->
-
-    </pluginRepositories>
-
-    <distributionManagement>
-
-        <!-- The repository for fully versioned releases. -->
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>release-repo</id>
-            <name>The Sett Maven2 Repository</name>
-            <url>file://${basedir}/../releases</url>
-            <layout>default</layout>
-        </repository>
-
-        <!-- The repository for snapshot releases. -->
-        <snapshotRepository>
-            <uniqueVersion>true</uniqueVersion>
-            <id>snapshot-repo</id>
-            <name>The Sett Maven2 Snapshot Repository</name>
-            <url>file://${basedir}/../snapshots</url>
-            <layout>default</layout>
-        </snapshotRepository>
-
-        <!-- Set up for locally generated site. -->
-        <site>
-            <id>All_Projects_Site</id>
-            <name>All Projects Site</name>
-            <url>file:/var/www/build_reports/base</url>
-        </site>
-
-    </distributionManagement>
-
     <modules>
         <module>base</module>
         <module>common</module>
@@ -142,7 +123,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -154,7 +134,6 @@
                 <artifactId>log4j</artifactId>
                 <version>[1.2.8,)</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -279,7 +258,7 @@
                 -->
                 <plugin>
                     <groupId>com.thesett</groupId>
-                    <artifactId>maven-run-plugin</artifactId>
+                    <artifactId>run-maven-plugin</artifactId>
                     <version>${maven.run.plugin.version}</version>
                     <configuration>
                         <scriptOutDirectory>target</scriptOutDirectory>
@@ -347,30 +326,30 @@
 
             <!-- Set up the columns to display in the dashboard report. -->
             <plugin>
-              <groupId>com.xebia.mojo</groupId>
-              <artifactId>dashboard-maven-plugin</artifactId>
-              <version>${maven.dashboard.plugin.version}</version>
-              <configuration>
-                <destinationFile>${project.reporting.outputDirectory}/maven-dashboard-report.html</destinationFile>
-                <reports>
-                  <report>maven-surefire-report-plugin</report>
-                  <!--<report>maven-clover2-plugin</report>-->
-                  <report>jacoco-maven-plugin</report>
-                  <report>maven-checkstyle-plugin</report>
-                  <report>maven-pmd-plugin</report>
-                  <report>findbugs-maven-plugin</report>
-                  <report>taglist-maven-plugin</report>
-                  <report>javancss-maven-plugin</report>
-                </reports>
-                <columns>
-                  <maven-surefire-report-plugin>tests,errors,failures,successrate</maven-surefire-report-plugin>
-                  <maven-clover2-plugin>bar</maven-clover2-plugin>
-                  <maven-checkstyle-plugin>errors,warnings</maven-checkstyle-plugin>
-                  <maven-pmd-plugin>violations</maven-pmd-plugin>
-                  <findbugs-maven-plugin>violations</findbugs-maven-plugin>
-                  <javancss-maven-plugin>classes,ncss</javancss-maven-plugin>
-                </columns>
-              </configuration>
+                <groupId>com.xebia.mojo</groupId>
+                <artifactId>dashboard-maven-plugin</artifactId>
+                <version>${maven.dashboard.plugin.version}</version>
+                <configuration>
+                    <destinationFile>${project.reporting.outputDirectory}/maven-dashboard-report.html</destinationFile>
+                    <reports>
+                        <report>maven-surefire-report-plugin</report>
+                        <!--<report>maven-clover2-plugin</report>-->
+                        <report>jacoco-maven-plugin</report>
+                        <report>maven-checkstyle-plugin</report>
+                        <report>maven-pmd-plugin</report>
+                        <report>findbugs-maven-plugin</report>
+                        <report>taglist-maven-plugin</report>
+                        <report>javancss-maven-plugin</report>
+                    </reports>
+                    <columns>
+                        <maven-surefire-report-plugin>tests,errors,failures,successrate</maven-surefire-report-plugin>
+                        <maven-clover2-plugin>bar</maven-clover2-plugin>
+                        <maven-checkstyle-plugin>errors,warnings</maven-checkstyle-plugin>
+                        <maven-pmd-plugin>violations</maven-pmd-plugin>
+                        <findbugs-maven-plugin>violations</findbugs-maven-plugin>
+                        <javancss-maven-plugin>classes,ncss</javancss-maven-plugin>
+                    </columns>
+                </configuration>
             </plugin>
 
             <!-- Set the version of the findbugs plugin to use. Later versions get fussy with modules with no source. -->
@@ -394,41 +373,41 @@
             </plugin>
 
             <!--
-            <plugin>
+                <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.maven.plugin.version}</version>
                 <executions>
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
+                <execution>
+                <id>pre-unit-test</id>
+                <goals>
+                <goal>prepare-agent</goal>
+                </goals>
+                <configuration>
+                <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                <propertyName>surefireArgLine</propertyName>
+                </configuration>
+                </execution>
+                <execution>
+                <id>post-unit-test</id>
+                <phase>test</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+                <configuration>
+                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                </configuration>
+                </execution>
+                <execution>
+                <id>report</id>
+                <phase>site</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+                </execution>
                 </executions>
-            </plugin>
+                </plugin>
             -->
 
         </plugins>
@@ -536,9 +515,9 @@
             </plugin>
 
             <plugin>
-              <groupId>com.xebia.mojo</groupId>
-              <artifactId>dashboard-maven-plugin</artifactId>
-              <version>${maven.dashboard.plugin.version}</version>
+                <groupId>com.xebia.mojo</groupId>
+                <artifactId>dashboard-maven-plugin</artifactId>
+                <version>${maven.dashboard.plugin.version}</version>
             </plugin>
 
         </plugins>
@@ -601,6 +580,56 @@
             <id>packages</id>
             <modules>
             </modules>
+        </profile>
+
+        <profile> 
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
     </profiles>
