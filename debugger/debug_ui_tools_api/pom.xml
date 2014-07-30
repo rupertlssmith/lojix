@@ -28,13 +28,6 @@
             <artifactId>enhanced_text_model</artifactId>
             <version>0.9-SNAPSHOT</version><!-- debugger.version -->
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>swing_utils</artifactId>
-            <version>0.9-SNAPSHOT</version><!-- debugger.version -->
-        </dependency>
-        -->
     </dependencies>
 
     <build>
