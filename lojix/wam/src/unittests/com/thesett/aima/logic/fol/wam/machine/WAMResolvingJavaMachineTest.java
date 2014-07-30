@@ -92,8 +92,8 @@ public class WAMResolvingJavaMachineTest extends TestCase
             new WAMEngine(parser, machine, compiler, machine);
 
         // Attach the debugger to the machine.
-        SimpleMonitor monitor = new SimpleMonitor();
-        machine.attachMonitor(monitor);
+        /*SimpleMonitor monitor = new SimpleMonitor();
+        machine.attachMonitor(monitor);*/
 
         // Add all tests defined in the BasicUnificationTestBase class
         suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -280,10 +280,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromManyDisjunctionPaths", engine));
-        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testJunctionBracketingFalse", engine));
-        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testJunctionBracketingAllowsDisjunction", engine));
+        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingFalse", engine));*/
+        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingAllowsDisjunction", engine));*/
 
         // Add all tests defined in the BacktrackingResolverUnitTestBase class.
         suite.addTest(new BacktrackingResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
