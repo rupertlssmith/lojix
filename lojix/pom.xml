@@ -82,7 +82,7 @@
         <maven.idea.plugin.version>2.2</maven.idea.plugin.version>
         <maven.war.plugin.version>2.0</maven.war.plugin.version>
         <javacc.maven.plugin.version>2.1</javacc.maven.plugin.version>
-        <maven.dashboard.plugin.version>1.1-thesett</maven.dashboard.plugin.version>
+        <maven.dashboard.plugin.version>0.9-SNAPSHOT</maven.dashboard.plugin.version>
         <maven.pmd.plugin.version>2.4</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>2.5.3</maven.findbugs.plugin.version>
         <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
