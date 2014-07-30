@@ -10,29 +10,52 @@
     <name>LoJiX</name>
     <version>0.8-M1</version><!-- lojix.version -->
 
+    <description>LoJiX is a framework for logic compilers and a Prolog implementation.</description>
+    <url>https://github.com/rupertlssmith/lojix</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>    
+    
     <packaging>pom</packaging>
 
-    <prerequisites>
-        <maven>2.0.8</maven>
-    </prerequisites>
+    <scm>
+        <connection>scm:git:https://github.com/rupertlssmith/lojix.git</connection>
+        <url>https://github.com/rupertlssmith/lojix</url>
+    </scm>
 
-    <mailingLists>
-    </mailingLists>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
 
-    <organization>
-        <name>The Sett ltd.</name>
-        <url>http://localhost/projects/</url>
-    </organization>
+        <!-- Set up for locally generated site. -->
+        <site>
+            <id>All_Projects_Site</id>
+            <name>All Projects Site</name>
+            <url>file:/var/www/build_reports/lojix</url>
+        </site>
+    </distributionManagement>    
 
     <developers>
         <developer>
             <name>Rupert Smith</name>
             <id>rupert</id>
-            <email>rupertlssmith (contactable on g-m-a-i-l)</email>
-            <organization />
+            <email>rupertgithub@badgerhouse.freeserve.co.uk</email>
+            <organization>The Sett Ltd.</organization>
+            <organizationUrl>http://www.thesett.com/</organizationUrl>
         </developer>
     </developers>
-
+    
     <properties>
         <projname>os_projects</projname>
         <topdir>${basedir}/.</topdir>
@@ -75,9 +98,9 @@
         <jstl.jar.version>1.1.2</jstl.jar.version>
 
         <!--
-           Clover does not set up ${project.build.finalName} with its 'clover' classifier. The 'final.classifier' property
-           is empty by default, but should be included in the path of any custom modifications to final build artifacts,
-           for example, in antrun scripts. This is used when specifying archives to run cactus on.
+            Clover does not set up ${project.build.finalName} with its 'clover' classifier. The 'final.classifier' property
+            is empty by default, but should be included in the path of any custom modifications to final build artifacts,
+            for example, in antrun scripts. This is used when specifying archives to run cactus on.
         -->
         <final.classifier></final.classifier>
 
@@ -99,46 +122,17 @@
         <sonar.projectName>LoJiX</sonar.projectName>
     </properties>
 
-    <distributionManagement>
-
-        <!-- The repository for fully versioned releases. -->
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>release-repo</id>
-            <name>The Sett Maven2 Repository</name>
-            <url>file://${basedir}/../releases</url>
-            <layout>default</layout>
-        </repository>
-
-        <!-- The repository for snapshot releases. -->
-        <snapshotRepository>
-            <uniqueVersion>true</uniqueVersion>
-            <id>snapshot-repo</id>
-            <name>The Sett Maven2 Snapshot Repository</name>
-            <url>file://${basedir}/../snapshots</url>
-            <layout>default</layout>
-        </snapshotRepository>
-
-        <!-- Set up for locally generated site. -->
-        <site>
-            <id>All_Projects_Site</id>
-            <name>All Projects Site</name>
-            <url>file:/var/www/build_reports/lojix</url>
-        </site>
-
-    </distributionManagement>
-
     <modules>
-      <module>aima</module>
-      <module>text_model</module>
-      <module>interpreter</module>
-      <module>prolog</module>
-      <module>l0</module>
-      <module>l1</module>
-      <module>l2</module>
-      <module>l3</module>
-      <module>wam</module>
-      <!--<module>jpc.lojix</module>--> <!-- Needs Java 8. -->
+        <module>aima</module>
+        <module>text_model</module>
+        <module>interpreter</module>
+        <module>prolog</module>
+        <module>l0</module>
+        <module>l1</module>
+        <module>l2</module>
+        <module>l3</module>
+        <module>wam</module>
+        <!--<module>jpc.lojix</module>--> <!-- Needs Java 8. -->
     </modules>
 
     <dependencyManagement>
@@ -265,9 +259,9 @@
                 </plugin>
 
                 <!--
-                   Set up the run plugin to generate run scripts or invoke main methods. This configuration will generate
-                   a default run script called 'runj' in the target directory, that invoked java with the log4j.configuration
-                   parameter passed to it, and the projects complete runtime classpath set up.
+                    Set up the run plugin to generate run scripts or invoke main methods. This configuration will generate
+                    a default run script called 'runj' in the target directory, that invoked java with the log4j.configuration
+                    parameter passed to it, and the projects complete runtime classpath set up.
                 -->
                 <plugin>
                     <groupId>com.thesett</groupId>
@@ -296,9 +290,9 @@
                 </plugin>
 
                 <!--
-                   Configure idea plugin to exclude a standard set of directories under target.
-                   Prevents intellij scanning too much.
-                  -->
+                    Configure idea plugin to exclude a standard set of directories under target.
+                    Prevents intellij scanning too much.
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-idea-plugin</artifactId>
@@ -387,41 +381,41 @@
             </plugin>
 
             <!--
-            <plugin>
+                <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.maven.plugin.version}</version>
                 <executions>
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
+                <execution>
+                <id>pre-unit-test</id>
+                <goals>
+                <goal>prepare-agent</goal>
+                </goals>
+                <configuration>
+                <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                <propertyName>surefireArgLine</propertyName>
+                </configuration>
+                </execution>
+                <execution>
+                <id>post-unit-test</id>
+                <phase>test</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+                <configuration>
+                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                </configuration>
+                </execution>
+                <execution>
+                <id>report</id>
+                <phase>site</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+                </execution>
                 </executions>
-            </plugin>
+                </plugin>
             -->
 
             <plugin>
@@ -568,10 +562,10 @@
         </profile>
 
         <!--
-           Build profile for running clover. Clover does not set up ${project.build.finalName} with its 'clover' classifier.
-           When building with clover this profile must be active so that builds that need to refer to the clovered final build
-           artifact can add in the needed classifier to refer to it. When this profile is not active the 'final.classifier'
-           property is empty. This is used when specifying archives to run cactus on.
+            Build profile for running clover. Clover does not set up ${project.build.finalName} with its 'clover' classifier.
+            When building with clover this profile must be active so that builds that need to refer to the clovered final build
+            artifact can add in the needed classifier to refer to it. When this profile is not active the 'final.classifier'
+            property is empty. This is used when specifying archives to run cactus on.
         -->
         <profile>
             <id>clover</id>
@@ -608,6 +602,56 @@
             </modules>
         </profile>
 
+        <profile> 
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
     </profiles>
 
 </project>
