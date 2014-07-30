@@ -336,7 +336,7 @@
 
             <!-- Set up the columns to display in the dashboard report. -->
             <plugin>
-                <groupId>com.xebia.mojo</groupId>
+                <groupId>com.thesett</groupId>
                 <artifactId>dashboard-maven-plugin</artifactId>
                 <version>${maven.dashboard.plugin.version}</version>
                 <configuration>
@@ -538,7 +538,7 @@
             </plugin>
 
             <plugin>
-                <groupId>com.xebia.mojo</groupId>
+                <groupId>com.thesett</groupId>
                 <artifactId>dashboard-maven-plugin</artifactId>
                 <version>${maven.dashboard.plugin.version}</version>
             </plugin>
