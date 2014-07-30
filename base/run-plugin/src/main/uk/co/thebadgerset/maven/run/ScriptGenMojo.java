@@ -47,7 +47,7 @@ public class ScriptGenMojo extends AbstractMojo
     /**
      * The build artifact as a .jar.
      *
-     * @parameter expression="${project.build.finalName}"
+     * @parameter property="project.build.finalName"
      */
     protected String outputJar;
 
@@ -61,7 +61,7 @@ public class ScriptGenMojo extends AbstractMojo
     /**
      * The classpath elements of the project being tested.
      *
-     * @parameter expression="${project.testClasspathElements}"
+     * @parameter property="project.testClasspathElements"
      * @readonly
      * @required
      */
