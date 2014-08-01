@@ -88,11 +88,6 @@ public class DynaComponent extends BaseType implements ComponentType
     }
 
     /** {@inheritDoc} */
-    public Map<String, Type> getNaturalKeyFieldTypes() {
-        return new HashMap<String, Type>();
-    }
-
-    /** {@inheritDoc} */
     public void setPropertyType(String name, Type type)
     {
         typeMap.put(name, type);

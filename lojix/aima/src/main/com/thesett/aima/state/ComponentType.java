@@ -93,13 +93,6 @@ public interface ComponentType extends Type, Serializable
     Set<String> getNaturalKeyFieldNames();
 
     /**
-     * Provides a map of the types of all of the fields that form the natural key of the component.
-     *
-     * @return A map of the types of all of the fields that form the natural key of the component.
-     */
-    Map<String, Type> getNaturalKeyFieldTypes();
-
-    /**
      * Provides the immediate set of {@link ComponentType}s that this component type is a sub-type of. This component
      * type may transitively be a sub-type of further views, but only its immediate ancestors will be returned by this
      * method.
