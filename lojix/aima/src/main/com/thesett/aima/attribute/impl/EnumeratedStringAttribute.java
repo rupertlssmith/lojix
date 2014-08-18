@@ -295,7 +295,9 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
     {
         // return getValue().equals(((EnumeratedStringAttribute)o).getValue());
         // The == operator can safely be used because the strings were interned.
-        return getStringValue() == ((EnumeratedStringAttribute) o).getStringValue();
+        return (o instanceof EnumeratedStringAttribute) &&
+            (getStringValue() == ((EnumeratedStringAttribute) o).getStringValue()) &&
+            ((EnumeratedStringAttribute) o).attributeClass.attributeClassName.equals(attributeClass.attributeClassName);
     }
 
     /**
@@ -553,13 +555,15 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
             // less than num possible values.
             if (finalized && (b >= numValues))
             {
-                return null;
+                throw new IllegalArgumentException("The specified enum element cannot be generated from the " +
+                    "compact representation, " + b + ", because that does not represent an existing value.");
             }
 
-            // If the attribute is not finalized the byte is only valid if it is less than the attibute list size.
+            // If the attribute is not finalized the byte is only valid if it is less than the attribute list size.
             else if (b >= lookupValueList.size())
             {
-                return null;
+                throw new IllegalArgumentException("The specified enum element cannot be generated from the " +
+                    "compact representation, " + b + ", because that does not represent an existing value.");
             }
 
             return new EnumeratedStringAttribute(b, this);
