@@ -171,10 +171,9 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
             // Fetch the string value from the attribute class array of finalized values.
             node = attributeClass.lookupValue[value];
         }
-
-        // The attribute class has not been finalized yet.
         else
         {
+            // The attribute class has not been finalized yet.
             // Fetch the string value from the attribute class list of unfinalized values.
             node = attributeClass.lookupValueList.get(value);
         }
@@ -197,10 +196,9 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
             // Otherwise, change the value of this attribute to that of the new id.
             this.value = newValue.value;
         }
-
-        // The type is unfinalized.
         else
         {
+            // The type is un-finalized.
             // Check if another instance of the type already has the id and raise an exception if so.
             EnumerationNode existingNode = attributeClass.idMap.get(id);
 
@@ -382,6 +380,15 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
          */
         public EnumeratedStringAttribute getAttributeFromByte(byte b);
 
+        /**
+         * Looks up an attribute by its id.
+         *
+         * @param  id The id of the attribute to look up.
+         *
+         * @return A string attribute looked up by its byte index.
+         */
+        public EnumeratedStringAttribute getAttributeFromId(long id);
+
         /** Finalizes an attribute class. This prevents any new attribute value from being added to the class. */
         public void finalizeAttribute();
 
@@ -514,10 +521,9 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
                 throw new IllegalArgumentException("The value, " + value +
                     ", is not a member of the finalized EnumeratedStringAttribute class, " + attributeClassName + ".");
             }
-
-            // The attribute class is not finalized yet so work with the list.
             else
             {
+                // The attribute class is not finalized yet so work with the list.
                 // Work out what position in the list the new value will be at.
                 int position = lookupValueList.size();
 
@@ -525,7 +531,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
                 EnumerationNode node = new EnumerationNode();
                 node.label = internValue;
                 node.value = (byte) position;
-                node.id = node.value;
+                //node.id = node.value;
 
                 // Add the new value at the end of the list.
                 lookupValueList.add(node);
@@ -534,7 +540,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
                 lookupByte.put(internValue, (byte) position);
 
                 // Also add the new value to the id map.
-                idMap.put(node.id, node);
+                //idMap.put(node.id, node);
 
                 // Create a new string attribute from a byte representation of the position.
                 return new EnumeratedStringAttribute((byte) position, this);
@@ -764,7 +770,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
         public byte value;
 
         /** The referencable id of the value. */
-        public long id;
+        public long id = -1L;
 
         /**
          * Outputs all values as a string for debugging.

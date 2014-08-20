@@ -249,7 +249,7 @@ public class EnumeratedStringAttributeTest extends TestCase
 
         // Check that it returned null as the result
         assertTrue("An unkown int, 1, should have resulted in an IllegalArgumentException null attribute but did not.",
-            testPassed);
+                testPassed);
     }
 
     /** Check unfinalized class reports infinite possible values. */
@@ -300,7 +300,7 @@ public class EnumeratedStringAttributeTest extends TestCase
 
         // Check their byte representations are the same.
         assertEquals("Identical attributes of the same class should have the same byte representations.",
-            one.getByteFromAttribute(), two.getByteFromAttribute());
+                one.getByteFromAttribute(), two.getByteFromAttribute());
     }
 
     /** Check equality for identical attributes of the same class. */
@@ -350,7 +350,7 @@ public class EnumeratedStringAttributeTest extends TestCase
 
         // Check their equals method reckons them not equal
         assertTrue("Differnt attributes from the same class should be not be equal by the .equal() method.",
-            !one.equals(two));
+                !one.equals(two));
     }
 
     /** Check can get attribute ids ok. */
@@ -380,6 +380,23 @@ public class EnumeratedStringAttributeTest extends TestCase
         h1.setId(100L);
 
         assertEquals("Id was set to 100 but is " + h1.getId(), h1.getId(), 100L);
+    }
+
+    /** Check that look up by id works correctly. */
+    public void testIdLookupOk() throws Exception
+    {
+        // Use the test factory to generate some attributes.
+        EnumeratedStringAttribute h1 = factory.createStringAttribute("animal");
+        h1.setId(1);
+
+        EnumeratedStringAttribute h2 = factory.createStringAttribute("virus");
+        h2.setId(2);
+
+        EnumeratedStringAttribute h1byId = factory.getAttributeFromId(1);
+        EnumeratedStringAttribute h2byId = factory.getAttributeFromId(2);
+
+        assertEquals("Failed to look up by set id.", h1, h1byId);
+        assertEquals("Failed to look up by set id.", h2, h2byId);
     }
 
     /** Check that setting id on unfinalized attribute class fails when another value already has the id. */
@@ -438,6 +455,8 @@ public class EnumeratedStringAttributeTest extends TestCase
         // Use the test factory to generate some hierarchy attributes.
         EnumeratedStringAttribute h1 = factory.createStringAttribute("animal");
         EnumeratedStringAttribute h2 = factory.createStringAttribute("plant");
+        h1.setId(1);
+        h2.setId(2);
 
         // Finalize the attribute class.
         factory.finalizeAttribute();
@@ -472,7 +491,7 @@ public class EnumeratedStringAttributeTest extends TestCase
         }
 
         assertTrue("Should have raised IllegalArgumentException when trying to create non allowable value.",
-            testPassed);
+                testPassed);
     }
 
     /** Check that getName returns the correct name for the attribute class. */
@@ -654,7 +673,7 @@ public class EnumeratedStringAttributeTest extends TestCase
 
         // Check their ordinal representations are the same.
         assertTrue("Different attributes of the same class should have differnt ordinals.",
-            one.ordinal() == two.ordinal());
+                one.ordinal() == two.ordinal());
     }
 
     /** Check that different attributes have different ordinals. */
@@ -666,7 +685,7 @@ public class EnumeratedStringAttributeTest extends TestCase
 
         // Check their ordinal representations are not the same.
         assertFalse("Different attributes of the same class should have different ordinals.",
-            one.ordinal() == two.ordinal());
+                one.ordinal() == two.ordinal());
     }
 
     /** Ensures that the attribute class 'test' is clean for each test. */
