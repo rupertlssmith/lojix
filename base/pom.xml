@@ -74,7 +74,6 @@
         <jalopy.maven.plugin.version>1.9.4-108</jalopy.maven.plugin.version>
         <maven.jaxb2.plugin.version>0.6.2</maven.jaxb2.plugin.version>
         <xdoclet.maven.plugin.version>1.0</xdoclet.maven.plugin.version>
-        <maven.clover2.plugin.version>2.3.1</maven.clover2.plugin.version>
         <maven.run.plugin.version>0.8.3</maven.run.plugin.version>
         <maven.antrun.plugin.version>1.2-thesett</maven.antrun.plugin.version>
         <maven.idea.plugin.version>2.2</maven.idea.plugin.version>
@@ -95,13 +94,6 @@
         <!--<log4j.configuration>file:${topdir}/etc/log4j.xml</log4j.configuration>-->
 
         <jstl.jar.version>1.1.2</jstl.jar.version>
-
-        <!--
-            Clover does not set up ${project.build.finalName} with its 'clover' classifier. The 'final.classifier' property
-            is empty by default, but should be included in the path of any custom modifications to final build artifacts,
-            for example, in antrun scripts. This is used when specifying archives to run cactus on.
-        -->
-        <final.classifier></final.classifier>
 
         <pmd.ruleset.file>${topdir}/etc/pmd_rules.xml</pmd.ruleset.file>
 
@@ -227,30 +219,6 @@
                     </configuration>
                 </plugin>
 
-                <!-- Set up clover to aggregate results over the whole codebase for all modules. -->
-                <plugin>
-                    <groupId>com.atlassian.maven.plugins</groupId>
-                    <artifactId>maven-clover2-plugin</artifactId>
-                    <version>${maven.clover2.plugin.version}</version>
-                    <configuration>
-                        <licenseLocation>${clover.license.path}</licenseLocation>
-                        <jdk>1.5</jdk>
-                        <includesTestSourceRoots>false</includesTestSourceRoots>
-                        <generateXml>true</generateXml>
-                        <generateHtml>true</generateHtml>
-                        <historyDir>${clover.history.path}</historyDir>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>pre-site</phase>
-                            <goals>
-                                <goal>instrument</goal>
-                                <goal>aggregate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
                 <!--
                     Set up the run plugin to generate run scripts or invoke main methods. This configuration will generate
                     a default run script called 'runj' in the target directory, that invoked java with the log4j.configuration
@@ -294,7 +262,6 @@
                         <jdkLevel>1.5</jdkLevel>
                         <downloadSources>true</downloadSources>
                         <downloadJavadocs>true</downloadJavadocs>
-                        <!--<exclude>target/classes,target/site,target/clover,target/maven-archiver,target/surefire-reports,target/test-classes,aima,common,l0,l1,l2,prolog,vam,run-plugin</exclude>-->
                     </configuration>
                 </plugin>
 
@@ -333,7 +300,6 @@
                     <destinationFile>${project.reporting.outputDirectory}/maven-dashboard-report.html</destinationFile>
                     <reports>
                         <report>maven-surefire-report-plugin</report>
-                        <!--<report>maven-clover2-plugin</report>-->
                         <report>jacoco-maven-plugin</report>
                         <report>maven-checkstyle-plugin</report>
                         <report>maven-pmd-plugin</report>
@@ -343,7 +309,6 @@
                     </reports>
                     <columns>
                         <maven-surefire-report-plugin>tests,errors,failures,successrate</maven-surefire-report-plugin>
-                        <maven-clover2-plugin>bar</maven-clover2-plugin>
                         <maven-checkstyle-plugin>errors,warnings</maven-checkstyle-plugin>
                         <maven-pmd-plugin>violations</maven-pmd-plugin>
                         <findbugs-maven-plugin>violations</findbugs-maven-plugin>
@@ -495,20 +460,6 @@
             </plugin>
 
             <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <version>${maven.clover2.plugin.version}</version>
-                <configuration>
-                    <licenseLocation>${clover.license.path}</licenseLocation>
-                    <jdk>1.5</jdk>
-                    <includesTestSourceRoots>false</includesTestSourceRoots>
-                    <generateXml>true</generateXml>
-                    <generateHtml>true</generateHtml>
-                    <historyDir>${clover.history.path}</historyDir>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>javancss-maven-plugin</artifactId>
                 <version>${javancss.maven.plugin.version}</version>
@@ -538,19 +489,6 @@
             <properties>
                 <maven.test.failure.ignore>true</maven.test.failure.ignore>
                 <maven.test.error.ignore>true</maven.test.error.ignore>
-            </properties>
-        </profile>
-
-        <!--
-            Build profile for running clover. Clover does not set up ${project.build.finalName} with its 'clover' classifier.
-            When building with clover this profile must be active so that builds that need to refer to the clovered final build
-            artifact can add in the needed classifier to refer to it. When this profile is not active the 'final.classifier'
-            property is empty. This is used when specifying archives to run cactus on.
-        -->
-        <profile>
-            <id>clover</id>
-            <properties>
-                <final.classifier>-clover</final.classifier>
             </properties>
         </profile>
 
