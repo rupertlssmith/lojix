@@ -26,11 +26,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>com.thesett</groupId>
-            <artifactId>base</artifactId>
-            <version>0.8.4-SNAPSHOT</version><!-- base.version -->
-        </dependency>
 
         <!-- Test only dependencies. -->
         <dependency>
