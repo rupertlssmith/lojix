@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Parse arguements taking all - prefixed args as JAVA_OPTS
+for arg in "$@"; do
+    if [[ $arg == -java:* ]]; then
+        JAVA_OPTS="${JAVA_OPTS}-`echo $arg|cut -d ':' -f 2`  "
+    else
+        ARGS="${ARGS}$arg "
+    fi
+done
+
+java -Dlog4j.configuration=file:/home/rupert/projects/mavenbuild/log4j.xml ${JAVA_OPTS} -cp target/aima-0.3-SNAPSHOT.jar:../common/target/common-0.3-SNAPSHOT.jar:/home/rupert/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar uk.co.thebadgerset.aima.logic.fol.l2.L2Parser ${ARGS}

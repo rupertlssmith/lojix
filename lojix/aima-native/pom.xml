@@ -29,7 +29,7 @@
     <dependencies>
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>aima</artifactId>
+            <artifactId>logic</artifactId>
             <version>0.8.4-SNAPSHOT</version><!-- lojix.version -->
         </dependency>
 

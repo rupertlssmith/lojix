@@ -26,7 +26,7 @@
         <!-- This dependency cannot be inherited from the parent pom because it is specifically for the 'tests' classifier. -->
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>aima</artifactId>
+            <artifactId>logic</artifactId>
             <classifier>tests</classifier>
             <version>0.8.4-SNAPSHOT</version><!-- lojix.version -->
         </dependency>

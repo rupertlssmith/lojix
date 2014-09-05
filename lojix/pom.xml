@@ -123,7 +123,11 @@
     </properties>
 
     <modules>
-        <module>aima</module>
+        <module>search</module>
+        <module>learning</module>
+        <module>logic</module>
+        <module>power_model</module>
+        <module>state</module>
         <module>text_model</module>
         <module>interpreter</module>
         <module>prolog</module>
