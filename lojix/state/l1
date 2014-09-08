@@ -1,1 +1,0 @@
-java -Dlog4j.configuration=file:/home/rupert/projects/mavenbuild/log4j.xml -cp target/aima-0.3-SNAPSHOT.jar:../common/target/common-0.3-SNAPSHOT.jar:/home/rupert/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar uk.co.thebadgerset.aima.logic.fol.l1.L1Parser
