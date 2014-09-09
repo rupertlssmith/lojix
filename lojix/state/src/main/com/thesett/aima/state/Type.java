@@ -15,7 +15,10 @@
  */
 package com.thesett.aima.state;
 
+import com.thesett.aima.state.restriction.TypeRestriction;
+
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -60,7 +63,7 @@ public interface Type<T>
      *
      * @return A new default instance of the type.
      */
-    public T getDefaultInstance();
+    T getDefaultInstance();
 
     /**
      * Gets a random instance of the type. This is intended to be usefull for generating test data, as any type in a
@@ -73,28 +76,35 @@ public interface Type<T>
      *
      * @throws RandomInstanceNotSupportedException If the implementation does not support random instance creation.
      */
-    public T getRandomInstance() throws RandomInstanceNotSupportedException;
+    T getRandomInstance() throws RandomInstanceNotSupportedException;
 
     /**
      * Should return a name that uniquely identifies the type.
      *
      * @return The name of the attribute type.
      */
-    public String getName();
+    String getName();
 
     /**
      * Returns the underlying Java class that this is the type for, if there is one.
      *
      * @return The underlying Java class that this is the type for, if there is one.
      */
-    public Class<T> getBaseClass();
+    Class<T> getBaseClass();
 
     /**
      * Provides the fully qualified name of the underlying Java class that this is the type for, if there is one.
      *
      * @return The fully qualified name of underlying Java class that this is the type for, if there is one.
      */
-    public String getBaseClassName();
+    String getBaseClassName();
+
+    /**
+     * Provides a list of restrictions that reduce the possible values that instances of this type can take.
+     *
+     * @return A list of resctrictions, empty or <tt>null</tt> indicates that the type has no extra restrictions.
+     */
+    List<TypeRestriction> getRestrictions();
 
     /**
      * Should determine how many different values an instance of the implementations type can take on.
@@ -102,7 +112,7 @@ public interface Type<T>
      * @return The number of possible values that an instance of this attribute can take on. If the value is -1 then
      *         this is to be interpreted as infinity.
      */
-    public int getNumPossibleValues();
+    int getNumPossibleValues();
 
     /**
      * Should return all the different values that an instance of this type can take on.
@@ -111,7 +121,7 @@ public interface Type<T>
      *
      * @throws InfiniteValuesException If the set of values cannot be listed because it is infinite.
      */
-    public Set<T> getAllPossibleValuesSet() throws InfiniteValuesException;
+    Set<T> getAllPossibleValuesSet() throws InfiniteValuesException;
 
     /**
      * Should return all the different values that an instance of this type can take on as an iterator over these
@@ -125,12 +135,12 @@ public interface Type<T>
      *
      * @throws InfiniteValuesException If the set of values cannot be listed because it is infinite.
      */
-    public Iterator<T> getAllPossibleValuesIterator() throws InfiniteValuesException;
+    Iterator<T> getAllPossibleValuesIterator() throws InfiniteValuesException;
 
     /**
      * Accepts a visitor, using a visitor pattern, to extend type behaviour with visitors.
      *
      * @param visitor The visitor to accept.
      */
-    public void acceptVisitor(TypeVisitor visitor);
+    void acceptVisitor(TypeVisitor visitor);
 }

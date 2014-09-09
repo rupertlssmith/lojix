@@ -15,7 +15,10 @@
  */
 package com.thesett.aima.state;
 
+import com.thesett.aima.state.restriction.TypeRestriction;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,6 +38,9 @@ public abstract class BaseType<T> implements Type<T>, RandomInstanceFactory<T>, 
 
     /** Holds a random instance factory for the type. */
     private RandomInstanceFactory<T> randomFactory;
+
+    /** Holds the extra type resrictions. */
+    protected List<TypeRestriction> restrictions;
 
     /** {@inheritDoc} */
     public void acceptVisitor(TypeVisitor visitor)
@@ -58,6 +64,11 @@ public abstract class BaseType<T> implements Type<T>, RandomInstanceFactory<T>, 
     public T createRandomInstance() throws RandomInstanceNotSupportedException
     {
         throw new RandomInstanceNotSupportedException("Type does not support random instance creation.", null);
+    }
+
+    /** {@inheritDoc} */
+    public List<TypeRestriction> getRestrictions() {
+        return restrictions;
     }
 
     /**
