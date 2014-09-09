@@ -9,10 +9,10 @@ package com.thesett.aima.state.restriction;
  * </table></pre>
  */
 public class MaxRestriction implements TypeRestriction {
-    private final long min;
+    private final long max;
 
-    public MaxRestriction(long min) {
-        this.min = min;
+    public MaxRestriction(long max) {
+        this.max = max;
     }
 
     /** {@inheritDoc} */
@@ -20,7 +20,7 @@ public class MaxRestriction implements TypeRestriction {
         return "Max";
     }
 
-    public long getMin() {
-        return min;
+    public long getMax() {
+        return max;
     }
 }

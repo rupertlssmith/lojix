@@ -74,8 +74,16 @@ public class IntRangeType extends BaseType<Integer> implements Type<Integer>, Ra
         maxValue = max;
 
         restrictions = new LinkedList<TypeRestriction>();
-        restrictions.add(new MinRestriction(minValue));
-        restrictions.add(new MaxRestriction(maxValue));
+
+        if (minValue > Integer.MIN_VALUE)
+        {
+            restrictions.add(new MinRestriction(minValue));
+        }
+
+        if (maxValue < Integer.MAX_VALUE)
+        {
+            restrictions.add(new MaxRestriction(maxValue));
+        }
     }
 
     /**
