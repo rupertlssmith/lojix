@@ -57,7 +57,7 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
      */
     private String pattern;
 
-    /** Holds the maximum lenth instance of this type may have, or zero if no maximum length is defined. */
+    /** Holds the maximum length instance of this type may have, or zero if no maximum length is defined. */
     private int maxLength;
 
     /** Holds the name of this type. */
@@ -83,8 +83,16 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
         }
 
         restrictions = new LinkedList<TypeRestriction>();
-        restrictions.add(new RegexRestriction(pattern));
-        restrictions.add(new LengthRestriction(maxLength));
+
+        if ((pattern != null) && !"".equals(pattern))
+        {
+            restrictions.add(new RegexRestriction(pattern));
+        }
+
+        if (maxLength > 0)
+        {
+            restrictions.add(new LengthRestriction(maxLength));
+        }
     }
 
     /**
