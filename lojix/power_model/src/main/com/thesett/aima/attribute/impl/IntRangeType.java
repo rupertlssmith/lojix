@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -27,6 +28,9 @@ import com.thesett.aima.state.BaseType;
 import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.RandomInstanceFactory;
 import com.thesett.aima.state.Type;
+import com.thesett.aima.state.restriction.MaxRestriction;
+import com.thesett.aima.state.restriction.MinRestriction;
+import com.thesett.aima.state.restriction.TypeRestriction;
 
 /**
  * Implements an integer range type. This allows a sequential range of ints to be defined as a named type.
@@ -68,6 +72,10 @@ public class IntRangeType extends BaseType<Integer> implements Type<Integer>, Ra
         typeName = name;
         minValue = min;
         maxValue = max;
+
+        restrictions = new LinkedList<TypeRestriction>();
+        restrictions.add(new MinRestriction(minValue));
+        restrictions.add(new MaxRestriction(maxValue));
     }
 
     /**

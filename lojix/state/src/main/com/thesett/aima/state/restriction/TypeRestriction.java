@@ -11,5 +11,7 @@ package com.thesett.aima.state.restriction;
  *
  * @author Rupert Smith
  */
-public class TypeRestriction {
+public interface TypeRestriction {
+    /** Provides the name of the restriction. */
+    String getName();
 }

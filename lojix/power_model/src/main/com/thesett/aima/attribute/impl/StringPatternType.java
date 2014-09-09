@@ -18,6 +18,7 @@ package com.thesett.aima.attribute.impl;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -26,6 +27,9 @@ import com.thesett.aima.state.BaseType;
 import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.RandomInstanceFactory;
 import com.thesett.aima.state.Type;
+import com.thesett.aima.state.restriction.LengthRestriction;
+import com.thesett.aima.state.restriction.RegexRestriction;
+import com.thesett.aima.state.restriction.TypeRestriction;
 
 /**
  * StringPatternType is a restricted type over strings, that allows a sub-class of string so to be specified that match
@@ -77,6 +81,10 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
         {
             this.compiledPattern = Pattern.compile(pattern);
         }
+
+        restrictions = new LinkedList<TypeRestriction>();
+        restrictions.add(new RegexRestriction(pattern));
+        restrictions.add(new LengthRestriction(maxLength));
     }
 
     /**
