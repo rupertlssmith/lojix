@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +32,8 @@ import com.thesett.aima.state.OrdinalAttribute;
 import com.thesett.aima.state.ReferencableAttribute;
 import com.thesett.aima.state.Type;
 import com.thesett.aima.state.TypeVisitor;
+import com.thesett.aima.state.restriction.TypeRestriction;
+import com.thesett.aima.state.restriction.ValidEnumRestriction;
 import com.thesett.common.error.NotImplementedException;
 
 /**
@@ -446,6 +449,9 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
         {
             // Keep a reference to the attribute class and name.
             this.attributeClassName = name;
+
+            restrictions = new LinkedList<TypeRestriction>();
+            restrictions.add(new ValidEnumRestriction(name));
         }
 
         /**
