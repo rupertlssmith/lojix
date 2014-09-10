@@ -18,8 +18,10 @@ package com.thesett.aima.attribute.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.thesett.aima.attribute.impl.EnumeratedStringAttribute;
+
 /**
- * ValidEnumValidator checks that a value is a valid instance of an
+ * ValidEnumValidator checks that a value contains a valid instance of an
  * {@link com.thesett.aima.attribute.impl.EnumeratedStringAttribute}. To be considered valid, the value must have an id
  * on it, that is not <tt>-1</tt>. <tt>null</tt> values are also considered to be valid, as null checking can be handled
  * by other validations.
@@ -29,7 +31,7 @@ import javax.validation.ConstraintValidatorContext;
  * <tr><td> Check that an instance of an enum has a valid id. </td></tr>
  * </table></pre>
  */
-public class ValidEnumValidator implements ConstraintValidator<ValidEnum, Object>
+public class ValidEnumValidator implements ConstraintValidator<ValidEnum, EnumeratedStringAttribute>
 {
     /** The name of the enumeration type the the value must be a valid instance of. */
     private String enumTypeName;
@@ -41,13 +43,13 @@ public class ValidEnumValidator implements ConstraintValidator<ValidEnum, Object
     }
 
     /** {@inheritDoc} */
-    public boolean isValid(Object value, ConstraintValidatorContext context)
+    public boolean isValid(EnumeratedStringAttribute value, ConstraintValidatorContext context)
     {
         if (value == null)
         {
             return true;
         }
 
-        return false;
+        return true;
     }
 }
