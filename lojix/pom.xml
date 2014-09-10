@@ -127,6 +127,7 @@
         <module>learning</module>
         <module>logic</module>
         <module>power_model</module>
+        <module>power_model_validation</module>
         <module>state</module>
         <module>text_model</module>
         <module>interpreter</module>
