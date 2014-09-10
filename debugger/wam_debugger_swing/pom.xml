@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>wam_debugger_swing</artifactId>
     <name>wam_debugger_swing</name>
-    <version>0.8.5-SNAPSHOT</version><!-- debugger.version -->
+    <version>0.8.5</version><!-- debugger.version -->
 
     <description>WAM debugger tool.</description>
     <url>https://www.thesett.com/build_reports/lojix/wam</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>debuggerbuild</artifactId>
-        <version>0.8.5-SNAPSHOT</version><!-- debugger.version -->
+        <version>0.8.5</version><!-- debugger.version -->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,19 +26,19 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>wam_debugger</artifactId>
-            <version>0.8.5-SNAPSHOT</version><!-- debugger.version -->
+            <version>0.8.5</version><!-- debugger.version -->
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>debug_ui_tools_swing</artifactId>
-            <version>0.8.5-SNAPSHOT</version><!-- debugger.version -->
+            <version>0.8.5</version><!-- debugger.version -->
         </dependency>
         
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>wam</artifactId>
-            <version>0.8.5-SNAPSHOT</version><!-- debugger.version -->
+            <version>0.8.5</version><!-- debugger.version -->
         </dependency>
 
         <!-- Test dependencies. -->
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>base</artifactId>
-            <version>0.8.5-SNAPSHOT</version><!-- base.version -->
+            <version>0.8.5</version><!-- base.version -->
             <scope>test</scope>
         </dependency>
         
