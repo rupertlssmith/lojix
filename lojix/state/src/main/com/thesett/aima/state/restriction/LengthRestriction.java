@@ -1,3 +1,18 @@
+/*
+ * Copyright The Sett Ltd, 2005 to 2014.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.thesett.aima.state.restriction;
 
 /**
@@ -8,19 +23,23 @@ package com.thesett.aima.state.restriction;
  * <tr><td> Represent a maximum allowed length of a value. </td></tr>
  * </table></pre>
  */
-public class LengthRestriction implements TypeRestriction {
+public class LengthRestriction implements TypeRestriction
+{
     private final int length;
 
-    public LengthRestriction(int length) {
+    public LengthRestriction(int length)
+    {
         this.length = length;
     }
 
     /** {@inheritDoc} */
-    public String getName() {
+    public String getName()
+    {
         return "Length";
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return length;
     }
 }

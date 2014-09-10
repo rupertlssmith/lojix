@@ -16,30 +16,29 @@
 package com.thesett.aima.state.restriction;
 
 /**
- * Describes a regular expression on allowable values of a string.
+ * Describes an enum type that a value must fall within the bounds of.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities </th><th> Collaborations </th>
- * <tr><td> Represent allowable strings matching a regular expression. </td></tr>
+ * <tr><td> Represent a value that must fall within an enum. </td></tr>
  * </table></pre>
  */
-public class RegexRestriction implements TypeRestriction
+public class ValidEnumRestriction implements TypeRestriction
 {
-    private final String pattern;
+    private final String enumTypeName;
 
-    public RegexRestriction(String pattern)
+    public ValidEnumRestriction(String enumTypeName)
     {
-        this.pattern = pattern;
+        this.enumTypeName = enumTypeName;
     }
 
-    /** {@inheritDoc} */
     public String getName()
     {
-        return "Regex";
+        return "ValidEnum";
     }
 
-    public String getPattern()
+    public String getEnumTypeName()
     {
-        return pattern;
+        return enumTypeName;
     }
 }
