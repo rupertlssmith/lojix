@@ -50,6 +50,6 @@ public class ValidEnumValidator implements ConstraintValidator<ValidEnum, Enumer
             return true;
         }
 
-        return true;
+        return value.getId() != -1;
     }
 }
