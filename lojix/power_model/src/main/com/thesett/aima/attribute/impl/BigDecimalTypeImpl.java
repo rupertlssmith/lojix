@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.RandomInstanceFactory;
 import com.thesett.aima.state.Type;
 import com.thesett.aima.state.TypeVisitor;
+import com.thesett.aima.state.restriction.DecimalMaxRestriction;
+import com.thesett.aima.state.restriction.DecimalMinRestriction;
+import com.thesett.aima.state.restriction.TypeRestriction;
 import com.thesett.common.error.NotImplementedException;
 
 /**
@@ -47,13 +51,19 @@ public class BigDecimalTypeImpl extends BaseType<BigDecimal> implements Type<Big
     private static final Map<String, BigDecimalTypeImpl> DECIMAL_TYPES = new HashMap<String, BigDecimalTypeImpl>();
 
     /** Used to hold the name of this decimal type. */
-    private String typeName;
+    private final String typeName;
 
     /** Holds the precision of this type. */
-    private int precision;
+    private final int precision;
 
     /** Holds the scale of this type. */
-    private int scale;
+    private final int scale;
+
+    /** The minimum value in BigDecimal string notation, or <tt>null</tt> if none is specified. */
+    private final String min;
+
+    /** The maximum value in BigDecimal string notation, or <tt>null</tt> if none is specified. */
+    private final String max;
 
     /**
      * Creates a named decimal type with the specified precision and scale.
@@ -61,12 +71,28 @@ public class BigDecimalTypeImpl extends BaseType<BigDecimal> implements Type<Big
      * @param typeName  The name of the decimal type.
      * @param precision The precision of the decimal type.
      * @param scale     The scale of the decimal type.
+     * @param min       The minimum value in BigDecimal string notation, or <tt>null</tt> if none is specified.
+     * @param max       The maximum value in BigDecimal string notation, or <tt>null</tt> if none is specified.
      */
-    public BigDecimalTypeImpl(String typeName, int precision, int scale)
+    public BigDecimalTypeImpl(String typeName, int precision, int scale, String min, String max)
     {
         this.typeName = typeName;
         this.precision = precision;
         this.scale = scale;
+        this.min = min;
+        this.max = max;
+
+        restrictions = new LinkedList<TypeRestriction>();
+
+        if (min != null)
+        {
+            restrictions.add(new DecimalMinRestriction(min));
+        }
+
+        if (max != null)
+        {
+            restrictions.add(new DecimalMaxRestriction(max));
+        }
     }
 
     /**
@@ -80,12 +106,12 @@ public class BigDecimalTypeImpl extends BaseType<BigDecimal> implements Type<Big
      *
      * @throws IllegalArgumentException If the named type already exists.
      */
-    public static BigDecimalTypeImpl createInstance(String name, int precision, int scale)
+    public static BigDecimalTypeImpl createInstance(String name, int precision, int scale, String min, String max)
     {
         synchronized (DECIMAL_TYPES)
         {
             // Add the newly created type to the map of all types.
-            BigDecimalTypeImpl newType = new BigDecimalTypeImpl(name, precision, scale);
+            BigDecimalTypeImpl newType = new BigDecimalTypeImpl(name, precision, scale, min, max);
 
             // Ensure that the named type does not already exist, unless it has an identical definition already, in which
             // case the old definition can be re-used and the new one discarded.
