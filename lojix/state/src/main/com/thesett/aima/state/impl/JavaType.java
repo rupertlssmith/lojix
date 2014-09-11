@@ -68,6 +68,9 @@ public class JavaType<T> extends BaseType<T> implements Type<T>, Serializable
     /** Ready made boolean type. */
     public static final Type<Boolean> BOOLEAN_TYPE = new JavaType<Boolean>(Boolean.class);
 
+    /** Ready made boolean type. */
+    public static final Type<Boolean> BOOLEAN_TYPE_NOT_NULL = new JavaType<Boolean>(Boolean.class, true);
+
     /** Ready made character type. */
     public static final Type<Character> CHARACTER_TYPE = new JavaType<Character>(Character.class);
 
@@ -80,17 +83,26 @@ public class JavaType<T> extends BaseType<T> implements Type<T>, Serializable
     /** Ready made integer type. */
     public static final Type<Integer> INTEGER_TYPE = new JavaType<Integer>(Integer.class);
 
+    /** Ready made integer type. */
+    public static final Type<Integer> INTEGER_TYPE_NOT_NULL = new JavaType<Integer>(Integer.class, true);
+
     /** Ready made long type. */
     public static final Type<Long> LONG_TYPE = new JavaType<Long>(Long.class);
 
     /** Ready made float type. */
     public static final Type<Float> FLOAT_TYPE = new JavaType<Float>(Float.class);
 
+    /** Ready made float type. */
+    public static final Type<Float> FLOAT_TYPE_NOT_NULL = new JavaType<Float>(Float.class, true);
+
     /** Ready made double type. */
     public static final Type<Double> DOUBLE_TYPE = new JavaType<Double>(Double.class);
 
     /** Ready made string type. */
     public static final Type<String> STRING_TYPE = new JavaType<String>(String.class);
+
+    /** Ready made string type. */
+    public static final Type<String> STRING_TYPE_NOT_NULL = new JavaType<String>(String.class, true);
 
     /** Ready made date type. */
     public static final Type<Date> DATE_TYPE = new JavaType<Date>(Date.class);
