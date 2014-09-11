@@ -18,6 +18,7 @@ package com.thesett.aima.state.impl;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ import com.thesett.aima.state.BaseType;
 import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.RandomInstanceNotSupportedException;
 import com.thesett.aima.state.Type;
+import com.thesett.aima.state.restriction.NotNullRestriction;
+import com.thesett.aima.state.restriction.TypeRestriction;
 
 /**
  * JavaType is a {@link Type} for basic Java types.
@@ -143,6 +146,27 @@ public class JavaType<T> extends BaseType<T> implements Type<T>, Serializable
 
         // Work out the basic java type based on the underlying class.
         setBasicType(underlyingClass);
+    }
+
+    /**
+     * Creates a type for a java class, with the additional possible restriction that instantces of this type must not
+     * be allowed to be null.
+     *
+     * @param c       The class to create a type wrapper for.
+     * @param notNull <tt>true</tt> iff instances of this type are not legal if null.
+     */
+    public JavaType(Class c, boolean notNull)
+    {
+        underlyingClass = c;
+
+        // Work out the basic java type based on the underlying class.
+        setBasicType(underlyingClass);
+
+        if (notNull)
+        {
+            restrictions = new LinkedList<TypeRestriction>();
+            restrictions.add(new NotNullRestriction());
+        }
     }
 
     /**
