@@ -58,25 +58,20 @@ public abstract class BinaryArithmeticOperator extends BuiltInExpressionOperator
      *
      * @return A numeric type equal in value to the the arithmetic operator applied to its arguments.
      */
-    public NumericType getValue()
+    public Term getValue()
     {
         Term firstArgValue = arguments[0].getValue();
         Term secondArgValue = arguments[1].getValue();
 
         // Check that the arguments to operate on are both numeric values.
-        if (!firstArgValue.isNumber())
+        if (firstArgValue.isNumber() && secondArgValue.isNumber())
         {
-            throw new RuntimeException(
-                "instantiation_error, 'arithmetic/2' expects numeric arguments, but the first argument is non-numeric.");
+            return evaluate((NumericType) firstArgValue, (NumericType) secondArgValue);
         }
-
-        if (!secondArgValue.isNumber())
+        else
         {
-            throw new RuntimeException(
-                "instantiation_error, 'arithmetic/2' expects numeric arguments, but the second argument is non-numeric.");
+            return this;
         }
-
-        return evaluate((NumericType) firstArgValue, (NumericType) secondArgValue);
     }
 
     /**

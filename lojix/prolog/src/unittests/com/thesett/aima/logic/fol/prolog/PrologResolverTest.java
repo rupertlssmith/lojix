@@ -224,6 +224,8 @@ public class PrologResolverTest extends TestCase
                 "testGreaterThanOrEqualsFails", engine));
         suite.addTest(new ArithmeticResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(
                 "testComparisonOfInstantiatedVariablesOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(
+                "testNonArithOperatorNotMistaken", engine));
 
         // Add all tests defined in the RuntimeTypeCheckUnitTestBase class.
         suite.addTest(new RuntimeTypeCheckUnitTestBase<Clause, PrologCompiledClause, PrologCompiledClause>(

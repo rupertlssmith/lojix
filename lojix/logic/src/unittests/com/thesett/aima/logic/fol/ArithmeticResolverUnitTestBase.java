@@ -193,4 +193,9 @@ public class ArithmeticResolverUnitTestBase<S extends Clause, T /*extends Clause
         resolveAndAssertSolutions("[[], (?- Y = 4, Z = 5, Z > Y), [[Y <-- 4, Z <-- 5]]]");
         resolveAndAssertSolutions("[[], (?- Y = 4, Z = 5, Z >= Y), [[Y <-- 4, Z <-- 5]]]");
     }
+
+    /** Check that arithmetic operators (-) can be used to build structures too. */
+    public void testNonArithOperatorNotMistaken() throws Exception{
+        resolveAndAssertSolutions("[[f(x-y), (g(X-Y) :- f(X-Y))], (?- g(X-Y)), [[X <-- x, Y <-- y]]]");
+    }
 }
