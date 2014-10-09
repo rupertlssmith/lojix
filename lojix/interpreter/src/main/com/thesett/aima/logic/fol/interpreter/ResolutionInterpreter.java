@@ -59,8 +59,7 @@ import com.thesett.common.util.Source;
 public class ResolutionInterpreter<T, Q>
 {
     /** Used for debugging purposes. */
-    private static final java.util.logging.Logger log =
-        java.util.logging.Logger.getLogger(ResolutionInterpreter.class.getName());
+    /* private static final Logger log = Logger.getLogger(ResolutionInterpreter.class.getName()); */
 
     /** The prompt to use in query mode. */
     public static final String QUERY_PROMPT = "?- ";
@@ -164,7 +163,7 @@ public class ResolutionInterpreter<T, Q>
                 // interpreter completely from query mode.
                 if ((line == null) && ((mode == Mode.Query) || (mode == Mode.QueryMultiLine)))
                 {
-                    log.info("CTRL-D in query mode, exiting.");
+                    /*log.fine("CTRL-D in query mode, exiting.");*/
 
                     System.out.println();
 
@@ -172,7 +171,7 @@ public class ResolutionInterpreter<T, Q>
                 }
                 else if ((line == null) && ((mode == Mode.Program) || (mode == Mode.ProgramMultiLine)))
                 {
-                    log.info("CTRL-D in program mode, returning to query mode.");
+                    /*log.fine("CTRL-D in program mode, returning to query mode.");*/
 
                     System.out.println();
                     mode = Mode.Query;
@@ -195,15 +194,15 @@ public class ResolutionInterpreter<T, Q>
                         switch (directive)
                         {
                         case Trace:
-                            log.info("Got trace directive.");
+                            /*log.fine("Got trace directive.");*/
                             break;
 
                         case Info:
-                            log.info("Got info directive.");
+                            /*log.fine("Got info directive.");*/
                             break;
 
                         case User:
-                            log.info("Got user directive, entering program mode.");
+                            /*log.fine("Got user directive, entering program mode.");*/
                             mode = Mode.Program;
                             break;
                         }
@@ -238,7 +237,7 @@ public class ResolutionInterpreter<T, Q>
 
                     if (nextToken.kind == PrologParserConstants.PERIOD)
                     {
-                        log.info("Token was PERIOD.");
+                        /*log.fine("Token was PERIOD.");*/
                         mode = (mode == Mode.QueryMultiLine) ? Mode.Query : mode;
                         mode = (mode == Mode.ProgramMultiLine) ? Mode.Program : mode;
 
@@ -248,7 +247,7 @@ public class ResolutionInterpreter<T, Q>
                     }
                     else if (nextToken.kind == PrologParserConstants.EOF)
                     {
-                        log.info("Token was EOF.");
+                        /*log.fine("Token was EOF.");*/
                         mode = (mode == Mode.Query) ? Mode.QueryMultiLine : mode;
                         mode = (mode == Mode.Program) ? Mode.ProgramMultiLine : mode;
 
@@ -267,7 +266,7 @@ public class ResolutionInterpreter<T, Q>
 
                     // Parse the next clause.
                     Sentence<Clause> nextParsing = parser.parse();
-                    log.fine(nextParsing.toString());
+                    /*log.fine(nextParsing.toString());*/
                     evaluate(nextParsing);
 
                     inputLines.clear();
@@ -393,7 +392,7 @@ public class ResolutionInterpreter<T, Q>
      */
     private void evaluateQuery()
     {
-        log.fine("Read query from input.");
+        /*log.fine("Read query from input.");*/
 
         // Create an iterator to generate all solutions on demand with. Iteration will stop if the request to
         // the parser for the more ';' token fails.
@@ -473,7 +472,7 @@ public class ResolutionInterpreter<T, Q>
      */
     private void addProgramClause(Sentence<Clause> sentence) throws SourceCodeException
     {
-        log.fine("Read program clause from input.");
+        /*log.fine("Read program clause from input.");*/
 
         engine.compile(sentence);
     }
