@@ -388,7 +388,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
          *
          * @param  id The id of the attribute to look up.
          *
-         * @return A string attribute looked up by its byte index.
+         * @return A string attribute looked up by its id.
          */
         public EnumeratedStringAttribute getAttributeFromId(long id);
 

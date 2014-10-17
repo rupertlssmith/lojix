@@ -87,6 +87,15 @@ public interface HierarchyAttributeFactory
     public HierarchyAttribute getAttributeFromInt(int i);
 
     /**
+     * Looks up an attribute by its id.
+     *
+     * @param  id The id of the attribute to look up.
+     *
+     * @return A string attribute looked up by its id.
+     */
+    public HierarchyAttribute getAttributeFromId(long id);
+
+    /**
      * Reports the maximum number of levels that this hierarchy attribute type contains.
      *
      * @return The maximum number of levels that this hierarchy attribute type contains.
