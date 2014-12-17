@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.8.10-SNAPSHOT</version><!--lojix.version-->
+            <version>0.8.10-SNAPSHOT</version><!--base.version-->
         </dependency>
 
         <dependency>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>base</artifactId>
-            <version>0.8.10-SNAPSHOT</version><!--lojix.version-->
+            <version>0.8.10-SNAPSHOT</version><!--base.version-->
             <scope>test</scope>
         </dependency>
 
