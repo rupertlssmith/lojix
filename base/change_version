@@ -8,7 +8,7 @@ if [ -z "$1" ] ; then
 fi
 
 echo New version is $1
-SEDCMD="s/<version>$CV<\/version><!-- base.version -->/<version>$1<\/version><!-- base.version -->/"
+SEDCMD="s/<version>$CV<\/version><!--base.version-->/<version>$1<\/version><!--base.version-->/"
 SEDCMDCV="s/$CV/$1/"
 
 find -L . -name 'pom.xml' | xargs sed -i $SEDCMD
