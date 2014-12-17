@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>wam</artifactId>
-            <version>0.8.10-SNAPSHOT</version><!--debugger.version-->
+            <version>0.8.10-SNAPSHOT</version><!--lojix.version-->
         </dependency>
 
         <!-- Test dependencies. -->
