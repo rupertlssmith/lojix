@@ -50,6 +50,9 @@ public class DynaComponent extends BaseType implements ComponentType
     /** Holds the name of this dyna class. */
     private String name;
 
+    /** Holds the meta-model instance associated with this component. */
+    private State metaModel;
+
     /**
      * Creates a named dyna class.
      *
@@ -83,7 +86,8 @@ public class DynaComponent extends BaseType implements ComponentType
     }
 
     /** {@inheritDoc} */
-    public Set<String> getNaturalKeyFieldNames() {
+    public Set<String> getNaturalKeyFieldNames()
+    {
         return new HashSet<String>();
     }
 
@@ -183,6 +187,22 @@ public class DynaComponent extends BaseType implements ComponentType
     public int getNumPossibleValues()
     {
         return -1;
+    }
+
+    /** {@inheritDoc} */
+    public State getMetaModel()
+    {
+        return metaModel;
+    }
+
+    /**
+     * Associated a meta-model instance with this component.
+     *
+     * @param metaModel A meta-model instance to associate with this component.
+     */
+    public void setMetaModel(State metaModel)
+    {
+        this.metaModel = metaModel;
     }
 
     /**

@@ -42,7 +42,7 @@ public interface ComponentType extends Type, Serializable
      *
      * @return A map of the types of all properties of this dimension.
      */
-    public Map<String, Type> getAllPropertyTypes();
+    Map<String, Type> getAllPropertyTypes();
 
     /**
      * Calls <tt>new</tt> on the components implementation, using its no-arg constructor. None of the states properties
@@ -55,7 +55,14 @@ public interface ComponentType extends Type, Serializable
      *
      * @return A transient component instance.
      */
-    public State getInstance();
+    State getInstance();
+
+    /**
+     * Obtains the meta-model instance associated with this component.
+     *
+     * @return The meta-model instance associated with this component.
+     */
+    State getMetaModel();
 
     /**
      * Gets the type of the named property.
