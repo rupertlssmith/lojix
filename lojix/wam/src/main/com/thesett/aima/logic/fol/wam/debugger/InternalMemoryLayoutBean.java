@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.thesett.aima.logic.fol.wam.machine.WAMMemoryLayout;
+import com.thesett.common.util.event.EventListenerSupport;
 
 /**
  * InternalMemoryLayoutBean represents {@link WAMMemoryLayout} as a Java bean, and adds the ability to attach a
@@ -46,8 +47,8 @@ public class InternalMemoryLayoutBean extends WAMMemoryLayout implements Registe
     /** Defines the names of the machine flags. */
     public static final String[] FLAG_NAMES = new String[] {};
 
-    /** Holds any property change listener to notify of register value changes. */
-    private PropertyChangeListener listener;
+    /** Holds any property change listeners to notify of register value changes. */
+    private EventListenerSupport<PropertyChangeListener> listeners = new EventListenerSupport<PropertyChangeListener>();
 
     /**
      * Creates an instance of the WAM memory layout.
@@ -74,9 +75,9 @@ public class InternalMemoryLayoutBean extends WAMMemoryLayout implements Registe
      *
      * @param listener A PropertyChangeListener to notify of changes to the register file or flags.
      */
-    public void setPropertyChangeListener(PropertyChangeListener listener)
+    public void addPropertyChangeListener(PropertyChangeListener listener)
     {
-        this.listener = listener;
+        listeners.addListener(listener);
     }
 
     /**
@@ -262,11 +263,16 @@ public class InternalMemoryLayoutBean extends WAMMemoryLayout implements Registe
      */
     private void notifyChanges(List<PropertyChangeEvent> changes)
     {
-        if (listener != null)
+        List<PropertyChangeListener> activeListeners = listeners.getActiveListeners();
+
+        if (activeListeners != null)
         {
-            for (PropertyChangeEvent event : changes)
+            for (PropertyChangeListener listener : activeListeners)
             {
-                listener.propertyChange(event);
+                for (PropertyChangeEvent event : changes)
+                {
+                    listener.propertyChange(event);
+                }
             }
         }
     }

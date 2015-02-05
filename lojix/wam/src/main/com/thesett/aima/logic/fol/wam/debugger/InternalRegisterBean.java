@@ -71,7 +71,7 @@ public class InternalRegisterBean extends WAMInternalRegisters implements Regist
      *
      * @param listener A PropertyChangeListener to notify of changes to the register file or flags.
      */
-    public void setPropertyChangeListener(PropertyChangeListener listener)
+    public void addPropertyChangeListener(PropertyChangeListener listener)
     {
         listeners.addListener(listener);
     }

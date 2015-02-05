@@ -57,11 +57,11 @@ public class SimpleMonitor implements WAMResolvingMachineDPIMonitor, PropertyCha
         tableModel = new TextTableImpl();
 
         layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        layoutRegisters.setPropertyChangeListener(this);
+        layoutRegisters.addPropertyChangeListener(this);
         layoutRegisters.updateRegisters(layoutRegisters);
 
         internalRegisters = new InternalRegisterBean(0, 0, 0, 0, 0, 0, 0, 0, 0, false);
-        internalRegisters.setPropertyChangeListener(this);
+        internalRegisters.addPropertyChangeListener(this);
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
     }
 

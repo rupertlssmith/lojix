@@ -80,12 +80,12 @@ public class MachineMonitor implements WAMResolvingMachineDPIMonitor
     public void onReset(WAMResolvingMachineDPI dpi)
     {
         internalRegisters = new InternalRegisterBean(0, 0, 0, 0, 0, 0, 0, 0, 0, false);
-        internalRegisters.setPropertyChangeListener(registerSetMonitor);
-        internalRegisters.setPropertyChangeListener(breakpointMonitor);
+        internalRegisters.addPropertyChangeListener(registerSetMonitor);
+        internalRegisters.addPropertyChangeListener(breakpointMonitor);
         internalRegisters.updateRegisters(dpi.getInternalRegisters());
 
         layoutRegisters = new InternalMemoryLayoutBean(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        layoutRegisters.setPropertyChangeListener(layoutMonitor);
+        layoutRegisters.addPropertyChangeListener(layoutMonitor);
         layoutRegisters.updateRegisters(dpi.getMemoryLayout());
     }
 
