@@ -68,6 +68,9 @@ public class CodeStepController implements ControllerLifecycle
     /** Provides the current byte code loaded in the target machine. */
     private ByteCodeMonitor byteCodeMonitor;
 
+    /** The pane controller for the UI component displaying the code listing. */
+    private PaneController paneController;
+
     /** The current row corresponding to the instruction currently being stepped. <tt>-1</tt> means no stepped row. */
     private int steppedRow = -1;
 
@@ -97,7 +100,7 @@ public class CodeStepController implements ControllerLifecycle
         grid = componentFactory.createTextGrid();
         mainWindow.showCentrePane(componentFactory.createTextGridPanel(grid));
 
-        PaneController paneController = mainWindow.getCentreController();
+        paneController = mainWindow.getCentreController();
         paneController.showVerticalScrollBar();
 
         // Build a table model on the text grid, to display the code in.
@@ -229,10 +232,15 @@ public class CodeStepController implements ControllerLifecycle
                 log.fine("New IP : " + ip);
 
                 highlightSteppedRow(byteCodeMonitor.getRowForAddress(ip));
+                scrollToSteppedRow(byteCodeMonitor.getRowForAddress(ip));
             }
         }
 
-        /** {@inheritDoc} */
+        /**
+         * Highlights the row that the code execution is currently paused on.
+         *
+         * @param row The row to highlight.
+         */
         public void highlightSteppedRow(int row)
         {
             log.fine("Stepping highlight at : " + row);
@@ -264,6 +272,17 @@ public class CodeStepController implements ControllerLifecycle
                     grid.insertRowAttribute(aset, steppedRow);
                 }
             }
+        }
+
+        /**
+         * Adjusts the vertical scroll bar position, if the row that code execution is paused on is too near the start
+         * or end of the area of code being displayed.
+         *
+         * @param row The row to try and bring into reasonable vertical alignment.
+         */
+        private void scrollToSteppedRow(int row)
+        {
+            paneController.getVerticalScrollController().scrollTo(row * 12);
         }
     }
 }

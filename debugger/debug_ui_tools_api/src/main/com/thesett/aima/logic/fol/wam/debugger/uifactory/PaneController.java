@@ -37,6 +37,20 @@ public interface PaneController<K>
     void showHorizontalScrollBar();
 
     /**
+     * Provides a {@link ScrollController} for the vertical scroll bar.
+     *
+     * @return A {@link ScrollController} for the vertical scroll bar.
+     */
+    ScrollController getVerticalScrollController();
+
+    /**
+     * Provides a {@link ScrollController} for the horizontal scroll bar.
+     *
+     * @return A {@link ScrollController} for the horizontal scroll bar.
+     */
+    ScrollController getHorizontalScrollController();
+
+    /**
      * Establishes a keyboard shortcut, that is triggered when the child pane has focus.
      *
      * @param keyCombination The key combination for the shortcut.

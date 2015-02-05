@@ -21,6 +21,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
+import com.thesett.aima.logic.fol.wam.debugger.uifactory.ScrollController;
 
 /**
  * SwingPaneController is a {@link PaneController} for Swing based window panes.
@@ -67,6 +68,18 @@ public class SwingPaneController implements PaneController<KeyStroke>
         {
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         }
+    }
+
+    /** {@inheritDoc} */
+    public ScrollController getVerticalScrollController()
+    {
+        return new SwingScrollController(scrollPane.getVerticalScrollBar());
+    }
+
+    /** {@inheritDoc} */
+    public ScrollController getHorizontalScrollController()
+    {
+        return new SwingScrollController(scrollPane.getHorizontalScrollBar());
     }
 
     /** {@inheritDoc} */
