@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.thesett.aima.logic.fol.wam.machine.WAMInternalRegisters;
+import com.thesett.common.util.event.EventListenerSupport;
 
 /**
  * InternalRegisterBean represents WAMInternalRegisters as a Java bean, and adds the ability to attach a
@@ -42,8 +43,8 @@ public class InternalRegisterBean extends WAMInternalRegisters implements Regist
     /** Defines the names of the machine flags. */
     public static final String[] FLAG_NAMES = new String[] { "writeMode" };
 
-    /** Holds any property change listener to notify of register value changes. */
-    private PropertyChangeListener listener;
+    /** Holds any property change listeners to notify of register value changes. */
+    private EventListenerSupport<PropertyChangeListener> listeners = new EventListenerSupport<PropertyChangeListener>();
 
     /**
      * Creates an instance of the WAM machine internal register file and flags.
@@ -72,7 +73,7 @@ public class InternalRegisterBean extends WAMInternalRegisters implements Regist
      */
     public void setPropertyChangeListener(PropertyChangeListener listener)
     {
-        this.listener = listener;
+        listeners.addListener(listener);
     }
 
     /**
@@ -258,11 +259,16 @@ public class InternalRegisterBean extends WAMInternalRegisters implements Regist
      */
     private void notifyChanges(List<PropertyChangeEvent> changes)
     {
-        if (listener != null)
+        List<PropertyChangeListener> activeListeners = listeners.getActiveListeners();
+
+        if (activeListeners != null)
         {
-            for (PropertyChangeEvent event : changes)
+            for (PropertyChangeListener listener : activeListeners)
             {
-                listener.propertyChange(event);
+                for (PropertyChangeEvent event : changes)
+                {
+                    listener.propertyChange(event);
+                }
             }
         }
     }
