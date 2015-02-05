@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * DebuggerLayout is a custom LayoutManager for a set of debugger window panels. It divides the window up in a fairly
- * standard way for a GUI type tool. There are left and right tool panels, a status bar, a console panel at the bottom,
- * and a main area in the window centre.
+ * DesktopAppLayout is a custom LayoutManager for a set of window panels in a typical arrangement for a desktop
+ * application. It divides the window up in a fairly standard way for a desktop GUI type tool. There are left and right
+ * tool panels, a status bar, a console panel at the bottom, and a main area in the window centre.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities <th> Collaborations
@@ -41,7 +41,7 @@ import java.util.Set;
  *
  * @author Rupert Smith
  */
-public class DebuggerLayout implements LayoutManager
+public class DesktopAppLayout implements LayoutManager
 {
     /** Label identifying the center position. */
     public static final String CENTER = "center";

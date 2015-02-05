@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import com.thesett.aima.logic.fol.wam.debugger.swing.DebuggerLayout;
+import com.thesett.aima.logic.fol.wam.debugger.swing.DesktopAppLayout;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.ComponentFactory;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.MainWindow;
 import com.thesett.aima.logic.fol.wam.debugger.uifactory.PaneController;
@@ -46,7 +46,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
     private JFrame frame;
 
     /** A customized Swing layout for this application. */
-    private DebuggerLayout layout;
+    private DesktopAppLayout layout;
 
     /** The component factory used to build UI elements. */
     private final SwingComponentFactory factory;
@@ -81,7 +81,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
         frame.setMinimumSize(new Dimension(800, 600));
         frame.setPreferredSize(new Dimension(1000, 800));
 
-        layout = new DebuggerLayout();
+        layout = new DesktopAppLayout();
         frame.getContentPane().setLayout(layout);
 
         frame.setVisible(true);
@@ -93,7 +93,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
     /** {@inheritDoc} */
     public void showCentrePane(JComponent component)
     {
-        frame.getContentPane().add(component, DebuggerLayout.CENTER);
+        frame.getContentPane().add(component, DesktopAppLayout.CENTER);
         frame.pack();
 
         centreComponent = component;
@@ -109,7 +109,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
     public void showConsole(JComponent component)
     {
         showHorizontalBar();
-        frame.getContentPane().add(component, DebuggerLayout.CONSOLE);
+        frame.getContentPane().add(component, DesktopAppLayout.CONSOLE);
         frame.pack();
 
         consoleComponent = component;
@@ -119,7 +119,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
     public void showLeftPane(JComponent component)
     {
         showLeftBar();
-        frame.getContentPane().add(component, DebuggerLayout.LEFT_PANE);
+        frame.getContentPane().add(component, DesktopAppLayout.LEFT_PANE);
         frame.pack();
 
         leftComponent = component;
@@ -129,7 +129,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
     public void showRightPane(JComponent component)
     {
         showRightBar();
-        frame.getContentPane().add(component, DebuggerLayout.RIGHT_PANE);
+        frame.getContentPane().add(component, DesktopAppLayout.RIGHT_PANE);
         frame.pack();
 
         rightComponent = component;
@@ -148,7 +148,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
         // Left vertical bar.
         Component bar = factory.createGripPanel(layout.getConsoleHeightResizer(), false);
 
-        frame.getContentPane().add(bar, DebuggerLayout.STATUS_BAR);
+        frame.getContentPane().add(bar, DesktopAppLayout.STATUS_BAR);
     }
 
     /** Creates a vertical grip-able bar for adjusting the left panel width. */
@@ -157,7 +157,7 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
         // Left vertical bar.
         Component bar = factory.createGripPanel(layout.getLeftPaneWidthResizer(), true);
 
-        frame.getContentPane().add(bar, DebuggerLayout.LEFT_VERTICAL_BAR);
+        frame.getContentPane().add(bar, DesktopAppLayout.LEFT_VERTICAL_BAR);
     }
 
     /** Creates a vertical grip-able bar for adjusting the right panel width. */
@@ -166,6 +166,6 @@ public class SwingMainWindow implements MainWindow<JComponent, KeyStroke>
         // Right vertical bar.
         Component bar = factory.createGripPanel(layout.getRightPaneWidthResizer(), true);
 
-        frame.getContentPane().add(bar, DebuggerLayout.RIGHT_VERTICAL_BAR);
+        frame.getContentPane().add(bar, DesktopAppLayout.RIGHT_VERTICAL_BAR);
     }
 }
