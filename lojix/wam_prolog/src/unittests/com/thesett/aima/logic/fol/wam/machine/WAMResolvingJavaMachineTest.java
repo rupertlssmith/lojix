@@ -15,6 +15,10 @@
  */
 package com.thesett.aima.logic.fol.wam.machine;
 
+import com.thesett.aima.logic.fol.ArithmeticResolverUnitTestBase;
+import com.thesett.aima.logic.fol.CallAndNotResolverUnitTestBase;
+import com.thesett.aima.logic.fol.CutResolverUnitTestBase;
+import com.thesett.aima.logic.fol.RuntimeTypeCheckUnitTestBase;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -279,10 +283,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testVariableTakesBindingsFromTwoDisjunctionPaths", engine));
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testVariableTakesBindingsFromManyDisjunctionPaths", engine));
-        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testJunctionBracketingFalse", engine));*/
-        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testJunctionBracketingAllowsDisjunction", engine));*/
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingFalse", engine));
+        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingAllowsDisjunction", engine));
 
         // Add all tests defined in the BacktrackingResolverUnitTestBase class.
         suite.addTest(new BacktrackingResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
@@ -310,14 +314,66 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new ListResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testListIterationBacktracks", engine));
 
+        // Add all tests defined in the ArithmeticResolverUnitTestBase class.
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAddIntegerOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testSubtractIntegerOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testMultiplyIntegerOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDivideIntegerOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testExponentialIntegerOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testAddRealOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testSubtractRealOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testMultiplyRealOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDivideRealOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testExponentialRealOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testPrecedenceMulOverAdd", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testInstantiatedVariablesInArithmeticOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testLessThanOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testLessThanFails", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testLessThanOrEqualsOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testLessThanOrEqualsFails", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testGreaterThanOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testGreaterThanFails", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testGreaterThanOrEqualsOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testGreaterThanOrEqualsFails", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testComparisonOfInstantiatedVariablesOk", engine));
+        suite.addTest(new ArithmeticResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNonArithOperatorNotMistaken", engine));
+
+        // Add all tests defined in the RuntimeTypeCheckUnitTestBase class.
+        suite.addTest(new RuntimeTypeCheckUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testIntegerOk", engine));
+        suite.addTest(new RuntimeTypeCheckUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFloatOk", engine));
+
         // Add all tests defined in the CutResolverUnitTestBase class.
-        /*suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+        suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testNeckCutPreventsBacktrackingOk", engine));
         suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testDeepCutPreventsBacktrackingOk", engine));*/
+                "testDeepCutPreventsBacktrackingOk", engine));
 
         // Add all tests defined in the CallAndNotResolverUnitTestBase class.
-        /*suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testSimpleCallOk", engine));
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testCallFunctorWithArgumentBindsVariable", engine));
@@ -330,7 +386,7 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testNotFailSucceeds", engine));
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testNotTrueFails", engine));*/
+                "testNotTrueFails", engine));
 
         // Add all tests defined in the TrueAndFailResolverUnitTestBase class.
         suite.addTest(new TrueAndFailResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
