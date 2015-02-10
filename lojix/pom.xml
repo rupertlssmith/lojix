@@ -132,11 +132,7 @@
         <module>text_model</module>
         <module>interpreter</module>
         <module>prolog</module>
-        <module>l0</module>
-        <module>l1</module>
-        <module>l2</module>
-        <module>l3</module>
-        <module>wam</module>
+        <module>wam_prolog</module>
         <!--<module>jpc.lojix</module>--> <!-- Needs Java 8. -->
     </modules>
 

@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>wam</artifactId>
+            <artifactId>wam_prolog</artifactId>
             <version>0.8.11-SNAPSHOT</version><!--lojix.version-->
         </dependency>
 

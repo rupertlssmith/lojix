@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.thesett</groupId>
-    <artifactId>wam</artifactId>
-    <name>wam</name>
+    <artifactId>wam_prolog</artifactId>
+    <name>WAM Prolog</name>
     <version>0.8.11-SNAPSHOT</version><!--lojix.version-->
 
-    <description>Implementation of the WAM machine described in  "Warren's Abstact Machine, A Tutorial Reconstruction, by Hassan Ait-Kaci"</description>
-    <url>https://www.thesett.com/build_reports/lojix/wam</url>
+    <description>A WAM based Prolog implementation.</description>
+    <url>https://www.thesett.com/build_reports/lojix/wam_prolog</url>
 
     <packaging>jar</packaging>
 
