@@ -11,9 +11,9 @@ Roadmap
 
 Priorities are in the order presented here:
 
-    * Get cut working.
-    * Get call and not working.
-    * Complete nested inline conjunction/disjunction.
-    * Get basic int and float arithmetic working.
-    * Change the memory model to 64-bit, with an appropriately chosen layout for tagged heap values.
-    * Implement a simple garbage collector.
+* Get cut working.
+* Get call and not working.
+* Complete nested inline conjunction/disjunction.
+* Get basic int and float arithmetic working.
+* Change the memory model to 64-bit, with an appropriately chosen layout for tagged heap values.
+* Implement a simple garbage collector.
