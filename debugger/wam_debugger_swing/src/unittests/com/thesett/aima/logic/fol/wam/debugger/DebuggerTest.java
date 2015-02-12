@@ -17,6 +17,7 @@ package com.thesett.aima.logic.fol.wam.debugger;
 
 import java.io.IOException;
 
+import com.thesett.aima.logic.fol.CutResolverUnitTestBase;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -24,7 +25,6 @@ import junit.framework.TestSuite;
 import org.apache.log4j.NDC;
 
 import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
@@ -102,8 +102,12 @@ public class DebuggerTest extends TestCase
         // Build a new test suite.
         TestSuite suite = new TestSuite("WAMResolvingJavaMachine Tests");
 
-        suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testJunctionBracketingFalse", engine));
+        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingFalse", engine));*/
+        suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testNeckCutPreventsBacktrackingOk", engine));
+        /*suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDeepCutPreventsBacktrackingOk", engine));*/
 
         return suite;
     }
