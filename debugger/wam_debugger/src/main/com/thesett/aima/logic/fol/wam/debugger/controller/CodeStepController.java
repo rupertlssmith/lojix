@@ -190,15 +190,17 @@ public class CodeStepController implements ControllerLifecycle
                     // Clear any previously selected row.
                     if (selectedRow != -1)
                     {
-                        grid.insertRowAttribute(null, selectedRow);
-
                         // Restore stepping highlight if needed.
                         if (selectedRow == steppedRow)
                         {
                             AttributeSet aset = new AttributeSet();
                             aset.put(AttributeSet.BACKGROUND_COLOR,
-                                componentFactory.getColorScheme().getLowlightBackground());
+                                componentFactory.getColorScheme().getHighlightBackground());
                             grid.insertRowAttribute(aset, selectedRow);
+                        }
+                        else
+                        {
+                            grid.insertRowAttribute(null, selectedRow);
                         }
                     }
 
