@@ -105,6 +105,10 @@
                             <name>log4j.configuration</name>
                             <value>${log4j.configuration}</value>
                         </property>
+                        <property>
+                            <name>java.util.logging.config.file</name>
+                            <value>${java.util.logging.config.file}</value>
+                        </property>
                     </systemproperties>
                     <commands>
                         <wam>com.thesett.aima.logic.fol.wam.interpreter.WAMJavaInterpreter</wam>
