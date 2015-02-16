@@ -57,6 +57,26 @@ public class DisjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
         resolveAndAssertSolutions("[[f(x), f(y)], (?- f(y)), [[]]]");
     }
 
+    /** Check that resolution on multiple matching clauses, takes a binding from the argument of the matched clause. */
+    public void testArgBindsOnAllMatchingClauses() throws Exception
+    {
+        resolveAndAssertSolutions("[[f(x), f(y), f(z)], (?- f(X)), [[X <-- x], [X <-- y], [X <-- z]]]");
+    }
+
+    /** Check that resolution on multiple matching clauses, takes a binding from the first bodies. */
+    public void testFirstBodyBindsOnAllMatchingClauses() throws Exception
+    {
+        resolveAndAssertSolutions("[[(f(X) :- X = x), (f(X) :- X = y), (f(X) :- X = z)], (?- f(X)), " +
+            "[[X <-- x], [X <-- y], [X <-- z]]]");
+    }
+
+    /** Check that resolution on multiple matching clauses, takes a binding from the first item in longer bodies. */
+    public void testFirstOfLongerBodyBindsOnAllMatchingClauses() throws Exception
+    {
+        resolveAndAssertSolutions("[[(f(X) :- X = x, true), (f(X) :- X = y, true), (f(X) :- X = z, true)], " +
+            "(?- f(X)), [[X <-- x], [X <-- y], [X <-- z]]]");
+    }
+
     /** Check that resolution against two possible matching functors fails when none are matched. */
     public void testFailsOnNoMatchingOutOfSeveralPossibleFunctors() throws Exception
     {
