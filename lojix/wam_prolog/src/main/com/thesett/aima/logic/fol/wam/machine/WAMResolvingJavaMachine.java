@@ -1235,6 +1235,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // STACK[newB + n + 6] <- H
                 data.put(esp + n + 6, hp);
 
+                // STACK[newB + n + 7] <- B0
+                data.put(esp + n + 7, b0);
+
                 // B <- new B
                 bp = esp;
 
@@ -1476,6 +1479,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // STACK[newB + n + 6] <- H
                 data.put(esp + n + 6, hp);
 
+                // STACK[newB + n + 7] <- B0
+                data.put(esp + n + 7, b0);
+
                 // B <- new B
                 bp = esp;
 
@@ -1581,13 +1587,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
             case NECK_CUT:
             {
-                ip += 1;
-
                 if (bp > b0)
                 {
                     bp = b0;
                     tidyTrail();
                 }
+
+                ip += 1;
 
                 break;
             }
@@ -1686,7 +1692,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
         return "choice: [ n = " + data.get(bp) + ", ep = " + data.get(bp + n + 1) + ", cp = " + data.get(bp + n + 2) +
             ", bp = " + data.get(bp + n + 3) + ", l = " + data.get(bp + n + 4) + ", trp = " + data.get(bp + n + 5) +
-            ", hp = " + data.get(bp + n + 6);
+            ", hp = " + data.get(bp + n + 6) + ", b0 = " + data.get(bp + n + 7);
     }
 
     /** {@inheritDoc} */
@@ -1860,7 +1866,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         }
         else
         {
-            return bp + data.get(bp) + 7;
+            return bp + data.get(bp) + 8;
         }
     }
 
