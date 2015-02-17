@@ -1975,13 +1975,17 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     private void tidyTrail()
     {
-        // Check that there is a current choice point to tidy down to.
+        int i;
+
+        // Check that there is a current choice point to tidy down to, otherwise tidy down to the root of the trail.
         if (bp == 0)
         {
-            return;
+            i = TRAIL_BASE;
         }
-
-        int i = data.get(bp + data.get(bp) + 5);
+        else
+        {
+            i = data.get(bp + data.get(bp) + 5);
+        }
 
         while (i < trp)
         {
