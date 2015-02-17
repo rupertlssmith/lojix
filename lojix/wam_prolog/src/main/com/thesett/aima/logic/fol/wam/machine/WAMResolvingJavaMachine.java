@@ -1967,8 +1967,20 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
         }
     }
 
+    /**
+     * Tidies trail when a choice point is being discarded, and a previous choice point it being made the current one.
+     *
+     * <p/>Copies trail bindings created since the choice point, into the trail as known to the previous choice point.
+     * That is bindings on the heap created during the choice point (between HB and H).
+     */
     private void tidyTrail()
     {
+        // Check that there is a current choice point to tidy down to.
+        if (bp == 0)
+        {
+            return;
+        }
+
         int i = data.get(bp + data.get(bp) + 5);
 
         while (i < trp)
