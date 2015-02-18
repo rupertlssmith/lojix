@@ -46,6 +46,8 @@ import com.thesett.aima.logic.fol.compiler.PositionalTermTraverserImpl;
 import com.thesett.aima.logic.fol.compiler.TermWalker;
 import com.thesett.aima.logic.fol.wam.TermWalkers;
 import com.thesett.aima.logic.fol.wam.builtins.BuiltIn;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.REG_ADDR;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.STACK_ADDR;
 import com.thesett.aima.logic.fol.wam.machine.WAMMachine;
 import com.thesett.aima.logic.fol.wam.optimizer.Optimizer;
 import com.thesett.aima.logic.fol.wam.optimizer.WAMOptimizer;
@@ -60,8 +62,6 @@ import com.thesett.common.parsing.SourceCodeException;
 import com.thesett.common.util.SizeableLinkedList;
 import com.thesett.common.util.doublemaps.SymbolKey;
 import com.thesett.common.util.doublemaps.SymbolTable;
-
-import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.REG_ADDR;
 
 /**
  * WAMCompiled implements a compiler for the logical language, WAM, into a form suitable for passing to an
@@ -181,6 +181,12 @@ public class InstructionCompiler extends DefaultBuiltIn
 
     /** This is used to keep track of the number of permanent variables. */
     protected int numPermanentVars;
+
+    /**
+     * This is used to keep track of the position of the depth variable, for deep cuts, if there is one. <tt>-1</tt>
+     * means no deep cut exists in the clause, and a value gte to zero means there is one.
+     */
+    protected int cutPermanentVar = -1;
 
     /** Keeps count of the current compiler scope, to keep symbols in each scope fresh. */
     protected int scope = 0;
@@ -397,6 +403,15 @@ public class InstructionCompiler extends DefaultBuiltIn
             preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.Allocate));
         }
 
+        // Deep cuts require the current choice point to be kept in a permanent variable, so that it can be recovered
+        // once deeper choice points or environments have been reached.
+        if (cutPermanentVar >= 0)
+        {
+            /*log.fine("GET_LEVEL "+ cutPermanentVar);*/
+            preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.GetLevel, STACK_ADDR,
+                    (byte) cutPermanentVar));
+        }
+
         result.addInstructions(preFixInstructions);
 
         // Compile the clause head.
@@ -508,6 +523,15 @@ public class InstructionCompiler extends DefaultBuiltIn
         /*log.fine("ALLOCATE " + numPermanentVars);*/
         preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.AllocateN, REG_ADDR,
                 (byte) (numPermanentVars & 0xff)));
+
+        // Deep cuts require the current choice point to be kept in a permanent variable, so that it can be recovered
+        // once deeper choice points or environments have been reached.
+        if (cutPermanentVar >= 0)
+        {
+            /*log.fine("GET_LEVEL "+ cutPermanentVar);*/
+            preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.GetLevel, STACK_ADDR,
+                    (byte) cutPermanentVar));
+        }
 
         result.addInstructions(preFixInstructions);
 
@@ -752,13 +776,13 @@ public class InstructionCompiler extends DefaultBuiltIn
     }
 
     /**
-     * Allocates stack slots where need to the variables in a program clause. The algorithm here is fairly complex.
+     * Allocates stack slots where needed to the variables in a program clause. The algorithm here is fairly complex.
      *
      * <p/>A clause head and first body functor are taken together as the first unit, subsequent clause body functors
      * are taken as subsequent units. A variable appearing in more than one unit is said to be permanent, and must be
      * stored on the stack, rather than a register, otherwise the register that it occupies may be overwritten by calls
-     * to subsequent units. These variable are called permanent, which really means that they are local variables on the
-     * call stack.
+     * to subsequent units. These variables are called permanent, which really means that they are local variables on
+     * the call stack.
      *
      * <p/>In addition to working out which variables are permanent, the variables are also ordered by reverse position
      * of last body of occurrence, and assigned to allocation slots in this order. The number of permanent variables
