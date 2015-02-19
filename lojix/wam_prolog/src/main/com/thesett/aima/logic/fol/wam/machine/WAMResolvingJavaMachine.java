@@ -1593,6 +1593,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     tidyTrail();
                 }
 
+                trace.fine(ip + ": NECK_CUT");
+                trace.fine("<- chp @ " + bp + " " + traceChoiceFrame());
+
                 ip += 1;
 
                 break;
@@ -1603,6 +1606,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 int yn = (int) codeBuffer.get(ip + 1) + (ep + 3);
 
                 data.put(yn, b0);
+
+                trace.fine(ip + ": GET_LEVEL " + codeBuffer.get(ip + 1));
 
                 ip += 2;
 
@@ -1620,6 +1625,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     bp = cbp;
                     tidyTrail();
                 }
+
+                trace.fine(ip + ": CUT " + codeBuffer.get(ip + 1));
+                trace.fine("<- chp @ " + bp + " " + traceChoiceFrame());
 
                 ip += 2;
 
