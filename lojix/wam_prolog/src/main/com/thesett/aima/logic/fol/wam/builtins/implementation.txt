@@ -13,10 +13,9 @@ get_level a little annoying, as needs to be part of the clause prefix instructio
 
 === Call
 
-Argument to call is built on the heap, or stack.
+When statically calling a predicate, its arguments are built on the heap, and referenced by registers or stack variables. Once this is set up, the predicate is called.
 
-Call is implemented as a procedure that takes the argument, and turns it into a call, that is built args on heap, assign
-argument registers, call.
+A dynamic call should behave in exactly the same way, so call/1 needs to implement the procedure described above.
 
 Is it necessary to build a complete copy of the arguments on the heap, or can an argument register be set to point into
 the existing structure?
