@@ -115,11 +115,5 @@ public class Cut extends BaseBuiltIn
         {
             super(-1, null, true);
         }
-
-        public void setSymbolKey(SymbolKey key)
-        {
-            System.out.println("Symbol key set up on cut level variable: " + key);
-            super.setSymbolKey(key);
-        }
     }
 }
