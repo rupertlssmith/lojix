@@ -344,6 +344,10 @@ public class InstructionCompiler extends DefaultBuiltIn
         // This is used to keep track of the number of permanent variables.
         numPermanentVars = 0;
 
+        // This is used to keep track of the allocation slot for the cut level variable, when needed. -1 means it is
+        // not needed, so it is initialized to this.
+        cutLevelVarSlot = -1;
+
         // These are used to generate pre and post instructions for the clause, for example, for the creation and
         // clean-up of stack frames.
         SizeableLinkedList<WAMInstruction> preFixInstructions = new SizeableLinkedList<WAMInstruction>();
@@ -408,7 +412,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         // once deeper choice points or environments have been reached.
         if (cutLevelVarSlot >= 0)
         {
-            /*log.fine("GET_LEVEL "+ cutPermanentVar);*/
+            /*log.fine("GET_LEVEL "+ cutLevelVarSlot);*/
             preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.GetLevel,
                     (byte) cutLevelVarSlot));
         }
@@ -497,6 +501,10 @@ public class InstructionCompiler extends DefaultBuiltIn
         // This is used to keep track of the number of permanent variables.
         numPermanentVars = 0;
 
+        // This is used to keep track of the allocation slot for the cut level variable, when needed. -1 means it is
+        // not needed, so it is initialized to this.
+        cutLevelVarSlot = -1;
+
         // These are used to generate pre and post instructions for the clause, for example, for the creation and
         // clean-up of stack frames.
         SizeableLinkedList<WAMInstruction> preFixInstructions = new SizeableLinkedList<WAMInstruction>();
@@ -529,7 +537,7 @@ public class InstructionCompiler extends DefaultBuiltIn
         // once deeper choice points or environments have been reached.
         if (cutLevelVarSlot >= 0)
         {
-            /*log.fine("GET_LEVEL "+ cutPermanentVar);*/
+            /*log.fine("GET_LEVEL "+ cutLevelVarSlot);*/
             preFixInstructions.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.GetLevel, STACK_ADDR,
                     (byte) cutLevelVarSlot));
         }
