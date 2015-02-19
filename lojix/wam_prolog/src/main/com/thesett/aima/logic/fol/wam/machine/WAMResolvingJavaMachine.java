@@ -1613,9 +1613,11 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 int yn = (int) codeBuffer.get(ip + 1) + (ep + 3);
 
-                if (bp > yn)
+                int cbp = data.get(yn);
+
+                if (bp > cbp)
                 {
-                    bp = yn;
+                    bp = cbp;
                     tidyTrail();
                 }
 
