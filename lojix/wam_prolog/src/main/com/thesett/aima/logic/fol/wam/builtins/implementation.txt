@@ -1,7 +1,7 @@
 === Cut
 
 neck_cut, easy to insert that correctly.
-get_depth a little annoying, as needs to be part of the clause prefix instructions. also complicated the assignment of permanent registers.
+get_level a little annoying, as needs to be part of the clause prefix instructions. also complicated the assignment of permanent registers.
 
 1. To make the permanent variable allocation algorithm work, during detection of builtins, transform cut into cut(_X), that is a new anonymous variable. This variable will also be of a special type 'DepthVariable'.
 

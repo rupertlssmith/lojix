@@ -39,7 +39,7 @@ public class Variable extends BaseTerm implements Term, VariableBindingContext<V
 
     /**
      * Holds the name of the variable. This is an integer that refers to an interned string that provides the textual
-     * name. An integer representation is usd for fast comparisons.
+     * name. An integer representation is used for fast comparisons.
      */
     protected int name;
 
