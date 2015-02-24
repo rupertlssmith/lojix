@@ -64,10 +64,22 @@ public class CallAndNotResolverUnitTestBase<S extends Clause, T, Q> extends Basi
         resolveAndAssertSolutions("[[f], (?- call(f)), [[]]]");
     }
 
+    /** Check that calling an atom works when the atom is dynamically chosen. */
+    public void testDynamicCallOk() throws Exception
+    {
+        resolveAndAssertSolutions("[[g, (f(X) :- call(X))], (?- f(g)), [[]]]");
+    }
+
     /** Check that calling a functor with a variable produces a binding. */
     public void testCallFunctorWithArgumentBindsVariable() throws Exception
     {
         resolveAndAssertSolutions("[[f(x)], (?- call(f(X))), [[X <-- x]]]");
+    }
+
+    /** Check that calling an atom works when the atom is dynamically chosen. */
+    public void testDynamicCallWithArgumentBindsVariable() throws Exception
+    {
+        resolveAndAssertSolutions("[[g(x), (f(Y) :- call(Y))], (?- f(g(X))), [[X <-- x]]]");
     }
 
     /** Check that a chained call to a functor with a variable produces a binding. */

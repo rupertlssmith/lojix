@@ -382,7 +382,11 @@ public class WAMResolvingJavaMachineTest extends TestCase
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testSimpleCallOk", engine));
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDynamicCallOk", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testCallFunctorWithArgumentBindsVariable", engine));
+        suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testDynamicCallWithArgumentBindsVariable", engine));
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testCallFunctorWithArgumentBindsVariableInChainedCall", engine));
         suite.addTest(new CallAndNotResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
