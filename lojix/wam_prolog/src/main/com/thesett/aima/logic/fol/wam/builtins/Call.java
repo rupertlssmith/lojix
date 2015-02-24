@@ -49,7 +49,8 @@ public class Call extends BaseBuiltIn
     public SizeableLinkedList<WAMInstruction> compileBodyArguments(Functor expression, boolean isFirstBody,
         FunctorName clauseName, int bodyNumber)
     {
-        return new SizeableLinkedList<WAMInstruction>();
+        // Build the argument to call in the usual way.
+        return defaultBuiltIn.compileBodyArguments(expression, isFirstBody, clauseName, bodyNumber);
     }
 
     /** {@inheritDoc} */
