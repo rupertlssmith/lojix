@@ -133,6 +133,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     /** The id of the internal call/1 function. */
     public static final int CALL_1_ID = 1;
 
+    /** The id of the internal call/1 function execute variant. */
+    public static final int EXECUTE_1_ID = 2;
+
     /** The mask to extract an address from a tagged heap cell. */
     public static final int AMASK = 0x3FFFFFFF;
 
@@ -278,6 +281,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
         // Put the internal functions in the call table.
         setInternalCodeAddress(internFunctorName("call", 1), CALL_1_ID);
+        setInternalCodeAddress(internFunctorName("execute", 1), EXECUTE_1_ID);
 
         // Notify any debug monitor that the machine has been reset.
         if (monitor != null)
@@ -1679,7 +1683,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
                 trace.fine(ip + ": CALL_INTERNAL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
 
-                callInternal(pn, numPerms);
+                callInternal(pn, n, numPerms);
 
                 break;
             }
@@ -1800,14 +1804,19 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      * Invokes an internal function.
      *
      * @param function The id of the internal function to call.
+     * @param arity    The arity of the function to call.
      * @param numPerms The number of permanent variables remaining in the environment.
      */
-    private void callInternal(int function, int numPerms)
+    private void callInternal(int function, int arity, int numPerms)
     {
         switch (function)
         {
         case CALL_1_ID:
             internalCall_1(numPerms);
+            break;
+
+        case EXECUTE_1_ID:
+            internalExecute_1();
             break;
 
         default:
@@ -1821,6 +1830,48 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      * @param numPerms The number of permanent variables remaining in the environment.
      */
     private void internalCall_1(int numPerms)
+    {
+        int pn = setupCall_1();
+
+        // Make the call.
+        // STACK[E + 2] <- numPerms
+        data.put(ep + 2, numPerms);
+
+        // CP <- P + instruction_size(P)
+        cp = ip + 7;
+
+        trace.fine(ip + ": (CALL) " + pn + ", " + numPerms + " (cp = " + cp + ")]");
+
+        // B0 <- B
+        b0 = bp;
+
+        // P <- @(p/n)
+        ip = pn;
+    }
+
+    /** Implements the execute variant of the 'call/1' predicate. */
+    private void internalExecute_1()
+    {
+        int pn = setupCall_1();
+
+        // Make the call.
+        trace.fine(ip + ": (EXECUTE) " + pn + " (cp = " + cp + ")]");
+
+        // B0 <- B
+        b0 = bp;
+
+        // P <- @(p/n)
+        ip = pn;
+    }
+
+    /**
+     * Sets up the registers to make a call, for implementing call/1. The first register should reference a structure to
+     * be turned into a predicate call. The arguments of this structure will be set up in the registers, and the entry
+     * point of the predicate to call will be returned.
+     *
+     * @return The entry address of the predicate to call.
+     */
+    private int setupCall_1()
     {
         // Get X0.
         int addr = deref(0);
@@ -1864,20 +1915,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             data.put(i, refTo(val + 1 + i));
         }
 
-        // Make the call.
-        // STACK[E + 2] <- numPerms
-        data.put(ep + 2, numPerms);
-
-        // CP <- P + instruction_size(P)
-        cp = ip + 7;
-
-        trace.fine(ip + ": (CALL) " + pn + "/" + arity + ", " + numPerms + " (cp = " + cp + ")]");
-
-        // B0 <- B
-        b0 = bp;
-
-        // P <- @(p/n)
-        ip = pn;
+        return pn;
     }
 
     /**
