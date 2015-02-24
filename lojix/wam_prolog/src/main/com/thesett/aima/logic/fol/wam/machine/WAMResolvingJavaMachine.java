@@ -27,6 +27,7 @@ import com.thesett.aima.logic.fol.wam.compiler.WAMInstruction;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.ALLOCATE;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.ALLOCATE_N;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CALL;
+import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CALL_INTERNAL;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CON;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CONTINUE;
 import static com.thesett.aima.logic.fol.wam.compiler.WAMInstruction.CUT;
@@ -127,6 +128,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     /** Used for tracing instruction executions. */
     private static final java.util.logging.Logger trace =
         java.util.logging.Logger.getLogger("TRACE.WAMResolvingJavaMachine");
+
+    /** The id of the internal call/1 function. */
+    public static final int CALL_1_ID = 1;
 
     /** The mask to extract an address from a tagged heap cell. */
     public static final int AMASK = 0x3FFFFFFF;
@@ -267,6 +271,9 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
 
         // Ensure that the overridden reset method of WAMBaseMachine is run too, to clear the call table.
         super.reset();
+
+        // Put the internal functions in the call table.
+        setInternalCodeAddress(internFunctorName("call", 1), CALL_1_ID);
 
         // Notify any debug monitor that the machine has been reset.
         if (monitor != null)
@@ -1655,6 +1662,26 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 break;
             }
 
+            // call_internal @(p/n), perms:
+            case CALL_INTERNAL:
+            {
+                // grab @(p/n), perms
+                int pn = codeBuffer.getInt(ip + 1);
+                int n = codeBuffer.get(ip + 5);
+                int numPerms = (int) codeBuffer.get(ip + 6);
+
+                // num_of_args <- n
+                numOfArgs = n;
+
+                trace.fine(ip + ": CALL_INTERNAL " + pn + "/" + n + ", " + numPerms + " (cp = " + cp + ")]");
+
+                callInternal(pn);
+
+                ip += 7;
+
+                break;
+            }
+
             // suspend on success:
             case SUSPEND:
             {
@@ -1765,6 +1792,30 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     protected int getHeap(int addr)
     {
         return data.get(addr);
+    }
+
+    /**
+     * Invokes an internal function.
+     *
+     * @param function The id of the internal function to call.
+     */
+    private void callInternal(int function)
+    {
+        switch (function)
+        {
+        case CALL_1_ID:
+            internalCall_1();
+            break;
+
+        default:
+            throw new RuntimeException("Unknown internal function id: " + function);
+        }
+    }
+
+    /** Implements the 'call/1' predicate. */
+    private void internalCall_1()
+    {
+        trace.info("call/1");
     }
 
     /**

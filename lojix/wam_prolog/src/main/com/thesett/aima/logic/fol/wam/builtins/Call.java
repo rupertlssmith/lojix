@@ -56,7 +56,12 @@ public class Call extends BaseBuiltIn
     public SizeableLinkedList<WAMInstruction> compileBodyCall(Functor expression, boolean isFirstBody,
         boolean isLastBody, boolean chainRule, int permVarsRemaining)
     {
-        return new SizeableLinkedList<WAMInstruction>();
+        SizeableLinkedList<WAMInstruction> result = new SizeableLinkedList<WAMInstruction>();
+
+        result.add(new WAMInstruction(WAMInstruction.WAMInstructionSet.CallInternal, (byte) (permVarsRemaining & 0xff),
+                defaultBuiltIn.getInterner().getFunctorFunctorName(expression)));
+
+        return result;
     }
 
     /**
