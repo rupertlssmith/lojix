@@ -136,4 +136,20 @@ public class ConjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
     {
         resolveAndAssertSolutions("[[g(x), (f(X, Y, Z) :- g(X), g(Y), g(Z))], (?- f(X, X, X)), [[X <-- x]]]");
     }
+
+    /**
+     * Checks that a conjunction in a query, with variable bindings resolves when the variable bindings are possible.
+     */
+    public void testConjunctionInQueryVarResolvesWhenBindingsMatch() throws Exception
+    {
+        resolveAndAssertSolutions("[[g(x), f(x)], (?- f(X), g(X)), [[X <-- x]]]");
+    }
+
+    /**
+     * Checks that a conjunction in a query, with variable bindings resolves when the variable are not possible.
+     */
+    public void testConjunctionInQueryVarFailsWhenBindingsDoNotMatch() throws Exception
+    {
+        resolveAndAssertFailure(new String[] { "g(x)", "f(y)" }, "?- f(X), g(X)");
+    }
 }

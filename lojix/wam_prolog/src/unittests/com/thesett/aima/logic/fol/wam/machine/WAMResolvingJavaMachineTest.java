@@ -271,6 +271,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testSuccesiveConjunctiveTermsOk", engine));
         suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testManyVariablesAcrossCallsOk", engine));
+        suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testConjunctionInQueryVarResolvesWhenBindingsMatch", engine));
+        suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testConjunctionInQueryVarFailsWhenBindingsDoNotMatch", engine));
 
         // Add all tests defined in the DisjunctionResolverUnitTestBase class.
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
