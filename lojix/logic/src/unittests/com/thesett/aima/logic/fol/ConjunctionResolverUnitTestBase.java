@@ -145,11 +145,27 @@ public class ConjunctionResolverUnitTestBase<S extends Clause, T, Q> extends Bas
         resolveAndAssertSolutions("[[g(x), f(x)], (?- f(X), g(X)), [[X <-- x]]]");
     }
 
-    /**
-     * Checks that a conjunction in a query, with variable bindings resolves when the variable are not possible.
-     */
+    /** Checks that a conjunction in a query, with variable bindings fails when the variable are not possible. */
     public void testConjunctionInQueryVarFailsWhenBindingsDoNotMatch() throws Exception
     {
         resolveAndAssertFailure(new String[] { "g(x)", "f(y)" }, "?- f(X), g(X)");
+    }
+
+    /**
+     * Checks that a conjunction in a query, with variable bindings fails when the variable are not possible, and the
+     * mismatch occurs before the last body. Testing put_val instead of put_val_unsafe.
+     */
+    public void testConjunctionInQueryVarNotLastFailsWhenBindingsDoNotMatch() throws Exception
+    {
+        resolveAndAssertFailure(new String[] { "f(x)", "g(y)" }, "?- f(X), g(X), g(X)");
+    }
+
+    /**
+     * Checks that a conjunction in a query, with variable unifications fails when the variable are not possible, and
+     * the mismatch occurs before the last body. Testing put_val instead of put_val_unsafe.
+     */
+    public void testConjunctionInQueryVarUnifyNotLastFailsWhenBindingsDoNotMatch() throws Exception
+    {
+        resolveAndAssertFailure(new String[] {}, "?- X = b, X = a, X = a");
     }
 }

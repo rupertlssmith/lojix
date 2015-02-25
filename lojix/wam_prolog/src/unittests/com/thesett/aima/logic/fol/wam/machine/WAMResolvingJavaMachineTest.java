@@ -275,6 +275,10 @@ public class WAMResolvingJavaMachineTest extends TestCase
                 "testConjunctionInQueryVarResolvesWhenBindingsMatch", engine));
         suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testConjunctionInQueryVarFailsWhenBindingsDoNotMatch", engine));
+        suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testConjunctionInQueryVarNotLastFailsWhenBindingsDoNotMatch", engine));
+        suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testConjunctionInQueryVarUnifyNotLastFailsWhenBindingsDoNotMatch", engine));
 
         // Add all tests defined in the DisjunctionResolverUnitTestBase class.
         suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
