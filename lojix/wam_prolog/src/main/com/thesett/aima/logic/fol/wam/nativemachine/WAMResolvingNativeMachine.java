@@ -170,7 +170,7 @@ public class WAMResolvingNativeMachine extends WAMResolvingMachine
     }
 
     /** {@inheritDoc} */
-    public IntBuffer getDataBuffer()
+    public ByteBuffer getDataBuffer()
     {
         throw new UnsupportedOperationException();
     }

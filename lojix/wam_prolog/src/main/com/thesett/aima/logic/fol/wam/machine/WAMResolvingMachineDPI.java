@@ -15,7 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.machine;
 
-import java.nio.IntBuffer;
+import java.nio.ByteBuffer;
 
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 
@@ -45,7 +45,7 @@ public interface WAMResolvingMachineDPI extends WAMCodeView
      *
      * @return The requested portion of the machines data area.
      */
-    IntBuffer getDataBuffer();
+    ByteBuffer getDataBuffer();
 
     /**
      * Provides the internal register file and flags for the machine.
