@@ -352,7 +352,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     {
         /*log.fine("Stack deref from " + (a + ep + 3) + ", ep = " + ep);*/
 
-        return deref(a + ep + 3);
+        return deref(a + ep + (3 << 2));
     }
 
     /** {@inheritDoc} */
@@ -630,7 +630,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
-                byte ai = codeBuffer.get(ip + 3);
+                int ai = codeBuffer.get(ip + 3) << 2;
 
                 trace.fine(ip + ": PUT_VAR " + printSlot(xi, mode) + ", A" + ai);
 
@@ -669,7 +669,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
-                byte ai = codeBuffer.get(ip + 3);
+                int ai = codeBuffer.get(ip + 3) << 2;
 
                 trace.fine(ip + ": PUT_VAL " + printSlot(xi, mode) + ", A" + ai);
 
@@ -688,7 +688,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
-                byte ai = codeBuffer.get(ip + 3);
+                int ai = codeBuffer.get(ip + 3) << 2;
 
                 trace.fine(ip + ": GET_VAR " + printSlot(xi, mode) + ", A" + ai);
 
@@ -707,7 +707,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
                 int xi = getRegisterOrStackSlot(mode);
-                byte ai = codeBuffer.get(ip + 3);
+                int ai = codeBuffer.get(ip + 3) << 2;
 
                 trace.fine(ip + ": GET_VAL " + printSlot(xi, mode) + ", A" + ai);
 
@@ -950,8 +950,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
             {
                 // grab addr, Ai
                 byte mode = codeBuffer.get(ip + 1);
-                int yi = (int) codeBuffer.get(ip + 2) + (ep + (3 << 2));
-                byte ai = codeBuffer.get(ip + 3);
+                int yi = (int) (codeBuffer.get(ip + 2) << 2) + (ep + (3 << 2));
+                int ai = codeBuffer.get(ip + 3) << 2;
 
                 trace.fine(ip + ": PUT_UNSAFE_VAL " + printSlot(yi, WAMInstruction.STACK_ADDR) + ", A" + ai);
 
@@ -1138,10 +1138,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 data.putInt(esp, ep);
 
                 // STACK[E + 1] <- CP
-                data.putInt(esp + 1, cp);
+                data.putInt(esp + (1 << 2), cp);
 
                 // STACK[E + 2] <- N
-                data.putInt(esp + 2, 0);
+                data.putInt(esp + (2 << 2), 0);
 
                 // E <- newE
                 // newE <- E + n + 3
@@ -1171,10 +1171,10 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                 data.putInt(esp, ep);
 
                 // STACK[E + 1] <- CP
-                data.putInt(esp + 1, cp);
+                data.putInt(esp + (1 << 2), cp);
 
                 // STACK[E + 2] <- N
-                data.putInt(esp + 2, n);
+                data.putInt(esp + (2 << 2), n);
 
                 // E <- newE
                 // newE <- E + n + 3
@@ -2029,7 +2029,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
      */
     private int getRegisterOrStackSlot(byte mode)
     {
-        return (int) codeBuffer.get(ip + 2) + ((mode == STACK_ADDR) ? (ep + (3 << 2)) : 0);
+        return (int) (codeBuffer.get(ip + 2) << 2) + ((mode == STACK_ADDR) ? (ep + (3 << 2)) : 0);
     }
 
     /**
@@ -2253,7 +2253,7 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     if (fn1 == fn2)
                     {
                         // for i <- 1 to n1
-                        for (int i = 1; i <= n1; i++)
+                        for (int i = 1; i <= (n1 << 2); i += 4)
                         {
                             // pdl.push(v1 + i)
                             // pdl.push(v2 + i)
@@ -2284,8 +2284,8 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
                     {
                         uPush(v1);
                         uPush(v2);
-                        uPush(v1 + 1);
-                        uPush(v2 + 1);
+                        uPush(v1 + 4);
+                        uPush(v2 + 4);
                     }
                 }
             }
