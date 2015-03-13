@@ -152,13 +152,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private static final int REG_SIZE = 256;
 
     /** Defines the heap size to use for the virtual machine. */
-    private static final int HEAP_SIZE = 10000;
+    private static final int HEAP_SIZE = 10000000;
 
     /** Defines the offset of the base of the heap in the data area. */
     private static final int HEAP_BASE = REG_SIZE;
 
     /** Defines the stack size to use for the virtual machine. */
-    private static final int STACK_SIZE = 10000;
+    private static final int STACK_SIZE = 1000000;
 
     /** Defines the offset of the base of the stack in the data area. */
     private static final int STACK_BASE = REG_SIZE + HEAP_SIZE;
@@ -170,13 +170,13 @@ public class WAMResolvingJavaMachine extends WAMResolvingMachine
     private static final int TRAIL_BASE = REG_SIZE + HEAP_SIZE + STACK_SIZE;
 
     /** Defines the max unification stack depth for the virtual machine. */
-    private static final int PDL_SIZE = 1000;
+    private static final int PDL_SIZE = 10000;
 
     /** Defines the highest address in the data area of the virtual machine. */
     private static final int TOP = REG_SIZE + HEAP_SIZE + STACK_SIZE + TRAIL_SIZE + PDL_SIZE;
 
     /** Defines the initial code area size for the virtual machine. */
-    private static final int CODE_SIZE = 10000;
+    private static final int CODE_SIZE = 1000000;
 
     /** Holds the current instruction pointer into the code. */
     private int ip;
