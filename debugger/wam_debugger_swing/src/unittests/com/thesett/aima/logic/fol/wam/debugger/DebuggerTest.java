@@ -17,13 +17,16 @@ package com.thesett.aima.logic.fol.wam.debugger;
 
 import java.io.IOException;
 
-import com.thesett.aima.logic.fol.CutResolverUnitTestBase;
+import com.thesett.aima.logic.fol.BasicUnificationUnitTestBase;
+import com.thesett.aima.logic.fol.ConjunctionResolverUnitTestBase;
+import com.thesett.aima.logic.fol.DisjunctionResolverUnitTestBase;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.log4j.NDC;
 
+import com.thesett.aima.logic.fol.CallAndNotResolverUnitTestBase;
 import com.thesett.aima.logic.fol.Clause;
 import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
@@ -104,10 +107,12 @@ public class DebuggerTest extends TestCase
 
         /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
                 "testJunctionBracketingFalse", engine));*/
-        suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testNeckCutPreventsBacktrackingOk", engine));
-        /*suite.addTest(new CutResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
-                "testDeepCutPreventsBacktrackingOk", engine));*/
+        /*suite.addTest(new DisjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testJunctionBracketingAllowsDisjunction", engine));*/
+        /*suite.addTest(new ConjunctionResolverUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testConjunctionInQueryVarUnifyNotLastFailsWhenBindingsDoNotMatch", engine));*/
+        suite.addTest(new BasicUnificationUnitTestBase<Clause, WAMCompiledPredicate, WAMCompiledQuery>(
+                "testFreeLeftVarUnifiesFunctorOk", engine));
 
         return suite;
     }
