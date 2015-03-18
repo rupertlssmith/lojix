@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>debuggerbuild</artifactId>
     <name>projects</name>
-    <version>0.8.12-SNAPSHOT</version><!--debugger.version-->
+    <version>0.8.12</version><!--debugger.version-->
 
     <packaging>pom</packaging>
 
