@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>jpc_lojix</artifactId>
     <name>jpc_lojix</name>
-    <version>0.8.13</version><!--lojix.version-->
+    <version>0.8.13-SNAPSHOT</version><!--lojix.version-->
 
     <description>Implementation of the JPC interface for LoJiX Prolog.</description>
 
@@ -17,7 +17,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.8.13</version><!--lojix.version-->
+        <version>0.8.13-SNAPSHOT</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>wam_prolog</artifactId>
-            <version>0.8.13</version><!--lojix.version-->
+            <version>0.8.13-SNAPSHOT</version><!--lojix.version-->
         </dependency>
 
         <dependency>

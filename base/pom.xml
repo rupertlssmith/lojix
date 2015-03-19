@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>basebuild</artifactId>
     <name>basebuild</name>
-    <version>0.8.13</version><!--base.version-->
+    <version>0.8.13-SNAPSHOT</version><!--base.version-->
 
     <description>Base is a set of base libraries and util code for LoJiX and other OSS projects.</description>
     <url>https://github.com/rupertlssmith/lojix</url>
