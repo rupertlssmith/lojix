@@ -123,6 +123,7 @@
                     <commands>
                         <wam>com.thesett.aima.logic.fol.wam.interpreter.WAMJavaInterpreter</wam>
                         <wam-native>com.thesett.aima.logic.fol.wam.interpreter.WAMNativeInterpreter</wam-native>
+                        <pertest-nrev>com.thesett.aima.logic.fol.wam.machine.NRevTestPerf</pertest-nrev>
                     </commands>
                 </configuration>
 
