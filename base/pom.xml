@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>basebuild</artifactId>
     <name>basebuild</name>
-    <version>0.8.13</version><!--base.version-->
+    <version>0.8.14-SNAPSHOT</version><!--base.version-->
 
     <description>Base is a set of base libraries and util code for LoJiX and other OSS projects.</description>
     <url>https://github.com/rupertlssmith/lojix</url>
@@ -74,12 +74,12 @@
         <jalopy.maven.plugin.version>1.9.4-108</jalopy.maven.plugin.version>
         <maven.jaxb2.plugin.version>0.6.2</maven.jaxb2.plugin.version>
         <xdoclet.maven.plugin.version>1.0</xdoclet.maven.plugin.version>
-        <maven.run.plugin.version>0.8.13</maven.run.plugin.version><!--base.version-->
+        <maven.run.plugin.version>0.8.14-SNAPSHOT</maven.run.plugin.version><!--base.version-->
         <maven.antrun.plugin.version>1.2-thesett</maven.antrun.plugin.version>
         <maven.idea.plugin.version>2.2</maven.idea.plugin.version>
         <maven.war.plugin.version>2.0</maven.war.plugin.version>
         <javacc.maven.plugin.version>2.1</javacc.maven.plugin.version>
-        <maven.dashboard.plugin.version>0.8.13</maven.dashboard.plugin.version><!--maven2_plugins.version-->
+        <maven.dashboard.plugin.version>0.8.14-SNAPSHOT</maven.dashboard.plugin.version><!--maven2_plugins.version-->
         <maven.pmd.plugin.version>2.4</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>2.5.3</maven.findbugs.plugin.version>
         <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
