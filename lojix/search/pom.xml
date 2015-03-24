@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>search</artifactId>
     <name>search</name>
-    <version>0.8.14-SNAPSHOT</version><!--lojix.version-->
+    <version>0.8.15</version><!--lojix.version-->
 
     <description>Search code developed from 'Artificial Intelligence a Modern Approach', Prentice Hall.</description>
     <url>https://www.thesett.com/build_reports/lojix/search</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.8.14-SNAPSHOT</version><!--lojix.version-->
+        <version>0.8.15</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,13 +26,13 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.8.14-SNAPSHOT</version><!--base.version-->
+            <version>0.8.15</version><!--base.version-->
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>state</artifactId>
-            <version>0.8.14-SNAPSHOT</version><!--lojix.version-->
+            <version>0.8.15</version><!--lojix.version-->
         </dependency>
         
         <!-- Test only dependencies. -->
