@@ -41,6 +41,9 @@ public interface Memento
     /** Captures an objects properties in this memento. */
     void capture();
 
+    /** Captures an objects non-null properties in this memento. */
+    void captureNonNull();
+
     /**
      * Restores the properties currently in this memento to the specified object.
      *

@@ -162,6 +162,11 @@ public class DirectMemento implements Memento, Serializable
         }
     }
 
+    /** {@inheritDoc} */
+    public void captureNonNull() {
+        throw new RuntimeException("Not implemented.");
+    }
+
     /**
      * Restores the values currently in this memento to the specified object.
      *

@@ -188,50 +188,14 @@ public class BeanMemento implements Memento, Serializable
     /** Captures an objects properties in this memento. */
     public void capture()
     {
-        // Get the class of the object to build a memento for.
-        Class cls = ob.getClass();
+        capture(false);
 
-        // Iterate through all the public methods of the class including all super-interfaces and super-classes.
-        Method[] methods = cls.getMethods();
+    }
 
-        for (Method nextMethod : methods)
-        {
-            // Get the next method.
-            /*log.fine("nextMethod = " + nextMethod.getName());*/
-
-            // Check if the method is a 'getter' method, is public and takes no arguments.
-            String methodName = nextMethod.getName();
-
-            if (methodName.startsWith("get") && (methodName.length() >= 4) &&
-                    Character.isUpperCase(methodName.charAt(3)) && Modifier.isPublic(nextMethod.getModifiers()) &&
-                    (nextMethod.getParameterTypes().length == 0))
-            {
-                String propName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
-                /*log.fine(methodName + " is a valid getter method for the property " + propName + ".");*/
-
-                try
-                {
-                    // Call the 'getter' method to extract the properties value.
-                    Object[] params = new Object[] {};
-                    Object value = nextMethod.invoke(ob, params);
-                    /*log.fine("The result of calling the getter method is: " + value);*/
-
-                    // Store the property value for the object.
-                    values.put(propName, value);
-                }
-                catch (IllegalAccessException e)
-                {
-                    /*log.log(java.util.logging.Level.FINE, "IllegalAccessException during call to getter method.", e);*/
-                    throw new RuntimeException(e);
-                }
-                catch (InvocationTargetException e)
-                {
-                    /*log.log(java.util.logging.Level.FINE, "InvocationTargetException during call to getter method.", e);*/
-                    throw new RuntimeException(e);
-                }
-            }
-            // Should also check if the method is a 'setter' method, is public and takes exactly one argument.
-        }
+    /** {@inheritDoc} */
+    public void captureNonNull()
+    {
+        capture(true);
     }
 
     /**
@@ -313,5 +277,62 @@ public class BeanMemento implements Memento, Serializable
     public Collection getAllFieldNames(Class cls)
     {
         throw new NotImplementedException();
+    }
+
+    /**
+     * Captures the fields of the associated object.
+     *
+     * @param ignoreNull <tt>true</tt> iff null fields should be ignored, <tt>false</tt> if null fields should be
+     *                   captured as nulls.
+     */
+    private void capture(boolean ignoreNull)
+    {
+        // Get the class of the object to build a memento for.
+        Class cls = ob.getClass();
+
+        // Iterate through all the public methods of the class including all super-interfaces and super-classes.
+        Method[] methods = cls.getMethods();
+
+        for (Method nextMethod : methods)
+        {
+            // Get the next method.
+            /*log.fine("nextMethod = " + nextMethod.getName());*/
+
+            // Check if the method is a 'getter' method, is public and takes no arguments.
+            String methodName = nextMethod.getName();
+
+            if (methodName.startsWith("get") && (methodName.length() >= 4) &&
+                    Character.isUpperCase(methodName.charAt(3)) && Modifier.isPublic(nextMethod.getModifiers()) &&
+                    (nextMethod.getParameterTypes().length == 0))
+            {
+                String propName = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+                /*log.fine(methodName + " is a valid getter method for the property " + propName + ".");*/
+
+                try
+                {
+                    // Call the 'getter' method to extract the properties value.
+                    Object[] params = new Object[] {};
+                    Object value = nextMethod.invoke(ob, params);
+                    /*log.fine("The result of calling the getter method is: " + value);*/
+
+                    // Store the property value for the object.
+                    if (!ignoreNull || (value != null))
+                    {
+                        values.put(propName, value);
+                    }
+                }
+                catch (IllegalAccessException e)
+                {
+                    /*log.log(java.util.logging.Level.FINE, "IllegalAccessException during call to getter method.", e);*/
+                    throw new RuntimeException(e);
+                }
+                catch (InvocationTargetException e)
+                {
+                    /*log.log(java.util.logging.Level.FINE, "InvocationTargetException during call to getter method.", e);*/
+                    throw new RuntimeException(e);
+                }
+            }
+            // Should also check if the method is a 'setter' method, is public and takes exactly one argument.
+        }
     }
 }
