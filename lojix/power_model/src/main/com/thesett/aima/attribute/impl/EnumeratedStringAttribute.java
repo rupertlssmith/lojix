@@ -17,6 +17,7 @@ package com.thesett.aima.attribute.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -349,6 +350,16 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
          * @return A set of attributes defining the possible value set for this attribute.
          */
         public Set<EnumeratedStringAttribute> getAllPossibleValuesSet(boolean failOnNonFinalized);
+
+        /**
+         * Provides a map of all possible values, keyed by their string values.
+         *
+         * @param  failOnNonFinalized <tt>true</tt> if this should throw an infinite values exception when the type is
+         *                            not finalized, <tt>false</tt> if it should list all values defined so far anyway.
+         *
+         * @return A map of all possible values, keyed by their string values.
+         */
+        public Map<String, EnumeratedStringAttribute> getAllPossibleValuesMap(boolean failOnNonFinalized);
     }
 
     /**
@@ -726,6 +737,22 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
 
                 return result;
             }
+        }
+
+        /** {@inheritDoc} */
+        public Map<String, EnumeratedStringAttribute> getAllPossibleValuesMap(boolean failOnNonFinalized)
+        {
+            // Get the set of already existing values, so that they will not be created again.
+            Iterator<EnumeratedStringAttribute> allPossibleValuesIterator = getAllPossibleValuesIterator(false);
+            Map<String, EnumeratedStringAttribute> existingValues = new HashMap<String, EnumeratedStringAttribute>();
+
+            for (; allPossibleValuesIterator.hasNext();)
+            {
+                EnumeratedStringAttribute existingAttribute = allPossibleValuesIterator.next();
+                existingValues.put(existingAttribute.getStringValue(), existingAttribute);
+            }
+
+            return Collections.unmodifiableMap(existingValues);
         }
 
         /**
