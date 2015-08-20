@@ -74,6 +74,13 @@ public interface ComponentType extends Type, Serializable
     Type getPropertyType(String name);
 
     /**
+     * Provides a map of the alias names to present a properties externally as.
+     *
+     * @return A map of the alias names to present a properties externally as.
+     */
+    Map<String, String> getPropertyPresentAsAliases();
+
+    /**
      * Obtains the alias name to present a property externally as, if one is set.
      *
      * @param  name The property to get the present as alias of.

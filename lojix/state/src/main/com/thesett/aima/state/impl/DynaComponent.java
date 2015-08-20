@@ -86,6 +86,11 @@ public class DynaComponent extends BaseType implements ComponentType
     }
 
     /** {@inheritDoc} */
+    public Map<String, String> getPropertyPresentAsAliases() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
     public String getPropertyPresentAsAlias(String name)
     {
         return null;
