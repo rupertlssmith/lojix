@@ -86,6 +86,12 @@ public class DynaComponent extends BaseType implements ComponentType
     }
 
     /** {@inheritDoc} */
+    public String getPropertyPresentAsAlias(String name)
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
     public Set<String> getNaturalKeyFieldNames()
     {
         return new HashSet<String>();

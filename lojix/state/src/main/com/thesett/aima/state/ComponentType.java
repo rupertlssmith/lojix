@@ -74,6 +74,15 @@ public interface ComponentType extends Type, Serializable
     Type getPropertyType(String name);
 
     /**
+     * Obtains the alias name to present a property externally as, if one is set.
+     *
+     * @param  name The property to get the present as alias of.
+     *
+     * @return The alias name to present a property externally as, or <tt>null</tt> if none is set.
+     */
+    String getPropertyPresentAsAlias(String name);
+
+    /**
      * Alters the type of the named property. Usually property types are immutable, but this is sometimes conventient
      * when building components where there are forward or cirular reference between components. In a two stage process
      * a temporary reference to another as yet unresolved component can be created, then resolved onto the component
