@@ -142,5 +142,5 @@ public interface ResolutionState extends ReTraversable<ResolutionState>
      *
      * @return A trace indenter to assist with pretty printing trace statements.
      */
-    public TraceIndenter getTraceIndenter();
+    //public TraceIndenter getTraceIndenter();
 }
