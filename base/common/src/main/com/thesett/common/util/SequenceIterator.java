@@ -38,8 +38,7 @@ public abstract class SequenceIterator<E> implements Iterator<E>
     /** Caches the next lazily generated solution, when it has already been asked for by {@link #hasNext}. */
     private E nextSolution = null;
 
-    /** Used to indicate that the sequence has been exhausted. */
-    private boolean searchExhausted = false;
+    private boolean exhausted;
 
     /**
      * Generates the next element in the sequence.
@@ -57,18 +56,9 @@ public abstract class SequenceIterator<E> implements Iterator<E>
     {
         boolean hasNext;
 
-        try
-        {
-            nextInternal();
-            hasNext = true;
-        }
-        catch (NoSuchElementException e)
-        {
-            // Exception noted so can be ignored, no such element means no more elements, so 'hasNext' is false.
-            e = null;
+        nextInternal();
 
-            hasNext = false;
-        }
+        hasNext = !exhausted;
 
         return hasNext;
     }
@@ -86,6 +76,12 @@ public abstract class SequenceIterator<E> implements Iterator<E>
     {
         // Consume the next element in the sequence, if one is available.
         E result = nextInternal();
+
+        if (exhausted)
+        {
+            throw new NoSuchElementException();
+        }
+
         nextSolution = null;
 
         return result;
@@ -115,12 +111,6 @@ public abstract class SequenceIterator<E> implements Iterator<E>
      */
     private E nextInternal()
     {
-        // Check if the search space is already known to be empty.
-        if (searchExhausted)
-        {
-            throw new NoSuchElementException("Sequence exhausted.");
-        }
-
         // Check if the next soluation has already been cached, because of a call to hasNext.
         if (nextSolution != null)
         {
@@ -133,12 +123,9 @@ public abstract class SequenceIterator<E> implements Iterator<E>
         // Check if the solution was null, which indicates that the search space is exhausted.
         if (nextSolution == null)
         {
-            // Raise a no such element exception to signal the iterator cannot continue.
-            throw new NoSuchElementException("Seqeuence exhausted.");
+            exhausted = true;
         }
-        else
-        {
-            return nextSolution;
-        }
+
+        return nextSolution;
     }
 }
