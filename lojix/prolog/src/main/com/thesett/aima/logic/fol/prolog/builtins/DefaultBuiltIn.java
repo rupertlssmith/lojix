@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.prolog.builtins;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class DefaultBuiltIn extends BaseBuiltIn
         // This is used to record variables bound on the query goal side of the unification. This information
         // must be kept so that the undo operation can unbind these variables before placing the goal back
         // onto the stack when backtracking.
-        LinkedList<Variable> boundVariables = new LinkedList<Variable>();
+        List<Variable> boundVariables = new LinkedList<Variable>();
 
         // Unify the current query goal with the possibly matching clause, creating variable bindings.
         boolean matched = state.getUnifier().unifyInternal(goalTerm, matchTerm, boundVariables, domainVariables);

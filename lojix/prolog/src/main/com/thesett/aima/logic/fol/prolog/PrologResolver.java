@@ -56,7 +56,6 @@ import com.thesett.common.util.Function;
 import com.thesett.common.util.SimpleQueue;
 import com.thesett.common.util.Sink;
 import com.thesett.common.util.StackQueue;
-import com.thesett.common.util.TraceIndenter;
 import com.thesett.common.util.logic.UnaryPredicate;
 
 /**
@@ -105,7 +104,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
     private static BuiltInTransform builtInTransform;
 
     /** Holds the indenter to provide neatly indented execution traces. */
-    protected TraceIndenter indenter = new TraceIndenter(true);
+    //protected TraceIndenter indenter = new TraceIndenter(true);
 
     /** Holds the search over the resolution space. */
     protected QueueBasedSearchMethod<ResolutionState, ResolutionState> resolutionSearch =
@@ -173,10 +172,10 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         addStartState(initialState);
 
         // If printing execution traces, ensure the execution indenter starts from zero.
-        if (TRACE)
+        /*if (TRACE)
         {
             indenter.reset();
-        }
+        }*/
     }
 
     /** {@inheritDoc} */
@@ -253,10 +252,10 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         resolutionSearch.reset();
 
         // If printing execution traces, ensure the execution indenter starts from zero.
-        if (TRACE)
+        /*if (TRACE)
         {
             indenter.reset();
-        }
+        }*/
     }
 
     /** {@inheritDoc} */
@@ -462,7 +461,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
             }
 
             // Always boost the trace indent on entering a new state.
-            indenter.generateTraceIndent(1);
+            //indenter.generateTraceIndent(1);
 
             // Used to hold the original choice point clause that led to this state, so that it retained and cleaned
             // up at the end of this method, when the 'choicePointClause' field has been overwritten with the
@@ -559,8 +558,17 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
             // stack are removed. The goal functors consumed by this state are placed back onto the goal stack.
             localGoalStack.undo();
 
+            // Null out everything this state refers to, to assist/allow garbage collection.
+            pendingClause = null;
+            pendingGoal = null;
+            lastChoicePoint = null;
+            stackFrame = null;
+            localGoalStack = null;
+            localBindings = null;
+            choicePoints = null;
+
             // Always reduce the trace indent on backing out of a state.
-            indenter.generateTraceIndent(-1);
+            //indenter.generateTraceIndent(-1);
         }
 
         /** {@inheritDoc} */
@@ -676,10 +684,10 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         }
 
         /** {@inheritDoc} */
-        public TraceIndenter getTraceIndenter()
+        /*public TraceIndenter getTraceIndenter()
         {
             return indenter;
-        }
+        }*/
 
         /**
          * Prints this state as a string, mainly for debugging purposes.
