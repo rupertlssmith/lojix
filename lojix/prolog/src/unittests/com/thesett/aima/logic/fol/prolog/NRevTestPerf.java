@@ -13,43 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.thesett.aima.logic.fol.wam.machine;
+package com.thesett.aima.logic.fol.prolog;
 
 import java.util.Iterator;
 import java.util.Set;
 
 import com.thesett.aima.logic.fol.Clause;
-import com.thesett.aima.logic.fol.LogicCompiler;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Sentence;
 import com.thesett.aima.logic.fol.Variable;
+import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
+import com.thesett.aima.logic.fol.VariableAndFunctorInternerImpl;
 import com.thesett.aima.logic.fol.interpreter.ResolutionEngine;
 import com.thesett.aima.logic.fol.isoprologparser.ClauseParser;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
 import com.thesett.aima.logic.fol.isoprologparser.TokenSource;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledPredicate;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiledQuery;
-import com.thesett.aima.logic.fol.wam.compiler.WAMCompiler;
 import com.thesett.common.parsing.SourceCodeException;
-import com.thesett.common.util.doublemaps.SymbolTableImpl;
 
 public class NRevTestPerf
 {
     public static final int NUM_ITERS = 1000;
     public static final int NUM_TEST_LOOPS = 200;
-    private final ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine;
+    private final ResolutionEngine<Clause, PrologCompiledClause, PrologCompiledClause> engine;
     private final Parser<Clause, Token> parser;
 
     public NRevTestPerf()
     {
-        SymbolTableImpl<Integer, String, Object> symbolTable = new SymbolTableImpl<Integer, String, Object>();
+        VariableAndFunctorInterner interner =
+            new VariableAndFunctorInternerImpl("Prolog_Variable_Namespace", "Prolog_Functor_Namespace");
+        parser = new ClauseParser(interner);
 
-        WAMResolvingJavaMachine machine = new WAMResolvingJavaMachine(symbolTable);
+        PrologCompiler compiler = new PrologCompiler(interner);
+        PrologResolver resolver = new PrologResolver(interner);
 
-        LogicCompiler<Clause, WAMCompiledPredicate, WAMCompiledQuery> compiler = new WAMCompiler(symbolTable, machine);
-        parser = new ClauseParser(machine);
-
-        engine = new WAMEngine(parser, machine, compiler, machine);
+        engine = new PrologEngine(parser, interner, compiler, resolver);
     }
 
     public static void main(String[] args)
@@ -111,7 +108,7 @@ public class NRevTestPerf
      *
      * @param  queryString The query to set.
      *
-     * @throws SourceCodeException If the query will not parse or compile.
+     * @throws com.thesett.common.parsing.SourceCodeException If the query will not parse or compile.
      */
     private void setQuery(String queryString) throws SourceCodeException
     {
@@ -125,7 +122,7 @@ public class NRevTestPerf
      *
      * @param  termText The clause to add.
      *
-     * @throws SourceCodeException If the clause will not parse or compile.
+     * @throws com.thesett.common.parsing.SourceCodeException If the clause will not parse or compile.
      */
     private void addClause(String termText) throws SourceCodeException
     {
