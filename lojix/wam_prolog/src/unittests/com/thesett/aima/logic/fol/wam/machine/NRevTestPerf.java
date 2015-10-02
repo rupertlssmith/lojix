@@ -36,7 +36,7 @@ import com.thesett.common.util.doublemaps.SymbolTableImpl;
 public class NRevTestPerf
 {
     public static final int NUM_ITERS = 1000;
-    public static final int NUM_TEST_LOOPS = 200;
+    public static final int NUM_TEST_LOOPS = 20000;
     private final ResolutionEngine<Clause, WAMCompiledPredicate, WAMCompiledQuery> engine;
     private final Parser<Clause, Token> parser;
 
