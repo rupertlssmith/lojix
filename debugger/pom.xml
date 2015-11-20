@@ -6,7 +6,7 @@
 
     <groupId>com.thesett</groupId>
     <artifactId>debuggerbuild</artifactId>
-    <name>projects</name>
+    <name>LoJix Debugger</name>
     <version>0.8.23-SNAPSHOT</version><!--debugger.version-->
 
     <packaging>pom</packaging>
