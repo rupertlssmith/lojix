@@ -1,0 +1,43 @@
+<project xmlns:jacoco="antlib:org.jacoco.ant">
+    <target name="jacocoreport">
+
+        <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+            <classpath>
+                <fileset dir=".">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+
+        <jacoco:report>
+
+            <executiondata>
+                <file file="../../code-coverage/jacoco.exec"/>
+            </executiondata>
+
+            <structure name="Base Library">
+                <classfiles>
+                    <fileset dir="../..">
+                        <include name="**/*.class"/>
+                        <exclude name="**/test/**/*.class"/>
+                    </fileset>
+                </classfiles>
+                <sourcefiles encoding="UTF-8">
+                    <fileset dir="../../interpreter/src/main"/>
+                    <fileset dir="../../state/src/main"/>
+                    <fileset dir="../../power_model_validation/src/main"/>
+                    <fileset dir="../../wam_prolog/src/main"/>
+                    <fileset dir="../../logic/src/main"/>
+                    <fileset dir="../../learning/src/main"/>
+                    <fileset dir="../../text_model/src/main"/>
+                    <fileset dir="../../prolog/src/main"/>
+                    <fileset dir="../../search/src/main"/>
+                    <fileset dir="../../power_model/src/main"/>                    
+                </sourcefiles>
+            </structure>
+
+            <html destdir="../../code-coverage"/>
+
+        </jacoco:report>
+    </target>
+</project>
