@@ -1,0 +1,37 @@
+<project xmlns:jacoco="antlib:org.jacoco.ant">
+    <target name="jacocoreport">
+
+        <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+            <classpath>
+                <fileset dir=".">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+
+        <jacoco:report>
+
+            <executiondata>
+                <file file="../../code-coverage/jacoco.exec"/>
+            </executiondata>
+
+            <structure name="Base Library">
+                <classfiles>
+                    <fileset dir="../..">
+                        <include name="**/*.class"/>
+                        <exclude name="**/test/**/*.class"/>
+                    </fileset>
+                </classfiles>
+                <sourcefiles encoding="UTF-8">
+                    <fileset dir="../../base/src/main"/>
+                    <fileset dir="../../common/src/main"/>
+                    <fileset dir="../../struts-tools/src/main"/>
+                    <fileset dir="../../run-plugin/src/main"/>
+                </sourcefiles>
+            </structure>
+
+            <html destdir="../../code-coverage"/>
+
+        </jacoco:report>
+    </target>
+</project>

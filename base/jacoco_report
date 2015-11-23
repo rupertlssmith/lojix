@@ -1,0 +1,2 @@
+#!/bin/sh
+ant -f etc/jacoco/build.xml jacocoreport
