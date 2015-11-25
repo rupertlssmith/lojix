@@ -15,7 +15,6 @@
  */
 package com.thesett.aima.logic.fol.prolog.builtins;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -25,7 +25,6 @@ import com.thesett.aima.search.util.backtracking.ReTraversable;
 import com.thesett.common.util.Function;
 import com.thesett.common.util.SimpleQueue;
 import com.thesett.common.util.Sink;
-import com.thesett.common.util.TraceIndenter;
 
 /**
  * ResolutionState forms a state corresponding to a step of a proof in a resolution, where each step of the proof

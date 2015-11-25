@@ -15,11 +15,11 @@
  */
 package com.thesett.aima.state;
 
-import com.thesett.aima.state.restriction.TypeRestriction;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import com.thesett.aima.state.restriction.TypeRestriction;
 
 /**
  * A Type is a defined set from which attribute values are drawn. The type encapsulates information that applies accross

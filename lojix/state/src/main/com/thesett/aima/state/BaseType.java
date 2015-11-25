@@ -15,11 +15,11 @@
  */
 package com.thesett.aima.state;
 
-import com.thesett.aima.state.restriction.TypeRestriction;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
+
+import com.thesett.aima.state.restriction.TypeRestriction;
 
 /**
  * BaseType provides type visitor coverage to all types that extend it.
@@ -67,7 +67,8 @@ public abstract class BaseType<T> implements Type<T>, RandomInstanceFactory<T>, 
     }
 
     /** {@inheritDoc} */
-    public List<TypeRestriction> getRestrictions() {
+    public List<TypeRestriction> getRestrictions()
+    {
         return restrictions;
     }
 
