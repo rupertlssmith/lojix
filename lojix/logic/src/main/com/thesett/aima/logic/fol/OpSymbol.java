@@ -199,7 +199,7 @@ public class OpSymbol extends Functor implements Comparable, Cloneable
             return Fixity.In;
 
         default:
-            throw new RuntimeException("Unknown associativity.");
+            throw new IllegalStateException("Unknown associativity.");
         }
     }
 
@@ -287,7 +287,7 @@ public class OpSymbol extends Functor implements Comparable, Cloneable
         }
         catch (CloneNotSupportedException e)
         {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                 "Got a CloneNotSupportedException but clone is defined on OpSymbol and should not fail.", e);
         }
     }

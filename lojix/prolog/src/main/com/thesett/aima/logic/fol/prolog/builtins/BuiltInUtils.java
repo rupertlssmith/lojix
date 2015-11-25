@@ -47,12 +47,12 @@ public class BuiltInUtils
         // Ensure that the result of evaluating the expression is a number.
         if (expressionValue.isVar())
         {
-            throw new RuntimeException("instantiation_error, 'is' expects a fully instantiated term to unify against.");
+            throw new IllegalStateException("instantiation_error, 'is' expects a fully instantiated term to unify against.");
         }
 
         if (!expressionValue.isNumber())
         {
-            throw new RuntimeException("arithmetic_error, 'is' expectes a numeric expression to unify against.");
+            throw new IllegalStateException("arithmetic_error, 'is' expectes a numeric expression to unify against.");
         }
 
         return (NumericType) expressionValue;

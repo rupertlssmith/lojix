@@ -50,14 +50,14 @@ public class Call extends BaseBuiltIn implements BuiltIn
         // Check that the argument is not a free variable.
         if (argument.isVar())
         {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                 "instantiation_error, 'call' expects a fully instantiated term to unify against.");
         }
 
         // Check that the argument is callable.
         if (!argument.isFunctor() && !argument.isAtom())
         {
-            throw new RuntimeException("type_error, callable expected as argument to 'call'.");
+            throw new IllegalStateException("type_error, callable expected as argument to 'call'.");
         }
 
         // Set up the argument to call as a new goal.

@@ -324,12 +324,12 @@ public class BeanMemento implements Memento, Serializable
                 catch (IllegalAccessException e)
                 {
                     /*log.log(java.util.logging.Level.FINE, "IllegalAccessException during call to getter method.", e);*/
-                    throw new RuntimeException(e);
+                    throw new IllegalStateException(e);
                 }
                 catch (InvocationTargetException e)
                 {
                     /*log.log(java.util.logging.Level.FINE, "InvocationTargetException during call to getter method.", e);*/
-                    throw new RuntimeException(e);
+                    throw new IllegalStateException(e);
                 }
             }
             // Should also check if the method is a 'setter' method, is public and takes exactly one argument.

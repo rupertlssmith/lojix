@@ -134,7 +134,7 @@ public class ManhattanHeuristic implements Heuristic<String, EightPuzzleState>
 
             default:
             {
-                throw new RuntimeException("Unkown operator: " + playedMove + ".");
+                throw new IllegalStateException("Unkown operator: " + playedMove + ".");
             }
             }
 
@@ -188,7 +188,7 @@ public class ManhattanHeuristic implements Heuristic<String, EightPuzzleState>
 
             default:
             {
-                throw new RuntimeException("Unkown operator: " + playedMove + ".");
+                throw new IllegalStateException("Unkown operator: " + playedMove + ".");
             }
             }
 

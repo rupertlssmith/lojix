@@ -189,7 +189,7 @@ public class TermUtils
                 }
                 else
                 {
-                    throw new RuntimeException("The term " + termToExtract + " is expected to extend " + superClass +
+                    throw new IllegalStateException("The term " + termToExtract + " is expected to extend " + superClass +
                         " but does not.");
                 }
             }
@@ -202,7 +202,7 @@ public class TermUtils
                 }
                 else
                 {
-                    throw new RuntimeException("The term " + nextTerm + " is expected to extend " + superClass +
+                    throw new IllegalStateException("The term " + nextTerm + " is expected to extend " + superClass +
                         " but does not.");
                 }
             }

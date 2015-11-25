@@ -61,7 +61,7 @@ public class TermParser extends BasePrologParser<Term>
         }
         catch (SourceCodeException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

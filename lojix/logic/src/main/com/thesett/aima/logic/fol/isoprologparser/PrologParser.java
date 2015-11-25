@@ -740,7 +740,7 @@ public class PrologParser implements PrologParserConstants
             {
                 // If the peek ahead kind can not be consumed then something strange has gone wrong so report this
                 // as a bug rather than try to recover from it.
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
             return true;
@@ -911,7 +911,7 @@ public class PrologParser implements PrologParserConstants
             {
                 // If the peek ahead kind can not be consumed then something strange has gone wrong so report this
                 // as a bug rather than try to recover from it.
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
             return true;

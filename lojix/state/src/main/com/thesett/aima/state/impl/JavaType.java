@@ -243,11 +243,11 @@ public class JavaType<T> extends BaseType<T> implements Type<T>, Serializable
             }
             catch (InstantiationException e)
             {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
             catch (IllegalAccessException e)
             {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
             break;

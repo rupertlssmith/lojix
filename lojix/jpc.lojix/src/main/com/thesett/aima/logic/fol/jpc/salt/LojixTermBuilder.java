@@ -59,7 +59,7 @@ public class LojixTermBuilder extends TermBuilder<Term>
             }
             else
             {
-                throw new RuntimeException("Invalid functor type.");
+                throw new IllegalStateException("Invalid functor type.");
             }
         }
 

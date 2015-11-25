@@ -54,7 +54,7 @@ public class FileUtils
         }
         catch (FileNotFoundException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         return readStreamAsString(is);
@@ -77,7 +77,7 @@ public class FileUtils
         }
         catch (FileNotFoundException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         return readStreamAsString(is);
@@ -102,7 +102,7 @@ public class FileUtils
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Unable to open the output file '" + outputFileName + "' for writing.", e);
+            throw new IllegalStateException("Unable to open the output file '" + outputFileName + "' for writing.", e);
         }
 
         // Write the object into the output file.
@@ -114,7 +114,7 @@ public class FileUtils
         }
         catch (IOException e)
         {
-            throw new RuntimeException("There was an error whilst writing to the output file '" + outputFileName + "'.",
+            throw new IllegalStateException("There was an error whilst writing to the output file '" + outputFileName + "'.",
                 e);
         }
     }
@@ -147,7 +147,7 @@ public class FileUtils
         }
         catch (IOException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

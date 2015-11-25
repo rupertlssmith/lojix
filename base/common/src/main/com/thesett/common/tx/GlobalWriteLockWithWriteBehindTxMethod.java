@@ -89,7 +89,7 @@ public class GlobalWriteLockWithWriteBehindTxMethod<E> implements TxMethod
             catch (InterruptedException e)
             {
                 // The commit was interrupted, so cannot succeed.
-                throw new RuntimeException("Interrupted whilst commit is waiting for global write lock.", e);
+                throw new IllegalStateException("Interrupted whilst commit is waiting for global write lock.", e);
             }
 
             // Check that this transaction has made changes to be committed.

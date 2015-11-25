@@ -65,7 +65,7 @@ public abstract class UnaryArithmeticOperator extends BuiltInExpressionOperator
         // Check that the argument to operate on is a numeric values.
         if (!firstArgValue.isNumber())
         {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                 "instantiation_error, 'arithmetic/2' expects numeric arguments, but the first argument is non-numeric.");
         }
 

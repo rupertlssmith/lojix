@@ -648,7 +648,7 @@ public class DynamicOperatorParser implements OperatorTable
 
             if (lastCandidate == null)
             {
-                throw new RuntimeException("'lastCandidate' is null but this should not be the case as this resolve " +
+                throw new IllegalStateException("'lastCandidate' is null but this should not be the case as this resolve " +
                     "action is only called when a previous candidate symbol exists.");
             }
 

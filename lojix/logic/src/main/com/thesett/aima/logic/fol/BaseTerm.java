@@ -187,7 +187,7 @@ public abstract class BaseTerm extends TraversableState<Term> implements Term, G
         }
         catch (CloneNotSupportedException e)
         {
-            throw new RuntimeException("Got CloneNotSupportedException but clone should be implemented on Terms.", e);
+            throw new IllegalStateException("Got CloneNotSupportedException but clone should be implemented on Terms.", e);
         }
     }
 

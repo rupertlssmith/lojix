@@ -163,7 +163,7 @@ public abstract class PropertyIntrospectorBase
         // This should never happen as the initiliazed method should already have checked this.
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException("The setter method for the property " + property + " cannot be accessed.", e);
+            throw new IllegalStateException("The setter method for the property " + property + " cannot be accessed.", e);
         }
     }
 
@@ -202,14 +202,14 @@ public abstract class PropertyIntrospectorBase
         // This should never happen as the initiliazation method should already have checked this.
         catch (InvocationTargetException e)
         {
-            throw new RuntimeException("The getter method for the property " + property +
+            throw new IllegalStateException("The getter method for the property " + property +
                 " threw an invocation target exception.", e);
         }
 
         // This should never happen as the initiliazation method should already have checked this.
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException("The getter method for the property " + property + " cannot be accessed.", e);
+            throw new IllegalStateException("The getter method for the property " + property + " cannot be accessed.", e);
         }
 
         return result;

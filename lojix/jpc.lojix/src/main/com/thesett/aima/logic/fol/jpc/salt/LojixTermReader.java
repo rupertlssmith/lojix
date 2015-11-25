@@ -112,7 +112,7 @@ public class LojixTermReader extends TermReader
         }
         else
         {
-            throw new RuntimeException("Unrecognized Lojix term: " + term);
+            throw new IllegalStateException("Unrecognized Lojix term: " + term);
         }
     }
 }

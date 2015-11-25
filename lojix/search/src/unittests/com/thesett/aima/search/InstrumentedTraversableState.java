@@ -146,7 +146,7 @@ public class InstrumentedTraversableState<O> extends TraversableState<O> impleme
         }
         else
         {
-            throw new RuntimeException("'testState' is not an instance of ReTraversable.");
+            throw new IllegalStateException("'testState' is not an instance of ReTraversable.");
         }
     }
 
@@ -163,7 +163,7 @@ public class InstrumentedTraversableState<O> extends TraversableState<O> impleme
         }
         else
         {
-            throw new RuntimeException("'testState' is not an instance of ReTraversable.");
+            throw new IllegalStateException("'testState' is not an instance of ReTraversable.");
         }
     }
 

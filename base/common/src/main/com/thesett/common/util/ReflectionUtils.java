@@ -201,15 +201,15 @@ public class ReflectionUtils
         }
         catch (InstantiationException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (InvocationTargetException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -251,15 +251,15 @@ public class ReflectionUtils
         }
         catch (NoSuchMethodException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (InvocationTargetException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -295,15 +295,15 @@ public class ReflectionUtils
         }
         catch (NoSuchMethodException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (InvocationTargetException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -323,11 +323,11 @@ public class ReflectionUtils
         }
         catch (IllegalAccessException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         catch (InvocationTargetException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -349,7 +349,7 @@ public class ReflectionUtils
         }
         catch (NoSuchMethodException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

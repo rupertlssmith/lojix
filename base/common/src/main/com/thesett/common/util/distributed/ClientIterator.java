@@ -73,7 +73,7 @@ public class ClientIterator implements Iterator, Serializable
         }
         catch (RemoteException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -92,7 +92,7 @@ public class ClientIterator implements Iterator, Serializable
         }
         catch (RemoteException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -105,7 +105,7 @@ public class ClientIterator implements Iterator, Serializable
         }
         catch (RemoteException e)
         {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

@@ -54,7 +54,7 @@ public class DistributedList extends ArrayList
         catch (RemoteException e)
         {
             // Rethrow the RemoteException as a RuntimeException so as not to conflict with the interface of ArrayList
-            throw new RuntimeException("There was a RemoteExcpetion.", e);
+            throw new IllegalStateException("There was a RemoteExcpetion.", e);
         }
     }
 }

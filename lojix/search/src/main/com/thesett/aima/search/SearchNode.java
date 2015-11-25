@@ -259,13 +259,13 @@ public class SearchNode<O, T extends Traversable<O>>
         {
             // In practice this should never happen but may if the nodes if some class loader error were to occur whilst
             // using a custom node implementation. Rethrow this as a RuntimeException.
-            throw new RuntimeException("InstantiationException during creation of new search node.", e);
+            throw new IllegalStateException("InstantiationException during creation of new search node.", e);
         }
         catch (IllegalAccessException e)
         {
             // In practice this should never happen but may if the nodes to use are not public whilst using a custom node
             // implementation. Rethrow this as a RuntimeException.
-            throw new RuntimeException("IllegalAccessException during creation of new search node.", e);
+            throw new IllegalStateException("IllegalAccessException during creation of new search node.", e);
         }
     }
 }

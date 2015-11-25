@@ -636,7 +636,7 @@ public class TypeConverter
 
         default:
         {
-            throw new RuntimeException("Unknown MultiTypeData type.");
+            throw new IllegalStateException("Unknown MultiTypeData type.");
         }
         }
 

@@ -94,7 +94,7 @@ public class DebuggerTest extends TestCase
                         }
                         catch (IOException e)
                         {
-                            throw new RuntimeException(e);
+                            throw new IllegalStateException(e);
                         }
                     }
                 }));

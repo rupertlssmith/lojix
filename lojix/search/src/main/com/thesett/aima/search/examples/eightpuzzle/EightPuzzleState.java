@@ -175,7 +175,7 @@ public class EightPuzzleState extends TraversableState<String> implements GoalSt
         }
         catch (CloneNotSupportedException e)
         {
-            throw new RuntimeException("Puzzle state could not be cloned.", e);
+            throw new IllegalStateException("Puzzle state could not be cloned.", e);
         }
 
         // Create the goal state to check against when swapping tiles into position.
@@ -318,7 +318,7 @@ public class EightPuzzleState extends TraversableState<String> implements GoalSt
         }
         catch (CloneNotSupportedException e)
         {
-            throw new RuntimeException("Puzzle state could not be cloned.", e);
+            throw new IllegalStateException("Puzzle state could not be cloned.", e);
         }
 
         // Update the new board state using the in-place operator application
@@ -561,7 +561,7 @@ public class EightPuzzleState extends TraversableState<String> implements GoalSt
 
         default:
         {
-            throw new RuntimeException("Unkown operator: " + opc + ".");
+            throw new IllegalStateException("Unkown operator: " + opc + ".");
         }
         }
     }

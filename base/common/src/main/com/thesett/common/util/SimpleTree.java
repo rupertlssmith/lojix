@@ -504,7 +504,7 @@ public class SimpleTree<E> implements Tree<E>, Tree.Node<E>, Tree.Leaf<E>, Seria
 
             default:
             {
-                throw new RuntimeException("Unsupported tree traversal ordering.");
+                throw new IllegalStateException("Unsupported tree traversal ordering.");
             }
             }
         }

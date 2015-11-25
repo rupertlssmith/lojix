@@ -146,11 +146,11 @@ public class TestBeanImpl implements TestBean
 
     public String getStringException()
     {
-        throw new RuntimeException();
+        throw new IllegalStateException();
     }
 
     public void setStringException(String test)
     {
-        throw new RuntimeException();
+        throw new IllegalStateException();
     }
 }

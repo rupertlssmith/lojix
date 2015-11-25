@@ -104,7 +104,7 @@ public class ClientInputStream extends InputStream implements Serializable
         }
         catch (RemoteException e)
         {
-            throw new RuntimeException("There was a RemoteException.", e);
+            throw new IllegalStateException("There was a RemoteException.", e);
         }
     }
 
@@ -121,7 +121,7 @@ public class ClientInputStream extends InputStream implements Serializable
         }
         catch (RemoteException e)
         {
-            throw new RuntimeException("There was a RemoteException.", e);
+            throw new IllegalStateException("There was a RemoteException.", e);
         }
     }
 
