@@ -18,6 +18,7 @@ package com.thesett.common.state;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public abstract class BaseState
     /* private static final Logger log = Logger.getLogger(BaseState.class.getName()); */
 
     /** List of property change listeners. */
-    private List listeners = new ArrayList();
+    private Collection listeners = new ArrayList();
 
     /**
      * Adds a property changed listener to be notified of changes to the application state.

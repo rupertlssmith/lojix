@@ -112,7 +112,7 @@ public class IntRangeType extends BaseType<Integer> implements Type<Integer>, Ra
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static IntRangeType createInstance(String name, int min, int max)
+    public static Type createInstance(String name, int min, int max)
     {
         // Ensure that min is less than or equal to max.
         if (min > max)

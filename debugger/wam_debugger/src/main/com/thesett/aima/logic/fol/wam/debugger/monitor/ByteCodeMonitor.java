@@ -202,7 +202,7 @@ public class ByteCodeMonitor
      * @param row          The table row to start at.
      * @param address      The code address to start at.
      */
-    private void renderInstructions(SizeableList<WAMInstruction> instructions, int row, int address)
+    private void renderInstructions(Iterable<WAMInstruction> instructions, int row, int address)
     {
         for (WAMInstruction instruction : instructions)
         {

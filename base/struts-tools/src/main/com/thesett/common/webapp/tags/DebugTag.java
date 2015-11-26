@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -145,7 +146,7 @@ public class DebugTag extends TagSupport
     public String getParameters()
     {
         Map info = new TreeMap();
-        HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
+        ServletRequest req = (HttpServletRequest) pageContext.getRequest();
         Enumeration names = req.getParameterNames();
 
         while (names.hasMoreElements())
@@ -179,7 +180,7 @@ public class DebugTag extends TagSupport
     {
         Map info = new TreeMap();
 
-        HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
+        ServletRequest req = (HttpServletRequest) pageContext.getRequest();
 
         Enumeration names = req.getAttributeNames();
 

@@ -1220,7 +1220,7 @@ public class HierarchyAttribute implements OrdinalAttribute, ReferencableAttribu
          * @param results   A set to add the matching results to.
          */
         private void findAllMatchingAttributes(int depth, UnaryPredicate<TreeSearchState<CategoryNode>> predicate,
-            Set<HierarchyAttribute> results)
+            Collection<HierarchyAttribute> results)
         {
             QueueBasedSearchMethod<Tree<CategoryNode>, TreeSearchState<CategoryNode>> search =
                 new DepthBoundedSearch<Tree<CategoryNode>, TreeSearchState<CategoryNode>>(depth);
@@ -1303,7 +1303,7 @@ public class HierarchyAttribute implements OrdinalAttribute, ReferencableAttribu
                 /*log.fine("Created new node to insert: " + newNode);*/
 
                 // Hook it into the tree.
-                SimpleTree<CategoryNode> newChild = new SimpleTree<CategoryNode>();
+                Tree<CategoryNode> newChild = new SimpleTree<CategoryNode>();
                 newChild.setElement(newNode);
 
                 // If this is the first node in the tree then create the initial tree.

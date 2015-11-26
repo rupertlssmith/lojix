@@ -106,7 +106,7 @@ public class BigDecimalTypeImpl extends BaseType<BigDecimal> implements Type<Big
      *
      * @throws IllegalArgumentException If the named type already exists.
      */
-    public static BigDecimalTypeImpl createInstance(String name, int precision, int scale, String min, String max)
+    public static Type createInstance(String name, int precision, int scale, String min, String max)
     {
         synchronized (DECIMAL_TYPES)
         {

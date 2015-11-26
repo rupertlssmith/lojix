@@ -121,7 +121,7 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static StringPatternType createInstance(String name, int maxLength, String pattern)
+    public static Type createInstance(String name, int maxLength, String pattern)
     {
         synchronized (STRING_PATTERN_TYPES)
         {
@@ -208,7 +208,7 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
      *
      * @return <tt>true</tt> if the string is a valid instance of this type.
      */
-    public boolean isInstance(String value)
+    public boolean isInstance(CharSequence value)
     {
         // Check the value is under the maximum if one is set.
         // Check the value matches the pattern if one is set.

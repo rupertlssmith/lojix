@@ -211,7 +211,7 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
                 {
                     // Extract an attribute with this property name from the first example and use this to get
                     // a listing of all the possible values of that attribute.
-                    OrdinalAttribute bestAttribute =
+                    Attribute bestAttribute =
                         (OrdinalAttribute) examples.iterator().next().getProperty(bestProperty);
 
                     /*log.fine("bestProperty = " + bestProperty);*/
@@ -277,7 +277,7 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
 
             // Remove the current pending node from the decision tree and replace it with the new element that the
             // algorithm has selected.
-            DecisionTree parentTree = (DecisionTree) currentTreePendingNode.getParent();
+            Tree.Node parentTree = (DecisionTree) currentTreePendingNode.getParent();
 
             // Check if the current pending node has a parent (if not it is the real tree root and the first pending
             // node created).
@@ -338,7 +338,7 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
      * @throws LearningFailureException If the number of possible value that the specified property can take on is not
      *                                  finite.
      */
-    private OrdinalAttribute getMajorityClassification(String property, Collection<State> examples)
+    private OrdinalAttribute getMajorityClassification(String property, Iterable<State> examples)
         throws LearningFailureException
     {
         /*log.fine("private OrdinalAttribute getMajorityClassification(String property, Collection<State> examples): called");*/
@@ -411,7 +411,7 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
      *
      * @return true if they all have the same value; false otherwise.
      */
-    private boolean allHaveSameClassification(String property, Collection<State> examples)
+    private boolean allHaveSameClassification(String property, Iterable<State> examples)
     {
         // Used to hold the value of the first attribute seen.
         OrdinalAttribute firstAttribute = null;
@@ -460,8 +460,8 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
      *
      * @return The name of the input property with the highest information gain.
      */
-    private String chooseBestPropertyToDecideOn(String outputProperty, Collection<State> examples,
-        Collection<String> inputProperties)
+    private String chooseBestPropertyToDecideOn(String outputProperty, Iterable<State> examples,
+        Iterable<String> inputProperties)
     {
         /*log.fine("private String chooseBestPropertyToDecideOn(String outputProperty, Collection<State> examples, " +
          "Collection<String> inputProperties): called");*/

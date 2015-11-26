@@ -97,7 +97,7 @@ public class DateRangeType extends BaseType<DateOnly> implements Type<DateOnly>,
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static DateRangeType createInstance(String name, DateOnly from, DateOnly to)
+    public static Type createInstance(String name, DateOnly from, DateOnly to)
     {
         // Ensure that min is less than or equal to max.
         if ((from != null) && (to != null) && (from.compareTo(to) > 0))
@@ -182,7 +182,7 @@ public class DateRangeType extends BaseType<DateOnly> implements Type<DateOnly>,
      *
      * @return <tt>true</tt> if the value lies in the types range, <tt>false</tt> if it does not.
      */
-    public boolean isInstance(DateOnly value)
+    public boolean isInstance(Comparable value)
     {
         return (value.compareTo(from) >= 0) && (value.compareTo(to) <= 0);
     }

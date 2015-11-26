@@ -352,7 +352,7 @@ public class SimpleTree<E> implements Tree<E>, Tree.Node<E>, Tree.Leaf<E>, Seria
          *              about the possible traversal orders.
          * @param tree  The tree to iterate over.
          */
-        public SimpleTreeIterator(IterationOrder order, SimpleTree<E> tree)
+        public SimpleTreeIterator(IterationOrder order, Tree<E> tree)
         {
             // Keep the iteration order.
             this.order = order;

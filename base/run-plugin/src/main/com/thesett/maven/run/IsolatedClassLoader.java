@@ -17,6 +17,7 @@ package com.thesett.maven.run;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class IsolatedClassLoader extends URLClassLoader
     private static final URL[] EMPTY_URL_ARRAY = new URL[0];
     private final ClassLoader parent = ClassLoader.getSystemClassLoader();
 
-    private final Set urls = new HashSet();
+    private final Collection urls = new HashSet();
 
     private boolean childDelegation = true;
 

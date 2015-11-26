@@ -16,6 +16,7 @@
 package com.thesett.common.error;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class MultipleUserErrorException extends UserReadableException
      * @param cause   The wrapped exception underlying this one.
      * @param errors  A list of many user readable errors.
      */
-    public MultipleUserErrorException(String message, Throwable cause, List<UserReadableError> errors)
+    public MultipleUserErrorException(String message, Throwable cause, Collection<UserReadableError> errors)
     {
         super(message, cause, null, null);
 

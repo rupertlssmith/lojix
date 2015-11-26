@@ -93,7 +93,7 @@ public class DoubleRangeType extends BaseType<Double> implements Type<Double>, R
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static DoubleRangeType createInstance(String name, double min, double max)
+    public static Type createInstance(String name, double min, double max)
     {
         // Ensure that min is less than or equal to max.
         if (min > max)

@@ -15,6 +15,7 @@
  */
 package com.thesett.text.impl.model;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class TextGridImpl implements TextGridModel
     HashMapXY<Character> data = new HashMapXY<Character>(100);
 
     /** Holds a set of listeners for updates to this model. */
-    Set<TextGridListener> listeners = new HashSet<TextGridListener>();
+    Collection<TextGridListener> listeners = new HashSet<TextGridListener>();
 
     /** {@inheritDoc} */
     public int getWidth()
@@ -104,7 +105,7 @@ public class TextGridImpl implements TextGridModel
     {
         // Supply a text table, with this grid set up to listen for updates to the table, and to be re-rendered as the
         // table changes.
-        TextTableImpl textTable = new TextTableImpl();
+        TextTableModel textTable = new TextTableImpl();
 
         textTable.addTextTableListener(new TableListener());
 

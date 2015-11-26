@@ -60,7 +60,7 @@ public class TextTableImpl implements TextTableModel
     DoubleKeyedMap<Long, Long, String> grid = new HashMapXY<String>(10);
 
     /** Holds any interested listeners for updates to the table model. */
-    protected Set<TextTableListener> listeners = new HashSet<TextTableListener>();
+    protected Collection<TextTableListener> listeners = new HashSet<TextTableListener>();
 
     /** Holds any column labels. */
     private final Map<String, Integer> columnLabels = new HashMap<String, Integer>();

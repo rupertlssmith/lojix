@@ -156,7 +156,7 @@ public class Queues
      *
      * @return A transactional requeue.
      */
-    public static <E> WrapperQueue<E> getTransactionalReQueue(java.util.Queue<E> queue, Collection<E> requeue)
+    public static <E> Queue<E> getTransactionalReQueue(java.util.Queue<E> queue, Collection<E> requeue)
     {
         return new WrapperQueue<E>(queue, requeue, true, false, false);
     }
@@ -171,7 +171,7 @@ public class Queues
      *
      * @return An atomicically counted, sizeable queue.
      */
-    public static <E extends Sizeable> SizeableReQueue<E> getSizeableTransactionalReQueue(java.util.Queue<E> queue,
+    public static <E extends Sizeable> SizeableQueue<E> getSizeableTransactionalReQueue(java.util.Queue<E> queue,
         Collection<E> requeue)
     {
         return new WrapperQueue<E>(queue, requeue, true, true, false);
@@ -187,7 +187,7 @@ public class Queues
      *
      * @return An atomicically counted, sizeable queue.
      */
-    public static <E extends Sizeable> SizeableReQueue<E> getAtomicCountedSizeableTransactionalReQueue(
+    public static <E extends Sizeable> Queue<E> getAtomicCountedSizeableTransactionalReQueue(
         java.util.Queue<E> queue, Collection<E> requeue)
     {
         return new WrapperQueue<E>(queue, requeue, true, true, true);

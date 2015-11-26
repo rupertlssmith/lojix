@@ -16,6 +16,7 @@
 package com.thesett.aima.logic.fol.prolog.builtins;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import com.thesett.aima.logic.fol.Functor;
 import com.thesett.aima.logic.fol.Term;
@@ -63,7 +64,7 @@ public class Unifies extends BaseBuiltIn
 
         // This is used to record variables bound during the unification, so that they may be undone if the resolution
         // state is backtracked over.
-        LinkedList<Variable> boundVariables = new LinkedList<Variable>();
+        List<Variable> boundVariables = new LinkedList<Variable>();
 
         // Unify the current query goal with the possibly matching clause, creating variable bindings.
         boolean matched = state.getUnifier().unifyInternal(leftArg, rightArg, boundVariables, boundVariables);

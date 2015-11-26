@@ -32,6 +32,7 @@ import com.thesett.aima.logic.fol.OpSymbol;
 import com.thesett.aima.logic.fol.Parser;
 import com.thesett.aima.logic.fol.Resolver;
 import com.thesett.aima.logic.fol.Sentence;
+import com.thesett.aima.logic.fol.Term;
 import com.thesett.aima.logic.fol.Variable;
 import com.thesett.aima.logic.fol.VariableAndFunctorInterner;
 import com.thesett.aima.logic.fol.isoprologparser.Token;
@@ -182,7 +183,7 @@ public abstract class ResolutionEngine<S extends Clause, T, Q> implements Variab
      *
      * @return All the variables printed as a string, one per line.
      */
-    public String printSolution(Set<Variable> solution)
+    public String printSolution(Iterable<Variable> solution)
     {
         String result = "";
 
@@ -220,7 +221,7 @@ public abstract class ResolutionEngine<S extends Clause, T, Q> implements Variab
      *
      * @return The variable binding in the form 'Var = value'.
      */
-    public String printVariableBinding(Variable var)
+    public String printVariableBinding(Term var)
     {
         return var.toString(getInterner(), true, false) + " = " + var.getValue().toString(getInterner(), false, true);
     }

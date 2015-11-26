@@ -402,7 +402,7 @@ public class IdAttribute<T> implements OrdinalAttribute, ReferencableAttribute, 
          *
          * @return A factory implementation for the named object attribute class.
          */
-        public static <T> IdClass<T> getInstance(String name)
+        public static <T> IdAttributeFactory<T> getInstance(String name)
         {
             // Try to get the attribute class from the map of those that have already been created.
             IdClassImpl<T> attributeClass = attributeClasses.get(name);

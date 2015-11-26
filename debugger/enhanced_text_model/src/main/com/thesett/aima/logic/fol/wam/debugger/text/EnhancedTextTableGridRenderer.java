@@ -44,7 +44,7 @@ public class EnhancedTextTableGridRenderer extends TextTableGridRenderer
      * @param table The table model to render.
      * @param grid  The grid to render into.
      */
-    public EnhancedTextTableGridRenderer(EnhancedTextTable table, EnhancedTextGridImpl grid)
+    public EnhancedTextTableGridRenderer(EnhancedTextTable table, EnhancedTextGrid grid)
     {
         super(table, grid);
 

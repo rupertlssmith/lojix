@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.DynaBean;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -88,7 +89,7 @@ public class RedirectAction extends BaseAction
             "HttpServletRequest request, HttpServletResponse response, " + "ActionErrors errors): called");
 
         HttpSession session = request.getSession();
-        DynaActionForm dynaForm = (DynaActionForm) form;
+        DynaBean dynaForm = (DynaActionForm) form;
 
         // Redirect to the specified location
         String redirect = (String) dynaForm.get(REDIRECT);

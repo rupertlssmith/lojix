@@ -15,6 +15,7 @@
  */
 package com.thesett.aima.logic.fol.wam.debugger.text;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -48,7 +49,7 @@ public class EnhancedTextGridImpl extends TextGridImpl implements EnhancedTextGr
     protected final XYGridSeparators separators = new XYGridSeparatorsImpl();
 
     /** Holds selection listeners, that will receive mouse events translated to table coordinates. */
-    private final Set<TextGridSelectionListener> textGridSelectionListeners = new HashSet<TextGridSelectionListener>();
+    private final Collection<TextGridSelectionListener> textGridSelectionListeners = new HashSet<TextGridSelectionListener>();
 
     /** {@inheritDoc} */
     public void insertAttribute(AttributeSet attributes, int c, int r)

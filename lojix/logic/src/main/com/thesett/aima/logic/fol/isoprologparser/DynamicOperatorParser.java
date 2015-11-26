@@ -305,7 +305,7 @@ public class DynamicOperatorParser implements OperatorTable
      * @throws SourceCodeException If the list of terms does not form a valid syntactical construction under the current
      *                             set of defined operators.
      */
-    public Functor parseOperators(Term[] terms) throws SourceCodeException
+    public Term parseOperators(Term[] terms) throws SourceCodeException
     {
         // Initialize the parsers state.
         stack.offer(0);

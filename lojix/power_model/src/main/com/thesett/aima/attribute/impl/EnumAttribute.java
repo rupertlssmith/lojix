@@ -223,7 +223,7 @@ public class EnumAttribute implements OrdinalAttribute
          *
          * @return An enum factory implementation for the enum class.
          */
-        public static EnumClassImpl getInstance(Class enumClass)
+        public static EnumAttributeFactory getInstance(Class enumClass)
         {
             // Try to get the attribute class from the map of those that have already been created.
             EnumClassImpl attributeClass = attributeClasses.get(enumClass);

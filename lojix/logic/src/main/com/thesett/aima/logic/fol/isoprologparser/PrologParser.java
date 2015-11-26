@@ -438,7 +438,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the token sequence does not parse as a valid functor.
      */
-    public Functor functor() throws SourceCodeException
+    public Term functor() throws SourceCodeException
     {
         Token name = consumeToken(FUNCTOR);
         Term[] args = arglist();
@@ -471,7 +471,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the token sequence does not parse as a valid list.
      */
-    public Functor listFunctor() throws SourceCodeException
+    public Term listFunctor() throws SourceCodeException
     {
         // Get the interned names of the nil and cons functors.
         int nilId = interner.internFunctorName("nil", 0);
@@ -583,7 +583,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the next token in the sequence is not a variable.
      */
-    public Variable variable() throws SourceCodeException
+    public Term variable() throws SourceCodeException
     {
         Token name = consumeToken(VAR);
 
@@ -619,7 +619,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the next token in the sequence is not an integer literal.
      */
-    public NumericType intLiteral() throws SourceCodeException
+    public Term intLiteral() throws SourceCodeException
     {
         Token valToken = consumeToken(INTEGER_LITERAL);
 
@@ -640,7 +640,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the next token in the sequence is not a real number literal.
      */
-    public NumericType doubleLiteral() throws SourceCodeException
+    public Term doubleLiteral() throws SourceCodeException
     {
         Token valToken = consumeToken(FLOATING_POINT_LITERAL);
 
@@ -661,7 +661,7 @@ public class PrologParser implements PrologParserConstants
      *
      * @throws SourceCodeException If the next token in the sequence is not a string literal.
      */
-    public StringLiteral stringLiteral() throws SourceCodeException
+    public Term stringLiteral() throws SourceCodeException
     {
         Token valToken = consumeToken(STRING_LITERAL);
 

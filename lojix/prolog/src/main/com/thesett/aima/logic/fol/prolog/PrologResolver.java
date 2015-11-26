@@ -168,7 +168,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         bindings = new StackQueue<Variable>();
 
         // Create the initial state of the proof search.
-        ResolutionStateImpl initialState = new ResolutionStateImpl(query);
+        ResolutionState initialState = new ResolutionStateImpl(query);
         addStartState(initialState);
 
         // If printing execution traces, ensure the execution indenter starts from zero.
@@ -654,7 +654,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
 
                             if (match)
                             {
-                                ResolutionStateImpl newState =
+                                ResolutionState newState =
                                     new ResolutionStateImpl((PrologCompiledClause) clause, null, this);
 
                                 if (TRACE)

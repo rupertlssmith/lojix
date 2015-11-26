@@ -15,6 +15,7 @@
  */
 package com.thesett.common.tx;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,7 +53,7 @@ public class TxSessionImpl implements TxSession
     TxId txId;
 
     /** Holds all transactional resources that have been enlisted in this session. */
-    Set<Transactional> enlists = new HashSet<Transactional>();
+    Collection<Transactional> enlists = new HashSet<Transactional>();
 
     /**
      * Gets the session associated with the current thread, if any.

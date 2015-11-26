@@ -92,7 +92,7 @@ public class FloatRangeType extends BaseType<Float> implements Type<Float>, Rand
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static FloatRangeType createInstance(String name, float min, float max)
+    public static Type createInstance(String name, float min, float max)
     {
         // Ensure that min is less than or equal to max.
         if (min > max)

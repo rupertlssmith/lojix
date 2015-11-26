@@ -15,6 +15,7 @@
  */
 package com.thesett.common.util.logic;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import java.util.List;
 public class UnaryPredicateConjunction<T> implements UnaryPredicate<T>
 {
     /** Holds the predicate chain. */
-    List<UnaryPredicate<T>> chain = new LinkedList<UnaryPredicate<T>>();
+    Collection<UnaryPredicate<T>> chain = new LinkedList<UnaryPredicate<T>>();
 
     /**
      * Adds a new predicate to the chain.

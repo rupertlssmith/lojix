@@ -115,7 +115,7 @@ public class BacktrackingAlgorithm<O, T extends ReTraversable<O>> extends BaseQu
             SearchNode headNode = queue.remove();
 
             // Apply the current nodes operator to establish its shared state.
-            ReTraversable reversableState = (ReTraversable) headNode.getState();
+            Reversable reversableState = (ReTraversable) headNode.getState();
             reversableState.applyOperator();
 
             // Expand the successors into the queue whether the current node is a goal state or not.
@@ -198,7 +198,7 @@ public class BacktrackingAlgorithm<O, T extends ReTraversable<O>> extends BaseQu
     {
         while ((checkNode != null) && (checkNode.unexaminedSuccessorCount == 0))
         {
-            ReTraversable undoState = (ReTraversable) checkNode.getState();
+            Reversable undoState = (ReTraversable) checkNode.getState();
             undoState.undoOperator();
 
             checkNode = checkNode.getParent();

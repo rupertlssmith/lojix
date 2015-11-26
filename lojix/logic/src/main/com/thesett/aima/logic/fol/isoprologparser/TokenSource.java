@@ -98,7 +98,7 @@ public class TokenSource implements Source<Token>
      *
      * @return A token source.
      */
-    public static TokenSource getTokenSourceForInputStream(InputStream in)
+    public static Source getTokenSourceForInputStream(InputStream in)
     {
         SimpleCharStream inputStream = new SimpleCharStream(in, 1, 1);
         PrologParserTokenManager tokenManager = new PrologParserTokenManager(inputStream);

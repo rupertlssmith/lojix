@@ -18,6 +18,7 @@ package com.thesett.common.util;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class CommandLineParser
     private final Map<String, CommandLineOption> optionMap = new TreeMap<String, CommandLineOption>();
 
     /** Holds a list of parsing errors. */
-    private List<String> parsingErrors = new ArrayList<String>();
+    private Collection<String> parsingErrors = new ArrayList<String>();
 
     /** Holds the regular expression matcher to match command line options with. */
     private Matcher optionMatcher = null;
@@ -183,7 +184,7 @@ public class CommandLineParser
         }
 
         StringBuffer strb = new StringBuffer(stringToPad);
-        StringCharacterIterator sci = new StringCharacterIterator(padder);
+        CharacterIterator sci = new StringCharacterIterator(padder);
 
         while (strb.length() < size)
         {
@@ -693,7 +694,7 @@ public class CommandLineParser
      * @param optionInfo The command line option information for the option which is havings its argument checked.
      * @param matchedArg The string argument to the option.
      */
-    private void checkArgumentFormat(CommandLineOption optionInfo, String matchedArg)
+    private void checkArgumentFormat(CommandLineOption optionInfo, CharSequence matchedArg)
     {
         // Check if this option enforces a format for its argument.
         if (optionInfo.argumentFormatRegexp != null)

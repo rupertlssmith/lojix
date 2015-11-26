@@ -36,7 +36,7 @@ import com.thesett.aima.state.State;
 public class ExtendableBeanState extends PropertyIntrospectorBase implements State
 {
     /** Holds the state type mapping. */
-    private final DynaComponent component = new DynaComponent(this.getClass().getName());
+    private final ComponentType component = new DynaComponent(this.getClass().getName());
 
     /**
      * Returns a single named property of the bean.

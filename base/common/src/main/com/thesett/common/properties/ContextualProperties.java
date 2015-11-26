@@ -18,6 +18,7 @@ package com.thesett.common.properties;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -356,7 +357,7 @@ public class ContextualProperties extends ParsedProperties
         for (Iterator i = getKeyIterator(base, modifier, key); i.hasNext();)
         {
             String nextKey = (String) i.next();
-            ArrayList arrayList = (ArrayList) arrayProperties.get(nextKey);
+            Collection arrayList = (ArrayList) arrayProperties.get(nextKey);
 
             if (arrayList != null)
             {

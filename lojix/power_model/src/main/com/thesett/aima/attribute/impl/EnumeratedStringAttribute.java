@@ -474,7 +474,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
          *
          * @return A factory implementation for the named string attribute class.
          */
-        public static EnumeratedStringClass getInstance(String name)
+        public static EnumeratedStringAttributeFactory getInstance(String name)
         {
             // Try to get the attribute class from the map of those that have already been created.
             EnumeratedStringClassImpl attributeClass = attributeClasses.get(name);

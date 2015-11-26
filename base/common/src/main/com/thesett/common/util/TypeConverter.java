@@ -16,6 +16,7 @@
 package com.thesett.common.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -483,7 +484,7 @@ public class TypeConverter
      *
      * @return The best matching class or null if none can be matched.
      */
-    public static Class bestMatchingConversion(MultiTypeData d, Set<Class> types)
+    public static Class bestMatchingConversion(MultiTypeData d, Collection<Class> types)
     {
         /*log.fine("public static Class bestMatchingConvertion(MultiTypeData d, Set<Class> types): called");*/
         /*log.fine("d = " + d);*/

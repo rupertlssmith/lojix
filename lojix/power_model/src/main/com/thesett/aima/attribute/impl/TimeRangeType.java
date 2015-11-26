@@ -96,7 +96,7 @@ public class TimeRangeType extends BaseType<TimeOnly> implements Type<TimeOnly>,
      *
      * @throws IllegalArgumentException If min is not less than or equal to max, or the named type already exists.
      */
-    public static TimeRangeType createInstance(String name, TimeOnly min, TimeOnly max)
+    public static Type createInstance(String name, TimeOnly min, TimeOnly max)
     {
         // Ensure that min is less than or equal to max.
         if ((min != null) && (max != null) && (min.compareTo(max) > 0))
@@ -184,7 +184,7 @@ public class TimeRangeType extends BaseType<TimeOnly> implements Type<TimeOnly>,
      *
      * @return <tt>true</tt> if the value lies in the types range, <tt>false</tt> if it does not.
      */
-    public boolean isInstance(TimeOnly value)
+    public boolean isInstance(Comparable value)
     {
         return (value.compareTo(minValue) >= 0) && (value.compareTo(maxValue) <= 0);
     }
