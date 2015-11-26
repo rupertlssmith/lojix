@@ -62,7 +62,7 @@ public class Disjunction extends BuiltInFunctor
     }
 
     /** {@inheritDoc} */
-    public void createContinuationStates(final ResolutionState state)
+    public void createContinuationStates(ResolutionState state)
     {
         for (Functor disjunct : disjuncts)
         {

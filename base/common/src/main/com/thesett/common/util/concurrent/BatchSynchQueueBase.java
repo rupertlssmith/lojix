@@ -125,7 +125,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public int size()
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try
@@ -156,7 +156,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
             throw new IllegalArgumentException("The 'e' parameter may not be null.");
         }
 
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try
@@ -190,7 +190,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
             throw new IllegalArgumentException("The 'e' parameter may not be null.");
         }
 
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
 
         long nanos = unit.toNanos(timeout);
@@ -234,7 +234,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public E poll()
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
 
         lock.lock();
 
@@ -267,7 +267,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public E poll(long timeout, TimeUnit unit) throws InterruptedException
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
 
         try
@@ -308,7 +308,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public E peek()
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try
@@ -333,7 +333,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public int remainingCapacity()
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try
@@ -388,7 +388,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
         }
 
         // final Queue<E> items = this.buffer;
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
 
         try
@@ -424,7 +424,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
      */
     public E take() throws InterruptedException
     {
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
 
         try
@@ -501,7 +501,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
         }
 
         // final Queue<E> items = this.buffer;
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try
@@ -569,7 +569,7 @@ public abstract class BatchSynchQueueBase<E> extends AbstractQueue<E> implements
         }
 
         // final Queue<E> items = this.buffer;
-        final ReentrantLock lock = this.lock;
+        ReentrantLock lock = this.lock;
         lock.lock();
 
         try

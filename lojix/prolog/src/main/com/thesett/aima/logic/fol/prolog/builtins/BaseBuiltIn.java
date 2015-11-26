@@ -43,9 +43,9 @@ public abstract class BaseBuiltIn extends BuiltInFunctor
     }
 
     /** {@inheritDoc} */
-    public void createContinuationStates(final ResolutionState state)
+    public void createContinuationStates(ResolutionState state)
     {
-        final BuiltInFunctor nextGoal = state.getGoalStack().peek();
+        BuiltInFunctor nextGoal = state.getGoalStack().peek();
         state.createContinuationStatesForGoal(nextGoal);
     }
 }

@@ -47,7 +47,7 @@ public class Main extends StartStopLifecycleBase
     {
         try
         {
-            final Main main = new Main();
+            Main main = new Main();
 
             main.start();
 

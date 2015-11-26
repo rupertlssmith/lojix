@@ -57,7 +57,7 @@ public final class ASCIIByteBufferString implements ASCIIString
      * @param data   The underlying buffer holding the string data.
      * @param length The length of the string.
      */
-    public ASCIIByteBufferString(ByteBuffer data, final int length)
+    public ASCIIByteBufferString(ByteBuffer data, int length)
     {
         this.data = data;
         this.length = length;
@@ -74,7 +74,7 @@ public final class ASCIIByteBufferString implements ASCIIString
      * @param start  The starting offset within the buffer of the string.
      * @param length The length of the string.
      */
-    public ASCIIByteBufferString(ByteBuffer data, final int start, final int length)
+    public ASCIIByteBufferString(ByteBuffer data, int start, int length)
     {
         this.data = data;
         this.length = length;
@@ -143,8 +143,8 @@ public final class ASCIIByteBufferString implements ASCIIString
 
         for (int i = 0; i < length; i++)
         {
-            final byte b1 = get(i);
-            final byte b2 = comparator.get(i);
+            byte b1 = get(i);
+            byte b2 = comparator.get(i);
 
             if (b1 != b2)
             {
@@ -172,8 +172,8 @@ public final class ASCIIByteBufferString implements ASCIIString
 
         for (int i = 0; i < n; i++)
         {
-            final byte b1 = get(i);
-            final byte b2 = comparator.get(i);
+            byte b1 = get(i);
+            byte b2 = comparator.get(i);
 
             if (b1 == b2)
             {
@@ -207,7 +207,7 @@ public final class ASCIIByteBufferString implements ASCIIString
      */
     private void computeStringValue()
     {
-        final char[] chars = new char[length];
+        char[] chars = new char[length];
 
         for (int i = 0; i < length; i++)
         {

@@ -117,7 +117,7 @@ public class DiscreetScrollBarUI extends BasicScrollBarUI
 
         g.translate(thumbBounds.x, thumbBounds.y);
 
-        final boolean vertical = isVertical();
+        boolean vertical = isVertical();
         int hgap = vertical ? 2 : 1;
         int vgap = vertical ? 1 : 2;
 
@@ -145,7 +145,7 @@ public class DiscreetScrollBarUI extends BasicScrollBarUI
     /** {@inheritDoc} */
     protected Dimension getMinimumThumbSize()
     {
-        final int thickness = THICKNESS;
+        int thickness = THICKNESS;
 
         return isVertical() ? new Dimension(thickness, thickness * 2) : new Dimension(thickness * 2, thickness);
     }
