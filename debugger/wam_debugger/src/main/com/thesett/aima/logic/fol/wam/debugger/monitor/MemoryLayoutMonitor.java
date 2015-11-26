@@ -36,7 +36,7 @@ import com.thesett.text.api.model.TextTableModel;
 public class MemoryLayoutMonitor implements PropertyChangeListener
 {
     /** The register names. */
-    public static final String[][] REGISTER_NAMES_BY_COL =
+    private static final String[][] REGISTER_NAMES_BY_COL =
         new String[][]
         {
             { "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", },
@@ -44,7 +44,7 @@ public class MemoryLayoutMonitor implements PropertyChangeListener
         };
 
     /** The register property names, used to label the table rows. */
-    public static final String[][] REGISTER_LABELS_BY_COL =
+    private static final String[][] REGISTER_LABELS_BY_COL =
         new String[][]
         {
             { "regBase", "regSize", "heapBase", "heapSize", "stackBase", "stackSize", },

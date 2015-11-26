@@ -42,11 +42,11 @@ public class RegisterSetMonitor implements PropertyChangeListener
     public static final String REG_VALUE_COL = "regValue";
 
     /** The register names. */
-    public static final String[] REGISTER_NAMES =
+    private static final String[] REGISTER_NAMES =
         new String[] { "ip", "hp", "hbp", "sp", "up", "ep", "bp", "b0", "trp" };
 
     /** The register property names, used to label the table rows. */
-    public static final String[] REGISTER_LABELS =
+    private static final String[] REGISTER_LABELS =
         new String[] { "IP", "HP", "HBP", "SP", "UP", "EP", "BP", "B0", "TRP" };
 
     /** The table to store the registers in. */

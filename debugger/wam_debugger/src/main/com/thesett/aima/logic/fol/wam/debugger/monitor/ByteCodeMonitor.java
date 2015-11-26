@@ -69,7 +69,7 @@ public class ByteCodeMonitor
     public static final String ARG_2 = "arg_2";
 
     /** Column labels for the code table. */
-    public static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARG_1 };
+    private static final String[] BYTE_CODE_COL_LABELS = new String[] { ADDRESS, LABEL, MNEMONIC, ARG_1 };
 
     /** The table to output the byte code to. */
     private final TextTableModel table;
