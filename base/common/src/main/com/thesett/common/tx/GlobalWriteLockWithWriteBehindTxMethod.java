@@ -62,7 +62,7 @@ public class GlobalWriteLockWithWriteBehindTxMethod<E> implements TxMethod
     private final Condition globalWriteLockFree = globalLock.writeLock().newCondition();
 
     /** Holds the transaction id of the only transaction that is allowed to use the global write lock. */
-    private TxId globalWriteLockTxId = null;
+    private TxId globalWriteLockTxId;
 
     /** Holds the write-behind cache of changes made by transactions. */
     private final Map<TxId, List<TxOperation>> txWrites = new ConcurrentHashMap<TxId, List<TxOperation>>();

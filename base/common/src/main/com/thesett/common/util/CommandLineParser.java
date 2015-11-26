@@ -100,16 +100,16 @@ public class CommandLineParser
     private Collection<String> parsingErrors = new ArrayList<String>();
 
     /** Holds the regular expression matcher to match command line options with. */
-    private Matcher optionMatcher = null;
+    private Matcher optionMatcher;
 
     /** Holds the parsed command line properties after parsing. */
-    private Properties parsedProperties = null;
+    private Properties parsedProperties;
 
     /** Holds any trailing name=value pairs specified in the free arguments. */
-    private Properties trailingProperties = null;
+    private Properties trailingProperties;
 
     /** Flag used to indicate that errors should be created for unknown options. False by default. */
-    private boolean errorsOnUnknowns = false;
+    private boolean errorsOnUnknowns;
 
     /**
      * Creates a command line options parser from a command line specification. This is passed to this constructor as an
@@ -727,22 +727,22 @@ public class CommandLineParser
     protected static class CommandLineOption
     {
         /** Holds the text for the flag to match this argument with. */
-        public String option = null;
+        public String option;
 
         /** Holds a string describing how to use this command line argument. */
-        public String argument = null;
+        public String argument;
 
         /** Flag that determines whether or not this command line argument can take arguments. */
-        public boolean expectsArgs = false;
+        public boolean expectsArgs;
 
         /** Holds a short comment describing what this command line argument is for. */
-        public String comment = null;
+        public String comment;
 
         /** Flag that determines whether or not this is an mandatory command line argument. */
-        public boolean mandatory = false;
+        public boolean mandatory;
 
         /** A regular expression describing what format the argument to this option muist have. */
-        public String argumentFormatRegexp = null;
+        public String argumentFormatRegexp;
 
         /**
          * Create a command line option object that holds specific information about a command line option.

@@ -47,7 +47,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class DistributedOutputStreamImpl extends UnicastRemoteObject implements DistributedOutputStream
 {
     /** The local output stream that serves as the sink for this distributed one. */
-    private OutputStream stream = null;
+    private OutputStream stream;
 
     /**
      * Builds a distrubted output stream that wraps a local one.

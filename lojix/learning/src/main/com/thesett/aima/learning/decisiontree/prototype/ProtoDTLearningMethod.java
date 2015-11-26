@@ -77,7 +77,7 @@ public class ProtoDTLearningMethod extends AbstractLearningMethod
      * {@link #allHaveSameClassification} method tests if all of a set of examples have the same classification and if
      * they do, leaves that classification in this variable at the end of the method.
      */
-    private OrdinalAttribute allClassification = null;
+    private OrdinalAttribute allClassification;
 
     /**
      * Builds a decision tree by repeatedly selecting the best property of the data examples to split on. The best

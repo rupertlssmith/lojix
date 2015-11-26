@@ -70,7 +70,7 @@ public class SilentFailSocketAppender extends AppenderSkeleton
     int reconnectionDelay = DEFAULT_RECONNECTION_DELAY;
 
     /** When set to true location information will be sent to the log event reciever on the other end of the socket. */
-    boolean locationInfo = false;
+    boolean locationInfo;
 
     /** The connector to open the socket with. */
     private Connector connector;
@@ -79,7 +79,7 @@ public class SilentFailSocketAppender extends AppenderSkeleton
      * Used to count the number of log events sent. The object output stream is reset on every n events as counted by
      * this counter. See {@link #RESET_FREQUENCY}.
      */
-    int counter = 0;
+    int counter;
 
     /** Creates a new SilentFailSocketAppender object. */
     public SilentFailSocketAppender()
@@ -410,7 +410,7 @@ public class SilentFailSocketAppender extends AppenderSkeleton
     class Connector extends Thread
     {
         /** Signals that the connection has been lost and needs to be re-established. */
-        boolean interrupted = false;
+        boolean interrupted;
 
         /** The main thread. */
         public void run()

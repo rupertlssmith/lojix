@@ -52,7 +52,7 @@ public abstract class BaseTerm extends TraversableState<Term> implements Term, G
     protected SourceCodePosition sourcePosition;
 
     /** Holds the bracketing flag for this term. */
-    protected boolean bracketed = false;
+    protected boolean bracketed;
 
     /** Holds a traverser to supply search operators over terms. When <tt>null</tt> this is used as the operator. */
     protected TermTraverser traverser;

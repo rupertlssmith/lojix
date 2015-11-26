@@ -58,7 +58,7 @@ public class SearchNode<O, T extends Traversable<O>>
     protected RepeatedStateFilter<O, T> repeatedStateFilter;
 
     /** Holds a flag that indicates that this node has had its successors expanded. */
-    protected boolean expanded = false;
+    protected boolean expanded;
 
     /** Can be used to hold a count of unexamined successors. */
     public int unexaminedSuccessorCount;

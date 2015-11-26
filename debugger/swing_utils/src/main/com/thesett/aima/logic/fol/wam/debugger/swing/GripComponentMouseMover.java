@@ -50,7 +50,7 @@ public class GripComponentMouseMover extends MouseInputAdapter
     private final Cursor moveCursor;
 
     /** Indicates whether the mouse button is down. */
-    private boolean pressed = false;
+    private boolean pressed;
 
     /** Holds the previous y coordinate. */
     private int lastY;

@@ -47,7 +47,7 @@ public class TokenBucketThrottle extends BaseThrottle
     private int depth;
 
     /** Holds a count of the number of tokens that have been consumed. */
-    private float tokenCount = 0f;
+    private float tokenCount;
 
     /** Holds the time of the last throttle query. */
     private long lastTimeNanos = System.nanoTime();

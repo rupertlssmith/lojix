@@ -29,7 +29,7 @@ package com.thesett.common.util;
 public class TraceIndenter
 {
     /** Used to maintain a nesting index on method call traces, to neatly pad the output with spaces by. */
-    private int traceIndent = 0;
+    private int traceIndent;
 
     /** Flag to indicate whether or not the indent should actually be generated. */
     private final boolean useIndent;

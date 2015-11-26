@@ -46,7 +46,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class DistributedInputStreamImpl extends UnicastRemoteObject implements DistributedInputStream
 {
     /** The local input stream that serves as the source for distributed one. */
-    private InputStream source = null;
+    private InputStream source;
 
     /**
      * Builds a distrubted input stream that wraps a local one.

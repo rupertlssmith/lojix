@@ -41,7 +41,7 @@ public class ClientIterator implements Iterator, Serializable
      *
      * @serial
      */
-    private DistributedIterator source = null;
+    private DistributedIterator source;
 
     /** Required constructor for serialization. */
     public ClientIterator()

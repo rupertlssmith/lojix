@@ -387,7 +387,7 @@ public class ContextualProperties extends ParsedProperties
         return new Iterator()
             {
                 // The key ordering count always begins at the start of the ORDER array.
-                private int i = 0;
+                private int i;
 
                 public boolean hasNext()
                 {

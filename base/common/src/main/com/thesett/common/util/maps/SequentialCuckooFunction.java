@@ -45,7 +45,7 @@ public class SequentialCuckooFunction<K> implements SequentialFunction<K>
     private int count;
 
     /** Holds a sequence number, for the monotonically increasing function. */
-    private int nextSequenceNumber = 0;
+    private int nextSequenceNumber;
 
     /** Holds the actual hash table as an array of entries. */
     private Entry<K>[] hashTable = (Entry<K>[]) new Entry[hashTableSize];

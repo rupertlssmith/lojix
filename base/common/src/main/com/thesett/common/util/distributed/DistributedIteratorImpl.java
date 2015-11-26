@@ -36,7 +36,7 @@ import java.util.Iterator;
 public class DistributedIteratorImpl extends UnicastRemoteObject implements DistributedIterator
 {
     /** The local iterator that serves as the source for the elements of the distributed iterator. */
-    private Iterator source = null;
+    private Iterator source;
 
     /**
      * Constructs a new <code>DistributedIteratorImpl</code> using the specified local iterator as a data source.

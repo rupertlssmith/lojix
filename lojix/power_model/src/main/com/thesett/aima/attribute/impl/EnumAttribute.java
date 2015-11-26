@@ -190,7 +190,7 @@ public class EnumAttribute implements OrdinalAttribute
     private static class EnumClassImpl extends BaseType<EnumAttribute> implements EnumClass
     {
         /** The number of possible values this attribute can take on. */
-        int numValues = 0;
+        int numValues;
 
         /** Used to hold the class of the enum class that this is an attribute factory for. */
         Class enumClass;

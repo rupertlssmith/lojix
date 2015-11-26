@@ -446,7 +446,7 @@ public class EnumeratedStringAttribute implements OrdinalAttribute, Referencable
         Map<Long, EnumerationNode> idMap = new HashMap<Long, EnumerationNode>();
 
         /** Used to indicate whether the class has been finalized yet. */
-        boolean finalized = false;
+        boolean finalized;
 
         /** Used to hold the name of the attribute class that this is a factory for. */
         String attributeClassName;

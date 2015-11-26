@@ -53,13 +53,13 @@ public class WorkFlowScreenState extends WorkPanelState
     /* private static final Logger log = Logger.getLogger(WorkFlowScreenState.class.getName()); */
 
     /** Flag determining whether another page is available in the work flow. */
-    private boolean nextAvailable = false;
+    private boolean nextAvailable;
 
     /** Flag determining whether a pervious page is available in the work flow. */
-    private boolean prevAvailable = false;
+    private boolean prevAvailable;
 
     /** Flag determining whether the state of the screen means that the entire flow may be ended at this point. */
-    private boolean finished = false;
+    private boolean finished;
 
     /**
      * Checks if the next button should be enabled.

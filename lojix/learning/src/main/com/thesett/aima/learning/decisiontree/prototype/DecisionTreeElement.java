@@ -40,7 +40,7 @@ import com.thesett.aima.state.OrdinalAttribute;
 public class DecisionTreeElement
 {
     /** The attribute value associated with this decision tree element. */
-    protected OrdinalAttribute attributeValue = null;
+    protected OrdinalAttribute attributeValue;
 
     /**
      * Returns the attribute value associated with this decision tree element.

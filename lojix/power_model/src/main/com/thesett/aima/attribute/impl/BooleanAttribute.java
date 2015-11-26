@@ -148,7 +148,7 @@ public class BooleanAttribute implements OrdinalAttribute
         private static final String BOOLEAN_ATTR_NAME = "BOOLEAN";
 
         /** Used to hold the set of all possible values of this attribute type. */
-        protected static Set<BooleanAttribute> allPossibleValues = null;
+        protected static Set<BooleanAttribute> allPossibleValues;
 
         /**
          * Gets a new default instance of the type. The types value will be set to its default uninitialized value.

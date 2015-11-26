@@ -744,40 +744,40 @@ public class TypeConverter
     public static class MultiTypeData
     {
         /** Holds the boolean value of this multi type object if it has one. */
-        public boolean booleanValue = false;
+        public boolean booleanValue;
 
         /** Holds the byte value of this multi type object if it has one. */
-        public byte byteValue = 0;
+        public byte byteValue;
 
         /** Holds the char value of this multi type object if it has one. */
-        public char charValue = 0;
+        public char charValue;
 
         /** Holds the short value of this multi type object if it has one. */
-        public short shortValue = 0;
+        public short shortValue;
 
         /** Holds the int value of this multi type object if it has one. */
-        public int intValue = 0;
+        public int intValue;
 
         /** Holds the long value of this multi type object if it has one. */
-        public long longValue = 0L;
+        public long longValue;
 
         /** Holds the float value of this multi type object if it has one. */
-        public float floatValue = 0.0f;
+        public float floatValue;
 
         /** Holds the double value of this multi type object if it has one. */
-        public double doubleValue = 0.0d;
+        public double doubleValue;
 
         /** Holds the String value of this multi type object if it has one. */
-        public String stringValue = null;
+        public String stringValue;
 
         /** Holds the Object value of this multi type object if it has one. */
-        public Object objectValue = null;
+        public Object objectValue;
 
         /** Holds the set of type flags indicating which types this multi type object can take. */
-        public int typeFlags = 0;
+        public int typeFlags;
 
         /** Holds the type flag indicating the type of the original data that this object was built from. */
-        public int nativeType = 0;
+        public int nativeType;
 
         /**
          * Prints the contents of this mutli type data to a string. This can be very usefull for debugging purposes.

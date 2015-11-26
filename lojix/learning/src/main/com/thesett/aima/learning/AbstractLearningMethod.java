@@ -62,10 +62,10 @@ public abstract class AbstractLearningMethod implements LearningMethod
      * Used to indicate that a specific set of input properties has been set, rather than the default of all properties
      * of the example states (minus the goal ones).
      */
-    protected boolean inputPropertiesSet = false;
+    protected boolean inputPropertiesSet;
 
     /** Used to indicate that properties other than the 'goal' property have been set as the output properties. */
-    protected boolean outputPropertiesSet = false;
+    protected boolean outputPropertiesSet;
 
     /** Default constructor that initializes the data structures. */
     public AbstractLearningMethod()

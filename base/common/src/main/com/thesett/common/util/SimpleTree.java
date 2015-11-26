@@ -53,10 +53,10 @@ public class SimpleTree<E> implements Tree<E>, Tree.Node<E>, Tree.Leaf<E>, Seria
     private E element;
 
     /** Used to hold the parent of this point in the tree. Null if this is a root. */
-    private Tree.Node<E> parent = null;
+    private Tree.Node<E> parent;
 
     /** Used to hold the child trees. */
-    private List<Tree<E>> children = null;
+    private List<Tree<E>> children;
 
     /** Builds an empty leaf. */
     public SimpleTree()
@@ -520,7 +520,7 @@ public class SimpleTree<E> implements Tree<E>, Tree.Node<E>, Tree.Leaf<E>, Seria
             public boolean holdsSimpleElement = true;
 
             /** Used to hold a tree fragment for later expansion. Null if this is a simple element. */
-            public Tree<E> treeFragment = null;
+            public Tree<E> treeFragment;
         }
     }
 
@@ -535,7 +535,7 @@ public class SimpleTree<E> implements Tree<E>, Tree.Node<E>, Tree.Leaf<E>, Seria
     private class ChildIterator implements Iterator<Tree<E>>
     {
         /** Holds the current offset within the child list. */
-        private int index = 0;
+        private int index;
 
         /**
          * Determines whether this iterator has more elements, depending on the current size of the child list.

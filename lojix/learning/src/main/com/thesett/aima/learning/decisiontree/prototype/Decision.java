@@ -56,7 +56,7 @@ public class Decision extends DecisionTreeElement
      * Holds a lookup table from the ordinal of the possible attribute values to the child decision tree that computes
      * the remainder of the decision.
      */
-    private DecisionTree[] decisions = null;
+    private DecisionTree[] decisions;
 
     /**
      * Builds a decision on the named property with the specified number of outcomes. The number of decision outcomes is

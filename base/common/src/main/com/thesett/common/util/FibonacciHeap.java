@@ -87,7 +87,7 @@ public class FibonacciHeap<E> extends AbstractHeap<E>
     }
 
     /** Holds a reference to the minimum node on the heap. This is always maintained for fast access. */
-    private Node minNode = null;
+    private Node minNode;
 
     /** Builds a heap that is ordered on the natural ordering of its elements. */
     public FibonacciHeap()
@@ -492,22 +492,22 @@ public class FibonacciHeap<E> extends AbstractHeap<E>
          * This is also equal to the order of the binomial tree that this node head forms the root of. See the class
          * level comment for {@link FibonacciHeap} for a reminder of the properties of binomial trees.
          */
-        int degree = 0;
+        int degree;
 
         /** Used to hold the parent of this node. */
-        Node parent = null;
+        Node parent;
 
         /** Used to hold the first child of this node. */
-        Node child = null;
+        Node child;
 
         /** Used to hold the previous node in the circular list at the same level as this node. */
-        Node prev = null;
+        Node prev;
 
         /** Used to hold the next node in the circular list at the same level as this node. */
-        Node next = null;
+        Node next;
 
         /** Used to indicate special annotations on this node. */
-        Annotation annotation = null;
+        Annotation annotation;
 
         /**
          * Creates a new Node object for a given data element.

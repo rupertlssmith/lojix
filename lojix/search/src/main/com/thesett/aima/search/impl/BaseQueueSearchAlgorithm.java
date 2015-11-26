@@ -37,10 +37,10 @@ import com.thesett.aima.search.spi.QueueSearchAlgorithm;
 public abstract class BaseQueueSearchAlgorithm<O, T extends Traversable<O>> implements QueueSearchAlgorithm<O, T>
 {
     /** The peek at head flag indicates that the head is only peeked at before expanding successors. */
-    protected boolean peekAtHead = false;
+    protected boolean peekAtHead;
 
     /** The reverse enqueue order flag, indicates that successors should be expanded in reverse order. */
-    protected boolean reverseEnqueue = false;
+    protected boolean reverseEnqueue;
 
     /**
      * Sets the peek at head flag. When this is set, the head node of the queue to be examined is not removed from the

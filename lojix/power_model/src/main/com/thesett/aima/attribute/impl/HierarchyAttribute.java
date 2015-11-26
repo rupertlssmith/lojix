@@ -561,7 +561,7 @@ public class HierarchyAttribute implements OrdinalAttribute, ReferencableAttribu
         int numValues = -1;
 
         /** The hierarchies level names. */
-        List<String> levels = null;
+        List<String> levels;
 
         /**
          * Holds a map from int representations to category nodes. This is used while the class is unfinalized, once it
@@ -577,16 +577,16 @@ public class HierarchyAttribute implements OrdinalAttribute, ReferencableAttribu
         Map<Long, Tree<CategoryNode>> idMap = new HashMap<Long, Tree<CategoryNode>>();
 
         /** Holds a tree representation of all categories in the class. */
-        SimpleTree<CategoryNode> categories = null; // new SimpleTree<CategoryNode>();
+        SimpleTree<CategoryNode> categories; // new SimpleTree<CategoryNode>();
 
         /** Holds the next available integer for the compact representation enumeration. */
-        int nextValue = 0;
+        int nextValue;
 
         /** Keeps track of the maximum number of levels in the type. */
-        int maxLevels = 0;
+        int maxLevels;
 
         /** Used to indicate whether the class has been finalized yet. */
-        boolean finalized = false;
+        boolean finalized;
 
         /** Used to hold the name of the attribute class that this is a factory for. */
         String attributeClassName;

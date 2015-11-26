@@ -107,7 +107,7 @@ public class WrapperQueue<E> implements SizeableReQueue<E>, SizeableBlockingQueu
     private final java.util.Queue<E> queue;
 
     /** Flag that indicates that the underlying queue implements java.util.concurrent.BlockingQueue. */
-    private boolean isBlockingQueue = false;
+    private boolean isBlockingQueue;
 
     /** Holds the queue of requeued items, in the event of roll-backs. */
     private final Collection<RequeueElementWrapper<E>> requeue;
@@ -804,7 +804,7 @@ public class WrapperQueue<E> implements SizeableReQueue<E>, SizeableBlockingQueu
         public AcquireState state = AcquireState.Free;
 
         /** Holds the unique owner of this element when it has been acquired. */
-        public Object owner = null;
+        public Object owner;
 
         /** Holds the element data. */
         public E element;

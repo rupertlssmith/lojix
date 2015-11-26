@@ -36,7 +36,7 @@ import java.util.NoSuchElementException;
 public abstract class SequenceIterator<E> implements Iterator<E>
 {
     /** Caches the next lazily generated solution, when it has already been asked for by {@link #hasNext}. */
-    private E nextSolution = null;
+    private E nextSolution;
 
     private boolean exhausted;
 

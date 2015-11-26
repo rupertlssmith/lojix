@@ -52,7 +52,7 @@ public abstract class PropertyIntrospectorBase
     private Map<String, Method[]> setters = new HashMap<String, Method[]>();
 
     /** A flag used to indicate that initialization has been performed. */
-    private boolean initialized = false;
+    private boolean initialized;
 
     /**
      * Checks if the bean has a named property. Note that if the property value is set to null on the bean, this method

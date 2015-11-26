@@ -340,7 +340,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         private ResolutionStateImpl lastChoicePoint;
 
         /** Used to indicate whether or not this state has failed to unify with its operator clause. */
-        boolean failed = false;
+        boolean failed;
 
         /** Holds the stack for this states bound variables. */
         private VariableBindingStackFrame stackFrame;
@@ -932,7 +932,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         /**
          * Used to record how many variable bindings this state added, so that they can be removed upon backtracking.
          */
-        private int numBindingsAdded = 0;
+        private int numBindingsAdded;
 
         /**
          * Establishes a local binding sink on the binding stack.
