@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Variable extends BaseTerm implements Term, VariableBindingContext<Variable>, Comparable<Variable>
 {
     /** A generator of unique variable id's. */
-    private static AtomicInteger varId = new AtomicInteger();
+    private static final AtomicInteger varId = new AtomicInteger();
 
     /**
      * Holds the name of the variable. This is an integer that refers to an interned string that provides the textual

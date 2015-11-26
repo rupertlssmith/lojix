@@ -34,7 +34,7 @@ import com.thesett.aima.state.restriction.TypeRestriction;
 public abstract class BaseType<T> implements Type<T>, RandomInstanceFactory<T>, Serializable
 {
     /** Used for generating random instances. */
-    protected static Random random = new Random();
+    protected static final Random random = new Random();
 
     /** Holds a random instance factory for the type. */
     private RandomInstanceFactory<T> randomFactory;

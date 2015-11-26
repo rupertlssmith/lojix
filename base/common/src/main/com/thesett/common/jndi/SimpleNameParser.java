@@ -34,7 +34,7 @@ import javax.naming.NamingException;
 public class SimpleNameParser implements NameParser
 {
     /** Holds the JNDI name syntax options. */
-    static Properties syntax = new Properties();
+    static final Properties syntax = new Properties();
 
     static
     {

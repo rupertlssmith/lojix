@@ -49,7 +49,7 @@ package com.thesett.common.tx;
 public class TxManager
 {
     /** Provides thread local variable assignment of resource transaction ids. */
-    private static ThreadLocal<TxId> threadLocalTxId =
+    private static final ThreadLocal<TxId> threadLocalTxId =
         new ThreadLocal<TxId>()
         {
             /**

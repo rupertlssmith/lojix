@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TxIdImpl implements TxId
 {
     /** Holds the current transaction id generation sequence number. */
-    private static AtomicLong currentTxId = new AtomicLong(1L);
+    private static final AtomicLong currentTxId = new AtomicLong(1L);
 
     /** The default global id for local transactions. */
     private static final byte[] LOCAL_TX_ID = "L".getBytes();

@@ -74,7 +74,7 @@ import com.thesett.common.error.NotImplementedException;
 public class EnumeratedStringAttribute implements OrdinalAttribute, ReferencableAttribute, Serializable
 {
     /** Used to hold all the different named attribute classes. */
-    private static Map<String, EnumeratedStringClassImpl> attributeClasses =
+    private static final Map<String, EnumeratedStringClassImpl> attributeClasses =
         new HashMap<String, EnumeratedStringClassImpl>();
 
     /** Used to hold the byte offset into the string array. */

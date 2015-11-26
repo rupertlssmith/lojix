@@ -34,7 +34,7 @@ import java.util.Set;
 public class TxSessionImpl implements TxSession
 {
     /** Provides thread local variable assignment of sessions. */
-    private static ThreadLocal<TxSession> threadSession =
+    private static final ThreadLocal<TxSession> threadSession =
         new ThreadLocal<TxSession>()
         {
             /**

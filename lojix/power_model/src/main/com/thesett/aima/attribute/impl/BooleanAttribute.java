@@ -38,7 +38,7 @@ import com.thesett.aima.state.Type;
 public class BooleanAttribute implements OrdinalAttribute
 {
     /** Holds a reference to the type class for boolean attributes. */
-    private static BooleanClassImpl attributeClass = new BooleanClassImpl();
+    private static final BooleanClassImpl attributeClass = new BooleanClassImpl();
 
     /** Used to hold the underlying boolean value of this attribute. */
     private boolean value;

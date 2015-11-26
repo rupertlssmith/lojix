@@ -45,7 +45,7 @@ import com.thesett.common.error.NotImplementedException;
 public class EnumAttribute implements OrdinalAttribute
 {
     /** Used to hold all the different enum classes. */
-    private static Map<Class, EnumClassImpl> attributeClasses = new HashMap<Class, EnumClassImpl>();
+    private static final Map<Class, EnumClassImpl> attributeClasses = new HashMap<Class, EnumClassImpl>();
 
     /** Holds the enum ordinal. */
     private int ordinal;

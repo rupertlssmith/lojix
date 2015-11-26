@@ -45,7 +45,7 @@ public class DefaultPropertyReader extends PropertyReaderBase
     /* private static final Logger log = Logger.getLogger(DefaultPropertyReader.class.getName()); */
 
     /** Used to hold a map from property resource names to singleton property reader instances. */
-    private static Map propertyReaders = new HashMap();
+    private static final Map propertyReaders = new HashMap();
 
     /** Used to hold the name of the property resource. */
     private String resourceName;

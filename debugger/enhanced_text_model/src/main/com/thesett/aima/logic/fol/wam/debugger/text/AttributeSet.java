@@ -29,5 +29,5 @@ import java.util.HashMap;
  */
 public class AttributeSet extends HashMap<String, Object>
 {
-    public static String BACKGROUND_COLOR = "background_color";
+    public static final String BACKGROUND_COLOR = "background_color";
 }

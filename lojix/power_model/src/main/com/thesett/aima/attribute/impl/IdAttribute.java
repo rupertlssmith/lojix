@@ -65,7 +65,7 @@ import com.thesett.common.error.NotImplementedException;
 public class IdAttribute<T> implements OrdinalAttribute, ReferencableAttribute, Serializable
 {
     /** Used to hold all the different named attribute classes. */
-    private static Map<String, IdClassImpl> attributeClasses = new HashMap<String, IdClassImpl>();
+    private static final Map<String, IdClassImpl> attributeClasses = new HashMap<String, IdClassImpl>();
 
     /** Used to hold the byte offset into the object array. */
     int value;

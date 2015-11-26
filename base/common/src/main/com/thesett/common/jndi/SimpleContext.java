@@ -47,7 +47,7 @@ import javax.naming.OperationNotSupportedException;
 public class SimpleContext implements Context
 {
     /** Holds a reference to the name parser. */
-    static NameParser myParser = new SimpleNameParser();
+    static final NameParser myParser = new SimpleNameParser();
 
     /** Holds the JNDI environment. */
     Hashtable myEnv;
