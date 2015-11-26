@@ -33,5 +33,5 @@ public interface TypeVisitor
      * @param <T>  The underlying Java type of the type.
      * @param type The type to visit.
      */
-    public <T> void visit(Type<T> type);
+    <T> void visit(Type<T> type);
 }

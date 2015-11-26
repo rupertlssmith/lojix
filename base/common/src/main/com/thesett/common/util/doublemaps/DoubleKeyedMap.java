@@ -48,7 +48,7 @@ public interface DoubleKeyedMap<K, L, E> extends Countable
      *
      * @throws UnsupportedOperationException If Clear is not supported by this map.
      */
-    public void clear();
+    void clear();
 
     /**
      * Returns <tt>true</tt> if this map contains a mapping for the specified coordinate.
@@ -58,7 +58,7 @@ public interface DoubleKeyedMap<K, L, E> extends Countable
      *
      * @return <tt>true</tt> if this map contains a mapping for the specified coordinate.
      */
-    public boolean containsKey(K primaryKey, L secondaryKey);
+    boolean containsKey(K primaryKey, L secondaryKey);
 
     /**
      * Associates the specified value with the specified coordinate in this map (optional operation). If the map
@@ -79,7 +79,7 @@ public interface DoubleKeyedMap<K, L, E> extends Countable
      * @throws NullPointerException          This map does not permit <tt>null</tt> values, and the specified value is
      *                                       <tt>null</tt>.
      */
-    public E put(K primaryKey, L secondaryKey, E value);
+    E put(K primaryKey, L secondaryKey, E value);
 
     /**
      * Returns the value to which this map maps the specified coordinate. Returns <tt>null</tt> if the map contains no
@@ -93,7 +93,7 @@ public interface DoubleKeyedMap<K, L, E> extends Countable
      * @return The value to which this map maps the specified coordinate, or <tt>null</tt> if the map contains no
      *         mapping for this coordinate.
      */
-    public E get(K primaryKey, L secondaryKey);
+    E get(K primaryKey, L secondaryKey);
 
     /**
      * Removes the mapping for this coordinate from this map if present (optional operation).
@@ -107,5 +107,5 @@ public interface DoubleKeyedMap<K, L, E> extends Countable
      *
      * @throws UnsupportedOperationException if the <tt>remove</tt> method is not supported by this map.
      */
-    public E remove(K primaryKey, L secondaryKey);
+    E remove(K primaryKey, L secondaryKey);
 }

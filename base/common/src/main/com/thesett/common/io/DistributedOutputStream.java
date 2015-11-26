@@ -38,7 +38,7 @@ public interface DistributedOutputStream extends Remote
      * @throws IOException              If an I/O error occurs when accessing the stream.
      * @throws java.rmi.RemoteException If an RMI error occurs during remote access.
      */
-    public void flush() throws IOException;
+    void flush() throws IOException;
 
     /**
      * Closes this output stream and releases any system resources associated with this output stream.
@@ -46,7 +46,7 @@ public interface DistributedOutputStream extends Remote
      * @throws IOException              If an I/O error occurs when accessing the stream.
      * @throws java.rmi.RemoteException If an RMI error occurs during remote access.
      */
-    public void close() throws IOException;
+    void close() throws IOException;
 
     /**
      * Writes the specified byte <code>b</code> to this output stream.
@@ -56,7 +56,7 @@ public interface DistributedOutputStream extends Remote
      * @throws IOException              If an I/O error occurs when accessing the stream.
      * @throws java.rmi.RemoteException If an RMI error occurs during remote access.
      */
-    public void write(int b) throws IOException;
+    void write(int b) throws IOException;
 
     /**
      * Writes all bytes from the specified byte array <code>b</code> to this output stream.
@@ -66,7 +66,7 @@ public interface DistributedOutputStream extends Remote
      * @throws IOException              If an I/O error occurs when accessing the stream.
      * @throws java.rmi.RemoteException If an RMI error occurs during remote access.
      */
-    public void write(byte[] b) throws IOException;
+    void write(byte[] b) throws IOException;
 
     /**
      * Writes bytes from the specified byte array <code>b</code>, starting from index specified by <code>off</code>, and
@@ -79,5 +79,5 @@ public interface DistributedOutputStream extends Remote
      * @throws IOException              If an I/O error occurs when accessing the stream.
      * @throws java.rmi.RemoteException If an RMI error occurs during remote access.
      */
-    public void write(byte[] b, int off, int len) throws IOException;
+    void write(byte[] b, int off, int len) throws IOException;
 }

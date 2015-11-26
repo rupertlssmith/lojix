@@ -38,12 +38,12 @@ public interface ReferencableAttribute extends Attribute
      *
      * @return The integer id of the attribute.
      */
-    public long getId();
+    long getId();
 
     /**
      * Sets the integer id of the attribute.
      *
      * @param id The new id value.hi
      */
-    public void setId(long id);
+    void setId(long id);
 }

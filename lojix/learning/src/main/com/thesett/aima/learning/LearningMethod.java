@@ -75,14 +75,14 @@ public interface LearningMethod
      *
      * @param exampleState An example state to learn from.
      */
-    public void addExampleState(State exampleState);
+    void addExampleState(State exampleState);
 
     /**
      * Adds many examples states to learn from to this learning method.
      *
      * @param exampleStates A collection of example states to learn from.
      */
-    public void addExampleStates(Collection<? extends State> exampleStates);
+    void addExampleStates(Collection<? extends State> exampleStates);
 
     /**
      * Adds a property of the example states that the learning algorithm should use to learn its classification from.
@@ -93,7 +93,7 @@ public interface LearningMethod
      * @param property The name of a property in the example states that is to be considered as input to the learning
      *                 process.
      */
-    public void addInputProperty(String property);
+    void addInputProperty(String property);
 
     /**
      * Adds many properties of the example states that the learning algorithm should use to learn its classification
@@ -104,7 +104,7 @@ public interface LearningMethod
      * @param properties A collection of property names in the example states that are to be considered as input to the
      *                   learning process.
      */
-    public void addInputProperties(Collection<String> properties);
+    void addInputProperties(Collection<String> properties);
 
     /**
      * Adds a property of the example states that a classification is to be learnt for. If this is an unsupervised
@@ -120,7 +120,7 @@ public interface LearningMethod
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
      */
-    public void addGoalProperty(String property);
+    void addGoalProperty(String property);
 
     /**
      * Adds many properties of the example states that a classification is to be learnt for. If this is an unsupervised
@@ -136,20 +136,20 @@ public interface LearningMethod
      *
      * @throws UnsupportedOperationException if the learning method does not accept goal properties.
      */
-    public void addGoalProperties(Collection<String> properties);
+    void addGoalProperties(Collection<String> properties);
 
     /**
      * Accepts a classifying machine to train.
      *
      * @param machineToTrain A classifying machine that is to be trained by this learning method.
      */
-    public void setMachineToTrain(ClassifyingMachine machineToTrain);
+    void setMachineToTrain(ClassifyingMachine machineToTrain);
 
     /**
      * Resets the learning method. This should clear all the examples, properties to learn from and for and the input
      * machine to train.
      */
-    public void reset();
+    void reset();
 
     /**
      * Trains the input classifying machine to produce one that is a better classifier.
@@ -158,5 +158,5 @@ public interface LearningMethod
      *
      * @throws LearningFailureException if the learning process fails for any reason.
      */
-    public ClassifyingMachine learn() throws LearningFailureException;
+    ClassifyingMachine learn() throws LearningFailureException;
 }

@@ -37,5 +37,5 @@ public interface TermTransformer
      *
      * @return A term which is a transformation of the argument.
      */
-    public Term transform(Term term);
+    Term transform(Term term);
 }

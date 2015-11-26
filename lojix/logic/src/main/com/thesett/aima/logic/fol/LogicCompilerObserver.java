@@ -36,7 +36,7 @@ public interface LogicCompilerObserver<T, Q>
      *
      * @throws SourceCodeException If there is an error in the compiled code that prevents its further processing.
      */
-    public void onCompilation(Sentence<T> sentence) throws SourceCodeException;
+    void onCompilation(Sentence<T> sentence) throws SourceCodeException;
 
     /**
      * Accepts notification of the completion of the compilation of a query into binary form.
@@ -45,5 +45,5 @@ public interface LogicCompilerObserver<T, Q>
      *
      * @throws SourceCodeException If there is an error in the compiled code that prevents its further processing.
      */
-    public void onQueryCompilation(Sentence<Q> sentence) throws SourceCodeException;
+    void onQueryCompilation(Sentence<Q> sentence) throws SourceCodeException;
 }

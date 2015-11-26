@@ -42,5 +42,5 @@ public interface Fader<C>
      * @param groupName The group name for the fade. See class level comment for {@link Fader} for an explanation of how
      *                  the group name is used.
      */
-    public void doFade(ColorDelta target, String groupName);
+    void doFade(ColorDelta target, String groupName);
 }

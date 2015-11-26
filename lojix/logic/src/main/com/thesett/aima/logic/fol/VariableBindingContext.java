@@ -35,5 +35,5 @@ public interface VariableBindingContext<V extends Variable>
      *
      * @return The storage cell where the specified variable sets its bindings.
      */
-    public Variable getStorageCell(V variable);
+    Variable getStorageCell(V variable);
 }

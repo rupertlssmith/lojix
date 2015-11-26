@@ -89,7 +89,7 @@ public interface BatchSynchQueue<E> extends BlockingQueue<E>
      *                              on its entry in the queue being consumed.
      * @throws SynchException       If a consumer encounters an error whilst processing the data element.
      */
-    public void tryPut(E e) throws InterruptedException, SynchException;
+    void tryPut(E e) throws InterruptedException, SynchException;
 
     /**
      * Takes all available data items from the queue or blocks until some become available. The returned items are
@@ -101,7 +101,7 @@ public interface BatchSynchQueue<E> extends BlockingQueue<E>
      *
      * @return A count of the number of elements that were drained from the queue.
      */
-    public SynchRef drainTo(Collection<SynchRecord<E>> c, boolean unblock);
+    SynchRef drainTo(Collection<SynchRecord<E>> c, boolean unblock);
 
     /**
      * Takes up to maxElements available data items from the queue or blocks until some become available. The returned
@@ -114,5 +114,5 @@ public interface BatchSynchQueue<E> extends BlockingQueue<E>
      *
      * @return A count of the number of elements that were drained from the queue.
      */
-    public SynchRef drainTo(Collection<SynchRecord<E>> c, int maxElements, boolean unblock);
+    SynchRef drainTo(Collection<SynchRecord<E>> c, int maxElements, boolean unblock);
 }

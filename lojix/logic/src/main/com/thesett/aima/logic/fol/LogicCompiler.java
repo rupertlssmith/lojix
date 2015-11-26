@@ -49,19 +49,19 @@ public interface LogicCompiler<S, T, Q>
      *
      * @throws SourceCodeException If there is an error in the source to be compiled that prevents its compilation.
      */
-    public void compile(Sentence<S> sentence) throws SourceCodeException;
+    void compile(Sentence<S> sentence) throws SourceCodeException;
 
     /**
      * Establishes an observer on the compiled forms that the compiler outputs.
      *
      * @param observer The compiler output observer.
      */
-    public void setCompilerObserver(LogicCompilerObserver<T, Q> observer);
+    void setCompilerObserver(LogicCompilerObserver<T, Q> observer);
 
     /**
      * Signal the end of a compilation scope, to trigger completion of the compilation of its contents.
      *
      * @throws SourceCodeException If there is an error in the source to be compiled that prevents its compilation.
      */
-    public void endScope() throws SourceCodeException;
+    void endScope() throws SourceCodeException;
 }

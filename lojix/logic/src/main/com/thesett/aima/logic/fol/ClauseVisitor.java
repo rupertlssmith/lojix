@@ -32,5 +32,5 @@ public interface ClauseVisitor extends TermVisitor
      *
      * @param clause The clause to visit.
      */
-    public void visit(Clause clause);
+    void visit(Clause clause);
 }

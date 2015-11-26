@@ -32,5 +32,5 @@ public interface TermVisitor
      *
      * @param term The term to visit.
      */
-    public void visit(Term term);
+    void visit(Term term);
 }

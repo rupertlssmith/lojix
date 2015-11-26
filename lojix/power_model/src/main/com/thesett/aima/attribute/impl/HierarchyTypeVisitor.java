@@ -32,5 +32,5 @@ public interface HierarchyTypeVisitor
      *
      * @param type The hierarchy type to visit.
      */
-    public void visit(HierarchyType type);
+    void visit(HierarchyType type);
 }

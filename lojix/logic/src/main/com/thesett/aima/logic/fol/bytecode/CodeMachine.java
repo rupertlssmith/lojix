@@ -45,5 +45,5 @@ public interface CodeMachine<C>
      *                                                     is added to the machine, or later during execution, depending
      *                                                     on what works for the language being encoded.
      */
-    public void emmitCode(C compiled) throws LinkageException;
+    void emmitCode(C compiled) throws LinkageException;
 }

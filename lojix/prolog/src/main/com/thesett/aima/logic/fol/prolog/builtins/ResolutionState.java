@@ -65,7 +65,7 @@ public interface ResolutionState extends ReTraversable<ResolutionState>
      *
      * @param goal The functor to create continuation states for.
      */
-    public void createContinuationStatesForGoal(BuiltInFunctor goal);
+    void createContinuationStatesForGoal(BuiltInFunctor goal);
 
     /**
      * Provides a simple interface onto the goal stack. This may be used to peek at the current goal, and remove or
@@ -73,14 +73,14 @@ public interface ResolutionState extends ReTraversable<ResolutionState>
      *
      * @return The current goal stack.
      */
-    public SimpleQueue<BuiltInFunctor> getGoalStack();
+    SimpleQueue<BuiltInFunctor> getGoalStack();
 
     /**
      * Provides the most recent state that acted as a choice point that led to this state.
      *
      * @return The most recent state that acted as a choice point that led to this state.
      */
-    public ResolutionState getLastChoicePoint();
+    ResolutionState getLastChoicePoint();
 
     /**
      * Marks this state as 'cut', which means that it is effectively removed from the search and will fail.
@@ -88,28 +88,28 @@ public interface ResolutionState extends ReTraversable<ResolutionState>
      * <p/>Note that the cut will be examined when the state becomes active, so if it has already become active then it
      * will be too late for the cut to have any effect.
      */
-    public void cut();
+    void cut();
 
     /**
      * Provides the choice point states that this state leads to.
      *
      * @return The choice point states that this state leads to.
      */
-    public Queue<ResolutionState> getChoicePoints();
+    Queue<ResolutionState> getChoicePoints();
 
     /**
      * Provides a sink onto the variable binding stack. This may be used to add variable bindings.
      *
      * @return A sink onto the variable binding stack.
      */
-    public Sink<Variable> getVariableBindings();
+    Sink<Variable> getVariableBindings();
 
     /**
      * Provides the current choice point clause that this resolution state is a proof step within.
      *
      * @return The current choice point clause that this resolution state is a proof step within.
      */
-    public Clause getCurrentClause();
+    Clause getCurrentClause();
 
     /**
      * Provides a function to transform functors into built-ins. When a functor is being created as a goal, this
@@ -117,21 +117,21 @@ public interface ResolutionState extends ReTraversable<ResolutionState>
      *
      * @return A function mapping functors to built-ins.
      */
-    public Function<Functor, BuiltInFunctor> getBuiltInTransform();
+    Function<Functor, BuiltInFunctor> getBuiltInTransform();
 
     /**
      * Provides a unifier to perform any required unificiations with.
      *
      * @return The unifier for this state.
      */
-    public PrologUnifier getUnifier();
+    PrologUnifier getUnifier();
 
     /**
      * Provides an interner to translate interned symbols with.
      *
      * @return An interner to translate interned symbols with.
      */
-    public VariableAndFunctorInterner getInterner();
+    VariableAndFunctorInterner getInterner();
 
     /**
      * Provides a trace indenter to create indents for pretty printing execution trace statements with. This indenter

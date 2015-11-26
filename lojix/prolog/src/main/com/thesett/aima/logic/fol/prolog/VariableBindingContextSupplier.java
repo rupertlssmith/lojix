@@ -38,5 +38,5 @@ public interface VariableBindingContextSupplier
      *
      * @return The variable binding context.
      */
-    public VariableBindingContext getBindingContext();
+    VariableBindingContext getBindingContext();
 }

@@ -32,5 +32,5 @@ public interface EnumeratedStringTypeVisitor
      *
      * @param type The enumerated string type to visit.
      */
-    public void visit(EnumeratedStringAttribute.EnumeratedStringType type);
+    void visit(EnumeratedStringAttribute.EnumeratedStringType type);
 }

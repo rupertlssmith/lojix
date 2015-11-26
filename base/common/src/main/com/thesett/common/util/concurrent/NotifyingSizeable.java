@@ -41,12 +41,12 @@ public interface NotifyingSizeable extends Notifying, Sizeable
      *
      * @param size The high water threshold for size notifications to wake up one thread.
      */
-    public void setHighWaterThreshold(long size);
+    void setHighWaterThreshold(long size);
 
     /**
      * Sets the low water threshold for size notifications to wake up all threads.
      *
      * @param size The low water threshold for size notifications to wake up all threads.
      */
-    public void setLowWaterThreshold(long size);
+    void setLowWaterThreshold(long size);
 }

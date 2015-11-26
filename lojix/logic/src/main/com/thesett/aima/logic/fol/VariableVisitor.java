@@ -32,5 +32,5 @@ public interface VariableVisitor extends TermVisitor
      *
      * @param variable The variable to visit.
      */
-    public void visit(Variable variable);
+    void visit(Variable variable);
 }

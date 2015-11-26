@@ -34,5 +34,5 @@ public interface FunctorTransformer extends TermTransformer
      *
      * @return A functor which is a transformation of the argument.
      */
-    public Functor transform(Functor functor);
+    Functor transform(Functor functor);
 }

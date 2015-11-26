@@ -30,5 +30,5 @@ public interface PredicateVisitor extends TermVisitor
      *
      * @param predicate The predicate to visit.
      */
-    public void visit(Predicate predicate);
+    void visit(Predicate predicate);
 }

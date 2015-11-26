@@ -32,5 +32,5 @@ public interface LiteralTypeVisitor extends TermVisitor
      *
      * @param literal The literal to visit.
      */
-    public void visit(LiteralType literal);
+    void visit(LiteralType literal);
 }

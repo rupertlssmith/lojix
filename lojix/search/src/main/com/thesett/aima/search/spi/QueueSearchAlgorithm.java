@@ -64,8 +64,8 @@ public interface QueueSearchAlgorithm<O, T extends Traversable<O>>
      * @throws SearchNotExhaustiveException SearchNotExhaustiveException If the search terminates prematurely because
      *                                      the maximum number of steps is reached.
      */
-    public SearchNode<O, T> search(QueueSearchState<O, T> initSearch, Collection<T> startStates, int maxSteps,
-        int stepsTaken) throws SearchNotExhaustiveException;
+    SearchNode<O, T> search(QueueSearchState<O, T> initSearch, Collection<T> startStates, int maxSteps,
+                            int stepsTaken) throws SearchNotExhaustiveException;
 
     /**
      * Sets the peek at head flag. When this is set, the head node of the queue to be examined is not removed from the
@@ -76,7 +76,7 @@ public interface QueueSearchAlgorithm<O, T extends Traversable<O>>
      *
      * @param flag The value of the peek at head flag to use.
      */
-    public void setPeekAtHead(boolean flag);
+    void setPeekAtHead(boolean flag);
 
     /**
      * Sets the value of the reverse queue flag. This is used to allow FIFO based queues to traverse successors left to
@@ -84,7 +84,7 @@ public interface QueueSearchAlgorithm<O, T extends Traversable<O>>
      *
      * @param flag The value of the reverse enqueue order flag.
      */
-    public void setReverseEnqueueOrder(boolean flag);
+    void setReverseEnqueueOrder(boolean flag);
 
     /**
      * Resests the state of this algorithm. Some search algorithms may preserve state between successive invocations.

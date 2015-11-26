@@ -31,8 +31,8 @@ package com.thesett.aima.search.util.backtracking;
 public interface Reversable
 {
     /** Apply any globally visible state changes required by the operator that generated this state. */
-    public void applyOperator();
+    void applyOperator();
 
     /** Undo any globally visible state changes made by applying an operator to this states parent state. */
-    public void undoOperator();
+    void undoOperator();
 }

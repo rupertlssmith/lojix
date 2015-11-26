@@ -63,7 +63,7 @@ package com.thesett.common.tx;
 public interface Transactional
 {
     /** Defines the different transaction isolation levels. */
-    public enum IsolationLevel
+    enum IsolationLevel
     {
         /** Used to indiciate the 'None' transaction isolation level. */
         None,
@@ -82,7 +82,7 @@ public interface Transactional
     }
 
     /** Defines the different transaction persistence modes. */
-    public enum PersistenceMode
+    enum PersistenceMode
     {
         /** Used to indicate that soft persistence is used; the transactional resource is in-memory only. */
         Soft,
@@ -92,8 +92,8 @@ public interface Transactional
     }
 
     /** Applies pending operations. */
-    public void commit();
+    void commit();
 
     /** Forgets pending operations. */
-    public void rollback();
+    void rollback();
 }

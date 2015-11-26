@@ -57,7 +57,7 @@ public interface Resolver<T, Q> extends Iterable<Set<Variable>>
      *                          raise this as an error at the time the clauses are added to the domain, or during
      *                          resolution, or simply to fail to find a resolution.
      */
-    public void addToDomain(T term) throws LinkageException;
+    void addToDomain(T term) throws LinkageException;
 
     /**
      * Sets the query to resolve.
@@ -69,7 +69,7 @@ public interface Resolver<T, Q> extends Iterable<Set<Variable>>
      *                          this as an error at the time the query is created, or during resolution, or simply to
      *                          fail to find a resolution.
      */
-    public void setQuery(Q query) throws LinkageException;
+    void setQuery(Q query) throws LinkageException;
 
     /**
      * Resolves a query over a logical domain, or knowledge base and a query. The domain and query to resolve over must
@@ -79,13 +79,13 @@ public interface Resolver<T, Q> extends Iterable<Set<Variable>>
      *
      * @return A list of variable bindings, if the query can be satisfied, or <tt>null</tt> otherwise.
      */
-    public Set<Variable> resolve();
+    Set<Variable> resolve();
 
     /**
      * Resets the resolver. This should clear any start and goal states, and leave the resolver in a state in which it
      * is ready to be run.
      */
-    public void reset();
+    void reset();
 
     /**
      * Provides an iterator that generates all solutions on demand as a sequence of variable bindings.

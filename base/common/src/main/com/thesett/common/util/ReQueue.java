@@ -85,7 +85,7 @@ public interface ReQueue<E> extends Source<E>
      *
      * @return <tt>null</tt> if the queue is empty, or an acquired element.
      */
-    public E pollAccept(Object owner);
+    E pollAccept(Object owner);
 
     /**
      * Polls for next available unacquired element, and once one is found acquires it for the specified owner. Depending
@@ -96,7 +96,7 @@ public interface ReQueue<E> extends Source<E>
      *
      * @return <tt>null</tt> if the queue is empty, or an acquired element.
      */
-    public E pollAcquire(Object owner);
+    E pollAcquire(Object owner);
 
     /**
      * Acquires the specified element under the requested ownership, providing that it is not already owned.
@@ -106,7 +106,7 @@ public interface ReQueue<E> extends Source<E>
      *
      * @return <tt>true</tt> if the element could be acquired, <tt>false</tt> if it could not be.
      */
-    public boolean acquire(Object owner, Object o);
+    boolean acquire(Object owner, Object o);
 
     /**
      * Puts a previously acquired element back onto the requeue. The owner of the element must have previously acquired
@@ -124,7 +124,7 @@ public interface ReQueue<E> extends Source<E>
      * @param owner The owner of the element to release.
      * @param o     The object to release.
      */
-    public void release(Object owner, Object o);
+    void release(Object owner, Object o);
 
     /**
      * Accepts responsibility for an element that has been previously acquired. The owner of the element must have
@@ -142,5 +142,5 @@ public interface ReQueue<E> extends Source<E>
      * @param owner The owner of the element to accept.
      * @param o     The object to accept.
      */
-    public void accept(Object owner, Object o);
+    void accept(Object owner, Object o);
 }

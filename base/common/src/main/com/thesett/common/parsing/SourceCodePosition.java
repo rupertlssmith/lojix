@@ -35,28 +35,28 @@ public interface SourceCodePosition
      *
      * @return The line on which the error begins.
      */
-    public int getStartLine();
+    int getStartLine();
 
     /**
      * Provides the column on which the error begins.
      *
      * @return The column on which the error begins.
      */
-    public int getStartColumn();
+    int getStartColumn();
 
     /**
      * Provides the line on which the error ends.
      *
      * @return The line on which the error ends.
      */
-    public int getEndLine();
+    int getEndLine();
 
     /**
      * Provides the column on which the error ends.
      *
      * @return The column on which the error ends.
      */
-    public int getEndColumn();
+    int getEndColumn();
 
     /**
      * By default source code positions are reported offset from line 1, column 1, as this convention is how positions
@@ -65,5 +65,5 @@ public interface SourceCodePosition
      *
      * @return The zero offset source code position.
      */
-    public SourceCodePosition asZeroOffsetPosition();
+    SourceCodePosition asZeroOffsetPosition();
 }

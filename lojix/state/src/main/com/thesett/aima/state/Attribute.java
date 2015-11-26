@@ -34,5 +34,5 @@ public interface Attribute
      *
      * @return The attribute type of this attribute.
      */
-    public Type<? extends Attribute> getType();
+    Type<? extends Attribute> getType();
 }

@@ -47,11 +47,11 @@ public interface Signalable
      * Signals to one waiting thread on this resource, that conditions have changed such that it may now be possible for
      * the thread to proceed. This wakes up one waiting thread, in order for it to re-check conditions.
      */
-    public void signal();
+    void signal();
 
     /**
      * Signals to all waiting threads on this resource, that conditions have changed such that it may now be possible
      * for the thread to proceed. This wakes up all waiting threads, in order for them to re-check conditions.
      */
-    public void signalAll();
+    void signalAll();
 }

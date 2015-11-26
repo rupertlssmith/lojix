@@ -35,5 +35,5 @@ public interface Visitor<V>
      *
      * @param visitee The object to visit.
      */
-    public void visit(V visitee);
+    void visit(V visitee);
 }

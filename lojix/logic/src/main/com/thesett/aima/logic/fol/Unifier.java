@@ -51,5 +51,5 @@ public interface Unifier<T extends Term>
      *
      * @return A list of bound variables to form the unification, or <tt>null</tt> when no unification is possible.
      */
-    public List<Variable> unify(T query, T statement);
+    List<Variable> unify(T query, T statement);
 }

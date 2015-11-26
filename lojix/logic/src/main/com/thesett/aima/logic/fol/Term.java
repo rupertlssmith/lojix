@@ -86,49 +86,49 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return <tt>true</tt> if this term is a number, <tt>false</tt> otherwise.
      */
-    public boolean isNumber();
+    boolean isNumber();
 
     /**
      * Reports whether or not this term is a functor.
      *
      * @return <tt>true</tt> if this term is a functor, <tt>false</tt> otherwise.
      */
-    public boolean isFunctor();
+    boolean isFunctor();
 
     /**
      * Reports whether or not this term is a variable.
      *
      * @return <tt>true</tt> if this term is a variable, <tt>false</tt> otherwise.
      */
-    public boolean isVar();
+    boolean isVar();
 
     /**
      * Reports whether or not this term is a constant (a number of a functor of arity zero).
      *
      * @return <tt>true</tt> if this term is constant, <tt>false</tt> otherwise.
      */
-    public boolean isConstant();
+    boolean isConstant();
 
     /**
      * Reports whether or not this term is compound (a functor of arity one or more).
      *
      * @return <tt>true</tt> if this term is compound, <tt>fals</tt> otherwise.
      */
-    public boolean isCompound();
+    boolean isCompound();
 
     /**
      * Reports whether or not this term is an atom (a functor of arity zero).
      *
      * @return <tt>true</tt> if this term is an atom, <tt>false</tt> otherwise.
      */
-    public boolean isAtom();
+    boolean isAtom();
 
     /**
      * Reports whether or not this term is a ground term.
      *
      * @return <tt>true</tt> if this term is a ground term, <tt>false</tt> othewise.
      */
-    public boolean isGround();
+    boolean isGround();
 
     /**
      * Gets the actual value of a term, which is either the term itself, or in the case of variables, the value that is
@@ -136,45 +136,45 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return The term itself, or the assigned value for variables.
      */
-    public Term getValue();
+    Term getValue();
 
     /**
      * Gets this terms allocation cell. This is an extra value that may be of use during compilation.
      *
      * @return This terms allocation cell. A value of -1 means unnassigned.
      */
-    public int getAllocation();
+    int getAllocation();
 
     /**
      * Sets this terms allocation cell. This may be of use during compilation.
      *
      * @param alloc The terms allocation cell.
      */
-    public void setAllocation(int alloc);
+    void setAllocation(int alloc);
 
     /**
      * Associates a symbol key with this term, that is unique within all scopes of a symbol table.
      *
      * @param key The symbol key for the term.
      */
-    public void setSymbolKey(SymbolKey key);
+    void setSymbolKey(SymbolKey key);
 
     /**
      * Gets this terms unique symbol key.
      *
      * @return This terms unique symbol key.
      */
-    public SymbolKey getSymbolKey();
+    SymbolKey getSymbolKey();
 
     /** Frees all assigned variables in the term, leaving them unnassigned. */
-    public void free();
+    void free();
 
     /**
      * Makes a clone of the term, converting its variables to refer directly to their storage cells.
      *
      * @return A copy of this term, with entirely independent variables to the term it was copied from.
      */
-    public Term queryConversion();
+    Term queryConversion();
 
     /**
      * Allows a reversable operator to be set upon the term, so that context can be established or cleared as terms are
@@ -182,14 +182,14 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @param reversable The reversable operator to use on the term.
      */
-    public void setReversable(Reversable reversable);
+    void setReversable(Reversable reversable);
 
     /**
      * Allows a term traverser to supply search operators over terms to be set.
      *
      * @param traverser The traverser to supply search operators over terms.
      */
-    public void setTermTraverser(TermTraverser traverser);
+    void setTermTraverser(TermTraverser traverser);
 
     /**
      * Provides an iterator over the child terms, if there are any. Only functors are compound, and build across a list
@@ -199,7 +199,7 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return The sub-terms of a compound term.
      */
-    public Iterator<Operator<Term>> getChildren(boolean reverse);
+    Iterator<Operator<Term>> getChildren(boolean reverse);
 
     /**
      * Provides the source code position that this term was parsed from.
@@ -207,14 +207,14 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      * @return The source code position that this term was parsed from. May be <tt>null</tt> if no position has been
      *         associated.
      */
-    public SourceCodePosition getSourceCodePosition();
+    SourceCodePosition getSourceCodePosition();
 
     /**
      * Associates a source code position with this term.
      *
      * @param sourceCodePosition The source code position that this term was parsed from.
      */
-    public void setSourceCodePosition(SourceCodePosition sourceCodePosition);
+    void setSourceCodePosition(SourceCodePosition sourceCodePosition);
 
     /**
      * Reports whether this term is the top-level term in a bracketed expression, and therefore requires no fruther
@@ -222,21 +222,21 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return <tt>true</tt> if this term is bracketed, <tt>false</tt> if not.
      */
-    public boolean isBracketed();
+    boolean isBracketed();
 
     /**
      * Sets the bracketed status of this term.
      *
      * @param bracketed The bracketed status of this term.
      */
-    public void setBracketed(boolean bracketed);
+    void setBracketed(boolean bracketed);
 
     /**
      * Accepts a term visitor.
      *
      * @param visitor The term visitor to accept.
      */
-    public void accept(TermVisitor visitor);
+    void accept(TermVisitor visitor);
 
     /**
      * Applies a term to term transformation function over the term tree, recursively from this point downards. This is
@@ -247,7 +247,7 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return The transformed term tree.
      */
-    public Term acceptTransformer(TermTransformer transformer);
+    Term acceptTransformer(TermTransformer transformer);
 
     /**
      * Pretty prints a term relative to the symbol namings provided by the specified interner.
@@ -260,7 +260,7 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return A pretty printed string containing the term.
      */
-    public String toString(VariableAndFunctorInterner interner, boolean printVarName, boolean printBindings);
+    String toString(VariableAndFunctorInterner interner, boolean printVarName, boolean printBindings);
 
     /**
      * Compares this term for structural equality with another. Two terms are structurally equal if they are the same
@@ -272,5 +272,5 @@ public interface Term extends ReTraversable<Term>, Operator<Term>
      *
      * @return <tt>true</tt> if the two terms are structurally eqaul, <tt>false</tt> otherwise.
      */
-    public boolean structuralEquals(Term term);
+    boolean structuralEquals(Term term);
 }

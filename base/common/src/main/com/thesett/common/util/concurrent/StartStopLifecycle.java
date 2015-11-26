@@ -38,26 +38,26 @@ import java.util.concurrent.TimeUnit;
 public interface StartStopLifecycle
 {
     /** Starts this resource running. */
-    public void start();
+    void start();
 
     /**
      * Prompts this resource to complete all of the events that are outstanding for processing by it, and to stop once
      * this is done.
      */
-    public void shutdown();
+    void shutdown();
 
     /**
      * Instructs this resource to complete the immediate tasks that its thread are running, but to stop as soon as they
      * are complete, without emptying its event queue first.
      */
-    public void shutdownNow();
+    void shutdownNow();
 
     /**
      * Checks if this resource has been requested to shut down.
      *
      * @return <tt>true</tt> if this resource has been requested to shut down, <tt>false</tt> otherwise.
      */
-    public boolean isShutdown();
+    boolean isShutdown();
 
     /**
      * Checks if this resource has stopped running, or has not yet been started.
@@ -65,7 +65,7 @@ public interface StartStopLifecycle
      * @return <tt>true</tt> if this resource has stopped running, or has not yet been started, <tt>false</tt>
      *         otherwise.
      */
-    public boolean isTerminated();
+    boolean isTerminated();
 
     /**
      * Waits for up to the specified time limit for this resource to terminate.
@@ -77,5 +77,5 @@ public interface StartStopLifecycle
      *
      * @throws InterruptedException If the calling thread was interrupted whilst waiting for the resource to terminate.
      */
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
+    boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
 }

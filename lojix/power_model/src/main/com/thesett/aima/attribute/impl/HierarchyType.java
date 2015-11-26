@@ -42,7 +42,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return The level names.
      */
-    public String[] getLevelNames();
+    String[] getLevelNames();
 
     /**
      * Generates an iterator over all the values (not just the allowable ones) in the hierarchy type, at the named
@@ -52,7 +52,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return An iterator over all the values (not just the allowable ones) in the hierarchy type, at the named level.
      */
-    public Iterator<HierarchyAttribute> getValuesAtLevelIterator(String level);
+    Iterator<HierarchyAttribute> getValuesAtLevelIterator(String level);
 
     /**
      * Generates an iterator over all the values (not just the allowable ones) in the hierarchy type that are
@@ -63,7 +63,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return An iterator over all the values (not just the allowable ones) in the hierarchy type, at the named level.
      */
-    public Iterator<HierarchyAttribute> getSubHierarchyValuesIterator(HierarchyAttribute parent, String level);
+    Iterator<HierarchyAttribute> getSubHierarchyValuesIterator(HierarchyAttribute parent, String level);
 
     /**
      * Generates an set over all the values (not just the allowable ones) in the hierarchy type, at the named level.
@@ -72,7 +72,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return An set over all the values (not just the allowable ones) in the hierarchy type, at the named level.
      */
-    public Set<HierarchyAttribute> getValuesAtLevelSet(String level);
+    Set<HierarchyAttribute> getValuesAtLevelSet(String level);
 
     /**
      * Generates an set over all the values (not just the allowable ones) in the hierarchy type that are sub-hierarchies
@@ -83,7 +83,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return An set over all the values (not just the allowable ones) in the hierarchy type, at the named level.
      */
-    public Set<HierarchyAttribute> getSubHierarchyValuesSet(HierarchyAttribute parent, String level);
+    Set<HierarchyAttribute> getSubHierarchyValuesSet(HierarchyAttribute parent, String level);
 
     /**
      * Returns all the different values that an OrdinalAttribute of this type can take on as an iterator over these
@@ -95,7 +95,7 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return An iterator over the set of attributes defining the possible value set for this attribute.
      */
-    public Iterator<HierarchyAttribute> getAllPossibleValuesIterator(boolean failOnNonFinalized);
+    Iterator<HierarchyAttribute> getAllPossibleValuesIterator(boolean failOnNonFinalized);
 
     /**
      * Returns all the different values that an OrdinalAttribute of this type can take on.
@@ -105,5 +105,5 @@ public interface HierarchyType extends Type<HierarchyAttribute>
      *
      * @return A set of attributes defining the possible value set for this attribute.
      */
-    public Set<HierarchyAttribute> getAllPossibleValuesSet(boolean failOnNonFinalized);
+    Set<HierarchyAttribute> getAllPossibleValuesSet(boolean failOnNonFinalized);
 }

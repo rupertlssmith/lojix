@@ -33,54 +33,54 @@ public interface TimeOfDay
      *
      * @return The hours component.
      */
-    public int getHours();
+    int getHours();
 
     /**
      * Accepts the hours component.
      *
      * @param hours The hours component. Hours are numbered 0 to 23.
      */
-    public void setHours(int hours);
+    void setHours(int hours);
 
     /**
      * Provides the minutes component. Minutes are numbered 0 to 59.
      *
      * @return The minutes component.
      */
-    public int getMinutes();
+    int getMinutes();
 
     /**
      * Accepts the minutes component.
      *
      * @param minutes The minutes component. Minutes are numbered 0 to 59.
      */
-    public void setMinutes(int minutes);
+    void setMinutes(int minutes);
 
     /**
      * Provides the seconds component. Seconds are numbered 0 to 61 (60 and 61 may be used for leap seconds).
      *
      * @return The seconds component.
      */
-    public int getSeconds();
+    int getSeconds();
 
     /**
      * Accepts the seconds component.
      *
      * @param seconds The seconds component. Seconds are numbered 0 to 61 (60 and 61 may be used for leap seconds).
      */
-    public void setSeconds(int seconds);
+    void setSeconds(int seconds);
 
     /**
      * Provides the milliseconds component. Milliseconds are numbered 0 to 999.
      *
      * @return The milliseconds component.
      */
-    public int getMilliseconds();
+    int getMilliseconds();
 
     /**
      * Accepts the milliseconds component.
      *
      * @param milliseconds The milliseconds component. Milliseconds are numbered 0 to 999.
      */
-    public void setMilliseconds(int milliseconds);
+    void setMilliseconds(int milliseconds);
 }

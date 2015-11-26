@@ -40,5 +40,5 @@ public interface ClauseTraverser extends TermTraverser
      *
      * @return An iterator over operators producing the traveresed elements of the clause.
      */
-    public Iterator<Operator<Term>> traverse(Clause clause, boolean reverse);
+    Iterator<Operator<Term>> traverse(Clause clause, boolean reverse);
 }

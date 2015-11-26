@@ -60,7 +60,7 @@ public interface QueueSearchState<O, T extends Traversable<O>>
      *
      * @return A queue of search nodes built from the start states.
      */
-    public Queue<SearchNode<O, T>> enqueueStartStates(Collection<T> startStates);
+    Queue<SearchNode<O, T>> enqueueStartStates(Collection<T> startStates);
 
     /**
      * This provides a call back that search algorithms use to update the number of search steps taken. They can do this
@@ -69,33 +69,33 @@ public interface QueueSearchState<O, T extends Traversable<O>>
      *
      * @param steps The number of states examined in a search so far.
      */
-    public void setStepsTaken(int steps);
+    void setStepsTaken(int steps);
 
     /**
      * This provides a call back that search algorithms use to get the number of search steps taken so far.
      *
      * @return The number of states examined in a search so far.
      */
-    public int getStepsTaken();
+    int getStepsTaken();
 
     /**
      * Indicates whether or not the start states have already been enqueued.
      *
      * @return <tt>true</tt> if the start states have already been enqueued, <tt>false</tt> otherwise.
      */
-    public boolean isEnqueuedOnce();
+    boolean isEnqueuedOnce();
 
     /**
      * Resets the flag that indicates whether or not start states have already been enqueued. Iterative algorithms will
      * use this, for example, to allow their search to be reset to the begining before searching to a higher search
      * bound.
      */
-    public void resetEnqueuedOnceFlag();
+    void resetEnqueuedOnceFlag();
 
     /**
      * Provides the goal predicate for the search.
      *
      * @return The goal predicate for the search.
      */
-    public UnaryPredicate<T> getGoalPredicate();
+    UnaryPredicate<T> getGoalPredicate();
 }

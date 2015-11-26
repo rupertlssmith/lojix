@@ -32,5 +32,5 @@ public interface BigDecimalTypeVisitor
      *
      * @param type The big decimal type to visit.
      */
-    public void visit(BigDecimalType type);
+    void visit(BigDecimalType type);
 }

@@ -61,7 +61,7 @@ public interface QueueBasedSearchMethod<O, T extends Traversable<O>> extends Sea
      *
      * @throws UnsupportedOperationException If the search algorithm does not accept goal predicates.
      */
-    public void setGoalPredicate(UnaryPredicate<T> goalPredicate) throws UnsupportedOperationException;
+    void setGoalPredicate(UnaryPredicate<T> goalPredicate) throws UnsupportedOperationException;
 
     /**
      * Perform the search. This can be called multiple times to get successive results where more than one goal can be
@@ -78,12 +78,12 @@ public interface QueueBasedSearchMethod<O, T extends Traversable<O>> extends Sea
      *                                      reached without exhausting the search space this will cause an exception to
      *                                      be thrown rather than for this method to return null.
      */
-    public SearchNode<O, T> findGoalPath() throws SearchNotExhaustiveException;
+    SearchNode<O, T> findGoalPath() throws SearchNotExhaustiveException;
 
     /**
      * Attaches the specified repeated state filtering strategy to the search algorithm.
      *
      * @param filter The repeated state filter to prune the search space with.
      */
-    public void setRepeatedStateFilter(RepeatedStateFilter<O, T> filter);
+    void setRepeatedStateFilter(RepeatedStateFilter<O, T> filter);
 }

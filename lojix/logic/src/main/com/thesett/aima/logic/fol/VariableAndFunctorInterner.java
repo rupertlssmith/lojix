@@ -36,14 +36,14 @@ public interface VariableAndFunctorInterner
      *
      * @return The interning factory for variables in the machine.
      */
-    public IdAttribute.IdAttributeFactory<String> getVariableInterner();
+    IdAttribute.IdAttributeFactory<String> getVariableInterner();
 
     /**
      * Gets the interning factory for functors in the machine.
      *
      * @return The interning factory for functors in the machine.
      */
-    public IdAttribute.IdAttributeFactory<FunctorName> getFunctorInterner();
+    IdAttribute.IdAttributeFactory<FunctorName> getFunctorInterner();
 
     /**
      * Interns a functor name to an integer id. A functor is uniquely identified by a name and its arity. Two functors

@@ -33,12 +33,12 @@ public interface SessionFactory
      *
      * @return A new transactional session, not bound to the current thread.
      */
-    public TxSession createSession();
+    TxSession createSession();
 
     /**
      * Creates a new transactional session and associates it with the current thread.
      *
      * @return A transactional session associated with the current thread.
      */
-    public TxSession createAndBindSession();
+    TxSession createAndBindSession();
 }

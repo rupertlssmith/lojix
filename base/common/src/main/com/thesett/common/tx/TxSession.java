@@ -34,8 +34,8 @@ package com.thesett.common.tx;
 public interface TxSession extends Transactional, TxResourceEnlister
 {
     /** Binds the session as a transactional context to the current thread, if it is not already bound. */
-    public void bind();
+    void bind();
 
     /** Unbinds the session as a transactional context from the current thread. */
-    public void unbind();
+    void unbind();
 }

@@ -51,5 +51,5 @@ public interface PathJoinAlgorithm<O, T extends Traversable<O>>
      *
      * @return The goal node such that following its parents will take you back to the start node.
      */
-    public SearchNode<O, T> joinBothPaths(SearchNode<O, T> forwardPath, SearchNode<O, T> reversePath);
+    SearchNode<O, T> joinBothPaths(SearchNode<O, T> forwardPath, SearchNode<O, T> reversePath);
 }

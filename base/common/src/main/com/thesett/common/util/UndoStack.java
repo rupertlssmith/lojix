@@ -38,9 +38,9 @@ public interface UndoStack
     /**
      * Defines a type of undoable operations.
      */
-    public static interface Undoable
+    interface Undoable
     {
         /** Undoes an operation restoring state to how it was previous to the operation. */
-        public void undo();
+        void undo();
     }
 }

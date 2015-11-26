@@ -35,5 +35,5 @@ public interface TxResourceEnlister
      *
      * @param resource The resource to enlist.
      */
-    public void enlist(Transactional resource);
+    void enlist(Transactional resource);
 }

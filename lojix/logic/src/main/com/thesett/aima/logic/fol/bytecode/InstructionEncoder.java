@@ -41,12 +41,12 @@ public interface InstructionEncoder<I> extends Visitor<I>
      *
      * @param resolver The call point resolver.
      */
-    public void setCallPointResolver(CallPointResolver resolver);
+    void setCallPointResolver(CallPointResolver resolver);
 
     /**
      * Provides a buffer to the encoder, to which it should write its encoded binary instructions.
      *
      * @param buffer The bufer to output to.
      */
-    public void setCodeBuffer(ByteBuffer buffer);
+    void setCodeBuffer(ByteBuffer buffer);
 }

@@ -36,5 +36,5 @@ public interface Acceptor<V>
      *
      * @param visitor The visitor to apply to this.
      */
-    public void accept(Visitor<V> visitor);
+    void accept(Visitor<V> visitor);
 }

@@ -34,5 +34,5 @@ public interface Operator<O>
      *
      * @return The underlying object operator.
      */
-    public O getOp();
+    O getOp();
 }

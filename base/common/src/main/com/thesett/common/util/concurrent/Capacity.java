@@ -37,5 +37,5 @@ public interface Capacity
      *
      * @return The remaining capacity.
      */
-    public int remainingCapacity();
+    int remainingCapacity();
 }

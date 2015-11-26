@@ -34,5 +34,5 @@ public interface ClauseTransformer extends TermTransformer
      *
      * @return A clause which is a transformation of the argument.
      */
-    public Clause transform(Clause clause);
+    Clause transform(Clause clause);
 }

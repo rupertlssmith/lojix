@@ -37,12 +37,12 @@ public interface InstructionListing<I>
      *
      * @return The interned name of the procedure that this is an instruction listing for.
      */
-    public int getName();
+    int getName();
 
     /**
      * Provides the instruction listing for the compiled entity.
      *
      * @return The instruction listing for the compiled entity.
      */
-    public SizeableList<I> getInstructions();
+    SizeableList<I> getInstructions();
 }

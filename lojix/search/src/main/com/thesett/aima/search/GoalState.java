@@ -41,5 +41,5 @@ public interface GoalState extends State
      *
      * @return True if this is a goal state, false otherwise.
      */
-    public boolean isGoal();
+    boolean isGoal();
 }

@@ -46,7 +46,7 @@ public interface IndexedMap<K, V> extends Map<K, V>
      *
      * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
      */
-    public V get(int index) throws IndexOutOfBoundsException;
+    V get(int index) throws IndexOutOfBoundsException;
 
     /**
      * Returns the index to which this map maps the specified key.
@@ -55,7 +55,7 @@ public interface IndexedMap<K, V> extends Map<K, V>
      *
      * @return The index of the specified key, or -1 if the key is not in this map.
      */
-    public int getIndexOf(Object key);
+    int getIndexOf(Object key);
 
     /**
      * Replaces the element at the specified position in this data structure with the specified element. This is an
@@ -69,7 +69,7 @@ public interface IndexedMap<K, V> extends Map<K, V>
      * @throws UnsupportedOperationException if the method is not supported by this indexed map.
      * @throws IndexOutOfBoundsException     if the index is out of range (index < 0 || index >= size())
      */
-    public V set(int index, V value) throws IndexOutOfBoundsException, UnsupportedOperationException;
+    V set(int index, V value) throws IndexOutOfBoundsException, UnsupportedOperationException;
 
     /**
      * Removes the element at the specified position in this data structure. This is an optioanl operation. Shifts any
@@ -83,12 +83,12 @@ public interface IndexedMap<K, V> extends Map<K, V>
      * @throws UnsupportedOperationException if the method is not supported by this indexed map.
      * @throws IndexOutOfBoundsException     if the index is out of range (index < 0 || index >= size())
      */
-    public V remove(int index) throws IndexOutOfBoundsException, UnsupportedOperationException;
+    V remove(int index) throws IndexOutOfBoundsException, UnsupportedOperationException;
 
     /**
      * Returns a list view of the values conatins in this map.
      *
      * @return A list view of the values conatins in this map.
      */
-    public List<V> valuesAsList();
+    List<V> valuesAsList();
 }

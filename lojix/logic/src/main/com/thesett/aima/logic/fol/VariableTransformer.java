@@ -34,5 +34,5 @@ public interface VariableTransformer extends TermTransformer
      *
      * @return A variable which is a transformation of the argument.
      */
-    public Variable transform(Variable variable);
+    Variable transform(Variable variable);
 }

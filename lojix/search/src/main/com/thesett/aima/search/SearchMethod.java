@@ -40,7 +40,7 @@ public interface SearchMethod<T>
      * @param max The maximum number of states to goal test. If this is zero or less then the maximum number of steps
      *            will not be checked for.
      */
-    public void setMaxSteps(int max);
+    void setMaxSteps(int max);
 
     /**
      * Adds a start state to the search. Many search algorithms will only accept a single start state in which case the
@@ -50,13 +50,13 @@ public interface SearchMethod<T>
      *
      * @param startState The start state to add to the collection of start states to begin the search with.
      */
-    public void addStartState(T startState);
+    void addStartState(T startState);
 
     /**
      * Resets the search. This should clear any start and goal states, any maximum step count limit and any repeated
      * state filters that have been set and leave the search in a state in which it is ready to be run.
      */
-    public void reset();
+    void reset();
 
     /**
      * Perform the search. This can be called multiple times to get successive results where more than one goal can be
@@ -73,5 +73,5 @@ public interface SearchMethod<T>
      *                                      reached without exhausting the search space this will cause an exception to
      *                                      be thrown rather than for this method to return null.
      */
-    public T search() throws SearchNotExhaustiveException;
+    T search() throws SearchNotExhaustiveException;
 }

@@ -36,5 +36,5 @@ public interface BinaryPredicate<T, S>
      *
      * @return <tt>true</tt> if the two objects are memebers of a binary relation, false otherwise.
      */
-    public boolean evaluate(T t, S s);
+    boolean evaluate(T t, S s);
 }

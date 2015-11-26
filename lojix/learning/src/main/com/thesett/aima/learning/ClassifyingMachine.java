@@ -44,5 +44,5 @@ public interface ClassifyingMachine
      * @throws ClassifyingFailureException If the classification algorithm fails for any reason (for example missing
      *                                     data in the state to classify).
      */
-    public Map<String, OrdinalAttribute> classify(State state) throws ClassifyingFailureException;
+    Map<String, OrdinalAttribute> classify(State state) throws ClassifyingFailureException;
 }

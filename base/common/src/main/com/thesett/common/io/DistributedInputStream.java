@@ -42,7 +42,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public int available() throws IOException;
+    int available() throws IOException;
 
     /**
      * Closes this input stream and releases any system resources associated with the stream.
@@ -50,7 +50,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public void close() throws IOException;
+    void close() throws IOException;
 
     /**
      * Marks the current position in this input stream.
@@ -59,7 +59,7 @@ public interface DistributedInputStream extends Remote
      *
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public void mark(int readlimit) throws RemoteException;
+    void mark(int readlimit) throws RemoteException;
 
     /**
      * Tests if this input stream supports the mark and reset methods.
@@ -68,7 +68,7 @@ public interface DistributedInputStream extends Remote
      *
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public boolean markSupported() throws RemoteException;
+    boolean markSupported() throws RemoteException;
 
     /**
      * Reads the next byte of data from the input stream.
@@ -78,7 +78,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public int read() throws IOException;
+    int read() throws IOException;
 
     /**
      * Reads some number of bytes from the input stream and stores them into the buffer array b. The bytes are also
@@ -91,7 +91,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public ByteBlock read(byte[] b) throws IOException;
+    ByteBlock read(byte[] b) throws IOException;
 
     /**
      * Reads up to len bytes of data from the input stream into an array of bytes.
@@ -105,7 +105,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public ByteBlock read(byte[] b, int off, int len) throws IOException;
+    ByteBlock read(byte[] b, int off, int len) throws IOException;
 
     /**
      * Repositions this stream to the position at the time the mark method was last called on this input stream.
@@ -113,7 +113,7 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public void reset() throws IOException;
+    void reset() throws IOException;
 
     /**
      * Skips over and discards n bytes of data from this input stream.
@@ -125,5 +125,5 @@ public interface DistributedInputStream extends Remote
      * @throws IOException     If an I/O error occurs when accessing the stream.
      * @throws RemoteException If an RMI error occurs during remote access.
      */
-    public long skip(long n) throws IOException;
+    long skip(long n) throws IOException;
 }

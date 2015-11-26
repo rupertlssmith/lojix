@@ -36,7 +36,7 @@ public interface SynchRecord<E>
      *
      * @return The data element contained by this record.
      */
-    public E getElement();
+    E getElement();
 
     /**
      * Tells the synch queue to put this element back onto the queue instead of releasing its producer. The element is
@@ -45,14 +45,14 @@ public interface SynchRecord<E>
      * <p/>This method will raise a runtime exception {@link AlreadyUnblockedException} if the producer for this element
      * has already been unblocked.
      */
-    public void reQueue();
+    void reQueue();
 
     /**
      * Immediately releases the producer of this data record. Consumers can bring the synchronization time of producers
      * to a minimum by using this method to release them at the earliest possible moment when batch consuming records
      * from sychronized producers.
      */
-    public void releaseImmediately();
+    void releaseImmediately();
 
     /**
      * Tells the synch queue to raise an exception with this elements producer. The exception is not raised immediately
@@ -67,5 +67,5 @@ public interface SynchRecord<E>
      *
      * @param e The exception to raise on the producer.
      */
-    public void inError(Exception e);
+    void inError(Exception e);
 }

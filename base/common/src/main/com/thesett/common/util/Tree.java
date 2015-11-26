@@ -52,7 +52,7 @@ import java.util.Iterator;
 public interface Tree<E>
 {
     /** Defines the different types of iteration order over the elements of trees. */
-    public enum IterationOrder
+    enum IterationOrder
     {
         /** Used to request pre-order iteration. */
         PreOrder,
@@ -69,7 +69,7 @@ public interface Tree<E>
      *
      * @return True if this tree is a leaf and false if it is a node.
      */
-    public boolean isLeaf();
+    boolean isLeaf();
 
     /**
      * Returns the tree which is the parent of this tree. If this tree's root is the real root node of the whole tree
@@ -77,42 +77,42 @@ public interface Tree<E>
      *
      * @return The tree which this tree is a sub-tree of. If this tree if a root tree then this returns null.
      */
-    public Node<E> getParent();
+    Node<E> getParent();
 
     /**
      * Set the node which is the parent of this tree.
      *
      * @param parent The parent tree which this tree is to be added as a sub-tree of.
      */
-    public void setParent(Node<E> parent);
+    void setParent(Node<E> parent);
 
     /**
      * If this is a leaf, then returns the tree as a Leaf. If it is not a leaf then this method should return null.
      *
      * @return This point in the tree as a leaf, or null if this is a node.
      */
-    public Leaf<E> getAsLeaf();
+    Leaf<E> getAsLeaf();
 
     /**
      * If this is a node, then returns the tree as a Node. If it is not a node then this method should return null.
      *
      * @return This point in the tree as a node, or null if this is a leaf.
      */
-    public Node<E> getAsNode();
+    Node<E> getAsNode();
 
     /**
      * Returns the data element stored at the current point in this tree.
      *
      * @return The data element stored at this point in the tree.
      */
-    public E getElement();
+    E getElement();
 
     /**
      * Sets the data element stored at the current point in this tree.
      *
      * @param newElement The data element to store in the tree at this point.
      */
-    public void setElement(E newElement);
+    void setElement(E newElement);
 
     /**
      * Adds a child tree to the children of this point in the tree. If this is already a node then it remains as a node.
@@ -124,13 +124,13 @@ public interface Tree<E>
      * @throws UnsupportedOperationException if this operation is not supported (because the tree in not modifiable, or
      *                                       because this point is a leaf that cannot be promoted to a node).
      */
-    public void addChild(Tree<E> child);
+    void addChild(Tree<E> child);
 
     /**
      * Clears all the children of this point in the tree. If this point is a leaf it will have no children so this
      * operation does nothing. If this point is a node it must be reduced to a leaf by this operation.
      */
-    public void clearChildren();
+    void clearChildren();
 
     /**
      * Returns an iterator over all the children of this node. This is different to the {@link #iterator} method which
@@ -139,7 +139,7 @@ public interface Tree<E>
      *
      * @return An iterator over the children of this node, if it is a node and has children.
      */
-    public Iterator<Tree<E>> getChildIterator();
+    Iterator<Tree<E>> getChildIterator();
 
     /**
      * This iterates over the sub-trees stored in this Tree at or below this point (that is, this point an all its
@@ -149,12 +149,12 @@ public interface Tree<E>
      *
      * @return An iterator over the tree.
      */
-    public Iterator<? extends Tree<E>> iterator(IterationOrder order);
+    Iterator<? extends Tree<E>> iterator(IterationOrder order);
 
     /**
      * A Node is a Tree that has children.
      */
-    public static interface Node<E> extends Tree<E>
+    interface Node<E> extends Tree<E>
     {
         /**
          * Gets an iterator over the children of this node. This is different to the {@link #iterator} method which
@@ -176,7 +176,7 @@ public interface Tree<E>
     /**
      * A Leaf is a Tree that does not have children.
      */
-    public static interface Leaf<E> extends Tree<E>
+    interface Leaf<E> extends Tree<E>
     {
     }
 }

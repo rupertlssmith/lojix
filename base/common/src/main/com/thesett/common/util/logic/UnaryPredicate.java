@@ -36,5 +36,5 @@ public interface UnaryPredicate<T>
      *
      * @return <tt>true</tt> if the object is a member of the predicate, <tt>false</tt> otherwise.
      */
-    public boolean evaluate(T t);
+    boolean evaluate(T t);
 }

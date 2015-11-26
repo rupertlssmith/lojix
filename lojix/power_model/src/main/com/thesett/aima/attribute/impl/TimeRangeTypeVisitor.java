@@ -32,5 +32,5 @@ public interface TimeRangeTypeVisitor
      *
      * @param type The time range type to visit.
      */
-    public void visit(TimeRangeType type);
+    void visit(TimeRangeType type);
 }

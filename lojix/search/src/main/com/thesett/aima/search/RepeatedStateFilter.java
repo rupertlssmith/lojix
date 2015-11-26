@@ -70,11 +70,11 @@ public interface RepeatedStateFilter<O, T extends Traversable<O>> extends Binary
      *
      * @return <tt>true</tt> if the state should be searched, <tt>false</tt> is it should be eliminated by this filter.
      */
-    public boolean evaluate(T state, SearchNode<O, T> parentNode);
+    boolean evaluate(T state, SearchNode<O, T> parentNode);
 
     /**
      * Called every time a search algorithm is started using this filter. Should clear any internal state that may exist
      * from previous searches.
      */
-    public void reset();
+    void reset();
 }

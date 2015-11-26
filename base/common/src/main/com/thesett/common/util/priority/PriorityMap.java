@@ -53,14 +53,14 @@ public interface PriorityMap<K, V> extends Map<K, V>
      * @return The priority function associated with this priority map, or <tt>null</tt> if it does not import a
      *         priority ordering.
      */
-    public Function<K, Integer> priority();
+    Function<K, Integer> priority();
 
     /**
      * Returns the first (lowest) key currently in this priority map.
      *
      * @return The first (lowest) key currently in this priority map, or <tt>null</tt> if there is no first key.
      */
-    public K pollKey();
+    K pollKey();
 
     /**
      * Returns the value of the first (lowest) key currently in this priority map.
@@ -70,7 +70,7 @@ public interface PriorityMap<K, V> extends Map<K, V>
      * @throws java.util.NoSuchElementException If there are no keys in the map. This is thrown to distinguish from the
      *                                          case where the first key has a null value.
      */
-    public V pollValue();
+    V pollValue();
 
     /*
      * Gets the map entry for the first (lowest) key currently in this priority map.

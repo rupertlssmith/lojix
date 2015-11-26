@@ -35,5 +35,5 @@ public interface Function<X, Y>
      *
      * @return The result of applying the function to its argument.
      */
-    public Y apply(X x);
+    Y apply(X x);
 }

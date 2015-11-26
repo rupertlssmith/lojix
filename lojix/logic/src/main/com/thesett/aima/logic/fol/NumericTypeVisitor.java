@@ -32,5 +32,5 @@ public interface NumericTypeVisitor extends TermVisitor
      *
      * @param literal The numeric literal to visit.
      */
-    public void visit(NumericType literal);
+    void visit(NumericType literal);
 }

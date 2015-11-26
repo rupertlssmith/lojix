@@ -58,7 +58,7 @@ public interface TxMethod<E> extends Transactional
      *
      * @param op The write operation as a future.
      */
-    public void requestWriteOperation(TxOperation op);
+    void requestWriteOperation(TxOperation op);
 
     /**
      * Requests an operation that only reads from the transactional resource. If neccessary locks may be acquired, or
@@ -69,7 +69,7 @@ public interface TxMethod<E> extends Transactional
      *
      * @return The value read from the resource.
      */
-    public E requestReadOperation(TxOperation op);
+    E requestReadOperation(TxOperation op);
 
     /**
      * Gets this transactional methods isolation level.

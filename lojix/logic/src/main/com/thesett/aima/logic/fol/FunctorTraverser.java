@@ -40,5 +40,5 @@ public interface FunctorTraverser extends TermTraverser
      *
      * @return An iterator over operators producing the traveresed elements of the functor.
      */
-    public Iterator<Operator<Term>> traverse(Functor functor, boolean reverse);
+    Iterator<Operator<Term>> traverse(Functor functor, boolean reverse);
 }

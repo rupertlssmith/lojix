@@ -34,5 +34,5 @@ public interface ShutdownHookable
      *
      * @return The shut down hook.
      */
-    public Thread getShutdownHook();
+    Thread getShutdownHook();
 }

@@ -46,7 +46,7 @@ public interface BuiltIn
      *
      * @return <tt>true</tt> if the proof step succeeded, <tt>false</tt> if it failed.
      */
-    public boolean proofStep(ResolutionState state);
+    boolean proofStep(ResolutionState state);
 
     /**
      * Creates the continuation states that a built in generates in a given resolution state for subsequent resolution.
@@ -54,5 +54,5 @@ public interface BuiltIn
      *
      * @param state The state to generate continuation states for.
      */
-    public void createContinuationStates(ResolutionState state);
+    void createContinuationStates(ResolutionState state);
 }

@@ -34,5 +34,5 @@ public interface Sentence<T>
      *
      * @return The wrapped sentence in the logical language.
      */
-    public T getT();
+    T getT();
 }

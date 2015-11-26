@@ -38,5 +38,5 @@ public interface BoundProperty<O, T extends Traversable<O>>
      *
      * @return The bounded value of the search node as a float.
      */
-    public float getBoundProperty(SearchNode<O, T> searchNode);
+    float getBoundProperty(SearchNode<O, T> searchNode);
 }

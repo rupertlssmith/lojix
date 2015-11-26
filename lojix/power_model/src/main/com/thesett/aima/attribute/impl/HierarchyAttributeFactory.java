@@ -37,21 +37,21 @@ public interface HierarchyAttributeFactory
      *
      * @return The hierarchy attribute type for this factory.
      */
-    public HierarchyType getType();
+    HierarchyType getType();
 
     /**
      * Sets up the level names of the hierarchy.
      *
      * @param levels The level names.
      */
-    public void setLevelNames(String[] levels);
+    void setLevelNames(String[] levels);
 
     /**
      * Gets the level names.
      *
      * @return The level names.
      */
-    public String[] getLevelNames();
+    String[] getLevelNames();
 
     /**
      * Creates a hierarchy attribute of the class that this is a factory for. If the attribute class has been finalized
@@ -61,7 +61,7 @@ public interface HierarchyAttributeFactory
      *
      * @return A new hierarchy attribute with the specified value.
      */
-    public HierarchyAttribute createHierarchyAttribute(String[] value);
+    HierarchyAttribute createHierarchyAttribute(String[] value);
 
     /**
      * Creates a hierarchy attribute of the class that this is a factory for. This method differs from the
@@ -74,7 +74,7 @@ public interface HierarchyAttributeFactory
      *
      * @return A new hierarchy attribute with the specified value.
      */
-    public HierarchyAttribute createHierarchyAttributeForComparison(String[] value);
+    HierarchyAttribute createHierarchyAttributeForComparison(String[] value);
 
     /**
      * Converts a compact int representation of a hierarchy attribute into its object representation. If the int is not
@@ -84,7 +84,7 @@ public interface HierarchyAttributeFactory
      *
      * @return A hierarchy attribute looked up by its in index.
      */
-    public HierarchyAttribute getAttributeFromInt(int i);
+    HierarchyAttribute getAttributeFromInt(int i);
 
     /**
      * Looks up an attribute by its id.
@@ -93,25 +93,25 @@ public interface HierarchyAttributeFactory
      *
      * @return A string attribute looked up by its id.
      */
-    public HierarchyAttribute getAttributeFromId(long id);
+    HierarchyAttribute getAttributeFromId(long id);
 
     /**
      * Reports the maximum number of levels that this hierarchy attribute type contains.
      *
      * @return The maximum number of levels that this hierarchy attribute type contains.
      */
-    public int getMaxLevels();
+    int getMaxLevels();
 
     /** Finalizes an attribute class. This prevents any new attribute value from being added to the class. */
-    public void finalizeAttribute();
+    void finalizeAttribute();
 
     /** Drops an attribute class. The attribute class is explicitly deleted. */
-    public void dropAttributeClass();
+    void dropAttributeClass();
 
     /**
      * Returns a name that uniquely identifies this hierarchy attribute type.
      *
      * @return The name of the hierarchy attribute type.
      */
-    public String getName();
+    String getName();
 }

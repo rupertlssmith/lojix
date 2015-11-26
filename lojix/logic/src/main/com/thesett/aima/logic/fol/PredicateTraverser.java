@@ -40,5 +40,5 @@ public interface PredicateTraverser extends TermTraverser
      *
      * @return An iterator over operators producing the traversed elements of the predicate.
      */
-    public Iterator<Operator<Term>> traverse(Predicate predicate, boolean reverse);
+    Iterator<Operator<Term>> traverse(Predicate predicate, boolean reverse);
 }

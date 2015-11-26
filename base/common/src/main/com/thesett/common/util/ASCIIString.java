@@ -37,7 +37,7 @@ public interface ASCIIString extends CharSequence, Comparable<ASCIIString>
      *
      * @return The data that makes up the string as an array of bytes.
      */
-    public byte[] getBytes();
+    byte[] getBytes();
 
     /**
      * Gets the byte of data within the string, at the specified index.
@@ -46,7 +46,7 @@ public interface ASCIIString extends CharSequence, Comparable<ASCIIString>
      *
      * @return The byte of data within the string, at the specified index.
      */
-    public byte get(int index);
+    byte get(int index);
 
     /**
      * Calculates the index within this string of the first occurrence of the specified substring, starting at the

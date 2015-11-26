@@ -45,5 +45,5 @@ public interface OrdinalAttribute extends Attribute
      * @throws com.thesett.aima.state.InfiniteValuesException If the set of values cannot be indexed because it is
      *                                                        infinite or cannot be ordered.
      */
-    public int ordinal() throws InfiniteValuesException;
+    int ordinal() throws InfiniteValuesException;
 }

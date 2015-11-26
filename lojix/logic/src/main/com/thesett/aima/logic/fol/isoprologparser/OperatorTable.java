@@ -44,7 +44,7 @@ public interface OperatorTable
      * @param priority      The priority of the operator.
      * @param associativity The associativity of the operator.
      */
-    public void setOperator(int name, String textName, int priority, OpSymbol.Associativity associativity);
+    void setOperator(int name, String textName, int priority, OpSymbol.Associativity associativity);
 
     /**
      * Checks the operator table for all possible operators matching a given name.
@@ -53,5 +53,5 @@ public interface OperatorTable
      *
      * @return An array of matching operators, or <tt>null</tt> if none can be found.
      */
-    public EnumMap<OpSymbol.Fixity, OpSymbol> getOperatorsMatchingNameByFixity(String name);
+    EnumMap<OpSymbol.Fixity, OpSymbol> getOperatorsMatchingNameByFixity(String name);
 }

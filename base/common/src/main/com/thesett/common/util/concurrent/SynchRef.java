@@ -35,7 +35,7 @@ public interface SynchRef
      *
      * @return The number of records associated with this reference.
      */
-    public int getNumRecords();
+    int getNumRecords();
 
     /**
      * Any producers that have had their data elements taken from the queue but have not been unblocked are unblocked
@@ -43,5 +43,5 @@ public interface SynchRef
      * by a consumer. Producers that have had exceptions for their data items registered by consumers will be unblocked
      * but will not return from their put call normally, but with an exception instead.
      */
-    public void unblockProducers();
+    void unblockProducers();
 }

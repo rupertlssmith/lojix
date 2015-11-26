@@ -43,7 +43,7 @@ public interface Throttle
      *
      * @param hertz The throttling rate in cycles per second.
      */
-    public void setRate(float hertz);
+    void setRate(float hertz);
 
     /**
      * This method can only be called at the rate set by the {@link #setRate} method, if it is called faster than this
@@ -55,7 +55,7 @@ public interface Throttle
      *
      * @throws InterruptedException If interrupted whilst performing a blocking wait on the throttle.
      */
-    public void throttle() throws InterruptedException;
+    void throttle() throws InterruptedException;
 
     /**
      * Checks but does not enforce the throttle rate. When this method is called, it checks if a length of time greater
@@ -67,7 +67,7 @@ public interface Throttle
      *         first time this method is called on a throttle, it returns <tt>true</tt> as the base case to the above
      *         self-referential definition.
      */
-    public boolean checkThrottle();
+    boolean checkThrottle();
 
     /**
      * Checks but does not enforce the throttle rate. When this method is called, it checks if a length of time greater
@@ -81,5 +81,5 @@ public interface Throttle
      *         that the throttle time has passed and a positive time indicates that there is still time to pass before
      *         it is reached. The units are in nanoseconds.
      */
-    public long timeToThrottleNanos();
+    long timeToThrottleNanos();
 }

@@ -32,5 +32,5 @@ public interface IntegerTypeVisitor extends TermVisitor
      *
      * @param literal The integer literal to visit.
      */
-    public void visit(IntegerType literal);
+    void visit(IntegerType literal);
 }

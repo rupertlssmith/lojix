@@ -44,5 +44,5 @@ public interface Heuristic<O, T extends Traversable<O>>
      *
      * @return a real valued heuristic evaluation of the state.
      */
-    public float computeH(T state, HeuristicSearchNode<O, T> searchNode);
+    float computeH(T state, HeuristicSearchNode<O, T> searchNode);
 }

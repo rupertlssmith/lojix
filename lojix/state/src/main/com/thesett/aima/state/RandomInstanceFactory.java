@@ -39,5 +39,5 @@ public interface RandomInstanceFactory<T>
      *
      * @throws RandomInstanceNotSupportedException If a random instance of the type cannot be created.
      */
-    public T createRandomInstance() throws RandomInstanceNotSupportedException;
+    T createRandomInstance() throws RandomInstanceNotSupportedException;
 }

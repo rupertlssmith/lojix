@@ -45,19 +45,19 @@ public interface UserReadableError
      *
      * @return The user readable message.
      */
-    public String getUserMessage();
+    String getUserMessage();
 
     /**
      * Gets the user readable message key to look up the user message in a resource file by.
      *
      * @return The user readable message key.
      */
-    public String getUserMessageKey();
+    String getUserMessageKey();
 
     /**
      * Reports whether or not this object is a user readable error.
      *
      * @return True if this is user readable, false if not.
      */
-    public boolean isUserReadable();
+    boolean isUserReadable();
 }

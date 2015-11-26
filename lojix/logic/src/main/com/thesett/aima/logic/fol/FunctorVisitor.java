@@ -32,5 +32,5 @@ public interface FunctorVisitor extends TermVisitor
      *
      * @param functor The functor to visit.
      */
-    public void visit(Functor functor);
+    void visit(Functor functor);
 }

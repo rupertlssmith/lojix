@@ -32,5 +32,5 @@ public interface DateRangeTypeVisitor
      *
      * @param type The date range type to visit.
      */
-    public void visit(DateRangeType type);
+    void visit(DateRangeType type);
 }

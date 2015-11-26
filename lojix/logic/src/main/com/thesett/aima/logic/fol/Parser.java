@@ -39,7 +39,7 @@ public interface Parser<S extends Term, T>
      *
      * @param source The token source to parse from.
      */
-    public void setTokenSource(Source<T> source);
+    void setTokenSource(Source<T> source);
 
     /**
      * Parses the next sentence from the current token source.
@@ -48,7 +48,7 @@ public interface Parser<S extends Term, T>
      *
      * @throws SourceCodeException If the source being parsed does not match the grammar.
      */
-    public Sentence<S> parse() throws SourceCodeException;
+    Sentence<S> parse() throws SourceCodeException;
 
     /**
      * Sets up a custom operator symbol on the parser.
@@ -57,5 +57,5 @@ public interface Parser<S extends Term, T>
      * @param priority      The priority of the operator, zero unsets it.
      * @param associativity The operators associativity.
      */
-    public void setOperator(String operatorName, int priority, OpSymbol.Associativity associativity);
+    void setOperator(String operatorName, int priority, OpSymbol.Associativity associativity);
 }
