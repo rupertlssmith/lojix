@@ -55,7 +55,7 @@ public class MemoryLayoutMonitor implements PropertyChangeListener
     private final TextTableModel table;
 
     /** A labeled view onto the register table. */
-    private Map<String, String> labeledTable;
+    private final Map<String, String> labeledTable;
 
     /**
      * Constructs a table model with labelled rows and columns to hold the register values.

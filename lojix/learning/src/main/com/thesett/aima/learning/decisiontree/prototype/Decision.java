@@ -47,10 +47,10 @@ public class Decision extends DecisionTreeElement
     //private double gainRatio;
 
     /** Holds the name of the property that this decision acts on. */
-    private String propertyName;
+    private final String propertyName;
 
     /** Holds the number of outcomes that the decision can have. */
-    private int numOutcomes;
+    private final int numOutcomes;
 
     /**
      * Holds a lookup table from the ordinal of the possible attribute values to the child decision tree that computes

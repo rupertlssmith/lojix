@@ -80,7 +80,7 @@ public class DirectMemento implements Memento, Serializable
     public static final int NOSAVE = (Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT);
 
     /** Holds the fields of the object that this memento has captured. */
-    private Map values = new HashMap();
+    private final Map values = new HashMap();
 
     /** The object that this is a memento for. */
     Object ob;

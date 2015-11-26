@@ -31,10 +31,10 @@ import com.thesett.aima.attribute.impl.IdAttribute;
 public class VariableAndFunctorInternerImpl implements VariableAndFunctorInterner
 {
     /** Holds the interner that turns variable names into indexed integers. */
-    private IdAttribute.IdAttributeFactory<String> variableInterningFactory;
+    private final IdAttribute.IdAttributeFactory<String> variableInterningFactory;
 
     /** Holds the interner that turns functor names and arities into indexed integers. */
-    private IdAttribute.IdAttributeFactory<FunctorName> functorInterningFactory;
+    private final IdAttribute.IdAttributeFactory<FunctorName> functorInterningFactory;
 
     /**
      * Creates an interner for variable and functor names, with the names created under the specified name spaces.

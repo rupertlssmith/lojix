@@ -28,7 +28,7 @@ package com.thesett.aima.logic.fol;
 public class DoubleLiteral extends RealType
 {
     /** Holds the value of the number. */
-    private double value;
+    private final double value;
 
     /**
      * Creates a new number with the specified value.

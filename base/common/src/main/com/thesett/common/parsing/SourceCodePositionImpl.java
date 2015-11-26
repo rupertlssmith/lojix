@@ -29,16 +29,16 @@ package com.thesett.common.parsing;
 public class SourceCodePositionImpl implements SourceCodePosition
 {
     /** The start line position. */
-    private int startLine;
+    private final int startLine;
 
     /** That start column position. */
-    private int startColumn;
+    private final int startColumn;
 
     /** The end line position. */
-    private int endLine;
+    private final int endLine;
 
     /** The end column position. */
-    private int endColumn;
+    private final int endColumn;
 
     /**
      * Creates a source code position from the specified start and end coordinates.

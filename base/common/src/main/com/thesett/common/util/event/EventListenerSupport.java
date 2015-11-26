@@ -36,10 +36,10 @@ public class EventListenerSupport<L extends EventListener>
     private volatile List<L> activeListeners;
 
     /** The definitive list of listeners. */
-    private List<L> listeners = new LinkedList<L>();
+    private final List<L> listeners = new LinkedList<L>();
 
     /** A lock to use as a mutex around updates to the list of listeners. */
-    private Object listenersLock = new Object();
+    private final Object listenersLock = new Object();
 
     /** {@inheritDoc} */
     public void addListener(L listener)

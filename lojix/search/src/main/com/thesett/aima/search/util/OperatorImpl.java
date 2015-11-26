@@ -32,7 +32,7 @@ import com.thesett.aima.search.Operator;
 public class OperatorImpl<O> implements Operator<O>
 {
     /** Holds the encapsulated object operator. */
-    private O op;
+    private final O op;
 
     /**
      * Encapsulates an object as an operator. The equality and hashCode methods of the operator delegate to this

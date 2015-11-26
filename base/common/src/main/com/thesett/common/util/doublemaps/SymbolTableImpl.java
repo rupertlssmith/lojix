@@ -76,14 +76,14 @@ public class SymbolTableImpl<K, L, E> implements SymbolTable<K, L, E>
     private SymbolTableImpl<K, L, E> parentScope;
 
     /** Holds the lexical depth of this table. */
-    private int depth;
+    private final int depth;
 
     /**
      * Holds the sequence key of the parent symbol table that this one is a nested scope within. The top-level table
      * uses a parent sequence key of -1, to ensure that it is not confused with the table that is nested within symbol
      * 0.
      */
-    private int parentSequenceKey;
+    private final int parentSequenceKey;
 
     /** Creates a new top-level scope empty symbol table. */
     public SymbolTableImpl()

@@ -35,10 +35,10 @@ import com.thesett.aima.state.OrdinalAttribute;
 public class Assignment extends DecisionTreeElement
 {
     /** Holds the name of the property that this assignment acts on. */
-    private String propertyName;
+    private final String propertyName;
 
     /** Holds the attribute value that is assigned. */
-    private OrdinalAttribute toAssign;
+    private final OrdinalAttribute toAssign;
 
     /**
      * Builds an assignment of a value to a property.

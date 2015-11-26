@@ -35,10 +35,10 @@ import com.thesett.aima.state.State;
 public class MapBackedState implements State
 {
     /** Holds the property values. */
-    private Map<String, Object> properties = new HashMap<String, Object>();
+    private final Map<String, Object> properties = new HashMap<String, Object>();
 
     /** Holds the state type mapping. */
-    private DynaComponent componentType = new DynaComponent("MapBackedState");
+    private final DynaComponent componentType = new DynaComponent("MapBackedState");
 
     /** {@inheritDoc} */
     public Object getProperty(String property)

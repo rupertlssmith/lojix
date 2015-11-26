@@ -75,16 +75,16 @@ public class ByteCodeMonitor
     private final TextTableModel table;
 
     /** A column labeled view onto the code table. */
-    private DoubleKeyedMap<String, Integer, String> labeledTable;
+    private final DoubleKeyedMap<String, Integer, String> labeledTable;
 
     /** A mapping from code table rows to code addresses. */
-    private List<Integer> rowToAddress = new ArrayList<Integer>();
+    private final List<Integer> rowToAddress = new ArrayList<Integer>();
 
     /** A mapping from code addresses to code table rows. */
-    private ConcurrentSkipListMap<Integer, Integer> addressToRow = new ConcurrentSkipListMap<Integer, Integer>();
+    private final ConcurrentSkipListMap<Integer, Integer> addressToRow = new ConcurrentSkipListMap<Integer, Integer>();
 
     /** A copy of the code buffer, with code update deltas merged into it. */
-    private ByteBuffer codeBuffer = ByteBuffer.allocate(1024);
+    private final ByteBuffer codeBuffer = ByteBuffer.allocate(1024);
 
     /**
      * Constructs a table model with labelled columns to hold byte code.

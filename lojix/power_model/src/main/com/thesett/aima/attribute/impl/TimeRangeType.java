@@ -48,13 +48,13 @@ public class TimeRangeType extends BaseType<TimeOnly> implements Type<TimeOnly>,
     private static final Map<String, TimeRangeType> INT_RANGE_TYPES = new HashMap<String, TimeRangeType>();
 
     /** Holds the minimum value an instance of this type can take. */
-    private TimeOnly minValue;
+    private final TimeOnly minValue;
 
     /** Holds the maximum value an instance of this type can take. */
-    private TimeOnly maxValue;
+    private final TimeOnly maxValue;
 
     /** Used to hold the name of this time range type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates an instance of an integer range type with the specified name and min and max values.

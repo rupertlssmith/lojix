@@ -28,7 +28,7 @@ package com.thesett.aima.logic.fol;
 public class IntLiteral extends IntegerType
 {
     /** Holds the value of the number. */
-    private int value;
+    private final int value;
 
     /**
      * Creates a new number with the specified value.

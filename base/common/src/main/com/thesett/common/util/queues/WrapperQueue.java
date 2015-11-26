@@ -95,34 +95,34 @@ public class WrapperQueue<E> implements SizeableReQueue<E>, SizeableBlockingQueu
     }
 
     /** Flag to indicate that this wrapper should provide transactional access. */
-    private boolean transactional;
+    private final boolean transactional;
 
     /** Flag to indicate that this wrapper should monitor the queues size. */
-    private boolean sizeable;
+    private final boolean sizeable;
 
     /** Flag to indicate that this wrapper should atomically count the number of elements in this queue. */
-    private boolean atomicallyCounted;
+    private final boolean atomicallyCounted;
 
     /** Holds the underlying queue that is wrapped. */
-    private java.util.Queue<E> queue;
+    private final java.util.Queue<E> queue;
 
     /** Flag that indicates that the underlying queue implements java.util.concurrent.BlockingQueue. */
     private boolean isBlockingQueue = false;
 
     /** Holds the queue of requeued items, in the event of roll-backs. */
-    private Collection<RequeueElementWrapper<E>> requeue;
+    private final Collection<RequeueElementWrapper<E>> requeue;
 
     /** Holds a mapping from elements to the requeue wrapped versions. */
-    private Map<E, RequeueElementWrapper<E>> requeuedElementMap = new HashMap<E, RequeueElementWrapper<E>>();
+    private final Map<E, RequeueElementWrapper<E>> requeuedElementMap = new HashMap<E, RequeueElementWrapper<E>>();
 
     /** Used to keep track of the size of the queue. */
-    private AtomicLong dataSize = new AtomicLong(0L);
+    private final AtomicLong dataSize = new AtomicLong(0L);
 
     /** Used to keep track of the count of elements in the queue. */
-    private AtomicInteger count = new AtomicInteger(0);
+    private final AtomicInteger count = new AtomicInteger(0);
 
     /** Holds the transactional method implementation strategy for transactional queues. */
-    private TxMethod txMethod;
+    private final TxMethod txMethod;
 
     /** Holds the signalable resource to notify when the size of the queue changes. */
     private Signalable signalable;

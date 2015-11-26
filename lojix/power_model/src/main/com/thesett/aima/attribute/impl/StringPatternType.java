@@ -55,13 +55,13 @@ public class StringPatternType extends BaseType<String> implements Type<String>,
     /**
      * Holds the regular expression pattern that instances of this type must match, or <tt>null</tt> if none is defined.
      */
-    private String pattern;
+    private final String pattern;
 
     /** Holds the maximum length instance of this type may have, or zero if no maximum length is defined. */
-    private int maxLength;
+    private final int maxLength;
 
     /** Holds the name of this type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates a patterned string type with the specified maximum length and matching regular expression.

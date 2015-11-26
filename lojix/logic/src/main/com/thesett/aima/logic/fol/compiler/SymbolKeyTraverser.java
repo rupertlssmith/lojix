@@ -77,7 +77,7 @@ public class SymbolKeyTraverser extends PositionalTermTraverserImpl implements P
     protected AllTermsVisitor delegate;
 
     /** Holds the symbol name interner. */
-    private VariableAndFunctorInterner interner;
+    private final VariableAndFunctorInterner interner;
 
     /** Holds the root symbol table. */
     protected SymbolTable<Integer, String, Object> rootSymbolTable;
@@ -95,7 +95,7 @@ public class SymbolKeyTraverser extends PositionalTermTraverserImpl implements P
     protected int currentPosition;
 
     /** Used for trace indenting when log statements are enabled. */
-    private TraceIndenter indenter = new TraceIndenter(true);
+    private final TraceIndenter indenter = new TraceIndenter(true);
 
     /**
      * Creates a basic positional context traverser over terms, using the specified root symbol table as the starting
@@ -394,19 +394,19 @@ public class SymbolKeyTraverser extends PositionalTermTraverserImpl implements P
     private class ContextOperator extends StackableOperator
     {
         /** The root symbol table that contains the new context to be established. */
-        private SymbolTable<Integer, String, Object> contextSymbolTable;
+        private final SymbolTable<Integer, String, Object> contextSymbolTable;
 
         /** Used to retain the previous symbol table if overwritten by a new one. */
         private SymbolTable<Integer, String, Object> previousSymbolTable;
 
         /** The new positional context to establish. */
-        private int contextPosition;
+        private final int contextPosition;
 
         /** The previous positional context to restore. */
         private int previousPosition;
 
         /** Flag indicating whether or not this operator has a position. */
-        private boolean hasPosition;
+        private final boolean hasPosition;
 
         /**
          * Creates a context establishing operation.

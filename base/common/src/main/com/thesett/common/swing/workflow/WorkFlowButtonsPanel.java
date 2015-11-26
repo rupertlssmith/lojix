@@ -60,16 +60,16 @@ public class WorkFlowButtonsPanel extends JPanel implements PropertyChangeListen
     /* private static final Logger log = Logger.getLogger(WorkFlowButtonsPanel.class.getName()); */
 
     /** Holds the Back button. */
-    private JButton backButton = new JButton("<| Back");
+    private final JButton backButton = new JButton("<| Back");
 
     /** Holds the Next button. */
-    private JButton nextButton = new JButton("Next |>");
+    private final JButton nextButton = new JButton("Next |>");
 
     /** Holds the Finish button. */
-    private JButton finishButton = new JButton("Finish");
+    private final JButton finishButton = new JButton("Finish");
 
     /** Holds the Cancel button. */
-    private JButton cancelButton = new JButton("Cancel");
+    private final JButton cancelButton = new JButton("Cancel");
 
     /** Create a new work flow buttons panel. */
     public WorkFlowButtonsPanel()

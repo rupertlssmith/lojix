@@ -131,7 +131,7 @@ public class ContextualProperties extends ParsedProperties
     private static final int M = 1;
 
     /** Used to hold the value of the environment system property. */
-    private String environment;
+    private final String environment;
 
     /** Used to indicate that the 'use of defaults' behaviour should be used. */
     private boolean useDefaults = true;

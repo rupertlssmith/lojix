@@ -52,13 +52,13 @@ public class IntRangeType extends BaseType<Integer> implements Type<Integer>, Ra
     private static final Map<String, IntRangeType> INT_RANGE_TYPES = new HashMap<String, IntRangeType>();
 
     /** Holds the minimum value an instance of this type can take. */
-    private int minValue;
+    private final int minValue;
 
     /** Holds the maximum value an instance of this type can take. */
-    private int maxValue;
+    private final int maxValue;
 
     /** Used to hold the name of this int range type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates an instance of an integer range type with the specified name and min and max values.

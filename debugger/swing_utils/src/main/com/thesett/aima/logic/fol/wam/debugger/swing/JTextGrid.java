@@ -47,7 +47,7 @@ import com.thesett.text.api.TextGridListener;
 public class JTextGrid extends JComponent implements Scrollable
 {
     /** Flag to indicate that anti-aliasing and quality rendering should be used. */
-    private boolean useAntiAliasing = true;
+    private final boolean useAntiAliasing = true;
 
     /** The text grid model to render. */
     private EnhancedTextGrid model;

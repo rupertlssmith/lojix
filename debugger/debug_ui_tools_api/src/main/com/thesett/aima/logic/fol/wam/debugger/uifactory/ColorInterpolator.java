@@ -81,7 +81,7 @@ public class ColorInterpolator implements Iterable<Color>
     private class ColorIterator implements Iterator<Color>
     {
         /** The color components for the current iteration. */
-        private float[] rgbComponents = new float[4];
+        private final float[] rgbComponents = new float[4];
 
         /** {@inheritDoc} */
         public boolean hasNext()

@@ -45,10 +45,10 @@ public class TimeoutMap implements Map
     /* private static final Logger log = Logger.getLogger(TimeoutMap.class.getName()); */
 
     /** The time between cache sweeps. */
-    private long sweepTime;
+    private final long sweepTime;
 
     /** The maximum age of an untouched entry in the cache before it is removed. */
-    private long sweepExpiryTime;
+    private final long sweepExpiryTime;
 
     /** The cache sweeping thread. Reference kept here so that it can be woken up when needed. */
     private Thread cacheSweepThread;
@@ -57,10 +57,10 @@ public class TimeoutMap implements Map
     private boolean sweepThreadKillFlag;
 
     /** A cache of elements. */
-    private Map cache = new HashMap();
+    private final Map cache = new HashMap();
 
     /** A heap of cache entries marked by the cache sweep operation. */
-    private Map marked = new HashMap();
+    private final Map marked = new HashMap();
 
     /**
      * Creates a timeout map with the specified sweeping interval and maximum time out.

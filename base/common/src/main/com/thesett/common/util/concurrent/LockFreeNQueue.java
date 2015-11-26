@@ -109,22 +109,22 @@ public class LockFreeNQueue<E> extends AbstractQueue<E>
     /* private static final Logger log = Logger.getLogger(LockFreeNQueue.class.getName()); */
 
     /** Holds references to the head and tail marker elements of the lists for each priority level. */
-    private Marker<E>[] markers;
+    private final Marker<E>[] markers;
 
     /** Holds the priority mapping function to extract priority values from data elements. */
     Function<E, Integer> p;
 
     /** The lowest priority value this queue accepts. */
-    private int lowest;
+    private final int lowest;
 
     /** The highest priority value this queue accepts. */
-    private int highest;
+    private final int highest;
 
     /** The number of linked lists maintained by this nqueue. */
-    private int n;
+    private final int n;
 
     /** Holds the count of the number of elements in the queue. */
-    private AtomicInteger count = new AtomicInteger();
+    private final AtomicInteger count = new AtomicInteger();
 
     /**
      * Creates a lock free n queue with n priority levels (from 0 to n - 1).

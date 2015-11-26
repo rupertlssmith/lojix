@@ -48,7 +48,7 @@ public class DefaultPropertyReader extends PropertyReaderBase
     private static final Map propertyReaders = new HashMap();
 
     /** Used to hold the name of the property resource. */
-    private String resourceName;
+    private final String resourceName;
 
     /**
      * Private constructor that builds a property reader for a named resource. This is private to ensure that only

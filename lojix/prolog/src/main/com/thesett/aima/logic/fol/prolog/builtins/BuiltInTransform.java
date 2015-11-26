@@ -39,11 +39,11 @@ import com.thesett.common.util.ReflectionUtils;
 public class BuiltInTransform implements Function<Functor, BuiltInFunctor>
 {
     /** Holds a mapping from functor names to built-in implementations. */
-    private Map<FunctorName, Class<? extends BuiltInFunctor>> builtIns =
+    private final Map<FunctorName, Class<? extends BuiltInFunctor>> builtIns =
         new HashMap<FunctorName, Class<? extends BuiltInFunctor>>();
 
     /** Used to extract functor names to match. */
-    private VariableAndFunctorInterner interner;
+    private final VariableAndFunctorInterner interner;
 
     /**
      * Initializes the built-in transformation by population the the table of mappings of functors onto their built-in

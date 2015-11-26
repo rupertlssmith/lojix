@@ -28,7 +28,7 @@ package com.thesett.aima.logic.fol;
 public class LongLiteral extends IntegerType
 {
     /** Holds the value of the number. */
-    private long value;
+    private final long value;
 
     /**
      * Creates a new number with the specified value.

@@ -45,13 +45,13 @@ public class DoubleRangeType extends BaseType<Double> implements Type<Double>, R
     private static final Map<String, DoubleRangeType> DOUBLE_RANGE_TYPES = new HashMap<String, DoubleRangeType>();
 
     /** Holds the minimum value an instance of this type can take. */
-    private double minValue;
+    private final double minValue;
 
     /** Holds the maximum value an instance of this type can take. */
-    private double maxValue;
+    private final double maxValue;
 
     /** Used to hold the name of this double range type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates an instance of a double range type with the specified name and min and max values.

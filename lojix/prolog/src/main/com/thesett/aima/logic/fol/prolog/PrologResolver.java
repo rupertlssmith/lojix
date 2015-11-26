@@ -757,7 +757,7 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         private final Queue<BuiltInFunctor> goalStack;
 
         /** Used to hold any goals consumed by this state, so that they can be restored on undo. */
-        private Queue<BuiltInFunctor> consumedGoals = new StackQueue<BuiltInFunctor>();
+        private final Queue<BuiltInFunctor> consumedGoals = new StackQueue<BuiltInFunctor>();
 
         /** Flag used to indicate what state this undo stack is in, if goals are being added or removed. */
         private boolean isGrowing;
@@ -766,10 +766,10 @@ public class PrologResolver extends PrologUnifier implements Resolver<PrologComp
         private boolean firstCall = true;
 
         /** Used to record how many goals this state added, so that they can be removed upon undo. */
-        private Queue<Integer> goalsAddedCountStack = new StackQueue<Integer>();
+        private final Queue<Integer> goalsAddedCountStack = new StackQueue<Integer>();
 
         /** Used to record how many goals this state consumed, so that they can be removed upon undo. */
-        private Queue<Integer> goalsConsumedCountStack = new StackQueue<Integer>();
+        private final Queue<Integer> goalsConsumedCountStack = new StackQueue<Integer>();
 
         /**
          * Creates a state local view onto a global goal stack.

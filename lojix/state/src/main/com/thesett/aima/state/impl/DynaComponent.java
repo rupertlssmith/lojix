@@ -45,10 +45,10 @@ import com.thesett.common.util.ReflectionUtils;
 public class DynaComponent extends BaseType implements ComponentType
 {
     /** Holds the map from property names to their types. */
-    private Map<String, Type> typeMap = new HashMap<String, Type>();
+    private final Map<String, Type> typeMap = new HashMap<String, Type>();
 
     /** Holds the name of this dyna class. */
-    private String name;
+    private final String name;
 
     /** Holds the meta-model instance associated with this component. */
     private State metaModel;

@@ -52,7 +52,7 @@ import com.thesett.common.parsing.SourceCodeException;
 public class PrologCompiler implements LogicCompiler<Clause, PrologCompiledClause, PrologCompiledClause>
 {
     /** Used to intern variables and functors with. */
-    private VariableAndFunctorInterner interner;
+    private final VariableAndFunctorInterner interner;
 
     /** Holds the compiler output observer. */
     private LogicCompilerObserver<PrologCompiledClause, PrologCompiledClause> observer;

@@ -28,7 +28,7 @@ package com.thesett.aima.logic.fol;
 public class StringLiteral extends LiteralType implements Term
 {
     /** Holds the value of this string literal. */
-    private String value;
+    private final String value;
 
     /**
      * Creates a new string literal with the specified value.

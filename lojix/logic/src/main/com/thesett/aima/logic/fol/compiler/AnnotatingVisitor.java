@@ -56,13 +56,13 @@ public class AnnotatingVisitor implements FunctorVisitor, VariableVisitor, Liter
     public static final String VARIABLE_DOMAIN = "varDomain";
 
     /** The basic traverser used to provide positional context to visited terms. */
-    private PositionalContext traverser;
+    private final PositionalContext traverser;
 
     /** The name interner. */
-    private VariableAndFunctorInterner interner;
+    private final VariableAndFunctorInterner interner;
 
     /** Holds the symbol table to record the annotations in. */
-    private SymbolTable<Integer, String, Object> symbolTable;
+    private final SymbolTable<Integer, String, Object> symbolTable;
 
     /**
      * Creates an annotating visitor using the specified basic traverser to provide positional context information about

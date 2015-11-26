@@ -46,7 +46,7 @@ public class TreeSearchState<E> extends TraversableState<Tree<E>>
     /* private static final Logger log = Logger.getLogger(TreeSearchState.class.getName()); */
 
     /** Holds the tree to search. */
-    private Tree<E> tree;
+    private final Tree<E> tree;
 
     /**
      * Builds a tree search state over a specified tree.
@@ -138,7 +138,7 @@ public class TreeSearchState<E> extends TraversableState<Tree<E>>
     public static class TreeSearchOperatorIterator<E> implements Iterator<Operator<Tree<E>>>
     {
         /** Holds the child iterator. */
-        private Iterator<Tree<E>> childIterator;
+        private final Iterator<Tree<E>> childIterator;
 
         /**
          * Creates an iterator that turns child trees into operations.

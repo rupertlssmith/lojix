@@ -56,16 +56,16 @@ public class GlobalWriteLockWithWriteBehindTxMethod<E> implements TxMethod
     private IsolationLevel isolationLevel = IsolationLevel.ReadCommitted;
 
     /** Holds the global write lock that ensures that only one writer at a time is allowed to alter the resource. */
-    private ReadWriteLock globalLock = new ReentrantReadWriteLock();
+    private final ReadWriteLock globalLock = new ReentrantReadWriteLock();
 
     /** A condition on the global write lock that is used to signal when it becomes unowned by any transaction. */
-    private Condition globalWriteLockFree = globalLock.writeLock().newCondition();
+    private final Condition globalWriteLockFree = globalLock.writeLock().newCondition();
 
     /** Holds the transaction id of the only transaction that is allowed to use the global write lock. */
     private TxId globalWriteLockTxId = null;
 
     /** Holds the write-behind cache of changes made by transactions. */
-    private Map<TxId, List<TxOperation>> txWrites = new ConcurrentHashMap<TxId, List<TxOperation>>();
+    private final Map<TxId, List<TxOperation>> txWrites = new ConcurrentHashMap<TxId, List<TxOperation>>();
 
     /**
      * When operating in transactional mode causes any changes since the last commit to be made visible to the search

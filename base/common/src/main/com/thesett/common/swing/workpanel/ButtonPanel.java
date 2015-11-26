@@ -46,13 +46,13 @@ public class ButtonPanel extends JPanel implements PropertyChangeListener
     /* private static final Logger log = Logger.getLogger(ButtonPanel.class.getName()); */
 
     /** Holds the OK button. */
-    private JButton okButton = new JButton("OK");
+    private final JButton okButton = new JButton("OK");
 
     /** Holds the Cancel button. */
-    private JButton cancelButton = new JButton("Cancel");
+    private final JButton cancelButton = new JButton("Cancel");
 
     /** Holds the Apply button. */
-    private JButton applyButton = new JButton("Apply");
+    private final JButton applyButton = new JButton("Apply");
 
     /** Creates new ButtonPanel. */
     public ButtonPanel()

@@ -41,10 +41,10 @@ import com.thesett.aima.logic.fol.OpSymbol;
 public class CandidateOpSymbol extends Functor
 {
     /** Holds the raw text name of this operator. */
-    private String name;
+    private final String name;
 
     /** Holds the set of possible fixities that this symbol could have, depending on the parsing context. */
-    private EnumMap<OpSymbol.Fixity, OpSymbol> possibleOperators;
+    private final EnumMap<OpSymbol.Fixity, OpSymbol> possibleOperators;
 
     /**
      * Creates a candidate operator symbol for a given text name and possible symbols.

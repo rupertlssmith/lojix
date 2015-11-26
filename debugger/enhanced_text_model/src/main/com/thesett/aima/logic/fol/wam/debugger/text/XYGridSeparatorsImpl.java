@@ -76,7 +76,7 @@ public class XYGridSeparatorsImpl implements XYGridSeparators
     private class Separators
     {
         /** A set of separators sorted in ascending order of position. */
-        private Map<Integer, Integer> separators = new HashMap<Integer, Integer>();
+        private final Map<Integer, Integer> separators = new HashMap<Integer, Integer>();
 
         /**
          * Adds a new separator.

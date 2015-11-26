@@ -63,13 +63,13 @@ public class TextTableImpl implements TextTableModel
     protected Set<TextTableListener> listeners = new HashSet<TextTableListener>();
 
     /** Holds any column labels. */
-    private Map<String, Integer> columnLabels = new HashMap<String, Integer>();
+    private final Map<String, Integer> columnLabels = new HashMap<String, Integer>();
 
     /** Holds any row labels. */
-    private Map<String, Integer> rowLabels = new HashMap<String, Integer>();
+    private final Map<String, Integer> rowLabels = new HashMap<String, Integer>();
 
     /** Holds any individual cell labels. */
-    private Map<String, Pair<Integer, Integer>> cellLabels = new HashMap<String, Pair<Integer, Integer>>();
+    private final Map<String, Pair<Integer, Integer>> cellLabels = new HashMap<String, Pair<Integer, Integer>>();
 
     /**
      * Updates the maximum row count of the data table.

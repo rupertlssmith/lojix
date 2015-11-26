@@ -93,7 +93,7 @@ public class CommandLineParser
      * ensures that the options are easy to print in alphabetical order as a usage string. An alternative might be to
      * use a LinkedHashMap to print them in the order they are specified.
      */
-    private Map<String, CommandLineOption> optionMap = new TreeMap<String, CommandLineOption>();
+    private final Map<String, CommandLineOption> optionMap = new TreeMap<String, CommandLineOption>();
 
     /** Holds a list of parsing errors. */
     private List<String> parsingErrors = new ArrayList<String>();

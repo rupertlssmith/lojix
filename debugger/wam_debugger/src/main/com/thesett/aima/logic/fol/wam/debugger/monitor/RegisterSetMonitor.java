@@ -53,7 +53,7 @@ public class RegisterSetMonitor implements PropertyChangeListener
     private final TextTableModel table;
 
     /** A labeled view onto the register table. */
-    private DoubleKeyedMap<String, String, String> labeledTable;
+    private final DoubleKeyedMap<String, String, String> labeledTable;
 
     /**
      * Constructs a table model with labelled rows and columns to hold the register values.

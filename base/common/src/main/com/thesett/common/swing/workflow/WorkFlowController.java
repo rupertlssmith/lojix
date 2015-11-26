@@ -63,7 +63,7 @@ public abstract class WorkFlowController implements ActionListener
     public static final String REVERSE_ORDERING = "Reverse";
 
     /** Holds the state of the work flow. */
-    private WorkFlowState state;
+    private final WorkFlowState state;
 
     /**
      * Holds the screens that have been accessed in the work flow in order of access. They are held in a stack so that
@@ -75,7 +75,7 @@ public abstract class WorkFlowController implements ActionListener
     private Stack accessedScreens;
 
     /** Holds reference to the JPanel that the work flow controller displays the work flow pages in. */
-    private JPanel panel;
+    private final JPanel panel;
 
     /** Holds the current screen within the work flow. */
     private WorkFlowScreenPanel currentScreen;

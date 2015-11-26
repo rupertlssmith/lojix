@@ -47,7 +47,7 @@ public class Variable extends BaseTerm implements Term, VariableBindingContext<V
     protected Term substitution;
 
     /** Used to indicate that a variable is anonymous. */
-    private boolean anonymous;
+    private final boolean anonymous;
 
     /** Holds a unique id for the variable. */
     protected int id = varId.getAndIncrement();

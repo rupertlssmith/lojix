@@ -32,10 +32,10 @@ public class TraceIndenter
     private int traceIndent = 0;
 
     /** Flag to indicate whether or not the indent should actually be generated. */
-    private boolean useIndent;
+    private final boolean useIndent;
 
     /** Holds the current stack of indents to the current position. */
-    private Stack<Integer> indentStack = new LifoStack<Integer>();
+    private final Stack<Integer> indentStack = new LifoStack<Integer>();
 
     /**
      * Creates a trace indenter, the flag specifies whether or not to actually generate the indents.

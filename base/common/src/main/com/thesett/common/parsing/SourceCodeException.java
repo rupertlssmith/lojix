@@ -34,7 +34,7 @@ import com.thesett.common.error.UserReadableException;
 public class SourceCodeException extends UserReadableException
 {
     /** Holds the error position within a source file that this error relates to. */
-    private SourceCodePosition sourceCodePosition;
+    private final SourceCodePosition sourceCodePosition;
 
     /**
      * Builds an exception with a message and a user message and a message key. To create an exception with no key and

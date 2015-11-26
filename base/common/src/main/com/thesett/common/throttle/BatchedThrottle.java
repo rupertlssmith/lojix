@@ -49,7 +49,7 @@ public class BatchedThrottle extends BaseThrottle
     long callCount;
 
     /** Holds a sleep throttle configured to run at the batched rate. */
-    private Throttle batchRateThrottle = new SleepThrottle();
+    private final Throttle batchRateThrottle = new SleepThrottle();
 
     /**
      * Specifies the throttling rate in operations per second.

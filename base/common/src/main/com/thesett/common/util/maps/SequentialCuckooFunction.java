@@ -39,7 +39,7 @@ public class SequentialCuckooFunction<K> implements SequentialFunction<K>
     private int hashTableSize = 16;
 
     /** Holds the maximum size of hash table that will be attempted to be allocated. */
-    private int maxSize = Integer.MAX_VALUE;
+    private final int maxSize = Integer.MAX_VALUE;
 
     /** Holds the count of elements currently in the hash table. */
     private int count;

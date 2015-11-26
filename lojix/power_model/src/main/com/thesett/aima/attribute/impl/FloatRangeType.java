@@ -44,13 +44,13 @@ public class FloatRangeType extends BaseType<Float> implements Type<Float>, Rand
     private static final Map<String, FloatRangeType> FLOAT_RANGE_TYPES = new HashMap<String, FloatRangeType>();
 
     /** Holds the minimum value an instance of this type can take. */
-    private float minValue;
+    private final float minValue;
 
     /** Holds the maximum value an instance of this type can take. */
-    private float maxValue;
+    private final float maxValue;
 
     /** Used to hold the name of this float range type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates an instance of a float range type with the specified name and min and max values.

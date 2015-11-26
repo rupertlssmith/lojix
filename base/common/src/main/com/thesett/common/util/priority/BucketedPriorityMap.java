@@ -43,13 +43,13 @@ public class BucketedPriorityMap<K, V> implements PriorityMap<K, V>
     Map<K, V>[] maps;
 
     /** The lowest priority value this queue accepts. */
-    private int lowest;
+    private final int lowest;
 
     /** The highest priority value this queue accepts. */
-    private int highest;
+    private final int highest;
 
     /** The number of linked lists maintained by this nqueue. */
-    private int n;
+    private final int n;
 
     /**
      * Creates a bucketed priority map with the specified priority function over keys. The lowest and highest priority

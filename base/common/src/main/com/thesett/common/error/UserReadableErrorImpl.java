@@ -29,10 +29,10 @@ package com.thesett.common.error;
 public class UserReadableErrorImpl implements UserReadableError
 {
     /** Holds the message key. */
-    private String userMessageKey;
+    private final String userMessageKey;
 
     /** Holds the message data string. */
-    private String userMessage;
+    private final String userMessage;
 
     /**
      * Create a user readable error message.

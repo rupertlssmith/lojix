@@ -48,7 +48,7 @@ public class EnumAttribute implements OrdinalAttribute
     private static final Map<Class, EnumClassImpl> attributeClasses = new HashMap<Class, EnumClassImpl>();
 
     /** Holds the enum ordinal. */
-    private int ordinal;
+    private final int ordinal;
 
     /** Holds a reference to the class of enum attribute that this one belongs to. */
     EnumClassImpl attributeClass;

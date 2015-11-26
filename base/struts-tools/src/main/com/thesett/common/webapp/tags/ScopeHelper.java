@@ -36,7 +36,7 @@ public class ScopeHelper
     private int scope;
 
     /** Holds the page context that the web scopes are refered to from. */
-    private PageContext pageContext;
+    private final PageContext pageContext;
 
     /**
      * Creates a scope helper on the named scope from the specified page context.

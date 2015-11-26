@@ -61,13 +61,13 @@ import com.thesett.common.error.NotImplementedException;
 public class HashArray<K, V> implements IndexedMap<K, V>, Serializable
 {
     /** The HashMap that holds the key to index mapping. */
-    private Map<K, Integer> keyToIndex;
+    private final Map<K, Integer> keyToIndex;
 
     /** A linked list hash set that is used to keep track of the insertion order of the keys. */
-    private Set<K> keySet;
+    private final Set<K> keySet;
 
     /** The array that holds the data. */
-    private List<V> data;
+    private final List<V> data;
 
     /** The array that holds the keys in insertion order. */
     private List<K> keys;

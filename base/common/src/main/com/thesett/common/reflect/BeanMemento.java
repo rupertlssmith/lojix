@@ -59,7 +59,7 @@ public class BeanMemento implements Memento, Serializable
     /* private static final Logger log = Logger.getLogger(BeanMemento.class.getName()); */
 
     /** Holds the properties of the object that this memento has captured. */
-    private Map<String, Object> values = new HashMap<String, Object>();
+    private final Map<String, Object> values = new HashMap<String, Object>();
 
     /** The object that this is a memento for. */
     Object ob;

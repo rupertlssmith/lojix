@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseUnaryCondition<T> implements UnaryCondition<T>
 {
     /** Used as the thread monitor for threads to wait on this condition. */
-    private Object monitor = new Object();
+    private final Object monitor = new Object();
 
     /** Holds the signalable resource to notify when conditions change. */
     Signalable signalable;

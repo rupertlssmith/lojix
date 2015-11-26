@@ -45,11 +45,11 @@ public class BuiltInExpressionTransform extends BaseTermTransformer implements F
     /* private static final Logger log = Logger.getLogger(BuiltInExpressionTransform.class.getName()); */
 
     /** Holds a mapping from functor name to built-in expression implementations. */
-    private Map<FunctorName, Class<? extends BuiltInExpressionOperator>> builtInExpressions =
+    private final Map<FunctorName, Class<? extends BuiltInExpressionOperator>> builtInExpressions =
         new HashMap<FunctorName, Class<? extends BuiltInExpressionOperator>>();
 
     /** Used to extract functor names to match. */
-    private VariableAndFunctorInterner interner;
+    private final VariableAndFunctorInterner interner;
 
     /**
      * Initializes the built-in transformation by population the the table of mappings of functors onto their built-in

@@ -223,41 +223,41 @@ public class DynamicOperatorParser implements OperatorTable
     }
 
     /** Defines the action to shift to state 1. */
-    private ShiftAction s1 = new ShiftAction(1);
+    private final ShiftAction s1 = new ShiftAction(1);
 
     /** Defines the action to shift to state 2. */
-    private ShiftAction s2 = new ShiftAction(2);
+    private final ShiftAction s2 = new ShiftAction(2);
 
     /** Defines the action to shift to state 5. */
-    private ShiftAction s5 = new ShiftAction(5);
+    private final ShiftAction s5 = new ShiftAction(5);
 
     /** Defines the action to resolve using rule 1. */
-    private ReduceAction r1 = new ReduceAction(1);
+    private final ReduceAction r1 = new ReduceAction(1);
 
     /** Defines the action to resolve using rule 2. */
-    private ReduceAction r2 = new ReduceAction(2);
+    private final ReduceAction r2 = new ReduceAction(2);
 
     /** Defines the action to resolve using rule 3. */
-    private ReduceAction r3 = new ReduceAction(3);
+    private final ReduceAction r3 = new ReduceAction(3);
 
     /** Defines the action to resolve using rule 4. */
-    private ReduceAction r4 = new ReduceAction(4);
+    private final ReduceAction r4 = new ReduceAction(4);
 
     /** Defines an error message when the final symbol is encountered in the start state. */
-    private ErrorAction e1 = new ErrorAction("Term sequence cannot be empty.");
+    private final ErrorAction e1 = new ErrorAction("Term sequence cannot be empty.");
 
     /** Defines an error message when nothing is specified to apply an operator to. */
-    private ErrorAction e2 = new ErrorAction("Something expected after operator.");
+    private final ErrorAction e2 = new ErrorAction("Something expected after operator.");
 
     /** Defines an error message when two adjacement terms no seperated by an operator are encounterd. */
-    private ErrorAction e3 = new ErrorAction("Cannot have two adjacent non-operator terms.");
+    private final ErrorAction e3 = new ErrorAction("Cannot have two adjacent non-operator terms.");
 
     /**
      * Holds the LR parser action table, that describes which action to perform when encountering a given symbol in a
      * given state. The first index to the two dimensional array is the state number, the second is the {@link Symbol}s
      * ordinal value. Note that there are three operator/operator shift/reduce conflicts in this table.
      */
-    private Action[][] actionTable =
+    private final Action[][] actionTable =
         new Action[][]
         {
             { s1, s2, e1 },
@@ -270,13 +270,13 @@ public class DynamicOperatorParser implements OperatorTable
         };
 
     /** Holds the LR parser goto table, that describes the state to transition to after resolving a rule. */
-    private Integer[] gotoTable = new Integer[] { 3, null, 4, null, null, 6, null };
+    private final Integer[] gotoTable = new Integer[] { 3, null, 4, null, null, 6, null };
 
     /** Holds the rules to apply when resolving. */
-    private Action[] rules = { null, new Rule1(), new Rule2(), new Rule3(), new Rule4() };
+    private final Action[] rules = { null, new Rule1(), new Rule2(), new Rule3(), new Rule4() };
 
     /** Holds the parser state stack. */
-    private Queue<Integer> stack = new StackQueue<Integer>();
+    private final Queue<Integer> stack = new StackQueue<Integer>();
 
     /** Holds the parsers current state. */
     private int state;
@@ -285,13 +285,13 @@ public class DynamicOperatorParser implements OperatorTable
     private int position;
 
     /** Holds the output stack onto which terms are placed pending their consumption by rule reductions. */
-    private Queue<Term> outputStack = new StackQueue<Term>();
+    private final Queue<Term> outputStack = new StackQueue<Term>();
 
     /** Holds the current next term on the input sequence. */
     private Term nextTerm;
 
     /** Holds the table of defined operators by name and fixity. */
-    private Map<String, EnumMap<OpSymbol.Fixity, OpSymbol>> operators =
+    private final Map<String, EnumMap<OpSymbol.Fixity, OpSymbol>> operators =
         new HashMap<String, EnumMap<OpSymbol.Fixity, OpSymbol>>();
 
     /**
@@ -724,7 +724,7 @@ public class DynamicOperatorParser implements OperatorTable
     private class ErrorAction extends Action
     {
         /** Holds a custom error description. */
-        private String errorMessage;
+        private final String errorMessage;
 
         /**
          * Creates an error action with the specified error message.

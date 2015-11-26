@@ -39,10 +39,10 @@ import com.thesett.common.util.Queue;
 public abstract class KeyQueuedMap<K, V> implements Map<K, V>
 {
     /** The HashMap that holds the key to index mapping. */
-    private Map<K, V> dataMap;
+    private final Map<K, V> dataMap;
 
     /** The queue that holds the keys in order. */
-    private Queue<K> keys;
+    private final Queue<K> keys;
 
     /** Creates a new empty hash array. */
     public KeyQueuedMap()

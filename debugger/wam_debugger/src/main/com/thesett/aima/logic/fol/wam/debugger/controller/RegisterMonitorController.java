@@ -64,7 +64,7 @@ public class RegisterMonitorController implements ControllerLifecycle
     private RegisterSetMonitor monitor;
 
     /** A color fader used to highlight register value changes. */
-    private Fader fader;
+    private final Fader fader;
 
     /** The current user selected table row. <tt>-1</tt> means no selected row. */
     private int selectedRow = -1;

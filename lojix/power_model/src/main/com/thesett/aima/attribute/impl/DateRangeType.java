@@ -49,13 +49,13 @@ public class DateRangeType extends BaseType<DateOnly> implements Type<DateOnly>,
     private static final Map<String, DateRangeType> DATE_RANGE_TYPES = new HashMap<String, DateRangeType>();
 
     /** Holds the minimum value an instance of this type can take. */
-    private DateOnly from;
+    private final DateOnly from;
 
     /** Holds the maximum value an instance of this type can take. */
-    private DateOnly to;
+    private final DateOnly to;
 
     /** Used to hold the name of this date range type. */
-    private String typeName;
+    private final String typeName;
 
     /**
      * Creates an instance of an integer range type with the specified name and min and max values.

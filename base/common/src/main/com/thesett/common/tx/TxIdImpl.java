@@ -38,13 +38,13 @@ public class TxIdImpl implements TxId
     private static final byte[] LOCAL_TX_ID = "L".getBytes();
 
     /** Holds the transaction branch identifier part of the XID. */
-    private byte[] branchQualifier;
+    private final byte[] branchQualifier;
 
     /** Holds the format identifier part of the XID. */
-    private int formatId;
+    private final int formatId;
 
     /** Holds the global transaction identifier part of this XID. */
-    private byte[] globalTransactionID;
+    private final byte[] globalTransactionID;
 
     /** Flag used to mark this transaction id as invalid. */
     private boolean valid = true;

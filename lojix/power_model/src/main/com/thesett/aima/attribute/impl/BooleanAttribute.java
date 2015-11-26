@@ -41,7 +41,7 @@ public class BooleanAttribute implements OrdinalAttribute
     private static final BooleanClassImpl attributeClass = new BooleanClassImpl();
 
     /** Used to hold the underlying boolean value of this attribute. */
-    private boolean value;
+    private final boolean value;
 
     /**
      * Creates a new BooleanAttribute object.

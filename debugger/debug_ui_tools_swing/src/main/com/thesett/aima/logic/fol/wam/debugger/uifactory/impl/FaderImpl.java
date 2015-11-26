@@ -53,7 +53,7 @@ public class FaderImpl implements Fader<Color>, ActionListener
     private final Color endColor;
 
     /** The internal fade states by group name. */
-    private Map<String, FadeState> timers = new ConcurrentHashMap<String, FadeState>();
+    private final Map<String, FadeState> timers = new ConcurrentHashMap<String, FadeState>();
 
     /**
      * Builds a color fader between two colors.

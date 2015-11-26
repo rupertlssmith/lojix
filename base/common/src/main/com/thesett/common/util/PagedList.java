@@ -50,10 +50,10 @@ public class PagedList<E> extends AbstractList<List<E>>
     /* private static final Logger log = Logger.getLogger(PagedList.class.getName()); */
 
     /** Used to hold a reference to the list to be broken into pages. */
-    private List<E> original;
+    private final List<E> original;
 
     /** Holds the page size. */
-    private int pageSize;
+    private final int pageSize;
 
     /** Holds the current page. */
     private int currentPage;
