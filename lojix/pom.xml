@@ -114,7 +114,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <sonar.exclusions>**/javacc/**/Main.java</sonar.exclusions>
+        <sonar.exclusions>target/generated-sources/javacc/**/*.java</sonar.exclusions>
     </properties>
 
     <modules>
