@@ -113,6 +113,8 @@
         <java.util.logging.config.file>${topdir}/etc/logging_to_log4j.properties</java.util.logging.config.file>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <sonar.exclusions>**/javacc/**/Main.java</sonar.exclusions>
     </properties>
 
     <modules>
