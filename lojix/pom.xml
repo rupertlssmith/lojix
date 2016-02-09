@@ -335,6 +335,16 @@
 
         <plugins>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>com.thesett:*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+             
             <!-- Set up the columns to display in the dashboard report. -->
             <plugin>
                 <groupId>com.thesett</groupId>
