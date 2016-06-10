@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>state</artifactId>
     <name>state</name>
-    <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+    <version>0.9.67</version><!--lojix.version-->
 
     <description>State provides a data model that can describe a state space.</description>
     <url>https://www.thesett.com/build_reports/lojix/state</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+        <version>0.9.67</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--base.version-->
+            <version>0.9.67</version><!--base.version-->
         </dependency>
         
         <!-- Test only dependencies. -->
