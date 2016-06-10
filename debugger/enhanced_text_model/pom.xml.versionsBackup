@@ -2,12 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.thesett</groupId>
-    <artifactId>debug_ui_tools_api</artifactId>
-    <name>debug_ui_tools_api</name>
-    <version>0.9.62</version><!--debugger.version-->
+    <artifactId>enhanced_text_model</artifactId>
+    <name>enhanced_text_model</name>
+    <version>0.8.23-SNAPSHOT</version><!--debugger.version-->
 
-    <description>Standalone WAM debugger tool.</description>
-    <url>https://www.thesett.com/build_reports/lojix/wam</url>
+    <description>Re-usable Java Swing code.</description>
 
     <packaging>jar</packaging>
 
@@ -18,15 +17,15 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>debuggerbuild</artifactId>
-        <version>0.9.62</version><!--debugger.version-->
+        <version>0.8.23-SNAPSHOT</version><!--debugger.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.thesett</groupId>
-            <artifactId>enhanced_text_model</artifactId>
-            <version>0.9.62</version><!--debugger.version-->
+            <artifactId>text_model</artifactId>
+            <version>0.8.23-SNAPSHOT</version><!--lojix.version-->
         </dependency>
     </dependencies>
 
