@@ -75,7 +75,7 @@
         <maven.dashboard.plugin.version>0.9.0-SNAPSHOT</maven.dashboard.plugin.version><!--maven2_plugins.version-->
         <maven.pmd.plugin.version>2.4</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>2.5.3</maven.findbugs.plugin.version>
-        <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
+        <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
         <maven.checkstyle.plugin.version>2.2</maven.checkstyle.plugin.version>
         <maven.jxr.plugin.version>2.1</maven.jxr.plugin.version>
         <taglist.maven.plugin.version>2.2</taglist.maven.plugin.version>
@@ -654,6 +654,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven.javadoc.plugin.version}</version>                        
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
