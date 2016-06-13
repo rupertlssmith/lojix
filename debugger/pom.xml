@@ -11,6 +11,9 @@
 
     <packaging>pom</packaging>
 
+    <description>Debugger for LoJiX.</description>
+    <url>https://github.com/rupertlssmith/lojix</url>
+
     <prerequisites>
         <maven>2.0.8</maven>
     </prerequisites>
@@ -32,6 +35,19 @@
         </developer>
     </developers>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/rupertlssmith/lojix.git</connection>
+        <url>https://github.com/rupertlssmith/lojix.git</url>
+    </scm>
+    
     <properties>
         <projname>os_projects</projname>
         <topdir>${basedir}/.</topdir>
