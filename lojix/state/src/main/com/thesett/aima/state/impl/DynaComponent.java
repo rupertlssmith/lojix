@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2014.
+ * Copyright The Sett Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.thesett.aima.state.BaseType;
+import com.thesett.aima.state.ComponentRelationStorage;
 import com.thesett.aima.state.ComponentType;
 import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.State;
@@ -246,4 +247,9 @@ public class DynaComponent extends BaseType implements ComponentType
         throw new InfiniteValuesException("DynaComponent has too many values to enumerate.", null);
     }
 
+    /** {@inheritDoc} */
+    public ComponentRelationStorage getRelationStorage(String name)
+    {
+        return null;
+    }
 }

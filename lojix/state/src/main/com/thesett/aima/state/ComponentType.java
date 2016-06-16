@@ -1,5 +1,5 @@
 /*
- * Copyright The Sett Ltd, 2005 to 2014.
+ * Copyright The Sett Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,4 +130,14 @@ public interface ComponentType extends Type, Serializable
      * @param immediateAncestors The immediate parent types of this one.
      */
     void setImmediateAncestors(Set<ComponentType> immediateAncestors);
+
+    /**
+     * Provides information about how a relationship between components is to be stored.
+     *
+     * @param  name The name of the field to get the relation storage information for.
+     *
+     * @return Information on how the relationship is stored, iff the field is a component reference, otherwise <tt>
+     *         null</tt>.
+     */
+    ComponentRelationStorage getRelationStorage(String name);
 }
