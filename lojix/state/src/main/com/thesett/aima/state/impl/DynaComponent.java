@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.thesett.aima.state.BaseType;
-import com.thesett.aima.state.ComponentRelationStorage;
 import com.thesett.aima.state.ComponentType;
 import com.thesett.aima.state.InfiniteValuesException;
 import com.thesett.aima.state.State;
@@ -245,11 +244,5 @@ public class DynaComponent extends BaseType implements ComponentType
     public Iterator getAllPossibleValuesIterator() throws InfiniteValuesException
     {
         throw new InfiniteValuesException("DynaComponent has too many values to enumerate.", null);
-    }
-
-    /** {@inheritDoc} */
-    public ComponentRelationStorage getRelationStorage(String name)
-    {
-        return null;
     }
 }
