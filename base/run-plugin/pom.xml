@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>run-maven-plugin</artifactId>
     <name>run-maven-plugin</name>
-    <version>0.9.0-SNAPSHOT</version><!--base.version-->
+    <version>0.9.94</version><!--base.version-->
 
     <description>
 	Maven plugin for running main methods of projects from the command line. This plugin generates the
@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>basebuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--base.version-->
+        <version>0.9.94</version><!--base.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
