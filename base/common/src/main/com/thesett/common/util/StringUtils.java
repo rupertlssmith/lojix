@@ -149,6 +149,33 @@ public class StringUtils
     }
 
     /**
+     * Converts a string to camel case with the first letter in lowercase.
+     *
+     * @param  name The string to convert to camel case.
+     *
+     * @return The string in camel case.
+     */
+    public static String toCamelCaseLower(String name)
+    {
+        String[] parts = name.split("_");
+        String result = "";
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            if (parts[i].length() > 0 && i == 0)
+            {
+                result += lowerFirstChar(parts[i]);
+            }
+            else if (parts[i].length() > 0)
+            {
+                result += upperFirstChar(parts[i]);
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Converts the first character of a string to upper case.
      *
      * @param  name The string to convert the first character of.
@@ -158,6 +185,18 @@ public class StringUtils
     public static String upperFirstChar(String name)
     {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
+    /**
+     * Converts the first character of a string to lower case.
+     *
+     * @param  name The string to convert the first character of.
+     *
+     * @return The string with its first character in lower case.
+     */
+    public static String lowerFirstChar(String name)
+    {
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
     /**
