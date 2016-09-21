@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>enhanced_text_model</artifactId>
     <name>enhanced_text_model</name>
-    <version>0.9.0-SNAPSHOT</version><!--debugger.version-->
+    <version>0.9.110</version><!--debugger.version-->
 
     <description>Re-usable Java Swing code.</description>
 
@@ -17,7 +17,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>debuggerbuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--debugger.version-->
+        <version>0.9.110</version><!--debugger.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>text_model</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+            <version>0.9.110</version><!--lojix.version-->
         </dependency>
     </dependencies>
 
