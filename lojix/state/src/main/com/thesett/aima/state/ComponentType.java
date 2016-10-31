@@ -16,6 +16,7 @@
 package com.thesett.aima.state;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +44,21 @@ public interface ComponentType extends Type, Serializable
      * @return A map of the types of all properties of this dimension.
      */
     Map<String, Type> getAllPropertyTypes();
+
+    /**
+     * Provides a list of the properties of the component, grouped into sub-lists, one for each 'unique' grouping in the
+     * component type.
+     *
+     * <p/>The first group is special, and its name is empty ("") and it holds all properties that are not in a 'unique'
+     * grouping.
+     *
+     * <p/>The subsequent groups represent the 'unique' groupings of the fields of the component. They are given names
+     * that correspond to the type name of the component with an index appended to distinguish the group names.
+     *
+     * @return A list of the properties of the component, grouped into sub-lists, one for each 'unique' grouping in the
+     *         component type.
+     */
+    Map<String, List<String>> getPropertiesByUniqueGrouping();
 
     /**
      * Calls <tt>new</tt> on the components implementation, using its no-arg constructor. None of the states properties
