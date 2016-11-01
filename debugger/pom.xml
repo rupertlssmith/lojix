@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>debuggerbuild</artifactId>
     <name>LoJix Debugger</name>
-    <version>0.9.0-SNAPSHOT</version><!--debugger.version-->
+    <version>0.9.114</version><!--debugger.version-->
 
     <packaging>pom</packaging>
 
@@ -67,7 +67,7 @@
         <maven.jaxb2.plugin.version>0.6.2</maven.jaxb2.plugin.version>
         <xdoclet.maven.plugin.version>1.0</xdoclet.maven.plugin.version>
         <maven.clover2.plugin.version>2.3.1</maven.clover2.plugin.version>
-        <maven.run.plugin.version>0.9.0-SNAPSHOT</maven.run.plugin.version><!--base.version-->
+        <maven.run.plugin.version>0.9.114</maven.run.plugin.version><!--base.version-->
         <maven.antrun.plugin.version>1.2-thesett</maven.antrun.plugin.version>
         <maven.idea.plugin.version>2.2</maven.idea.plugin.version>
         <maven.war.plugin.version>2.0</maven.war.plugin.version>
