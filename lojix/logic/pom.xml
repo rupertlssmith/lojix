@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>logic</artifactId>
     <name>logic</name>
-    <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+    <version>0.9.137</version><!--lojix.version-->
 
     <description>Rich syntax trees and parsers for working with first order logic.</description>
     <url>https://www.thesett.com/build_reports/lojix/logic</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+        <version>0.9.137</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,13 +26,13 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--base.version-->
+            <version>0.9.137</version><!--base.version-->
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>power_model</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+            <version>0.9.137</version><!--lojix.version-->
         </dependency>
         
         <!-- Test only dependencies. -->
