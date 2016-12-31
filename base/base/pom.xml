@@ -7,7 +7,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>base</artifactId>
     <name>base</name>
-    <version>0.9.0-SNAPSHOT</version><!--base.version-->
+    <version>0.9.141</version><!--base.version-->
 
     <description>My base library, a mixed bag of re-usable utility code.</description>
     <url>https://www.thesett.com/build_reports/base</url>
@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>basebuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--base.version-->
+        <version>0.9.141</version><!--base.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
