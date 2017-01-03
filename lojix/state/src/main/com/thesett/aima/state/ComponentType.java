@@ -105,6 +105,14 @@ public interface ComponentType extends Type, Serializable
      */
     String getPropertyPresentAsAlias(String name);
 
+
+    /**
+     * Provides a map of the field names to whether or not the field must be not null.
+     *
+     * @return A map of the field names to whether or not the field must be not null.
+     */
+    Map<String, Boolean> getPropertyNotNull();
+
     /**
      * Alters the type of the named property. Usually property types are immutable, but this is sometimes conventient
      * when building components where there are forward or cirular reference between components. In a two stage process
