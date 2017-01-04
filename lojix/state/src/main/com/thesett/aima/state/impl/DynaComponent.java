@@ -99,6 +99,12 @@ public class DynaComponent extends BaseType implements ComponentType
     }
 
     /** {@inheritDoc} */
+    public Map<String, Boolean> getOptionalProperties()
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
     public Set<String> getNaturalKeyFieldNames()
     {
         return new HashSet<String>();

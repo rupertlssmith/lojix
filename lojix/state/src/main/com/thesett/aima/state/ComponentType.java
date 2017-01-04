@@ -109,9 +109,10 @@ public interface ComponentType extends Type, Serializable
     /**
      * Provides a map of the field names to whether or not the field must be not null.
      *
-     * @return A map of the field names to whether or not the field must be not null.
+     * @return A map of the field names to whether or not the field must be not null. <tt>true</tt> means the property
+     * is optional, <tt>false</tt> means the property is mandatory.
      */
-    Map<String, Boolean> getPropertyNotNull();
+    Map<String, Boolean> getOptionalProperties();
 
     /**
      * Alters the type of the named property. Usually property types are immutable, but this is sometimes conventient
