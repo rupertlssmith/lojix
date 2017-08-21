@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>text_model</artifactId>
     <name>text_model</name>
-    <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+    <version>0.9.156</version><!--lojix.version-->
 
     <description>Text mode UI construction.</description>
     <url>https://www.thesett.com/build_reports/lojix/wam</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+        <version>0.9.156</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--base.version-->
+            <version>0.9.156</version><!--base.version-->
         </dependency>
 
         <!-- Test only dependencies. -->
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>base</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--base.version-->
+            <version>0.9.156</version><!--base.version-->
             <scope>test</scope>
         </dependency>
 
