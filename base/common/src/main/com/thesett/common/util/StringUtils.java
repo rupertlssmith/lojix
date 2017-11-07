@@ -237,6 +237,7 @@ public class StringUtils
     public static String convertCase(String value, String separator, boolean firstLetterUpper, boolean firstLetterOfWordUpper) {
         final StringBuffer result = new StringBuffer();
 
+        boolean firstWord = true;
         boolean firstLetter = true;
         boolean upper = false;
 
@@ -261,6 +262,10 @@ public class StringUtils
                     case Initial:
                         state = WordMachineState.StartWord;
                         upper = firstLetterOfWordUpper;
+                        if (!firstWord) {
+                            result.append(separator);
+                        }
+                        firstWord = false;
                         break;
                     case StartWord:
                     case ContinueWordCaps:
@@ -281,6 +286,10 @@ public class StringUtils
                     case Initial:
                         state = WordMachineState.StartWord;
                         upper = firstLetterOfWordUpper;
+                        if (!firstWord) {
+                            result.append(separator);
+                        }
+                        firstWord = false;
                         break;
                     case StartWord:
                     case ContinueWordLower:
@@ -301,7 +310,6 @@ public class StringUtils
                     case ContinueWordCaps:
                     case ContinueWordLower:
                         state = WordMachineState.Initial;
-                        result.append(separator);
                         break;
                 }
 
@@ -309,7 +317,7 @@ public class StringUtils
             }
         }
 
-        return result.toString().trim();
+        return result.toString();
     }
 
     /**
