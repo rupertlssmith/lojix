@@ -4,7 +4,7 @@
     <groupId>com.thesett</groupId>
     <artifactId>power_model</artifactId>
     <name>power_model</name>
-    <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+    <version>0.9.168</version><!--lojix.version-->
 
     <description>Power model provides the ability to reflect and navigate on Java data models. It also provides some useful data types that can be used in data modelling.</description>
     <url>https://www.thesett.com/build_reports/lojix/power_model</url>
@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.thesett</groupId>
         <artifactId>lojixbuild</artifactId>
-        <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+        <version>0.9.168</version><!--lojix.version-->
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -26,19 +26,19 @@
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>common</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--base.version-->
+            <version>0.9.168</version><!--base.version-->
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>search</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+            <version>0.9.168</version><!--lojix.version-->
         </dependency>
 
         <dependency>
             <groupId>com.thesett</groupId>
             <artifactId>state</artifactId>
-            <version>0.9.0-SNAPSHOT</version><!--lojix.version-->
+            <version>0.9.168</version><!--lojix.version-->
         </dependency>
         
         <!-- Test only dependencies. -->
