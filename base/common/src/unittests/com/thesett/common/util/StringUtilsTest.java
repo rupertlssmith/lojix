@@ -71,10 +71,10 @@ public class StringUtilsTest extends TestCase
         assertEquals("word", StringUtils.convertCase("word ", " ", false, false));
         assertEquals("word", StringUtils.convertCase("word-", " ", false, false));
         assertEquals("word", StringUtils.convertCase("word_", " ", false, false));
-        assertEquals("word1 Word2", StringUtils.convertCase("_word1_word2", " ", false, false));
-        assertEquals("word1 Word2", StringUtils.convertCase("word1Word2", " ", false, false));
+        assertEquals("word1 word2", StringUtils.convertCase("_word1_word2", " ", false, false));
+        assertEquals("word1 word2", StringUtils.convertCase("word1Word2", " ", false, false));
         assertEquals("gdpuk", StringUtils.convertCase("GDPuk", " ", false, false));
-        assertEquals("gdp Uk", StringUtils.convertCase("GDP-uk", " ", false, false));
+        assertEquals("gdp uk", StringUtils.convertCase("GDP-uk", " ", false, false));
     }
 
     /** Check that the to camel case conversion works as expected. */

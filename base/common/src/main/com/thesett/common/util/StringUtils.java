@@ -134,7 +134,7 @@ public class StringUtils
      */
     public static String toCamelCaseUpper(String name)
     {
-        return convertCase(name, "", true, false);
+        return convertCase(name, "", true, true);
     }
 
     /**
@@ -146,7 +146,7 @@ public class StringUtils
      */
     public static String toCamelCaseLower(String name)
     {
-        return convertCase(name, "", false, false);
+        return convertCase(name, "", false, true);
     }
 
     /**
@@ -158,7 +158,7 @@ public class StringUtils
      */
     public static String toSnakeCaseUpper(String name)
     {
-        return convertCase(name, "_", true, false);
+        return convertCase(name, "_", true, true);
     }
 
     /**
@@ -182,7 +182,7 @@ public class StringUtils
      */
     public static String toKebabCaseUpper(String name)
     {
-        return convertCase(name, "-", true, false);
+        return convertCase(name, "-", true, true);
     }
 
     /**
@@ -260,7 +260,7 @@ public class StringUtils
                 switch (state) {
                     case Initial:
                         state = WordMachineState.StartWord;
-                        upper = true;
+                        upper = firstLetterOfWordUpper;
                         break;
                     case StartWord:
                     case ContinueWordCaps:
@@ -269,7 +269,7 @@ public class StringUtils
                         break;
                     case ContinueWordLower:
                         state = WordMachineState.StartWord;
-                        upper = true;
+                        upper = firstLetterOfWordUpper;
                         result.append(separator);
                         break;
                 }
@@ -280,7 +280,7 @@ public class StringUtils
                 switch (state) {
                     case Initial:
                         state = WordMachineState.StartWord;
-                        upper = true;
+                        upper = firstLetterOfWordUpper;
                         break;
                     case StartWord:
                     case ContinueWordLower:
