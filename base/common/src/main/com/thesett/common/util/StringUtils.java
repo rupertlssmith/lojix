@@ -134,18 +134,7 @@ public class StringUtils
      */
     public static String toCamelCaseUpper(String name)
     {
-        String[] parts = name.split("_");
-        String result = "";
-
-        for (String part : parts)
-        {
-            if (part.length() > 0)
-            {
-                result += upperFirstChar(part);
-            }
-        }
-
-        return result;
+        return convertCase(name, "", true, false);
     }
 
     /**
@@ -157,22 +146,170 @@ public class StringUtils
      */
     public static String toCamelCaseLower(String name)
     {
-        String[] parts = name.split("_");
-        String result = "";
+        return convertCase(name, "", false, false);
+    }
 
-        for (int i = 0; i < parts.length; i++)
-        {
-            if (parts[i].length() > 0 && i == 0)
-            {
-                result += lowerFirstChar(parts[i]);
+    /**
+     * Converts a string to snake case with the first letter in uppercase.
+     *
+     * @param  name The string to convert to snake case.
+     *
+     * @return The string in snake case.
+     */
+    public static String toSnakeCaseUpper(String name)
+    {
+        return convertCase(name, "_", true, false);
+    }
+
+    /**
+     * Converts a string to snake case with the first letter in lowercase.
+     *
+     * @param  name The string to convert to snake case.
+     *
+     * @return The string in snake case.
+     */
+    public static String toSnakeCaseLower(String name)
+    {
+        return convertCase(name, "_", false, false);
+    }
+
+    /**
+     * Converts a string to kebab case with the first letter in uppercase.
+     *
+     * @param  name The string to convert to kebab case.
+     *
+     * @return The string in kebab case.
+     */
+    public static String toKebabCaseUpper(String name)
+    {
+        return convertCase(name, "-", true, false);
+    }
+
+    /**
+     * Converts a string to kebab case with the first letter in lowercase.
+     *
+     * @param  name The string to convert to kebab case.
+     *
+     * @return The string in kebab case.
+     */
+    public static String toKebabCaseLower(String name)
+    {
+        return convertCase(name, "-", false, false);
+    }
+
+    /** Used to track the state of the machine that extracts words from variable names. */
+    private enum WordMachineState {
+        Initial,
+        StartWord,
+        ContinueWordCaps,
+        ContinueWordLower
+    }
+
+    /**
+     * Converts string between various case forms such as camel case, snake case or kebab case.
+     *
+     * <p/>Characters in the string are characterized as whitespace, upper case, or other by the following rules.
+     *
+     * <ol>
+     * <li> An upper case letter is marked as upper case (U). </li>
+     * <li> A lower case letter or digit is marked as lower case (L). </li>
+     * <li> Any other character is marked as whitespace (W). </li>
+     * </ol>
+     *
+     * <p/>The string is processed into words by these rules.
+     *
+     * <ol>
+     * <li> W at the start is discarded. </li>
+     * <li> U or L begins a word. </li>
+     * <li> U after the initial character of a word continues the same word, so long as no W or L is encountered. </li>
+     * <li> L after U or L continues the word, so long as no W is encountered. </li>
+     * <li> U after L begins a new word. </li>
+     * <li> W after U or L is discarded and ends the current word. </li>
+     * </ol>
+     *
+     * @param value                  The string to convert.
+     * @param separator              The separator to place between words.
+     * @param firstLetterUpper       <tt>true</tt> iff the first letter should be in capitals.
+     * @param firstLetterOfWordUpper <tt>true</tt> iff the first letter of subsequent words should be in capitals.
+     *
+     * @return The input converted to lower case words separated by spaces, as per the rules described above.
+     */
+    public static String convertCase(String value, String separator, boolean firstLetterUpper, boolean firstLetterOfWordUpper) {
+        final StringBuffer result = new StringBuffer();
+
+        boolean firstLetter = true;
+        boolean upper = false;
+
+        WordMachineState state = WordMachineState.Initial;
+
+        Function2<Character, Boolean, StringBuffer> writeChar = new Function2<Character, Boolean, StringBuffer>() {
+            public StringBuffer apply(Character nextChar, Boolean upper) {
+                if (upper)
+                    result.append(Character.toUpperCase(nextChar));
+                else
+                    result.append(Character.toLowerCase(nextChar));
+
+                return result;
             }
-            else if (parts[i].length() > 0)
-            {
-                result += upperFirstChar(parts[i]);
+        };
+
+        for (int i = 0; i < value.length(); i++) {
+            char nextChar = value.charAt(i);
+
+            if (Character.isUpperCase(nextChar)) {
+                switch (state) {
+                    case Initial:
+                        state = WordMachineState.StartWord;
+                        upper = true;
+                        break;
+                    case StartWord:
+                    case ContinueWordCaps:
+                        state = WordMachineState.ContinueWordCaps;
+                        upper = false;
+                        break;
+                    case ContinueWordLower:
+                        state = WordMachineState.StartWord;
+                        upper = true;
+                        result.append(separator);
+                        break;
+                }
+
+                writeChar.apply(nextChar, (!firstLetter && upper) || (firstLetter & firstLetterUpper));
+                firstLetter = false;
+            } else if (Character.isLetterOrDigit(nextChar)) {
+                switch (state) {
+                    case Initial:
+                        state = WordMachineState.StartWord;
+                        upper = true;
+                        break;
+                    case StartWord:
+                    case ContinueWordLower:
+                    case ContinueWordCaps:
+                        state = WordMachineState.ContinueWordLower;
+                        upper = false;
+                        break;
+                }
+
+                writeChar.apply(nextChar, (!firstLetter && upper) || (firstLetter & firstLetterUpper));
+                firstLetter = false;
+            } else {
+                switch (state) {
+                    case Initial:
+                        state = WordMachineState.Initial;
+                        break;
+                    case StartWord:
+                    case ContinueWordCaps:
+                    case ContinueWordLower:
+                        state = WordMachineState.Initial;
+                        result.append(separator);
+                        break;
+                }
+
+                upper = false;
             }
         }
 
-        return result;
+        return result.toString().trim();
     }
 
     /**

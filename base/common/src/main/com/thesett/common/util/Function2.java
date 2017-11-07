@@ -16,23 +16,24 @@
 package com.thesett.common.util;
 
 /**
- * Function specifies the interface of a function from one type to another.
+ * Function2 specifies the interface of a function from a pair of types to another.
  *
  * <pre><p/><table id="crc"><caption>CRC Card</caption>
  * <tr><th> Responsibilities </th></tr>
- * <tr><td> Provide a functional mapping from X to Y. </td></tr>
+ * <tr><td> Provide a functional mapping from X, Y to Z. </td></tr>
  * </table></pre>
  *
  * @author Rupert Smith
  */
-public interface Function<X, Y>
+public interface Function2<X, Y, Z>
 {
     /**
-     * Returns the result of type Y from applying this function to an argument of type X.
+     * Returns the result of type Z from applying this function to an arguments of type X, Y.
      *
      * @param  x The argument to the function.
+     * @param  y The argument to the function.
      *
-     * @return The result of applying the function to its argument.
+     * @return The result of applying the function to its arguments.
      */
-    Y apply(X x);
+    Z apply(X x, Y y);
 }
